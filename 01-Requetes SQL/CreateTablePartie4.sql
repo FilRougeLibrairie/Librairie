@@ -11,8 +11,7 @@ CREATE TABLE Book (
    booQuantity int,
    booStatus tinyint NOT NULL,
    booFrontCover varchar(255),
-   booPageNumber int,
-   booLanguage tinyint NOT NULL
+   booPageNumber int
    
    
 );

@@ -1,6 +1,6 @@
 CREATE TABLE OrderLine (
  ordLineId numeric identity(1,1) NOT NULL,
- ordId numeric,
+ purId numeric,
  booIsbn13 varchar(13),
  ordLineQuantity int NOT NULL,
  ordBookPriceHT money NOT NULL,
