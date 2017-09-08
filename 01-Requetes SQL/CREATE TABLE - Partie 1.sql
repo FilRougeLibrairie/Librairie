@@ -69,7 +69,6 @@ cusId BIGINT NOT NULL, -- FK
 shippingCostId BIGINT NOT NULL, -- FK
 addDeliveryId BIGINT NOT NULL, -- FK
 addInvoiceId BIGINT NOT NULL, -- FK
-purPostage FLOAT NULL,
 purIP VARCHAR(50) NULL,
 shippingDate DATETIME NULL,
 shippingNumber BIGINT NULL
