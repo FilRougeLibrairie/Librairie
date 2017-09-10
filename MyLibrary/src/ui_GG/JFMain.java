@@ -20,18 +20,17 @@ import utils.Crypto;
 public class JFMain extends javax.swing.JFrame {
 
     Employee loggedEmp;
-    
+
     public JFMain() {
         initComponents();
         firstRun();
-        
+
         loggedEmp = new Employee();
         loggedEmp.setEmpFirstName("Camille");
         loggedEmp.setEmpLastName("Vasseur");
         loggedEmp.setEmpLogin("cvasseur");
         loggedEmp.setEmpSalt("66giadvk364hfjl2bcatvuhfa0");
         loggedEmp.setEmpPassword("9325d44485a0661c4d608ba9f200a80611e1720546aae149a8129ad8f3da9748367b49af04155b2467c9a6a1634178424c131c455cdc723e9fc69d51d4ffe991");
-
     }
 
     private void firstRun() {
@@ -44,26 +43,30 @@ public class JFMain extends javax.swing.JFrame {
     private void disconnectFromWorkSpace() {
         jTabbedPaneGeneral.setVisible(false);
         jPanelCredentials.setVisible(true);
+        jlLoggedEmpFirstName.setText("");
+        jlLoggedEmpLastName.setText("");
+        jPanelGeneralInfos.setVisible(false);
 
     }
 
     private void requestEmployeeCredentials() throws NoSuchAlgorithmException {
-        
+
         String inputUsername = jtfUsername.getText();
         char[] inputPassChar = jPasswordField.getPassword();
         String inputPassStr = new String(inputPassChar);
         String inputPass = null;
-        
-        /***********************************************************
-        
-        HERE : SQL CODE TO QUERY DATABASE ABOUT USERNAME
-        
-            SELECT * FROM Employee WHERE empLogin = 'inputUsername'
-        
-        If exists : pass arguments (salt & hashpsswd) to Crypto utility
-        
-        ************************************************************/
-        
+
+        /**
+         * *********************************************************
+         *
+         * HERE : SQL CODE TO QUERY DATABASE ABOUT USERNAME
+         *
+         * SELECT * FROM Employee WHERE empLogin = 'inputUsername'
+         *
+         * If exists : pass arguments (salt & hashpsswd) to Crypto utility
+         *
+         ***********************************************************
+         */
         try {
             inputPass = Crypto.hashPassword(loggedEmp.getEmpSalt(), inputPassStr);
         } catch (CryptoException ex) {
@@ -78,26 +81,28 @@ public class JFMain extends javax.swing.JFrame {
     }
 
     private void initWorkSpace() {
-
         clearCredentials();
         initJpanelGeneralInfos();
-
-        // Afficher nom, prénom et lien de déconnexion en haut à droite
-        jTabbedPaneGeneral.setVisible(true);
-        jTabbedPaneGeneral.setSelectedComponent(jpStatistics);
+        initjTabbedGeneral();
     }
 
     private void clearCredentials() {
         jPanelCredentials.setVisible(false);
         jLabelWrongCredentials.setVisible(false);
         jtfUsername.setText("");
-        jPasswordField.setText("******");
+        jPasswordField.setText("");
     }
 
     private void initJpanelGeneralInfos() {
         jlLoggedEmpFirstName.setText(loggedEmp.getEmpFirstName());
         jlLoggedEmpLastName.setText(loggedEmp.getEmpLastName());
-        
+        jPanelGeneralInfos.setVisible(true);
+
+    }
+
+    private void initjTabbedGeneral() {
+        jTabbedPaneGeneral.setVisible(true);
+        jTabbedPaneGeneral.setSelectedComponent(jpStatistics);
     }
 
     /**
@@ -302,10 +307,14 @@ public class JFMain extends javax.swing.JFrame {
 
         jLabelPassword.setText("Password");
 
-        jPasswordField.setText("******");
         jPasswordField.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 jPasswordFieldFocusGained(evt);
+            }
+        });
+        jPasswordField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jPasswordFieldActionPerformed(evt);
             }
         });
         jPasswordField.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -427,6 +436,10 @@ public class JFMain extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_jPasswordFieldKeyReleased
+
+    private void jPasswordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jPasswordFieldActionPerformed
 
     /**
      * @param args the command line arguments

@@ -28,8 +28,6 @@ public class Crypto {
             userSalt = salt;
         }
         
-        System.out.println(userSalt);
-        
         String concatedPassword = userSalt + userPassword;
         MessageDigest digest = MessageDigest.getInstance(HASH_ALGORITHM);
         byte[] hash = digest.digest(concatedPassword.getBytes(StandardCharsets.UTF_8));
@@ -38,7 +36,6 @@ public class Crypto {
     }
 
     private static String generateSalt() {
-        //return UUID.randomUUID().toString();
         SecureRandom random = new SecureRandom();
         return new BigInteger(130, random).toString(32);
     }
