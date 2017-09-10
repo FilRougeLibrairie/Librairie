@@ -16,9 +16,11 @@ public class Employee {
     private String empLastName;
     private String empLogin;
     private String empPassword;
+    private String empSalt;
     private String empDateStart;
     private String empDateEnd;
     private int empStatus;
+    private String empComment;
 
     //Constructor
     public Employee() {
@@ -43,6 +45,14 @@ public class Employee {
 
     public void setEmpPassword(String empPassword) {
         this.empPassword = empPassword;
+    }
+
+    public String getEmpSalt() {
+        return empSalt;
+    }
+
+    public void setEmpSalt(String empSalt) {
+        this.empSalt = empSalt;
     }
 
     public void setEmpDateStart(String empDateStart) {
@@ -88,6 +98,14 @@ public class Employee {
 
     public int getEmpStatus() {
         return empStatus;
+    }
+
+    public String getEmpComment() {
+        return empComment;
+    }
+
+    public void setEmpComment(String empComment) {
+        this.empComment = empComment;
     }
 
 }

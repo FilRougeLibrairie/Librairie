@@ -20,6 +20,7 @@ public class Customer {
     private String cusPhoneNumber;
     private String cusDateOfBirth;
     private String cusPassword;
+    private String cusSalt;
     private String cusIP;
     private int cusStatus;
     private String cusComment;
@@ -63,6 +64,14 @@ public class Customer {
 
     public void setCusPassword(String cusPassword) {
         this.cusPassword = cusPassword;
+    }
+
+    public String getCusSalt() {
+        return cusSalt;
+    }
+
+    public void setCusSalt(String cusSalt) {
+        this.cusSalt = cusSalt;
     }
 
     public void setCusIP(String cusIP) {
