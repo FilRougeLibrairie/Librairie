@@ -1,25 +1,29 @@
 package utils;
 
+import exceptions.CryptoException;
+import static java.lang.Math.random;
+import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.UUID;
+import java.security.SecureRandom;
 import javax.xml.bind.DatatypeConverter;
 
 /**
  * The {@code Crypto} static class is used to create and verify passwords
+ *
  * @author Guillaume
  */
 public class Crypto {
-    
+
     private final static String HASH_ALGORITHM = "SHA-512";
 
-    public static String hashPassword(String salt, char[] password) throws NoSuchAlgorithmException {
+    public static String hashPassword(String salt, String password) throws NoSuchAlgorithmException, CryptoException {
         String userPassword = new String(password);
         String userSalt;
 
         if (salt == null) {
-            userSalt = generateSalt();
+            throw new CryptoException(salt);
         } else {
             userSalt = salt;
         }
@@ -32,11 +36,13 @@ public class Crypto {
     }
 
     private static String generateSalt() {
-        return UUID.randomUUID().toString();
+        //return UUID.randomUUID().toString();
+        SecureRandom random = new SecureRandom();
+        return new BigInteger(130, random).toString(32);
     }
 
-    public static String createPassword(char[] password) throws NoSuchAlgorithmException {
-        return hashPassword(null, password);
+    public static String createPassword(String password) throws NoSuchAlgorithmException, CryptoException {
+        return hashPassword(generateSalt(), password);
     }
 
 }
