@@ -6,51 +6,32 @@
 package ui;
 
 import exceptions.CryptoException;
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.xml.bind.DatatypeConverter;
 import utils.Crypto;
 
 /**
  *
- * @author PC
+ * @author Guillaume
  */
-public class JF_GG_Prop extends javax.swing.JFrame {
+public class JFMain_GG_Prop extends javax.swing.JFrame {
 
-    BufferedImage myLibraryLogo;
-
-    public JF_GG_Prop() {
+    public JFMain_GG_Prop() {
         initComponents();
+        firstRun();
 
-        /*  myLibraryLogo = null;
-         try {
-         myLibraryLogo = ImageIO.read(new File("C:\\Users\\PC\\Desktop\\bookstore-logo.jpg"));
-         } catch (IOException e) {
-         e.printStackTrace();
-         return;
-         }
-         jLabelLogoLibrary.setBounds(0, 0, 360, 80);
-        
-         Image dimg = myLibraryLogo.getScaledInstance(jLabelLogoLibrary.getWidth(), jLabelLogoLibrary.getHeight(),
-         Image.SCALE_SMOOTH);
-        
-         ImageIcon imageIcon = new ImageIcon(dimg);
-        
-         jLabelLogoLibrary.setIcon(imageIcon);*/
+    }
+
+    private void firstRun() {
+
+        jTabbedPaneGeneral.setVisible(false);
         jLabelWrongCredentials.setVisible(false);
+    }
 
+    private void disconnectFromWorkSpace() {
+        jTabbedPaneGeneral.setVisible(false);
+        jPanelCredentials.setVisible(true);
     }
 
     private void requestEmployeeCredentials() throws NoSuchAlgorithmException {
@@ -70,7 +51,7 @@ public class JF_GG_Prop extends javax.swing.JFrame {
         try {
             inputPass = Crypto.hashPassword(userSalt, passStr);
         } catch (CryptoException ex) {
-            Logger.getLogger(JF_GG_Prop.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(JFMain_GG_Prop.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         if (!username.equalsIgnoreCase(user) || !hashPasswd.equalsIgnoreCase(inputPass)) {
@@ -85,7 +66,7 @@ public class JF_GG_Prop extends javax.swing.JFrame {
         jLabelWrongCredentials.setVisible(false);
         // Afficher nom, prénom et lien de déconnexion en haut à droite
         jPanelCredentials.setVisible(false);
-        //  jTabbedPaneGeneral.setVisible(true);
+        jTabbedPaneGeneral.setVisible(true);
         jTabbedPaneGeneral.setSelectedComponent(jpStatistics);
     }
 
@@ -99,43 +80,51 @@ public class JF_GG_Prop extends javax.swing.JFrame {
     private void initComponents() {
 
         jDesktopPane2 = new javax.swing.JDesktopPane();
-        jPanelGeneralInfos = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        JLPendingReviews = new javax.swing.JLabel();
         jLabelLogoLibrary = new javax.swing.JLabel();
+        jPanelGeneralInfos = new javax.swing.JPanel();
+        jlGenInfoFirstName = new javax.swing.JLabel();
+        jlGenInfoLastName = new javax.swing.JLabel();
+        jlGenInfoDisconnect = new javax.swing.JLabel();
+        JLPendingReviews = new javax.swing.JLabel();
         jPanelCredentials = new javax.swing.JPanel();
         jLabelLibraryName = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        jLabelUsername = new javax.swing.JLabel();
         jtfUsername = new javax.swing.JTextField();
-        jLabel5 = new javax.swing.JLabel();
+        jLabelPassword = new javax.swing.JLabel();
         jPasswordField = new javax.swing.JPasswordField();
         jLabelWrongCredentials = new javax.swing.JLabel();
         jButtonConnexion = new javax.swing.JButton();
         jLabelTeamIcon = new javax.swing.JLabel();
         jTabbedPaneGeneral = new javax.swing.JTabbedPane();
-        jPanel1 = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
+        jpOrders = new javax.swing.JPanel();
+        jpCustomers = new javax.swing.JPanel();
         jpReviews = new javax.swing.JPanel();
-        jPanel7 = new javax.swing.JPanel();
+        jpOffers = new javax.swing.JPanel();
         jpStatistics = new javax.swing.JPanel();
-        jPanel6 = new javax.swing.JPanel();
+        jpEmployees = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel1.setText("Employee First Name");
+        jLabelLogoLibrary.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pictures/Library-logo.png"))); // NOI18N
+        jLabelLogoLibrary.setText("Libray Logo");
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel2.setText("Employee Last Name");
+        jlGenInfoFirstName.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jlGenInfoFirstName.setText("Employee First Name");
 
-        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 0, 0));
-        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel3.setText("Disconnect");
-        jLabel3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jlGenInfoLastName.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jlGenInfoLastName.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jlGenInfoLastName.setText("Employee Last Name");
+
+        jlGenInfoDisconnect.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+        jlGenInfoDisconnect.setForeground(new java.awt.Color(255, 0, 0));
+        jlGenInfoDisconnect.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jlGenInfoDisconnect.setText("Disconnect");
+        jlGenInfoDisconnect.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jlGenInfoDisconnect.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                jlGenInfoDisconnectMouseReleased(evt);
+            }
+        });
 
         JLPendingReviews.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         JLPendingReviews.setForeground(new java.awt.Color(255, 102, 0));
@@ -154,12 +143,12 @@ public class JF_GG_Prop extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelGeneralInfosLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanelGeneralInfosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel2)
+                    .addComponent(jlGenInfoDisconnect)
+                    .addComponent(jlGenInfoLastName)
                     .addGroup(jPanelGeneralInfosLayout.createSequentialGroup()
                         .addComponent(JLPendingReviews)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
-                        .addComponent(jLabel1)))
+                        .addComponent(jlGenInfoFirstName)))
                 .addGap(20, 20, 20))
         );
         jPanelGeneralInfosLayout.setVerticalGroup(
@@ -168,19 +157,16 @@ public class JF_GG_Prop extends javax.swing.JFrame {
                 .addGroup(jPanelGeneralInfosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelGeneralInfosLayout.createSequentialGroup()
                         .addGap(6, 6, 6)
-                        .addComponent(jLabel1))
+                        .addComponent(jlGenInfoFirstName))
                     .addGroup(jPanelGeneralInfosLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(JLPendingReviews)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel2)
+                .addComponent(jlGenInfoLastName)
                 .addGap(12, 12, 12)
-                .addComponent(jLabel3)
+                .addComponent(jlGenInfoDisconnect)
                 .addContainerGap(16, Short.MAX_VALUE))
         );
-
-        jLabelLogoLibrary.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pictures/Library-logo.png"))); // NOI18N
-        jLabelLogoLibrary.setText("Libray Logo");
 
         jPanelCredentials.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -188,7 +174,7 @@ public class JF_GG_Prop extends javax.swing.JFrame {
         jLabelLibraryName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabelLibraryName.setText("MyLibrary Management Software");
 
-        jLabel4.setText("Username");
+        jLabelUsername.setText("Username");
 
         jtfUsername.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -196,7 +182,7 @@ public class JF_GG_Prop extends javax.swing.JFrame {
             }
         });
 
-        jLabel5.setText("Password");
+        jLabelPassword.setText("Password");
 
         jPasswordField.setText("jPasswordField1");
         jPasswordField.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -227,8 +213,8 @@ public class JF_GG_Prop extends javax.swing.JFrame {
                 .addGap(97, 97, 97)
                 .addGroup(jPanelCredentialsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(jtfUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel5)
+                    .addComponent(jLabelUsername)
+                    .addComponent(jLabelPassword)
                     .addComponent(jPasswordField, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabelLibraryName)
                     .addComponent(jButtonConnexion)
@@ -249,11 +235,11 @@ public class JF_GG_Prop extends javax.swing.JFrame {
                         .addContainerGap())
                     .addGroup(jPanelCredentialsLayout.createSequentialGroup()
                         .addGap(23, 23, 23)
-                        .addComponent(jLabel4)
+                        .addComponent(jLabelUsername)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jtfUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(25, 25, 25)
-                        .addComponent(jLabel5)
+                        .addComponent(jLabelPassword)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPasswordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -263,83 +249,83 @@ public class JF_GG_Prop extends javax.swing.JFrame {
                         .addGap(24, 24, 24))))
         );
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1067, Short.MAX_VALUE)
+        javax.swing.GroupLayout jpOrdersLayout = new javax.swing.GroupLayout(jpOrders);
+        jpOrders.setLayout(jpOrdersLayout);
+        jpOrdersLayout.setHorizontalGroup(
+            jpOrdersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1003, Short.MAX_VALUE)
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 585, Short.MAX_VALUE)
-        );
-
-        jTabbedPaneGeneral.addTab("Orders management", jPanel1);
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1067, Short.MAX_VALUE)
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 585, Short.MAX_VALUE)
+        jpOrdersLayout.setVerticalGroup(
+            jpOrdersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 621, Short.MAX_VALUE)
         );
 
-        jTabbedPaneGeneral.addTab("Customers", jPanel2);
+        jTabbedPaneGeneral.addTab("Orders management", jpOrders);
+
+        javax.swing.GroupLayout jpCustomersLayout = new javax.swing.GroupLayout(jpCustomers);
+        jpCustomers.setLayout(jpCustomersLayout);
+        jpCustomersLayout.setHorizontalGroup(
+            jpCustomersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1003, Short.MAX_VALUE)
+        );
+        jpCustomersLayout.setVerticalGroup(
+            jpCustomersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 621, Short.MAX_VALUE)
+        );
+
+        jTabbedPaneGeneral.addTab("Customers", jpCustomers);
 
         javax.swing.GroupLayout jpReviewsLayout = new javax.swing.GroupLayout(jpReviews);
         jpReviews.setLayout(jpReviewsLayout);
         jpReviewsLayout.setHorizontalGroup(
             jpReviewsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1067, Short.MAX_VALUE)
+            .addGap(0, 1003, Short.MAX_VALUE)
         );
         jpReviewsLayout.setVerticalGroup(
             jpReviewsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 585, Short.MAX_VALUE)
+            .addGap(0, 621, Short.MAX_VALUE)
         );
 
         jTabbedPaneGeneral.addTab("Reviews", jpReviews);
 
-        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
-        jPanel7.setLayout(jPanel7Layout);
-        jPanel7Layout.setHorizontalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1067, Short.MAX_VALUE)
+        javax.swing.GroupLayout jpOffersLayout = new javax.swing.GroupLayout(jpOffers);
+        jpOffers.setLayout(jpOffersLayout);
+        jpOffersLayout.setHorizontalGroup(
+            jpOffersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1003, Short.MAX_VALUE)
         );
-        jPanel7Layout.setVerticalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 585, Short.MAX_VALUE)
+        jpOffersLayout.setVerticalGroup(
+            jpOffersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 621, Short.MAX_VALUE)
         );
 
-        jTabbedPaneGeneral.addTab("Offers", jPanel7);
+        jTabbedPaneGeneral.addTab("Offers", jpOffers);
 
         javax.swing.GroupLayout jpStatisticsLayout = new javax.swing.GroupLayout(jpStatistics);
         jpStatistics.setLayout(jpStatisticsLayout);
         jpStatisticsLayout.setHorizontalGroup(
             jpStatisticsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1067, Short.MAX_VALUE)
+            .addGap(0, 1003, Short.MAX_VALUE)
         );
         jpStatisticsLayout.setVerticalGroup(
             jpStatisticsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 585, Short.MAX_VALUE)
+            .addGap(0, 621, Short.MAX_VALUE)
         );
 
         jTabbedPaneGeneral.addTab("Statistics", jpStatistics);
 
-        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
-        jPanel6.setLayout(jPanel6Layout);
-        jPanel6Layout.setHorizontalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1067, Short.MAX_VALUE)
+        javax.swing.GroupLayout jpEmployeesLayout = new javax.swing.GroupLayout(jpEmployees);
+        jpEmployees.setLayout(jpEmployeesLayout);
+        jpEmployeesLayout.setHorizontalGroup(
+            jpEmployeesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1003, Short.MAX_VALUE)
         );
-        jPanel6Layout.setVerticalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 585, Short.MAX_VALUE)
+        jpEmployeesLayout.setVerticalGroup(
+            jpEmployeesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 621, Short.MAX_VALUE)
         );
 
-        jTabbedPaneGeneral.addTab("Employees", jPanel6);
+        jTabbedPaneGeneral.addTab("Employees", jpEmployees);
 
         javax.swing.GroupLayout jDesktopPane2Layout = new javax.swing.GroupLayout(jDesktopPane2);
         jDesktopPane2.setLayout(jDesktopPane2Layout);
@@ -373,8 +359,8 @@ public class JF_GG_Prop extends javax.swing.JFrame {
                     .addComponent(jPanelCredentials, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(0, 0, Short.MAX_VALUE)))
         );
-        jDesktopPane2.setLayer(jPanelGeneralInfos, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jDesktopPane2.setLayer(jLabelLogoLibrary, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jDesktopPane2.setLayer(jPanelGeneralInfos, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jDesktopPane2.setLayer(jPanelCredentials, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jDesktopPane2.setLayer(jTabbedPaneGeneral, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
@@ -393,7 +379,7 @@ public class JF_GG_Prop extends javax.swing.JFrame {
         try {
             this.requestEmployeeCredentials();
         } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(JF_GG_Prop.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(JFMain_GG_Prop.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButtonConnexionActionPerformed
 
@@ -404,6 +390,10 @@ public class JF_GG_Prop extends javax.swing.JFrame {
     private void jtfUsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfUsernameActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jtfUsernameActionPerformed
+
+    private void jlGenInfoDisconnectMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlGenInfoDisconnectMouseReleased
+        disconnectFromWorkSpace();
+    }//GEN-LAST:event_jlGenInfoDisconnectMouseReleased
 
     /**
      * @param args the command line arguments
@@ -422,21 +412,23 @@ public class JF_GG_Prop extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(JF_GG_Prop.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JFMain_GG_Prop.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(JF_GG_Prop.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JFMain_GG_Prop.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(JF_GG_Prop.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JFMain_GG_Prop.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(JF_GG_Prop.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JFMain_GG_Prop.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new JF_GG_Prop().setVisible(true);
+                new JFMain_GG_Prop().setVisible(true);
             }
         });
     }
@@ -445,23 +437,23 @@ public class JF_GG_Prop extends javax.swing.JFrame {
     private javax.swing.JLabel JLPendingReviews;
     private javax.swing.JButton jButtonConnexion;
     private javax.swing.JDesktopPane jDesktopPane2;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabelLibraryName;
     private javax.swing.JLabel jLabelLogoLibrary;
+    private javax.swing.JLabel jLabelPassword;
     private javax.swing.JLabel jLabelTeamIcon;
+    private javax.swing.JLabel jLabelUsername;
     private javax.swing.JLabel jLabelWrongCredentials;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel6;
-    private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanelCredentials;
     private javax.swing.JPanel jPanelGeneralInfos;
     private javax.swing.JPasswordField jPasswordField;
     private javax.swing.JTabbedPane jTabbedPaneGeneral;
+    private javax.swing.JLabel jlGenInfoDisconnect;
+    private javax.swing.JLabel jlGenInfoFirstName;
+    private javax.swing.JLabel jlGenInfoLastName;
+    private javax.swing.JPanel jpCustomers;
+    private javax.swing.JPanel jpEmployees;
+    private javax.swing.JPanel jpOffers;
+    private javax.swing.JPanel jpOrders;
     private javax.swing.JPanel jpReviews;
     private javax.swing.JPanel jpStatistics;
     private javax.swing.JTextField jtfUsername;
