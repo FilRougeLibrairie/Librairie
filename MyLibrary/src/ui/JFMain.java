@@ -21,14 +21,11 @@ import utils.Crypto;
 public class JFMain extends javax.swing.JFrame {
 
     Employee loggedEmp;
-    
+
     JPCustomer jpc;
 
     public JFMain() {
         initComponents();
-        firstRun();
-        
-       
 
         loggedEmp = new Employee();
         loggedEmp.setEmpFirstName("Camille");
@@ -36,6 +33,13 @@ public class JFMain extends javax.swing.JFrame {
         loggedEmp.setEmpLogin("1");
         loggedEmp.setEmpSalt("k71nhc5h933kblk4oaouihdhh6");
         loggedEmp.setEmpPassword("32D601355049CDBC0E69DA955DACBC271D1A19999043ED1FAAD09F211E433E0917195DF7EC8A09D1B6C223875036CC11A332178B0E97FDEE28AC982938DE96B3");
+
+        /////// BYPASS CREDENTIALS
+        //firstRun();
+        jPanelCredentials.setVisible(false);
+        initWorkSpace();
+       /////// BYPASS CREDENTIALS
+
     }
 
     private void firstRun() {
@@ -108,8 +112,8 @@ public class JFMain extends javax.swing.JFrame {
     private void initjTabbedGeneral() {
         jTabbedPaneGeneral.setVisible(true);
         jTabbedPaneGeneral.setSelectedComponent(jpStatistics);
-         jpc = new JPCustomer();
-        Dimension dim = new Dimension(1003,621);
+        jpc = new JPCustomer();
+        Dimension dim = new Dimension(1003, 621);
         jpc.setSize(dim);
         jpc.setVisible(true);
         jpCustomers.add(jpc);
