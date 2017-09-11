@@ -1,7 +1,10 @@
 package utils;
 /**
+ * The {@code InputsControls} class is used to check user inputs using regex.<br>
+ * Phone and zipCode regex are formatted to check French formats.<br>
+ * Static methods return a boolean value.
  * 
- * @author Guillaume
+ * @author ggarvanese
  */
 
 public class InputsControls {

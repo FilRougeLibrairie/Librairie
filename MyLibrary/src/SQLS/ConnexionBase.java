@@ -1,5 +1,5 @@
 
-package Connexion;
+package SQLS;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -21,6 +21,7 @@ public class ConnexionBase {
             ex.printStackTrace();
         }
     }
+
     
     //Methode qui retourne la connection quand nulle
     

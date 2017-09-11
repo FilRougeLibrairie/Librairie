@@ -1,7 +1,6 @@
 package utils;
 
 import exceptions.CryptoException;
-import static java.lang.Math.random;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -10,9 +9,10 @@ import java.security.SecureRandom;
 import javax.xml.bind.DatatypeConverter;
 
 /**
- * The {@code Crypto} static class is used to create and verify passwords
+ * The {@code Crypto} static class is used to create and verify passwords.<br>
+ * A SecureRandom generated salt is added to the Password String. Final String is hashed using SHA-512 algorithm
  *
- * @author Guillaume
+ * @author ggarvanese
  */
 public class Crypto {
 

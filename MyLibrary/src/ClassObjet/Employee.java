@@ -108,4 +108,9 @@ public class Employee {
         this.empComment = empComment;
     }
 
+    @Override
+    public String toString() {
+        return "Employee{" + "empId=" + empId + ", empFirstName=" + empFirstName + ", empLastName=" + empLastName + ", empLogin=" + empLogin + ", empPassword=" + empPassword + ", empSalt=" + empSalt + ", empDateStart=" + empDateStart + ", empDateEnd=" + empDateEnd + ", empStatus=" + empStatus + ", empComment=" + empComment + '}';
+    }
+
 }
