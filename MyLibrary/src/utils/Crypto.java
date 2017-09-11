@@ -28,6 +28,8 @@ public class Crypto {
             userSalt = salt;
         }
         
+        System.out.println(userSalt);
+        
         String concatedPassword = userSalt + userPassword;
         MessageDigest digest = MessageDigest.getInstance(HASH_ALGORITHM);
         byte[] hash = digest.digest(concatedPassword.getBytes(StandardCharsets.UTF_8));

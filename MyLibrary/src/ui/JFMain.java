@@ -33,9 +33,9 @@ public class JFMain extends javax.swing.JFrame {
         loggedEmp = new Employee();
         loggedEmp.setEmpFirstName("Camille");
         loggedEmp.setEmpLastName("Vasseur");
-        loggedEmp.setEmpLogin("cvasseur");
-        loggedEmp.setEmpSalt("66giadvk364hfjl2bcatvuhfa0");
-        loggedEmp.setEmpPassword("9325d44485a0661c4d608ba9f200a80611e1720546aae149a8129ad8f3da9748367b49af04155b2467c9a6a1634178424c131c455cdc723e9fc69d51d4ffe991");
+        loggedEmp.setEmpLogin("1");
+        loggedEmp.setEmpSalt("k71nhc5h933kblk4oaouihdhh6");
+        loggedEmp.setEmpPassword("32D601355049CDBC0E69DA955DACBC271D1A19999043ED1FAAD09F211E433E0917195DF7EC8A09D1B6C223875036CC11A332178B0E97FDEE28AC982938DE96B3");
     }
 
     private void firstRun() {
