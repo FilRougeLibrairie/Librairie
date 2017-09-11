@@ -3,22 +3,31 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ui_GG;
+package ui;
 
 import java.awt.Color;
 import javax.swing.JPanel;
 
 /**
  *
- * @author willDev
+ * @author cdi308
  */
-public class BackOffice extends javax.swing.JFrame {
+public class JPCustomer extends javax.swing.JPanel {
 
     /**
-     * Creates new form BackOffice
+     * Creates new form JPCustomer
      */
-    public BackOffice() {
+    public JPCustomer() {
         initComponents();
+    }
+    
+    
+     void setColor(JPanel panel) {
+        panel.setBackground(new Color(102, 102, 102));
+    }
+
+    void resetColor(JPanel panel) {
+        panel.setBackground(new Color(204, 204, 204));
     }
 
     /**
@@ -68,9 +77,6 @@ public class BackOffice extends javax.swing.JFrame {
         jPanel7 = new javax.swing.JPanel();
         jToolBar1 = new javax.swing.JToolBar();
         jPanel8 = new javax.swing.JPanel();
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setBackground(new java.awt.Color(255, 255, 255));
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -278,7 +284,7 @@ public class BackOffice extends javax.swing.JFrame {
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(741, Short.MAX_VALUE)
+                .addContainerGap(743, Short.MAX_VALUE)
                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -287,7 +293,7 @@ public class BackOffice extends javax.swing.JFrame {
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(36, Short.MAX_VALUE)
+                .addContainerGap(38, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -316,7 +322,7 @@ public class BackOffice extends javax.swing.JFrame {
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addContainerGap(203, Short.MAX_VALUE)
+                .addContainerGap(205, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -340,7 +346,7 @@ public class BackOffice extends javax.swing.JFrame {
                     .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(29, 29, 29)
                 .addComponent(jButton1)
-                .addContainerGap(206, Short.MAX_VALUE))
+                .addContainerGap(215, Short.MAX_VALUE))
         );
 
         jToolBar5.add(jPanel4);
@@ -355,7 +361,7 @@ public class BackOffice extends javax.swing.JFrame {
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 970, Short.MAX_VALUE)
+            .addGap(0, 972, Short.MAX_VALUE)
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -425,7 +431,7 @@ public class BackOffice extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel6Layout.createSequentialGroup()
                         .addGap(15, 15, 15)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 930, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -437,7 +443,7 @@ public class BackOffice extends javax.swing.JFrame {
                     .addComponent(jButton2)
                     .addComponent(jButton3)
                     .addComponent(jButton4))
-                .addContainerGap(138, Short.MAX_VALUE))
+                .addContainerGap(147, Short.MAX_VALUE))
         );
 
         jToolBar7.add(jPanel6);
@@ -452,7 +458,7 @@ public class BackOffice extends javax.swing.JFrame {
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 970, Short.MAX_VALUE)
+            .addGap(0, 972, Short.MAX_VALUE)
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -471,7 +477,7 @@ public class BackOffice extends javax.swing.JFrame {
         jPanel8.setLayout(jPanel8Layout);
         jPanel8Layout.setHorizontalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 970, Short.MAX_VALUE)
+            .addGap(0, 972, Short.MAX_VALUE)
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -484,8 +490,8 @@ public class BackOffice extends javax.swing.JFrame {
 
         jPanel1.add(jTabbedPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 100, 990, 520));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
@@ -498,54 +504,16 @@ public class BackOffice extends javax.swing.JFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 611, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
-
-        setSize(new java.awt.Dimension(1251, 650));
-        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void bouttonEmployeMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bouttonEmployeMousePressed
+    private void bouttonAdminMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bouttonAdminMouseMoved
         // TODO add your handling code here:
-        setColor(bouttonEmploye);
-        resetColor(bouttonProduit);
-        resetColor(bouttonCommande);
+        setColor(bouttonAdmin);
         resetColor(bouttonModerateur);
-        resetColor(bouttonAdmin);
-        
-        jTabbedPane.setSelectedIndex(0);
-    }//GEN-LAST:event_bouttonEmployeMousePressed
-
-    private void bouttonProduitMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bouttonProduitMousePressed
-        // TODO add your handling code here:
-        setColor(bouttonProduit);
-        resetColor(bouttonEmploye);
-        resetColor(bouttonCommande);
-        resetColor(bouttonModerateur);
-        resetColor(bouttonAdmin);
-       
-        jTabbedPane.setSelectedIndex(1);
-    }//GEN-LAST:event_bouttonProduitMousePressed
-
-    private void bouttonCommandeMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bouttonCommandeMousePressed
-        // TODO add your handling code here:
-        setColor(bouttonCommande);
-        resetColor(bouttonProduit);
-        resetColor(bouttonEmploye);
-        resetColor(bouttonModerateur);
-        resetColor(bouttonAdmin);
-        
-        jTabbedPane.setSelectedIndex(2);
-    }//GEN-LAST:event_bouttonCommandeMousePressed
-
-    private void bouttonModerateurMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bouttonModerateurMousePressed
-        // TODO add your handling code here:
-        setColor(bouttonModerateur);
         resetColor(bouttonCommande);
         resetColor(bouttonProduit);
         resetColor(bouttonEmploye);
-        resetColor(bouttonAdmin);
-        
-        jTabbedPane.setSelectedIndex(3);
-    }//GEN-LAST:event_bouttonModerateurMousePressed
+    }//GEN-LAST:event_bouttonAdminMouseMoved
 
     private void bouttonAdminMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bouttonAdminMousePressed
         // TODO add your handling code here:
@@ -554,8 +522,8 @@ public class BackOffice extends javax.swing.JFrame {
         resetColor(bouttonCommande);
         resetColor(bouttonProduit);
         resetColor(bouttonEmploye);
-        
-//        jTabbedPane.setSelectedIndex(5);
+
+        //        jTabbedPane.setSelectedIndex(5);
     }//GEN-LAST:event_bouttonAdminMousePressed
 
     private void bouttonEmployeMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bouttonEmployeMouseMoved
@@ -567,6 +535,17 @@ public class BackOffice extends javax.swing.JFrame {
         resetColor(bouttonAdmin);
     }//GEN-LAST:event_bouttonEmployeMouseMoved
 
+    private void bouttonEmployeMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bouttonEmployeMousePressed
+        // TODO add your handling code here:
+        setColor(bouttonEmploye);
+        resetColor(bouttonProduit);
+        resetColor(bouttonCommande);
+        resetColor(bouttonModerateur);
+        resetColor(bouttonAdmin);
+
+        jTabbedPane.setSelectedIndex(0);
+    }//GEN-LAST:event_bouttonEmployeMousePressed
+
     private void bouttonProduitMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bouttonProduitMouseMoved
         // TODO add your handling code here:
         setColor(bouttonProduit);
@@ -575,6 +554,17 @@ public class BackOffice extends javax.swing.JFrame {
         resetColor(bouttonModerateur);
         resetColor(bouttonAdmin);
     }//GEN-LAST:event_bouttonProduitMouseMoved
+
+    private void bouttonProduitMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bouttonProduitMousePressed
+        // TODO add your handling code here:
+        setColor(bouttonProduit);
+        resetColor(bouttonEmploye);
+        resetColor(bouttonCommande);
+        resetColor(bouttonModerateur);
+        resetColor(bouttonAdmin);
+
+        jTabbedPane.setSelectedIndex(1);
+    }//GEN-LAST:event_bouttonProduitMousePressed
 
     private void bouttonCommandeMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bouttonCommandeMouseMoved
         // TODO add your handling code here:
@@ -585,6 +575,17 @@ public class BackOffice extends javax.swing.JFrame {
         resetColor(bouttonAdmin);
     }//GEN-LAST:event_bouttonCommandeMouseMoved
 
+    private void bouttonCommandeMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bouttonCommandeMousePressed
+        // TODO add your handling code here:
+        setColor(bouttonCommande);
+        resetColor(bouttonProduit);
+        resetColor(bouttonEmploye);
+        resetColor(bouttonModerateur);
+        resetColor(bouttonAdmin);
+
+        jTabbedPane.setSelectedIndex(2);
+    }//GEN-LAST:event_bouttonCommandeMousePressed
+
     private void bouttonModerateurMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bouttonModerateurMouseMoved
         // TODO add your handling code here:
         setColor(bouttonModerateur);
@@ -594,58 +595,17 @@ public class BackOffice extends javax.swing.JFrame {
         resetColor(bouttonAdmin);
     }//GEN-LAST:event_bouttonModerateurMouseMoved
 
-    private void bouttonAdminMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bouttonAdminMouseMoved
+    private void bouttonModerateurMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bouttonModerateurMousePressed
         // TODO add your handling code here:
-        setColor(bouttonAdmin);
-        resetColor(bouttonModerateur);
+        setColor(bouttonModerateur);
         resetColor(bouttonCommande);
         resetColor(bouttonProduit);
         resetColor(bouttonEmploye);
-    }//GEN-LAST:event_bouttonAdminMouseMoved
+        resetColor(bouttonAdmin);
 
-    void setColor(JPanel panel) {
-        panel.setBackground(new Color(102, 102, 102));
-    }
+        jTabbedPane.setSelectedIndex(3);
+    }//GEN-LAST:event_bouttonModerateurMousePressed
 
-    void resetColor(JPanel panel) {
-        panel.setBackground(new Color(204, 204, 204));
-    }
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Windows".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(BackOffice.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(BackOffice.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(BackOffice.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(BackOffice.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new BackOffice().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel bouttonAdmin;

@@ -3,10 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ui_GG;
+package ui;
 
 import ClassObjet.Employee;
 import exceptions.CryptoException;
+import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import java.security.NoSuchAlgorithmException;
 import java.util.logging.Level;
@@ -20,10 +21,14 @@ import utils.Crypto;
 public class JFMain extends javax.swing.JFrame {
 
     Employee loggedEmp;
+    
+    JPCustomer jpc;
 
     public JFMain() {
         initComponents();
         firstRun();
+        
+       
 
         loggedEmp = new Employee();
         loggedEmp.setEmpFirstName("Camille");
@@ -103,6 +108,11 @@ public class JFMain extends javax.swing.JFrame {
     private void initjTabbedGeneral() {
         jTabbedPaneGeneral.setVisible(true);
         jTabbedPaneGeneral.setSelectedComponent(jpStatistics);
+         jpc = new JPCustomer();
+        Dimension dim = new Dimension(1003,621);
+        jpc.setSize(dim);
+        jpc.setVisible(true);
+        jpCustomers.add(jpc);
     }
 
     /**
@@ -142,7 +152,7 @@ public class JFMain extends javax.swing.JFrame {
         setTitle("MyLibrary Management Software");
         setResizable(false);
 
-        jLabelLogoLibrary.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pictures/Library-logo.png"))); // NOI18N
+        jLabelLogoLibrary.setIcon(new javax.swing.ImageIcon("C:\\Users\\cdi308\\Documents\\NetBeansProjects\\Librairie\\MyLibrary\\src\\pictures\\Library-logo.png")); // NOI18N
         jLabelLogoLibrary.setText("Libray Logo");
         jDesktopPane2.add(jLabelLogoLibrary);
         jLabelLogoLibrary.setBounds(10, 11, 346, 87);
@@ -335,7 +345,7 @@ public class JFMain extends javax.swing.JFrame {
             }
         });
 
-        jLabelTeamIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pictures/logo_poussin.png"))); // NOI18N
+        jLabelTeamIcon.setIcon(new javax.swing.ImageIcon("C:\\Users\\cdi308\\Documents\\NetBeansProjects\\Librairie\\MyLibrary\\src\\pictures\\logo_poussin.png")); // NOI18N
 
         javax.swing.GroupLayout jPanelCredentialsLayout = new javax.swing.GroupLayout(jPanelCredentials);
         jPanelCredentials.setLayout(jPanelCredentialsLayout);
