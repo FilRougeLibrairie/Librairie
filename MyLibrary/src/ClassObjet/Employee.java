@@ -110,7 +110,17 @@ public class Employee {
 
     @Override
     public String toString() {
-        return "Employee{" + "empId=" + empId + ", empFirstName=" + empFirstName + ", empLastName=" + empLastName + ", empLogin=" + empLogin + ", empPassword=" + empPassword + ", empSalt=" + empSalt + ", empDateStart=" + empDateStart + ", empDateEnd=" + empDateEnd + ", empStatus=" + empStatus + ", empComment=" + empComment + '}';
+        return "***** Employee ID : " + empId + "\n"
+                + "empFirstName=" + empFirstName + "\n"
+                + "empLastName=" + empLastName + "\n"
+                + "empLogin=" + empLogin + "\n"
+                + "empPassword=" + empPassword + "\n"
+                + "empSalt=" + empSalt + "\n"
+                + "empDateStart=" + empDateStart + "\n"
+                + "empDateEnd=" + empDateEnd + "\n"
+                + "empStatus=" + empStatus + "\n"
+                + "empComment=" + empComment + "\n"
+                + "***************";
     }
 
 }

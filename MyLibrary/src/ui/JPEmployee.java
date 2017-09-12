@@ -6,7 +6,7 @@
 package ui;
 
 import ClassObjet.Employee;
-import SQLS.SQLS_EMP_TEST;
+import SQLS.Employee_SQL;
 import java.awt.Color;
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -22,12 +22,12 @@ import javax.swing.JPanel;
 public class JPEmployee extends javax.swing.JPanel {
 
 
-    SQLS.SQLS_EMP_TEST connexion;
+    SQLS.Employee_SQL connexion;
     Vector<Employee> empVect;
     
     public JPEmployee() {
         initComponents();
-        connexion = new SQLS_EMP_TEST();
+        connexion = new Employee_SQL();
         try {
             empVect = connexion.loadDatasFromDB();
             
@@ -74,7 +74,6 @@ public class JPEmployee extends javax.swing.JPanel {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         bouttonAdmin = new javax.swing.JPanel();
-        jLabelAdmin = new javax.swing.JLabel();
         bouttonEmploye = new javax.swing.JPanel();
         jLabelEmploye = new javax.swing.JLabel();
         bouttonProduit = new javax.swing.JPanel();
@@ -82,7 +81,6 @@ public class JPEmployee extends javax.swing.JPanel {
         bouttonCommande = new javax.swing.JPanel();
         jLabelCommande = new javax.swing.JLabel();
         bouttonModerateur = new javax.swing.JPanel();
-        jLabelModerateur = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         jPanel3 = new javax.swing.JPanel();
@@ -90,12 +88,6 @@ public class JPEmployee extends javax.swing.JPanel {
         jTextField1 = new javax.swing.JTextField();
         jTabbedPane = new javax.swing.JTabbedPane();
         jToolBar5 = new javax.swing.JToolBar();
-        jPanel4 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jTextField2 = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
         jToolBar6 = new javax.swing.JToolBar();
         jPanel5 = new javax.swing.JPanel();
         jToolBar7 = new javax.swing.JToolBar();
@@ -105,10 +97,6 @@ public class JPEmployee extends javax.swing.JPanel {
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
-        jToolBar8 = new javax.swing.JToolBar();
-        jPanel7 = new javax.swing.JPanel();
-        jToolBar1 = new javax.swing.JToolBar();
-        jPanel8 = new javax.swing.JPanel();
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -129,25 +117,15 @@ public class JPEmployee extends javax.swing.JPanel {
             }
         });
 
-        jLabelAdmin.setBackground(new java.awt.Color(255, 255, 255));
-        jLabelAdmin.setFont(new java.awt.Font("Arial Black", 1, 14)); // NOI18N
-        jLabelAdmin.setText("Administration");
-
         javax.swing.GroupLayout bouttonAdminLayout = new javax.swing.GroupLayout(bouttonAdmin);
         bouttonAdmin.setLayout(bouttonAdminLayout);
         bouttonAdminLayout.setHorizontalGroup(
             bouttonAdminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(bouttonAdminLayout.createSequentialGroup()
-                .addGap(78, 78, 78)
-                .addComponent(jLabelAdmin)
-                .addContainerGap(56, Short.MAX_VALUE))
+            .addGap(0, 260, Short.MAX_VALUE)
         );
         bouttonAdminLayout.setVerticalGroup(
             bouttonAdminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(bouttonAdminLayout.createSequentialGroup()
-                .addGap(25, 25, 25)
-                .addComponent(jLabelAdmin)
-                .addContainerGap(24, Short.MAX_VALUE))
+            .addGap(0, 70, Short.MAX_VALUE)
         );
 
         jPanel2.add(bouttonAdmin, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 410, 260, 70));
@@ -269,25 +247,15 @@ public class JPEmployee extends javax.swing.JPanel {
             }
         });
 
-        jLabelModerateur.setBackground(new java.awt.Color(255, 255, 255));
-        jLabelModerateur.setFont(new java.awt.Font("Arial Black", 1, 14)); // NOI18N
-        jLabelModerateur.setText("Modérateur");
-
         javax.swing.GroupLayout bouttonModerateurLayout = new javax.swing.GroupLayout(bouttonModerateur);
         bouttonModerateur.setLayout(bouttonModerateurLayout);
         bouttonModerateurLayout.setHorizontalGroup(
             bouttonModerateurLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(bouttonModerateurLayout.createSequentialGroup()
-                .addGap(78, 78, 78)
-                .addComponent(jLabelModerateur)
-                .addContainerGap(87, Short.MAX_VALUE))
+            .addGap(0, 260, Short.MAX_VALUE)
         );
         bouttonModerateurLayout.setVerticalGroup(
             bouttonModerateurLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(bouttonModerateurLayout.createSequentialGroup()
-                .addGap(25, 25, 25)
-                .addComponent(jLabelModerateur)
-                .addContainerGap(24, Short.MAX_VALUE))
+            .addGap(0, 70, Short.MAX_VALUE)
         );
 
         jPanel2.add(bouttonModerateur, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 340, 260, 70));
@@ -332,57 +300,12 @@ public class JPEmployee extends javax.swing.JPanel {
                 .addGap(10, 10, 10))
         );
 
-        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 60, 1030, 70));
+        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 30, 1030, 70));
 
         jTabbedPane.setTabLayoutPolicy(javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT);
         jTabbedPane.setToolTipText("");
 
         jToolBar5.setRollover(true);
-
-        jPanel4.setBackground(new java.awt.Color(255, 255, 255));
-
-        jButton1.setText("Valider");
-
-        jLabel2.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        jLabel2.setText("Identifiant employé");
-
-        jLabel3.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        jLabel3.setText("Mot de passe");
-
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addContainerGap(205, Short.MAX_VALUE)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(31, 31, 31)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(327, 327, 327))
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addGap(145, 145, 145)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(29, 29, 29)
-                .addComponent(jButton1)
-                .addContainerGap(215, Short.MAX_VALUE))
-        );
-
-        jToolBar5.add(jPanel4);
-
         jTabbedPane.addTab("tab1", jToolBar5);
 
         jToolBar6.setRollover(true);
@@ -397,7 +320,7 @@ public class JPEmployee extends javax.swing.JPanel {
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 490, Short.MAX_VALUE)
+            .addGap(0, 485, Short.MAX_VALUE)
         );
 
         jToolBar6.add(jPanel5);
@@ -475,50 +398,12 @@ public class JPEmployee extends javax.swing.JPanel {
                     .addComponent(jButton2)
                     .addComponent(jButton3)
                     .addComponent(jButton4))
-                .addContainerGap(147, Short.MAX_VALUE))
+                .addContainerGap(142, Short.MAX_VALUE))
         );
 
         jToolBar7.add(jPanel6);
 
         jTabbedPane.addTab("tab3", jToolBar7);
-
-        jToolBar8.setRollover(true);
-
-        jPanel7.setBackground(new java.awt.Color(255, 255, 255));
-
-        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
-        jPanel7.setLayout(jPanel7Layout);
-        jPanel7Layout.setHorizontalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 972, Short.MAX_VALUE)
-        );
-        jPanel7Layout.setVerticalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 490, Short.MAX_VALUE)
-        );
-
-        jToolBar8.add(jPanel7);
-
-        jTabbedPane.addTab("tab4", jToolBar8);
-
-        jToolBar1.setRollover(true);
-
-        jPanel8.setBackground(new java.awt.Color(255, 255, 255));
-
-        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
-        jPanel8.setLayout(jPanel8Layout);
-        jPanel8Layout.setHorizontalGroup(
-            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 972, Short.MAX_VALUE)
-        );
-        jPanel8Layout.setVerticalGroup(
-            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 490, Short.MAX_VALUE)
-        );
-
-        jToolBar1.add(jPanel8);
-
-        jTabbedPane.addTab("tab5", jToolBar1);
 
         jPanel1.add(jTabbedPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 100, 990, 520));
 
@@ -645,38 +530,26 @@ public class JPEmployee extends javax.swing.JPanel {
     private javax.swing.JPanel bouttonEmploye;
     private javax.swing.JPanel bouttonModerateur;
     private javax.swing.JPanel bouttonProduit;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabelAdmin;
     private javax.swing.JLabel jLabelCommande;
     private javax.swing.JLabel jLabelEmploye;
-    private javax.swing.JLabel jLabelModerateur;
     private javax.swing.JLabel jLabelProduit;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
-    private javax.swing.JPanel jPanel7;
-    private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTabbedPane jTabbedPane;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JToolBar jToolBar1;
     private javax.swing.JToolBar jToolBar5;
     private javax.swing.JToolBar jToolBar6;
     private javax.swing.JToolBar jToolBar7;
-    private javax.swing.JToolBar jToolBar8;
     // End of variables declaration//GEN-END:variables
 }

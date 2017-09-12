@@ -1,8 +1,6 @@
 package SQLS;
 
 import ClassObjet.Employee;
-import static com.sun.corba.se.impl.util.Utility.printStackTrace;
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -13,11 +11,11 @@ import java.util.Vector;
  *
  * @author ggarvanese
  */
-public class SQLS_EMP_TEST {
+public class Employee_SQL {
 
     ConnexionBase connexion;
 
-    public SQLS_EMP_TEST() {
+    public Employee_SQL() {
 
         connexion = new ConnexionBase();
     }
@@ -29,7 +27,13 @@ public class SQLS_EMP_TEST {
 
         try (Statement stmt = this.connexion.getInstance().createStatement();) {
 
-            String query = "SELECT * FROM Employee ORDER BY empLastName, empFirstName";
+            String query = "SELECT * "
+                    + "FROM Employee emp "
+                    + "JOIN GettingAccess gett "
+                    + "ON emp.empId = gett.empId "
+                    + "JOIN AccessProfile accP "
+                    + "ON gett.accProfilCode = accP.accProfilCode "
+                    + "ORDER BY empLastName, empFirstName";
             ResultSet rs = stmt.executeQuery(query);
 
             while (rs.next()) {
@@ -46,8 +50,7 @@ public class SQLS_EMP_TEST {
                 empList.add(emp);
             }
         } catch (SQLException ex) {
-            System.err.println("Oops! Statement métode loadContacts : " + ex.getErrorCode() + " / " + ex.getMessage());
-            printStackTrace();
+            System.err.println("Statement Error in method loadContacts, class Employee_SQL : " + ex.getErrorCode() + " / " + ex.getMessage());
         }
         return empList;
     }
