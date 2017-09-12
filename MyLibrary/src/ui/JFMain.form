@@ -48,9 +48,6 @@
       <SubComponents>
         <Component class="javax.swing.JLabel" name="jLabelLogoLibrary">
           <Properties>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="2" name="C:\Users\cdi308\Documents\NetBeansProjects\Librairie\MyLibrary\src\pictures\Library-logo.png"/>
-            </Property>
             <Property name="text" type="java.lang.String" value="Libray Logo"/>
           </Properties>
           <Constraints>
@@ -420,11 +417,6 @@
               </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabelTeamIcon">
-              <Properties>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="2" name="C:\Users\cdi308\Documents\NetBeansProjects\Librairie\MyLibrary\src\pictures\logo_poussin.png"/>
-                </Property>
-              </Properties>
             </Component>
           </SubComponents>
         </Container>

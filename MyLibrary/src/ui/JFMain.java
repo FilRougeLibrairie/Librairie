@@ -22,7 +22,7 @@ public class JFMain extends javax.swing.JFrame {
 
     Employee loggedEmp;
 
-    JPCustomer jpc;
+    JPCustomerTest jpc;
 
     public JFMain() {
         initComponents();
@@ -112,7 +112,7 @@ public class JFMain extends javax.swing.JFrame {
     private void initjTabbedGeneral() {
         jTabbedPaneGeneral.setVisible(true);
         jTabbedPaneGeneral.setSelectedComponent(jpStatistics);
-        jpc = new JPCustomer();
+        jpc = new JPCustomerTest();
         Dimension dim = new Dimension(1003, 621);
         jpc.setSize(dim);
         jpc.setVisible(true);
