@@ -19,6 +19,7 @@ public class Employee {
     private String empSalt;
     private String empDateStart;
     private String empDateEnd;
+    private AccessProfile accProfileCode;
     private int empStatus;
     private String empComment;
 
@@ -47,10 +48,6 @@ public class Employee {
         this.empPassword = empPassword;
     }
 
-    public String getEmpSalt() {
-        return empSalt;
-    }
-
     public void setEmpSalt(String empSalt) {
         this.empSalt = empSalt;
     }
@@ -65,6 +62,14 @@ public class Employee {
 
     public void setEmpStatus(int empStatus) {
         this.empStatus = empStatus;
+    }
+
+    public void setAccProfileCode(AccessProfile accProfileCode) {
+        this.accProfileCode = accProfileCode;
+    }
+
+    public void setEmpComment(String empComment) {
+        this.empComment = empComment;
     }
 
     //Getters
@@ -88,6 +93,10 @@ public class Employee {
         return empPassword;
     }
 
+    public String getEmpSalt() {
+        return empSalt;
+    }
+
     public String getEmpDateStart() {
         return empDateStart;
     }
@@ -100,17 +109,28 @@ public class Employee {
         return empStatus;
     }
 
+    public AccessProfile getAccProfileCode() {
+        return accProfileCode;
+    }
+
     public String getEmpComment() {
         return empComment;
     }
 
-    public void setEmpComment(String empComment) {
-        this.empComment = empComment;
-    }
-
     @Override
     public String toString() {
-        return "Employee{" + "empId=" + empId + ", empFirstName=" + empFirstName + ", empLastName=" + empLastName + ", empLogin=" + empLogin + ", empPassword=" + empPassword + ", empSalt=" + empSalt + ", empDateStart=" + empDateStart + ", empDateEnd=" + empDateEnd + ", empStatus=" + empStatus + ", empComment=" + empComment + '}';
+        return "***** Employee ID : " + empId + "\n"
+                + "empFirstName=" + empFirstName + "\n"
+                + "empLastName=" + empLastName + "\n"
+                + "empLogin=" + empLogin + "\n"
+                + "empPassword=" + empPassword + "\n"
+                + "empSalt=" + empSalt + "\n"
+                + "empDateStart=" + empDateStart + "\n"
+                + "empDateEnd=" + empDateEnd + "\n"
+                + "empStatus=" + empStatus + "\n"
+                + "empProfileCode=" + accProfileCode.getAccProfileCode() + "\n"
+                + "empComment=" + empComment + "\n"
+                + "***************";
     }
 
 }

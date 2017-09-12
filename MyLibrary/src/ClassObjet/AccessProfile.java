@@ -19,7 +19,7 @@ public class AccessProfile {
     }
 
     //Setters
-    public void setAccProfilCode(int accProfilCode) {
+    public void setAccProfileCode(int accProfilCode) {
         this.accProfilCode = accProfilCode;
     }
 
@@ -28,12 +28,19 @@ public class AccessProfile {
     }
 
     //Getters
-    public int getAccProfilCode() {
+    public int getAccProfileCode() {
         return accProfilCode;
     }
 
     public String getAccProfileName() {
         return accProfileName;
     }
+
+    @Override
+    public String toString() {
+        return "Access Profile Code : " + accProfilCode + " / Access Profile Name : " + accProfileName;
+    }
+    
+    
 
 }
