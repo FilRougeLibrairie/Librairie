@@ -12,10 +12,10 @@ package ClassObjet;
 public class Purchase {
 
     private int purId;
-    private int cusId;
-    private int shippingCostId;
-    private int addDeliveryId;
-    private int addInvoiceId;
+    private Customer cusId;
+    private ShippingCost shippingCostId;
+    private Address addDeliveryId;
+    private Address addInvoiceId;
     private String purIP;
     private String shippingDate;
     private int shippingNumber;
@@ -29,19 +29,19 @@ public class Purchase {
         this.purId = purId;
     }
 
-    public void setCusId(int cusId) {
+    public void setCusId(Customer cusId) {
         this.cusId = cusId;
     }
 
-    public void setShippingCostId(int shippingCostId) {
+    public void setShippingCostId(ShippingCost shippingCostId) {
         this.shippingCostId = shippingCostId;
     }
 
-    public void setAddDeliveryId(int addDeliveryId) {
+    public void setAddDeliveryId(Address addDeliveryId) {
         this.addDeliveryId = addDeliveryId;
     }
 
-    public void setAddInvoiceId(int addInvoiceId) {
+    public void setAddInvoiceId(Address addInvoiceId) {
         this.addInvoiceId = addInvoiceId;
     }
 
@@ -62,19 +62,19 @@ public class Purchase {
         return purId;
     }
 
-    public int getCusId() {
+    public Customer getCusId() {
         return cusId;
     }
 
-    public int getShippingCostId() {
+    public ShippingCost getShippingCostId() {
         return shippingCostId;
     }
 
-    public int getAddDeliveryId() {
+    public Address getAddDeliveryId() {
         return addDeliveryId;
     }
 
-    public int getAddInvoiceId() {
+    public Address getAddInvoiceId() {
         return addInvoiceId;
     }
 

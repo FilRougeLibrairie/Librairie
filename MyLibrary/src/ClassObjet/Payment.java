@@ -12,7 +12,7 @@ package ClassObjet;
 public class Payment {
 
     private int payId;
-    private int purId;
+    private Purchase purId;
     private int payValidate;
     private String payChoice;
     private String payDate;
@@ -26,7 +26,7 @@ public class Payment {
         this.payId = payId;
     }
 
-    public void setPurId(int purId) {
+    public void setPurId(Purchase purId) {
         this.purId = purId;
     }
 
@@ -47,7 +47,7 @@ public class Payment {
         return payId;
     }
 
-    public int getPurId() {
+    public Purchase getPurId() {
         return purId;
     }
 

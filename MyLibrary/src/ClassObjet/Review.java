@@ -12,9 +12,9 @@ package ClassObjet;
 public class Review {
 
     private int revId;
-    private int cusId;
+    private Customer cusId;
     private String booIsbn13;
-    private int ordLineId;
+    private OrderLine ordLineId;
     private Float revNote;
     private String revComment;
     private String revDate;
@@ -29,7 +29,7 @@ public class Review {
         this.revId = revId;
     }
 
-    public void setCusId(int cusId) {
+    public void setCusId(Customer cusId) {
         this.cusId = cusId;
     }
 
@@ -37,7 +37,7 @@ public class Review {
         this.booIsbn13 = booIsbn13;
     }
 
-    public void setOrdLineId(int ordLineId) {
+    public void setOrdLineId(OrderLine ordLineId) {
         this.ordLineId = ordLineId;
     }
 
@@ -62,7 +62,7 @@ public class Review {
         return revId;
     }
 
-    public int getCusId() {
+    public Customer getCusId() {
         return cusId;
     }
 
@@ -70,7 +70,7 @@ public class Review {
         return booIsbn13;
     }
 
-    public int getOrdLineId() {
+    public OrderLine getOrdLineId() {
         return ordLineId;
     }
 

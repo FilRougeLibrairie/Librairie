@@ -12,9 +12,8 @@ package ClassObjet;
 public class Address {
 
     private int addId;
-    private int cusResidId;
-    private int cusChargerId;
-    private int myLibraryId;
+    private Customer cusResidId;
+    private Customer cusChargerId;
     private String addLabel;
     private String addFirstName;
     private String addLastName;
@@ -37,16 +36,12 @@ public class Address {
         this.addId = addId;
     }
 
-    public void setCusResidId(int cusResidId) {
+    public void setCusResidId(Customer cusResidId) {
         this.cusResidId = cusResidId;
     }
 
-    public void setCusChargerId(int cusChargerId) {
+    public void setCusChargerId(Customer cusChargerId) {
         this.cusChargerId = cusChargerId;
-    }
-
-    public void setMyLibraryId(int myLibraryId) {
-        this.myLibraryId = myLibraryId;
     }
 
     public void setAddLabel(String addLabel) {
@@ -102,16 +97,12 @@ public class Address {
         return addId;
     }
 
-    public int getCusResidId() {
+    public Customer getCusResidId() {
         return cusResidId;
     }
 
-    public int getCusChargerId() {
+    public Customer getCusChargerId() {
         return cusChargerId;
-    }
-
-    public int getMyLibraryId() {
-        return myLibraryId;
     }
 
     public String getAddLabel() {

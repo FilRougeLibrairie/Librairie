@@ -12,7 +12,7 @@ package ClassObjet;
 public class ShippingCost {
 
     private int shipId;
-    private int shipperId;
+    private Shipper shipperId;
     private String shipName;
     private Float shipCost;
 
@@ -25,7 +25,7 @@ public class ShippingCost {
         this.shipId = shipId;
     }
 
-    public void setShipperId(int shipperId) {
+    public void setShipperId(Shipper shipperId) {
         this.shipperId = shipperId;
     }
 
@@ -42,7 +42,7 @@ public class ShippingCost {
         return shipId;
     }
 
-    public int getShipperId() {
+    public Shipper getShipperId() {
         return shipperId;
     }
 

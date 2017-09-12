@@ -12,8 +12,8 @@ package ClassObjet;
 public class OrderLine {
 
     private int ordLineId;
-    private int purId;
-    private String booIsbn13;
+    private Purchase purId;
+    private Book booIsbn13;
     private int ordLineQuantity;
     private int ordBookPriceHT;
     private Float ordBookVAT;
@@ -27,11 +27,11 @@ public class OrderLine {
         this.ordLineId = ordLineId;
     }
 
-    public void setPurId(int purId) {
+    public void setPurId(Purchase purId) {
         this.purId = purId;
     }
 
-    public void setBooIsbn13(String booIsbn13) {
+    public void setBooIsbn13(Book booIsbn13) {
         this.booIsbn13 = booIsbn13;
     }
 
@@ -52,11 +52,11 @@ public class OrderLine {
         return ordLineId;
     }
 
-    public int getPurId() {
+    public Purchase getPurId() {
         return purId;
     }
 
-    public String getBooIsbn13() {
+    public Book getBooIsbn13() {
         return booIsbn13;
     }
 

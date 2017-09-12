@@ -12,7 +12,7 @@ public class ConnexionBase {
     String mdp = "sa";
     private static Connection connect;
 
-    public ConnexionBase() {
+    private ConnexionBase() {
         
         try {
             connect = DriverManager.getConnection(url, user, mdp);
@@ -21,9 +21,6 @@ public class ConnexionBase {
             ex.printStackTrace();
         }
     }
-
-    
-    //Methode qui retourne la connection quand nulle
     
     public static Connection getInstance(){
         if(connect==null){
@@ -31,7 +28,4 @@ public class ConnexionBase {
         }
         return connect;
     }
-    
-    
-    
 }

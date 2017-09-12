@@ -13,8 +13,8 @@ public class Book {
 
     // creation des variables
     private String booIsbn13;
-    private int vatCode;
-    private String ediName;
+    private Vat vatCode;
+    private Editor ediId;
     private String booTitle;
     private String booSubtitle;
     private String booPublishYear;
@@ -24,7 +24,7 @@ public class Book {
     private int booStatus;
     private String booFrontCover;
     private int booPageNumber;
-    private String booLangCode;
+    private BookLanguage booLangCode;
     
     //constructor
 
@@ -37,12 +37,12 @@ public class Book {
         this.booIsbn13 = booIsbn13;
     }
 
-    public void setVatCode(int vatCode) {
+    public void setVatCode(Vat vatCode) {
         this.vatCode = vatCode;
     }
 
-    public void setEdiName(String ediName) {
-        this.ediName = ediName;
+    public void setEdiD(Editor ediID) {
+        this.ediId = ediID;
     }
 
     public void setBooTitle(String booTitle) {
@@ -81,7 +81,7 @@ public class Book {
         this.booPageNumber = booPageNumber;
     }
 
-    public void setBooLangCode(String booLangCode) {
+    public void setBooLangCode(BookLanguage booLangCode) {
         this.booLangCode = booLangCode;
     }
     
@@ -92,12 +92,12 @@ public class Book {
         return booIsbn13;
     }
 
-    public int getVatCode() {
+    public Vat getVatCode() {
         return vatCode;
     }
 
-    public String getEdiName() {
-        return ediName;
+    public Editor getEdiName() {
+        return ediId;
     }
 
     public String getBooTitle() {
@@ -136,7 +136,7 @@ public class Book {
         return booPageNumber;
     }
 
-    public String getBooLangCode() {
+    public BookLanguage getBooLangCode() {
         return booLangCode;
     }
     

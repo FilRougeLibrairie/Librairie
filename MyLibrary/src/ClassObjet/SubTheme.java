@@ -12,7 +12,7 @@ package ClassObjet;
 public class SubTheme {
 
     private int subId;
-    private int theId;
+    private Theme theId;
     private String subName;
     private String subDescription;
 
@@ -25,7 +25,7 @@ public class SubTheme {
         this.subId = subId;
     }
 
-    public void setTheId(int theId) {
+    public void setTheId(Theme theId) {
         this.theId = theId;
     }
 
@@ -42,7 +42,7 @@ public class SubTheme {
         return subId;
     }
 
-    public int getTheId() {
+    public Theme getTheId() {
         return theId;
     }
 
