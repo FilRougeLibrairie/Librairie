@@ -5,7 +5,9 @@
  */
 package ui;
 
+import ClassObjet.AccessProfile;
 import ClassObjet.Employee;
+import SQLS.AccessProfile_SQL;
 import SQLS.Employee_SQL;
 import java.awt.Color;
 import java.sql.SQLException;
@@ -24,15 +26,27 @@ public class JPEmployee extends javax.swing.JPanel {
 
     SQLS.Employee_SQL connexion;
     Vector<Employee> empVect;
+    Vector<AccessProfile> accessList;
     
     public JPEmployee() {
         initComponents();
         connexion = new Employee_SQL();
         try {
             empVect = connexion.loadDatasFromDB();
+            accessList = connexion.loadDatasFromDB();
             
             for(Employee emp : empVect){
-                System.out.println(emp.toString());
+                
+               AccessProfile_SQL accessQuery = new AccessProfile_SQL();
+               Vector accessName = accessQuery.findNameInTable(emp.getAccProfileCode());
+              
+                for (int i = 0; i < accessName.size(); i++) {
+                    emp.getAccProfileCode().getAccProfileName();
+                }
+              System.out.println(emp.toString());
+              System.out.println(emp.getAccProfileCode().getAccProfileName());
+
+               
             }
             
         } catch (SQLException ex) {

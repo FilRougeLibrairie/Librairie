@@ -1,5 +1,6 @@
 package SQLS;
 
+import ClassObjet.AccessProfile;
 import ClassObjet.Employee;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,6 +12,8 @@ import java.util.Vector;
  *
  * @author ggarvanese
  */
+
+
 public class Employee_SQL {
 
     ConnexionBase connexion;
@@ -23,16 +26,16 @@ public class Employee_SQL {
     public Vector loadDatasFromDB() throws SQLException, ParseException {
 
         Vector<Employee> empList = new Vector<Employee>();
+        
         Employee emp = null;
+        AccessProfile accessProfile = null;
 
         try (Statement stmt = this.connexion.getInstance().createStatement();) {
 
             String query = "SELECT * "
                     + "FROM Employee emp "
-                    + "JOIN GettingAccess gett "
-                    + "ON emp.empId = gett.empId "
                     + "JOIN AccessProfile accP "
-                    + "ON gett.accProfilCode = accP.accProfilCode "
+                    + "ON emp.accProfileCode = accP.accProfileCode "
                     + "ORDER BY empLastName, empFirstName";
             ResultSet rs = stmt.executeQuery(query);
 
@@ -46,6 +49,11 @@ public class Employee_SQL {
                 emp.setEmpLogin(rs.getString("empLogin"));
                 emp.setEmpPassword(rs.getString("empPassword"));
                 emp.setEmpSalt("empSalt");
+                
+                accessProfile = new AccessProfile();
+                accessProfile.setAccProfileCode(rs.getInt("accProfileCode"));
+                emp.setAccProfileCode(accessProfile);
+                //access.setAccProfileCode(rs.getInt("accProfileName"));
                 
                 empList.add(emp);
             }
