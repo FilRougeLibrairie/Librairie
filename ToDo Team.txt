@@ -1,0 +1,25 @@
+Thème : Nimbus, font : 12pts sans-serif / fond blanc
+
+WILL 
+- Design Jframe Customer 
+
+TODO : reuqêtes JAVA
+
+Chrystelle :
+- JFMain en cours
+
+TODO : JFBook -> design + requêtes
+
+Christophe :
+Requêtes à foison 
+- Clients : requêtes simples
+- Commandes 
+- Commandes passées
+- Requêtes comparatives entre book et purchase (tva, prix)
+- Requête sur toutes les commandes par client
+
+TODO : requêtes plus poussées
+
+Guillaume
+- Connexion SQL
+- ToDo : Transformation des FK en objet
