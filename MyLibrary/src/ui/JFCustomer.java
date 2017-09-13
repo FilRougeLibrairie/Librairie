@@ -5,7 +5,8 @@
  */
 package ui;
 
-import javax.swing.JFrame;
+import ClassObjet.Customer;
+import java.util.Vector;
 
 /**
  *
@@ -893,9 +894,11 @@ public class JFCustomer extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
    
     private void btnSearchMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSearchMouseReleased
-        String search    
+        String criteria = comboSearch.getSelectedItem().toString();
+        String term = tfSearch.getText();
+
+        Vector<Customer> customerList = new Vector<Customer>();
         
-        System.out.println("coucou");
     }//GEN-LAST:event_btnSearchMouseReleased
 
     /**
