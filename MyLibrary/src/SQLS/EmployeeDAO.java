@@ -3,6 +3,7 @@ package SQLS;
 import ClassObjet.Employee;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Vector;
 
 /**
  *
@@ -50,7 +51,7 @@ public class EmployeeDAO extends DAO<Employee> {
         return false;
     }
 
-    @Override
+   
     public Employee find(int id) {
         Employee employee = new Employee();
         try {
@@ -68,5 +69,20 @@ public class EmployeeDAO extends DAO<Employee> {
             e.printStackTrace();
         }
         return employee;
+    }
+
+    @Override
+    public Vector<Employee> findAll() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Employee findById(int id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Employee findByName(String name) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

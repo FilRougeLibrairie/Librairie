@@ -21,7 +21,7 @@ public class AccessProfile_SQL {
      AccessProfile accessProfile;
 
     public AccessProfile_SQL() {
-        connexion = new ConnexionBase();
+
     }
     
      public Vector findAllInTable() throws SQLException, ParseException {

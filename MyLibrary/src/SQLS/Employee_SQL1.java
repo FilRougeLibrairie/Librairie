@@ -22,7 +22,6 @@ public class Employee_SQL1 {
 
     public Employee_SQL1() {
 
-        connexion = new ConnexionBase();
     }
 
     public Vector loadDatasFromDB() throws SQLException, ParseException {
