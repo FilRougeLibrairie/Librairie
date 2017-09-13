@@ -36,12 +36,12 @@ public class CustomerDAO extends DAO {
             PASSWORD + ", " + SALT + ", " + IP + ", " + STATUS + ", " + COMMENT;
 
     public CustomerDAO(ConnexionBase conn) {
-        super(conn);
+        super();
     }
 
     @Override
     public boolean create(Object obj) {
-        return false;
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
@@ -54,20 +54,27 @@ public class CustomerDAO extends DAO {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    @Override
-    public Vector findAll() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+//    @Override
+//    public Vector findAll() {
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+//    }
 
     @Override
     public Object findById(int id) {
-        return null;
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public Object findByName(String name) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    @Override
+    public Vector findAll(String tableName) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    
 
     
     public Vector<Customer> findByCriteria(String criteria, String term) {
@@ -80,7 +87,7 @@ public class CustomerDAO extends DAO {
                 .append(" = ")
                 .append(term);
 
-        try (PreparedStatement pstmt = this.connect.getInstance().prepareStatement(query.toString())) {
+        try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
 
             ResultSet rs = pstmt.executeQuery();
 

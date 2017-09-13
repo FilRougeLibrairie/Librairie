@@ -1,13 +1,14 @@
 package SQLS;
 
+import java.sql.Connection;
 import java.util.Vector;
 
 public abstract class DAO<T> {
 
-    protected ConnexionBase connect = null;
+    protected Connection connect = null;
 
-    public DAO(ConnexionBase conn) {
-        this.connect = conn;
+    public DAO() {
+        connect =  ConnexionBase.getInstance();  
     }
 
     public abstract boolean create(T obj);
@@ -21,5 +22,6 @@ public abstract class DAO<T> {
     public abstract T findById(int id);
 
     public abstract T findByName(String name);
+    
 
 }

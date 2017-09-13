@@ -6,6 +6,9 @@
 package ui;
 
 import ClassObjet.Customer;
+import SQLS.ConnexionBase;
+import SQLS.CustomerDAO;
+import SQLS.DAO;
 import java.util.Vector;
 
 /**
@@ -899,8 +902,12 @@ public class JFCustomer extends javax.swing.JFrame {
         String term = tfSearch.getText();
 
         Vector<Customer> customerList = new Vector<Customer>();
-
         
+        DAO<CustomerDAO> customerDAO = new CustomerDAO();
+        customerList = ((CustomerDAO)customerDAO).findByCriteria(criteria, term);
+        for(Customer cus : customerList){
+            System.out.println(cus.toString());
+        }
     }//GEN-LAST:event_btnSearchMouseReleased
 
     /**
