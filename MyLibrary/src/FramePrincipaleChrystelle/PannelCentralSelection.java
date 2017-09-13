@@ -7,7 +7,6 @@ package FramePrincipaleChrystelle;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import javax.swing.JPanel;
 
 /**
@@ -19,15 +18,8 @@ public class PannelCentralSelection extends javax.swing.JPanel {
     /**
      * Creates new form Panel2
      */
-    
     public PannelCentralSelection() {
         initComponents();
-
-       
-        
-        
-            
-        
 
     }
 
@@ -70,7 +62,7 @@ public class PannelCentralSelection extends javax.swing.JPanel {
         jPanel21 = new javax.swing.JPanel();
         bAccess = new javax.swing.JLabel();
         jPanel22 = new javax.swing.JPanel();
-        jPanel23 = new javax.swing.JPanel();
+        bModerate = new javax.swing.JLabel();
         jTabbedPaneGeneral = new javax.swing.JTabbedPane();
         jpPurchase = new javax.swing.JPanel();
         jpAdmin = new javax.swing.JPanel();
@@ -586,6 +578,9 @@ public class PannelCentralSelection extends javax.swing.JPanel {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 bAddEmployeeMouseClicked(evt);
             }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                bAddEmployeeMouseReleased(evt);
+            }
         });
 
         javax.swing.GroupLayout jPanel19Layout = new javax.swing.GroupLayout(jPanel19);
@@ -670,33 +665,29 @@ public class PannelCentralSelection extends javax.swing.JPanel {
             }
         });
 
+        bModerate.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        bModerate.setText("Modération");
+        bModerate.setAlignmentX(0.5F);
+        bModerate.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                bModerateMouseMoved(evt);
+            }
+        });
+        bModerate.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                bModerateMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel22Layout = new javax.swing.GroupLayout(jPanel22);
         jPanel22.setLayout(jPanel22Layout);
         jPanel22Layout.setHorizontalGroup(
             jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 150, Short.MAX_VALUE)
+            .addComponent(bModerate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel22Layout.setVerticalGroup(
             jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 40, Short.MAX_VALUE)
-        );
-
-        jPanel23.setMinimumSize(new java.awt.Dimension(80, 40));
-        jPanel23.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
-            public void mouseMoved(java.awt.event.MouseEvent evt) {
-                jPanel23MouseMoved(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel23Layout = new javax.swing.GroupLayout(jPanel23);
-        jPanel23.setLayout(jPanel23Layout);
-        jPanel23Layout.setHorizontalGroup(
-            jPanel23Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 150, Short.MAX_VALUE)
-        );
-        jPanel23Layout.setVerticalGroup(
-            jPanel23Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 40, Short.MAX_VALUE)
+            .addComponent(bModerate, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout menuAdminLayout = new javax.swing.GroupLayout(menuAdmin);
@@ -706,7 +697,6 @@ public class PannelCentralSelection extends javax.swing.JPanel {
             .addComponent(jPanel19, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
             .addComponent(jPanel20, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jPanel21, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel23, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jPanel22, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         menuAdminLayout.setVerticalGroup(
@@ -720,9 +710,7 @@ public class PannelCentralSelection extends javax.swing.JPanel {
                 .addComponent(jPanel21, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel22, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel23, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(435, Short.MAX_VALUE))
+                .addContainerGap(481, Short.MAX_VALUE))
         );
 
         jpMenu.add(menuAdmin);
@@ -760,28 +748,35 @@ public class PannelCentralSelection extends javax.swing.JPanel {
 
     private void jTabbedPaneGeneralMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTabbedPaneGeneralMouseClicked
 
-           System.out.println(jTabbedPaneGeneral.getSelectedIndex());
-       
-        if(jTabbedPaneGeneral.getSelectedIndex()==0){
+        System.out.println(jTabbedPaneGeneral.getSelectedIndex());
+
+        if (jTabbedPaneGeneral.getSelectedIndex() == 0) {
             menuProduct.setVisible(false);
             menuPurchase.setVisible(true);
             menuAdmin.setVisible(false);
-            
-         //   menuStatistics.setVisible(false);
+
+            //   menuStatistics.setVisible(false);
         }
-        
-        if(jTabbedPaneGeneral.getSelectedIndex()==3){
+
+        if (jTabbedPaneGeneral.getSelectedIndex() == 3) {
             menuPurchase.setVisible(false);
             menuProduct.setVisible(true);
             menuAdmin.setVisible(false);
-         //   menuStatistics.setVisible(false);
+            //   menuStatistics.setVisible(false);
         }
-        
-        if(jTabbedPaneGeneral.getSelectedIndex()==1){
+
+        if (jTabbedPaneGeneral.getSelectedIndex() == 1) {
             menuPurchase.setVisible(false);
             menuProduct.setVisible(false);
             menuAdmin.setVisible(true);
-         //   menuStatistics.setVisible(false);
+            //   menuStatistics.setVisible(false);
+        }
+
+        if (jTabbedPaneGeneral.getSelectedIndex() == 2) {
+            menuPurchase.setVisible(false);
+            menuProduct.setVisible(false);
+            menuAdmin.setVisible(false);
+            //   menuStatistics.setVisible(false);
         }
 
     }//GEN-LAST:event_jTabbedPaneGeneralMouseClicked
@@ -807,7 +802,7 @@ public class PannelCentralSelection extends javax.swing.JPanel {
 
     private void jPanel9MouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel9MouseMoved
 
-         resetColor(jPanel7);
+        resetColor(jPanel7);
         resetColor(jPanel8);
         setColor(jPanel9);
         resetColor(jPanel10);
@@ -847,11 +842,11 @@ public class PannelCentralSelection extends javax.swing.JPanel {
 
     private void jPanel7MouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel7MouseMoved
 
-         setColor(jPanel7);
+        setColor(jPanel7);
         resetColor(jPanel8);
         resetColor(jPanel9);
         resetColor(jPanel10);
-       
+
     }//GEN-LAST:event_jPanel7MouseMoved
 
     private void bPurchaseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bPurchaseMouseClicked
@@ -867,83 +862,83 @@ public class PannelCentralSelection extends javax.swing.JPanel {
     }//GEN-LAST:event_bPurchaseMouseMoved
 
     private void bPurchaseMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bPurchaseMouseDragged
-        
-      
+
+
     }//GEN-LAST:event_bPurchaseMouseDragged
 
     private void bBookMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bBookMouseDragged
-          setColor(jPanel11);
+        setColor(jPanel11);
         resetColor(jPanel12);
         resetColor(jPanel13);
         resetColor(jPanel14);
-       resetColor(jPanel15);
-       resetColor(jPanel16);
-       resetColor(jPanel17);
-       resetColor(jPanel18);
+        resetColor(jPanel15);
+        resetColor(jPanel16);
+        resetColor(jPanel17);
+        resetColor(jPanel18);
     }//GEN-LAST:event_bBookMouseDragged
 
     private void bBookMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bBookMouseMoved
-           setColor(jPanel11);
+        setColor(jPanel11);
         resetColor(jPanel12);
         resetColor(jPanel13);
         resetColor(jPanel14);
-       resetColor(jPanel15);
-       resetColor(jPanel16);
-       resetColor(jPanel17);
-       resetColor(jPanel18);
+        resetColor(jPanel15);
+        resetColor(jPanel16);
+        resetColor(jPanel17);
+        resetColor(jPanel18);
     }//GEN-LAST:event_bBookMouseMoved
 
     private void bBookMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bBookMouseClicked
-       
-       
+
+
     }//GEN-LAST:event_bBookMouseClicked
 
     private void jPanel11MouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel11MouseMoved
-           setColor(jPanel11);
+        setColor(jPanel11);
         resetColor(jPanel12);
         resetColor(jPanel13);
         resetColor(jPanel14);
-       resetColor(jPanel15);
-       resetColor(jPanel16);
-       resetColor(jPanel17);
-       resetColor(jPanel18);
+        resetColor(jPanel15);
+        resetColor(jPanel16);
+        resetColor(jPanel17);
+        resetColor(jPanel18);
     }//GEN-LAST:event_jPanel11MouseMoved
 
     private void bEditorMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bEditorMouseMoved
-           resetColor(jPanel11);
+        resetColor(jPanel11);
         setColor(jPanel12);
         resetColor(jPanel13);
         resetColor(jPanel14);
-       resetColor(jPanel15);
-       resetColor(jPanel16);
-       resetColor(jPanel17);
-       resetColor(jPanel18);
+        resetColor(jPanel15);
+        resetColor(jPanel16);
+        resetColor(jPanel17);
+        resetColor(jPanel18);
     }//GEN-LAST:event_bEditorMouseMoved
 
     private void bEditorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bEditorMouseClicked
-          
+
     }//GEN-LAST:event_bEditorMouseClicked
 
     private void jPanel12MouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel12MouseMoved
-           resetColor(jPanel11);
+        resetColor(jPanel11);
         setColor(jPanel12);
         resetColor(jPanel13);
         resetColor(jPanel14);
-       resetColor(jPanel15);
-       resetColor(jPanel16);
-       resetColor(jPanel17);
-       resetColor(jPanel18);
+        resetColor(jPanel15);
+        resetColor(jPanel16);
+        resetColor(jPanel17);
+        resetColor(jPanel18);
     }//GEN-LAST:event_jPanel12MouseMoved
 
     private void bAutorMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bAutorMouseMoved
-          resetColor(jPanel11);
+        resetColor(jPanel11);
         resetColor(jPanel12);
         setColor(jPanel13);
         resetColor(jPanel14);
-       resetColor(jPanel15);
-       resetColor(jPanel16);
-       resetColor(jPanel17);
-       resetColor(jPanel18);
+        resetColor(jPanel15);
+        resetColor(jPanel16);
+        resetColor(jPanel17);
+        resetColor(jPanel18);
     }//GEN-LAST:event_bAutorMouseMoved
 
     private void bAutorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bAutorMouseClicked
@@ -951,47 +946,47 @@ public class PannelCentralSelection extends javax.swing.JPanel {
     }//GEN-LAST:event_bAutorMouseClicked
 
     private void jPanel13MouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel13MouseMoved
-          resetColor(jPanel11);
+        resetColor(jPanel11);
         resetColor(jPanel12);
         setColor(jPanel13);
         resetColor(jPanel14);
-       resetColor(jPanel15);
-       resetColor(jPanel16);
-       resetColor(jPanel17);
-       resetColor(jPanel18);
+        resetColor(jPanel15);
+        resetColor(jPanel16);
+        resetColor(jPanel17);
+        resetColor(jPanel18);
     }//GEN-LAST:event_jPanel13MouseMoved
 
     private void jPanel16MouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel16MouseMoved
-          resetColor(jPanel11);
+        resetColor(jPanel11);
         resetColor(jPanel12);
         resetColor(jPanel13);
         resetColor(jPanel14);
-       resetColor(jPanel15);
-       setColor(jPanel16);
-       resetColor(jPanel17);
-       resetColor(jPanel18);
+        resetColor(jPanel15);
+        setColor(jPanel16);
+        resetColor(jPanel17);
+        resetColor(jPanel18);
     }//GEN-LAST:event_jPanel16MouseMoved
 
     private void jPanel14MouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel14MouseMoved
-          resetColor(jPanel11);
+        resetColor(jPanel11);
         resetColor(jPanel12);
         resetColor(jPanel13);
         setColor(jPanel14);
-       resetColor(jPanel15);
-       resetColor(jPanel16);
-       resetColor(jPanel17);
-       resetColor(jPanel18);
+        resetColor(jPanel15);
+        resetColor(jPanel16);
+        resetColor(jPanel17);
+        resetColor(jPanel18);
     }//GEN-LAST:event_jPanel14MouseMoved
 
     private void jPanel15MouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel15MouseMoved
-       resetColor(jPanel11);
+        resetColor(jPanel11);
         resetColor(jPanel12);
         resetColor(jPanel13);
         resetColor(jPanel14);
-       setColor(jPanel15);
-       resetColor(jPanel16);
-       resetColor(jPanel17);
-       resetColor(jPanel18);
+        setColor(jPanel15);
+        resetColor(jPanel16);
+        resetColor(jPanel17);
+        resetColor(jPanel18);
     }//GEN-LAST:event_jPanel15MouseMoved
 
     private void bPriceMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bPriceMouseMoved
@@ -999,10 +994,10 @@ public class PannelCentralSelection extends javax.swing.JPanel {
         resetColor(jPanel12);
         resetColor(jPanel13);
         setColor(jPanel14);
-       resetColor(jPanel15);
-       resetColor(jPanel16);
-       resetColor(jPanel17);
-       resetColor(jPanel18);
+        resetColor(jPanel15);
+        resetColor(jPanel16);
+        resetColor(jPanel17);
+        resetColor(jPanel18);
     }//GEN-LAST:event_bPriceMouseMoved
 
     private void bPriceMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bPriceMouseClicked
@@ -1010,14 +1005,14 @@ public class PannelCentralSelection extends javax.swing.JPanel {
     }//GEN-LAST:event_bPriceMouseClicked
 
     private void bKeyWordMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bKeyWordMouseMoved
-       resetColor(jPanel11);
+        resetColor(jPanel11);
         resetColor(jPanel12);
         resetColor(jPanel13);
         resetColor(jPanel14);
-       setColor(jPanel15);
-       resetColor(jPanel16);
-       resetColor(jPanel17);
-       resetColor(jPanel18);
+        setColor(jPanel15);
+        resetColor(jPanel16);
+        resetColor(jPanel17);
+        resetColor(jPanel18);
     }//GEN-LAST:event_bKeyWordMouseMoved
 
     private void bKeyWordMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bKeyWordMouseClicked
@@ -1025,51 +1020,51 @@ public class PannelCentralSelection extends javax.swing.JPanel {
     }//GEN-LAST:event_bKeyWordMouseClicked
 
     private void jPanel18MouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel18MouseMoved
-       resetColor(jPanel11);
+        resetColor(jPanel11);
         resetColor(jPanel12);
         resetColor(jPanel13);
         resetColor(jPanel14);
-       resetColor(jPanel15);
-       resetColor(jPanel16);
-       resetColor(jPanel17);
-       setColor(jPanel18);
+        resetColor(jPanel15);
+        resetColor(jPanel16);
+        resetColor(jPanel17);
+        setColor(jPanel18);
     }//GEN-LAST:event_jPanel18MouseMoved
 
     private void jPanel17MouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel17MouseMoved
-       resetColor(jPanel11);
+        resetColor(jPanel11);
         resetColor(jPanel12);
         resetColor(jPanel13);
         resetColor(jPanel14);
-       resetColor(jPanel15);
-       resetColor(jPanel16);
-       setColor(jPanel17);
-       resetColor(jPanel18);
+        resetColor(jPanel15);
+        resetColor(jPanel16);
+        setColor(jPanel17);
+        resetColor(jPanel18);
     }//GEN-LAST:event_jPanel17MouseMoved
 
     private void bThemeMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bThemeMouseMoved
-          resetColor(jPanel11);
+        resetColor(jPanel11);
         resetColor(jPanel12);
         resetColor(jPanel13);
         resetColor(jPanel14);
-       resetColor(jPanel15);
-       setColor(jPanel16);
-       resetColor(jPanel17);
-       resetColor(jPanel18);
+        resetColor(jPanel15);
+        setColor(jPanel16);
+        resetColor(jPanel17);
+        resetColor(jPanel18);
     }//GEN-LAST:event_bThemeMouseMoved
 
     private void bThemeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bThemeMouseClicked
-          
+
     }//GEN-LAST:event_bThemeMouseClicked
 
     private void bSubThemeMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bSubThemeMouseMoved
-          resetColor(jPanel11);
+        resetColor(jPanel11);
         resetColor(jPanel12);
         resetColor(jPanel13);
         resetColor(jPanel14);
-       resetColor(jPanel15);
-       resetColor(jPanel16);
-       setColor(jPanel17);
-       resetColor(jPanel18);
+        resetColor(jPanel15);
+        resetColor(jPanel16);
+        setColor(jPanel17);
+        resetColor(jPanel18);
     }//GEN-LAST:event_bSubThemeMouseMoved
 
     private void bSubThemeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bSubThemeMouseClicked
@@ -1081,17 +1076,15 @@ public class PannelCentralSelection extends javax.swing.JPanel {
         resetColor(jPanel12);
         resetColor(jPanel13);
         resetColor(jPanel14);
-       resetColor(jPanel15);
-       resetColor(jPanel16);
-       resetColor(jPanel17);
-       setColor(jPanel18);
+        resetColor(jPanel15);
+        resetColor(jPanel16);
+        resetColor(jPanel17);
+        setColor(jPanel18);
     }//GEN-LAST:event_bEventMouseMoved
 
     private void bEventMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bEventMouseClicked
-      
-     
-        
-       
+
+
     }//GEN-LAST:event_bEventMouseClicked
 
     private void bAddEmployeeMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bAddEmployeeMouseDragged
@@ -1099,27 +1092,37 @@ public class PannelCentralSelection extends javax.swing.JPanel {
     }//GEN-LAST:event_bAddEmployeeMouseDragged
 
     private void bAddEmployeeMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bAddEmployeeMouseMoved
-        // TODO add your handling code here:
+
+        setColor(jPanel19);
+        resetColor(jPanel20);
+        resetColor(jPanel21);
+        resetColor(jPanel22);
     }//GEN-LAST:event_bAddEmployeeMouseMoved
 
     private void bAddEmployeeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bAddEmployeeMouseClicked
- 
+
         jpAdmin.setVisible(false);
         jpAdmin.setLayout(new BorderLayout());
-        jpAdmin.add(new AddEmployee(),BorderLayout.CENTER);
+        jpAdmin.add(new AddEmployee(), BorderLayout.CENTER);
         jpAdmin.setVisible(true);
-        
-        
-        
+
 // TODO add your handling code here:
     }//GEN-LAST:event_bAddEmployeeMouseClicked
 
     private void jPanel19MouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel19MouseMoved
-        // TODO add your handling code here:
+        setColor(jPanel19);
+        resetColor(jPanel20);
+        resetColor(jPanel21);
+        resetColor(jPanel22);
+
     }//GEN-LAST:event_jPanel19MouseMoved
 
     private void bSearchEmployeeMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bSearchEmployeeMouseMoved
-        // TODO add your handling code here:
+
+        resetColor(jPanel19);
+        setColor(jPanel20);
+        resetColor(jPanel21);
+        resetColor(jPanel22);
     }//GEN-LAST:event_bSearchEmployeeMouseMoved
 
     private void bSearchEmployeeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bSearchEmployeeMouseClicked
@@ -1127,11 +1130,19 @@ public class PannelCentralSelection extends javax.swing.JPanel {
     }//GEN-LAST:event_bSearchEmployeeMouseClicked
 
     private void jPanel20MouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel20MouseMoved
-        // TODO add your handling code here:
+        resetColor(jPanel19);
+        setColor(jPanel20);
+        resetColor(jPanel21);
+        resetColor(jPanel22);
     }//GEN-LAST:event_jPanel20MouseMoved
 
     private void bAccessMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bAccessMouseMoved
         // TODO add your handling code here:
+
+        resetColor(jPanel19);
+        resetColor(jPanel20);
+        setColor(jPanel21);
+        resetColor(jPanel22);
     }//GEN-LAST:event_bAccessMouseMoved
 
     private void bAccessMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bAccessMouseClicked
@@ -1139,18 +1150,36 @@ public class PannelCentralSelection extends javax.swing.JPanel {
     }//GEN-LAST:event_bAccessMouseClicked
 
     private void jPanel21MouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel21MouseMoved
-        // TODO add your handling code here:
+        resetColor(jPanel19);
+        resetColor(jPanel20);
+        setColor(jPanel21);
+        resetColor(jPanel22);
     }//GEN-LAST:event_jPanel21MouseMoved
 
     private void jPanel22MouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel22MouseMoved
-        // TODO add your handling code here:
+        resetColor(jPanel19);
+        resetColor(jPanel20);
+        resetColor(jPanel21);
+        setColor(jPanel22);
     }//GEN-LAST:event_jPanel22MouseMoved
 
-    private void jPanel23MouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel23MouseMoved
+    private void bAddEmployeeMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bAddEmployeeMouseReleased
         // TODO add your handling code here:
-    }//GEN-LAST:event_jPanel23MouseMoved
+    }//GEN-LAST:event_bAddEmployeeMouseReleased
 
-  void setColor(JPanel panel) {
+    private void bModerateMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bModerateMouseMoved
+
+        resetColor(jPanel19);
+        resetColor(jPanel20);
+        resetColor(jPanel21);
+        setColor(jPanel22);// TODO add your handling code here:
+    }//GEN-LAST:event_bModerateMouseMoved
+
+    private void bModerateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bModerateMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_bModerateMouseClicked
+
+    void setColor(JPanel panel) {
         panel.setBackground(new Color(102, 102, 102));
     }
 
@@ -1167,6 +1196,7 @@ public class PannelCentralSelection extends javax.swing.JPanel {
     private javax.swing.JLabel bEditor;
     private javax.swing.JLabel bEvent;
     private javax.swing.JLabel bKeyWord;
+    private javax.swing.JLabel bModerate;
     private javax.swing.JLabel bPrice;
     private javax.swing.JLabel bPurchase;
     private javax.swing.JLabel bSearchEmployee;
@@ -1186,7 +1216,6 @@ public class PannelCentralSelection extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel20;
     private javax.swing.JPanel jPanel21;
     private javax.swing.JPanel jPanel22;
-    private javax.swing.JPanel jPanel23;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;

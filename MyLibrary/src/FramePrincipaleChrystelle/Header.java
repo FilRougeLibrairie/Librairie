@@ -172,7 +172,7 @@ public class Header extends javax.swing.JPanel {
         add(jPanelGeneralInfos);
         jPanelGeneralInfos.setBounds(670, 20, 299, 80);
 
-        jLabel1.setIcon(new javax.swing.ImageIcon("C:\\Users\\Chrys\\Documents\\NetBeansProjects\\Test\\pictures\\libraryLogo.png")); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon("C:\\Users\\cdi303\\Documents\\NetBeansProjects\\Librairie\\MyLibrary\\src\\FramePrincipaleChrystelle\\Library-logo.png")); // NOI18N
         jLabel1.setAlignmentX(0.5F);
         jLabel1.setMaximumSize(new java.awt.Dimension(300, 100));
         jLabel1.setMinimumSize(new java.awt.Dimension(300, 100));
