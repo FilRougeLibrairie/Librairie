@@ -6,23 +6,17 @@
 package ui;
 
 import ClassObjet.Customer;
+import Names.SQLNames;
 import SQLS.ConnexionBase;
 import SQLS.CustomerDAO;
 import SQLS.DAO;
 import java.util.Vector;
 
-/**
- *
- * @author cdi312
- */
-public class JFCustomer extends javax.swing.JFrame {
+public class JFCustomer extends javax.swing.JFrame implements SQLNames {
 
-    /**
-     * Creates new form Customer
-     */
-    
     public JFCustomer() {
         initComponents();
+        
     }
 
     /**
@@ -871,7 +865,7 @@ public class JFCustomer extends javax.swing.JFrame {
                             .addComponent(jLabel40)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(18, 18, 18)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 450, Short.MAX_VALUE)
+                .addComponent(jTabbedPane1)
                 .addContainerGap())
         );
 
@@ -881,7 +875,7 @@ public class JFCustomer extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, 810, Short.MAX_VALUE)
+                .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, 814, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -895,17 +889,41 @@ public class JFCustomer extends javax.swing.JFrame {
         setSize(new java.awt.Dimension(842, 838));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-   
+
     private void btnSearchMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSearchMouseReleased
 
         String criteria = comboSearch.getSelectedItem().toString();
         String term = tfSearch.getText();
-
         Vector<Customer> customerList = new Vector<Customer>();
-        
-        DAO<CustomerDAO> customerDAO = new CustomerDAO();
-        customerList = ((CustomerDAO)customerDAO).findByCriteria(criteria, term);
-        for(Customer cus : customerList){
+        if (term != null && !term.isEmpty()) {
+            switch (criteria) {
+                case "Nom":
+                    criteria = CustomerNames.LAST_NAME;
+                    break;
+                case "Prénom":
+                    criteria = CustomerNames.FIRST_NAME;
+                    break;
+                case "Nom Société":
+                    criteria = CustomerNames.COMPANY;
+                    break;
+                case "Email":
+                    criteria = CustomerNames.EMAIL;
+                    break;
+                case "N° Téléphone":
+                    criteria = CustomerNames.PHONE;
+                    break;
+                case "Adresse IP":
+                    criteria = CustomerNames.IP;
+                    break;
+                default:
+                    System.out.println("Je n'ai pas compris");
+            }
+        }
+
+        DAO customerDAO = new CustomerDAO();
+        customerList = ((CustomerDAO) customerDAO).findByCriteria(criteria, term);
+       // customerList = customerDAO.findAll();
+        for (Customer cus : customerList) {
             System.out.println(cus.toString());
         }
     }//GEN-LAST:event_btnSearchMouseReleased
