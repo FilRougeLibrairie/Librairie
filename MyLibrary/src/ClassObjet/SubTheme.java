@@ -5,6 +5,8 @@
  */
 package ClassObjet;
 
+import java.util.Vector;
+
 /**
  *
  * @author Tofi
@@ -15,12 +17,13 @@ public class SubTheme {
     private Theme theId;
     private String subName;
     private String subDescription;
+    private Vector<Book> bookList;
 
     //Constructor
     public SubTheme() {
     }
 
-   //Setters
+    //Setters
     public void setSubId(int subId) {
         this.subId = subId;
     }
@@ -35,6 +38,10 @@ public class SubTheme {
 
     public void setSubDescription(String subDescription) {
         this.subDescription = subDescription;
+    }
+
+    public void setBookList(Vector<Book> bookList) {
+        this.bookList = bookList;
     }
 
     //Getters
@@ -52,6 +59,18 @@ public class SubTheme {
 
     public String getSubDescription() {
         return subDescription;
+    }
+
+    public Vector<Book> getBookList() {
+        return bookList;
+    }
+    
+    public void addBook(Book book){
+        bookList.add(book);
+    }
+    
+    public void removeBook(Book book){
+        bookList.remove(book);
     }
 
 }

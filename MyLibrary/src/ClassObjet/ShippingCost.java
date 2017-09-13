@@ -5,6 +5,8 @@
  */
 package ClassObjet;
 
+import java.util.Vector;
+
 /**
  *
  * @author Tofi
@@ -12,7 +14,7 @@ package ClassObjet;
 public class ShippingCost {
 
     private int shipId;
-    private Shipper shipperId;
+    private Vector<Shipper> shipperList;
     private String shipName;
     private Float shipCost;
 
@@ -20,38 +22,44 @@ public class ShippingCost {
     public ShippingCost() {
     }
 
-    //Setters
-    public void setShipId(int shipId) {
-        this.shipId = shipId;
-    }
-
-    public void setShipperId(Shipper shipperId) {
-        this.shipperId = shipperId;
-    }
-
-    public void setShipName(String shipName) {
-        this.shipName = shipName;
-    }
-
-    public void setShipCost(Float shipCost) {
-        this.shipCost = shipCost;
-    }
-
-    //Getters
     public int getShipId() {
         return shipId;
     }
 
-    public Shipper getShipperId() {
-        return shipperId;
+    public void setShipId(int shipId) {
+        this.shipId = shipId;
+    }
+
+    public Vector<Shipper> getShipperList() {
+        return shipperList;
+    }
+
+    public void setShipperList(Vector<Shipper> shipperList) {
+        this.shipperList = shipperList;
     }
 
     public String getShipName() {
         return shipName;
     }
 
+    public void setShipName(String shipName) {
+        this.shipName = shipName;
+    }
+
     public Float getShipCost() {
         return shipCost;
+    }
+
+    public void setShipCost(Float shipCost) {
+        this.shipCost = shipCost;
+    }
+
+    public void addShipper(Shipper shipper){
+        shipperList.add(shipper);
+    }
+
+    public void removeShipper(Shipper shipper){
+        shipperList.remove(shipper);
     }
 
 }

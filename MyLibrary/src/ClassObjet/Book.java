@@ -5,6 +5,8 @@
  */
 package ClassObjet;
 
+import java.util.Vector;
+
 /**
  *
  * @author Tofi
@@ -13,8 +15,6 @@ public class Book {
 
     // creation des variables
     private String booIsbn13;
-    private Vat vatCode;
-    private Editor ediId;
     private String booTitle;
     private String booSubtitle;
     private String booPublishYear;
@@ -24,15 +24,21 @@ public class Book {
     private int booStatus;
     private String booFrontCover;
     private int booPageNumber;
-    private BookLanguage booLangCode;
-    
-    //constructor
 
+    private Vector<Author> authorList;
+    private Vector<SubTheme> subThemeList;
+    private Vector<Offer> offerList;
+    private Vector<Keywords> keyWordsList;
+    private Vat vatCode;
+    private Editor ediId;
+    private BookLanguage booLangCode;
+    private Formats format;
+
+    //constructor
     public Book() {
     }
-    
-    //Setters
 
+    //Setters
     public void setBooIsbn13(String booIsbn13) {
         this.booIsbn13 = booIsbn13;
     }
@@ -41,8 +47,8 @@ public class Book {
         this.vatCode = vatCode;
     }
 
-    public void setEdiD(Editor ediID) {
-        this.ediId = ediID;
+    public void setEdiId(Editor ediId) {
+        this.ediId = ediId;
     }
 
     public void setBooTitle(String booTitle) {
@@ -84,10 +90,12 @@ public class Book {
     public void setBooLangCode(BookLanguage booLangCode) {
         this.booLangCode = booLangCode;
     }
-    
-    
-    //Getters
 
+    public void setFormat(Formats format) {
+        this.format = format;
+    }
+
+    //Getters
     public String getBooIsbn13() {
         return booIsbn13;
     }
@@ -96,7 +104,7 @@ public class Book {
         return vatCode;
     }
 
-    public Editor getEdiName() {
+    public Editor getEdiId() {
         return ediId;
     }
 
@@ -139,6 +147,78 @@ public class Book {
     public BookLanguage getBooLangCode() {
         return booLangCode;
     }
-    
+
+    public Formats getFormat() {
+        return format;
+    }
+
+    public Vector<Author> getAuthorList() {
+        return authorList;
+    }
+
+    public void setAuthorList(Vector<Author> authorList) {
+        this.authorList = authorList;
+    }
+
+    public Vector<SubTheme> getSubThemeList() {
+        return subThemeList;
+    }
+
+    public void setSubThemeList(Vector<SubTheme> subThemeList) {
+        this.subThemeList = subThemeList;
+    }
+
+    public Vector<Offer> getOfferList() {
+        return offerList;
+    }
+
+    public void setOfferList(Vector<Offer> offerList) {
+        this.offerList = offerList;
+    }
+
+    public Vector<Keywords> getKeyWordsList() {
+        return keyWordsList;
+    }
+
+    public void setKeyWordsList(Vector<Keywords> keyWordsList) {
+        this.keyWordsList = keyWordsList;
+    }
+
+    public void addAuthor(Author author) {
+        authorList.add(author);
+    }
+
+    public void removeAuthor(Author author) {
+        authorList.remove(author);
+    }
+
+    public void addSubTheme(SubTheme subTheme) {
+        subThemeList.add(subTheme);
+    }
+
+    public void removeSubTheme(SubTheme subTheme) {
+        subThemeList.remove(subTheme);
+    }
+
+    public void addKeywords(Keywords keywords) {
+        keyWordsList.add(keywords);
+    }
+
+    public void removeKeywords(Keywords keywords) {
+        keyWordsList.remove(keywords);
+    }
+
+    public void addOffer(Offer offer) {
+        offerList.add(offer);
+    }
+
+    public void removeOffer(Offer offer) {
+        offerList.remove(offer);
+    }
+
+    @Override
+    public String toString() {
+        return "Book{" + "booIsbn13=" + booIsbn13 + ", booTitle=" + booTitle + ", booSubtitle=" + booSubtitle + ", booPublishYear=" + booPublishYear + ", booPriceHT=" + booPriceHT + ", booResume=" + booResume + ", booQuantity=" + booQuantity + ", booStatus=" + booStatus + ", booFrontCover=" + booFrontCover + ", booPageNumber=" + booPageNumber + ", authorList=" + authorList + ", subThemeList=" + subThemeList + ", offerList=" + offerList + ", keyWordsList=" + keyWordsList + ", vatCode=" + vatCode + ", ediId=" + ediId + ", booLangCode=" + booLangCode + '}';
+    }
 
 }

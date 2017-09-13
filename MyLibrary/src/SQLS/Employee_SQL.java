@@ -20,7 +20,7 @@ public class Employee_SQL {
 
     public Employee_SQL() {
 
-        connexion = new ConnexionBase();
+        connexion.getInstance();
     }
 
     public Vector loadDatasFromDB() throws SQLException, ParseException {

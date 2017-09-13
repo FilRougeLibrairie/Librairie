@@ -5,14 +5,16 @@
  */
 package ClassObjet;
 
+import java.util.Vector;
+
 /**
  *
  * @author Tofi
  */
 public class Determinate {
     
-    private int StaCode;
-    private int purId;
+    private Vector <OrderStatus> orderStatusList;
+    private Vector <Purchase> PurchaseList;
     private String detTime;
     
     //Constructor
@@ -20,32 +22,50 @@ public class Determinate {
     public Determinate() {
     }
     
-    //Setters
-
-    public void setStaCode(int StaCode) {
-        this.StaCode = StaCode;
+    public void addOrderStatus(OrderStatus orderStatus){
+        orderStatusList.add(orderStatus);
     }
 
-    public void setPurId(int purId) {
-        this.purId = purId;
-    }
-
-    public void setDetTime(String detTime) {
-        this.detTime = detTime;
+    public void removeOrderStatus(OrderStatus orderStatus){
+        orderStatusList.remove(orderStatus);
     }
     
-    //Getters
-
-    public int getStaCode() {
-        return StaCode;
+    public void addPurchaseList(Purchase purchase) {
+        PurchaseList.add(purchase);
+    }
+    
+    public void removePurchaseList(Purchase purchase) {
+        PurchaseList.remove(purchase);
     }
 
-    public int getPurId() {
-        return purId;
+    public Vector<OrderStatus> getOrderStatusList() {
+        return orderStatusList;
+    }
+
+    public void setOrderStatusList(Vector<OrderStatus> orderStatusList) {
+        this.orderStatusList = orderStatusList;
+    }
+
+    public Vector<Purchase> getPurchaseList() {
+        return PurchaseList;
+    }
+
+    public void setPurchaseList(Vector<Purchase> PurchaseList) {
+        this.PurchaseList = PurchaseList;
     }
 
     public String getDetTime() {
         return detTime;
     }
+
+    public void setDetTime(String detTime) {
+        this.detTime = detTime;
+    }
+
+    @Override
+    public String toString() {
+        return "Determinate{" + "orderStatusList=" + orderStatusList + ", PurchaseList=" + PurchaseList + ", detTime=" + detTime + '}';
+    }
+
     
 }

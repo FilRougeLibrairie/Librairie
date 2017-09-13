@@ -19,6 +19,7 @@ public class Purchase {
     private String purIP;
     private String shippingDate;
     private int shippingNumber;
+    
 
     //Constructor
     public Purchase() {
