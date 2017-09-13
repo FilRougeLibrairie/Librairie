@@ -5,6 +5,8 @@
  */
 package ClassObjet;
 
+import java.util.Vector;
+
 /**
  *
  * @author Tofi
@@ -12,6 +14,7 @@ package ClassObjet;
 public class Author {
 
     private int autId;
+    private Vector<Book> bookList;
     private String autLastName;
     private String autFirstName;
     private String autBiography;
@@ -24,6 +27,10 @@ public class Author {
     //Setters
     public void setAutId(int autId) {
         this.autId = autId;
+    }
+    
+     public Vector<Book> getBookList() {
+        return bookList;
     }
 
     public void setAutLastName(String autLastName) {
@@ -46,6 +53,10 @@ public class Author {
     public int getAutId() {
         return autId;
     }
+    
+    public void setBookList(Vector<Book> booIsbn13) {
+        this.bookList = booIsbn13;
+    }
 
     public String getAutLastName() {
         return autLastName;
@@ -62,5 +73,15 @@ public class Author {
     public int getAutStatusCode() {
         return autStatusCode;
     }
-
+    
+    // Add / Remove Object into Vector
+    public void addBook(Book book){
+        bookList.add(book);
+    }
+    
+    public void removeBook(Book book){
+        bookList.remove(book);
+    }
+    
+    
 }

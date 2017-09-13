@@ -12,11 +12,11 @@ package ClassObjet;
 public class OrderLine {
 
     private int ordLineId;
-    private Purchase purId;
-    private Book booIsbn13;
     private int ordLineQuantity;
     private int ordBookPriceHT;
     private Float ordBookVAT;
+    private Purchase purId;
+    private Book booIsbn13;
 
     //contstructor
     public OrderLine() {
@@ -47,7 +47,7 @@ public class OrderLine {
         this.ordBookVAT = ordBookVAT;
     }
 
-   //Getters
+    //Getters
     public int getOrdLineId() {
         return ordLineId;
     }
@@ -71,5 +71,12 @@ public class OrderLine {
     public Float getOrdBookVAT() {
         return ordBookVAT;
     }
+
+    @Override
+    public String toString() {
+        return "OrderLine{" + "ordLineId=" + ordLineId + ", ordLineQuantity=" + ordLineQuantity + ", ordBookPriceHT=" + ordBookPriceHT + ", ordBookVAT=" + ordBookVAT + ", purId=" + purId + ", booIsbn13=" + booIsbn13 + '}';
+    }
+    
+    
 
 }

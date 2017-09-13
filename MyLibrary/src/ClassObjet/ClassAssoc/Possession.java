@@ -3,37 +3,37 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ClassObjet;
+package ClassObjet.ClassAssoc;
 
 /**
  *
  * @author Tofi
  */
-public class Association {
+public class Possession {
 
+    private String forName;
     private String booIsbn13;
-    private int subId;
 
     //Constructor
-    public Association() {
+    public Possession() {
     }
 
     //Setters
+    public void setForName(String forName) {
+        this.forName = forName;
+    }
+
     public void setBooIsbn13(String booIsbn13) {
         this.booIsbn13 = booIsbn13;
     }
 
-    public void setSubId(int subId) {
-        this.subId = subId;
+    //Getters
+    public String getForName() {
+        return forName;
     }
 
-    //Getters
     public String getBooIsbn13() {
         return booIsbn13;
-    }
-
-    public int getSubId() {
-        return subId;
     }
 
 }

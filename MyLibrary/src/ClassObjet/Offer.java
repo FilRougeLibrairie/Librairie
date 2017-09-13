@@ -5,6 +5,8 @@
  */
 package ClassObjet;
 
+import java.util.Vector;
+
 /**
  *
  * @author Tofi
@@ -18,6 +20,7 @@ public class Offer {
     private String offDateEnd;
     private Float offDiscount;
     private String offPicture;
+    private Vector<Book> booksList;
 
     //Constructor
     public Offer() {
@@ -52,6 +55,10 @@ public class Offer {
         this.offPicture = offPicture;
     }
 
+    public void setBooks(Vector<Book> books) {
+        this.booksList = books;
+    }
+
     //Getters
     public int getOffId() {
         return offId;
@@ -80,5 +87,24 @@ public class Offer {
     public String getOffPicture() {
         return offPicture;
     }
+
+    public Vector<Book> getBooks() {
+        return booksList;
+    }
+
+    public void addBook(Book book) {
+        booksList.add(book);
+    }
+
+    public void removeBook(Book book) {
+        booksList.remove(book);
+    }
+
+    @Override
+    public String toString() {
+        return "Offer{" + "offId=" + offId + ", offName=" + offName + ", offText=" + offText + ", offDateStart=" + offDateStart + ", offDateEnd=" + offDateEnd + ", offDiscount=" + offDiscount + ", offPicture=" + offPicture + ", booksList=" + booksList + '}';
+    }
+    
+    
 
 }
