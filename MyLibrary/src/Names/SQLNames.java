@@ -86,7 +86,7 @@ public interface SQLNames {
 
         public static final String STATUS_CODE = "staCode";
         public static final String PURCHASE_ID = "purId";
-        public static final String FIRST_NAME = "detTime";
+        public static final String DATE_TIME = "detTime";
     }
 
     public static class EditorNames {
@@ -162,8 +162,8 @@ public interface SQLNames {
 
     public static class OrderStatusNames {
 
-        public static final String CODE = "staCode";
-        public static final String NAME = "staName";
+        public static final String CODE = "statCode";
+        public static final String NAME = "statName";
     }
 
     public static class PaymentNames {
@@ -200,16 +200,11 @@ public interface SQLNames {
         public static final String STATUS = "revStatus";
     }
 
-    public static class ShipperNames {
-
-        public static final String ID = "ShipperId";
-        public static final String NAME = "ShipperName";
-    }
+    
 
     public static class ShippingCostNames {
 
         public static final String ID = "shipId";
-        public static final String SHIPPER_ID = "shipperId";
         public static final String NAME = "shipName";
         public static final String COST = "shipCost";
     }

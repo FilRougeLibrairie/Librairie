@@ -12,7 +12,7 @@ package ClassObjet;
 public class OrderStatus {
 
     private int staCode;
-    private int staValidate;
+    private String staName;
 
     //Constructor
     public OrderStatus() {
@@ -23,8 +23,8 @@ public class OrderStatus {
         this.staCode = staCode;
     }
 
-    public void setStaValidate(int staValidate) {
-        this.staValidate = staValidate;
+    public void setStaName(String staName) {
+        this.staName = staName;
     }
 
     //Getters
@@ -32,8 +32,8 @@ public class OrderStatus {
         return staCode;
     }
 
-    public int getStaValidate() {
-        return staValidate;
+    public String getStaName() {
+        return staName;
     }
 
 }
