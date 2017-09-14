@@ -32,7 +32,7 @@ public class EmployeeDAO extends DAO<Employee> {
              + "," + PROFILE + "," + COMMENT + ID;
     
     // Constructor
-    public EmployeeDAO(ConnexionBase conn) {
+    public EmployeeDAO() {
         super();
     }
 
@@ -53,8 +53,8 @@ public class EmployeeDAO extends DAO<Employee> {
 
 
 
-   
-    public Employee find(int id) {
+     @Override
+    public Employee findById(int id) {
         Employee employee = new Employee();
         try {
             ResultSet result = this.connect.createStatement(
@@ -78,10 +78,7 @@ public class EmployeeDAO extends DAO<Employee> {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    @Override
-    public Employee findById(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+  
 
     @Override
     public Employee findByName(String name) {
