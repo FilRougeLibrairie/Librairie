@@ -108,7 +108,7 @@ public class AddressDAO extends DAO {
         query.append(ZIP_CODE).append(" = ?, ");
         query.append(CITY).append(" = ?, ");
         query.append(SECURITY_CODE).append(" = ?, ");
-        query.append(PHONE).append(" = ?, ");
+        query.append(PHONE).append(" = ? ");
 
         query.append("WHERE " + ID + " = '")
                 .append(addr.getAddId())

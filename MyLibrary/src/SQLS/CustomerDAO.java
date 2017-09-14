@@ -103,7 +103,7 @@ public class CustomerDAO extends DAO {
         query.append(SALT).append(" = ?, ");
         query.append(IP).append(" = ?, ");
         query.append(STATUS).append(" = ?, ");
-        query.append(COMMENT).append(" = ?, ");
+        query.append(COMMENT).append(" = ? ");
 
         query.append("WHERE " + ID + " = '")
                 .append(cus.getCusID())

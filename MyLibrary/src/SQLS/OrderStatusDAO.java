@@ -69,7 +69,7 @@ public class OrderStatusDAO extends DAO {
     public void update(Object obj) {
         OrderStatus ord = (OrderStatus) obj;
         StringBuilder query = new StringBuilder("UPDATE " + TABLE + " SET ");
-        query.append(NAME).append(" = ?, ");
+        query.append(NAME).append(" = ? ");
 
         query.append("WHERE " + CODE + " = '")
                 .append(ord.getStaCode())

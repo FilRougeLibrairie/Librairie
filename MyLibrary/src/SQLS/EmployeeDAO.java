@@ -79,7 +79,7 @@ public class EmployeeDAO extends DAO<Employee> {
         query.append(DATE_END).append(" = ?, ");
         query.append(STATUS).append(" = ?, ");
         query.append(PROFILE).append(" = ?, ");
-        query.append(COMMENT).append(" = ?, ");
+        query.append(COMMENT).append(" = ? ");
 
         query.append("WHERE " + ID + " = '")
                 .append(emp.getEmpId())

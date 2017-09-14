@@ -87,7 +87,7 @@ public class MyLibraryDAO extends DAO<MyLibrary>{
         query.append(STREET_NAME).append(" = ?, ");
         query.append(COMPLEMENT).append(" = ?, ");
         query.append(ZIP_CODE).append(" = ?, ");
-        query.append(CITY).append(" = ?, ");
+        query.append(CITY).append(" = ? ");
 
         query.append("WHERE " + ID + " = '")
                 .append(mylib.getMyLibId())
