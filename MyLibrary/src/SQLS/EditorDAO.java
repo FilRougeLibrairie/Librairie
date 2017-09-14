@@ -24,7 +24,7 @@ public class EditorDAO extends DAO {
     public final String PRESENTATION = EditorNames.PRESENTATION;
     public final String STATUS = EditorNames.STATUS;
 
-    private String COLUMNS_CREATE = ID + ", " + NAME + ", " + PRESENTATION + ", " + STATUS;
+    private String COLUMNS_CREATE = NAME + ", " + PRESENTATION + ", " + STATUS;
 
     public EditorDAO() {
         super();

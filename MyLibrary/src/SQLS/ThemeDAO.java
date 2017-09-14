@@ -5,7 +5,7 @@
  */
 package SQLS;
 
-import ClassObjet.Offer;
+import ClassObjet.Theme;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,40 +15,31 @@ import java.util.Vector;
  *
  * @author cdi312
  */
-public class OfferDAO extends DAO {
+public class ThemeDAO extends DAO {
 
-    private final String TABLE = "Offer";
+    private final String TABLE = "Theme";
 
-    private final String ID = OfferNames.ID;
-    private final String NAME = OfferNames.NAME;
-    private final String TEXT = OfferNames.TEXT;
-    private final String START = OfferNames.START;
-    private final String END = OfferNames.END;
-    private final String DISCOUNT = OfferNames.DISCOUNT;
-    private final String PICTURE = OfferNames.PICTURE;
+    public final String ID = ThemeNames.ID;
+    public final String NAME = ThemeNames.NAME;
+    public final String DESCRIPTION = ThemeNames.DESCRIPTION;
 
-    private String COLUMNS_CREATE = NAME + ", " + TEXT
-            + ", " + START + ", " + END + ", " + DISCOUNT + ", " + PICTURE;
+    private String COLUMNS_CREATE = NAME + ", " + DESCRIPTION;
 
-    public OfferDAO() {
+    public ThemeDAO() {
         super();
     }
 
     @Override
     public void create(Object obj) {
-        Offer off = (Offer) obj;
-        String query = "IF NOT EXISTS (SELECT * FROM " + TABLE + " WHERE " + ID + " = '" + off.getOffId() + "')"
+        Theme the = (Theme) obj;
+        String query = "IF NOT EXISTS (SELECT * FROM " + TABLE + " WHERE " + ID + " = '" + the.getTheId() + "')"
                 + "INSERT INTO " + TABLE + " (" + COLUMNS_CREATE + ")"
-                + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+                + "VALUES (?, ?)";
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query);) {
-            pstmt.setInt(1, off.getOffId());
-            pstmt.setString(2, off.getOffName());
-            pstmt.setString(3, off.getOffText());
-            pstmt.setString(4, off.getOffDateStart());
-            pstmt.setString(5, off.getOffDateEnd());
-            pstmt.setFloat(6, off.getOffDiscount());
-            pstmt.setString(7, off.getOffPicture());
+
+            pstmt.setString(1, the.getTheName());
+            pstmt.setString(2, the.getTheDescription());
 
             int result = pstmt.executeUpdate();
 
@@ -60,12 +51,12 @@ public class OfferDAO extends DAO {
 
     @Override
     public void delete(Object obj) {
-        int offId = ((Offer) obj).getOffId();
+        int theId = ((Theme) obj).getTheId();
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FROM " + TABLE + " WHERE ")
                 .append(ID)
                 .append(" = ")
-                .append("'" + offId + "'");
+                .append("'" + theId + "'");
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
             pstmt.executeQuery();
@@ -77,26 +68,18 @@ public class OfferDAO extends DAO {
 
     @Override
     public void update(Object obj) {
-        Offer off = (Offer) obj;
-        StringBuilder query = new StringBuilder("UPDATE " + TABLE + " SET ");
+        Theme the = (Theme) obj;
+        StringBuffer query = new StringBuffer("UPDATE " + TABLE + " SET ");
         query.append(NAME).append(" =?, ");
-        query.append(TEXT).append(" =?, ");
-        query.append(START).append(" =?, ");
-        query.append(END).append(" =?, ");
-        query.append(DISCOUNT).append(" =?, ");
-        query.append(PICTURE).append(" =? ");
+        query.append(DESCRIPTION).append(" =? ");
 
         query.append("WHERE " + ID + " = '")
-                .append(off.getOffId())
+                .append(the.getTheId())
                 .append("'");
 
         try (PreparedStatement pstmt = connect.prepareStatement(query.toString());) {
-            pstmt.setString(1, off.getOffName());
-            pstmt.setString(2, off.getOffText());
-            pstmt.setString(3, off.getOffDateStart());
-            pstmt.setString(4, off.getOffDateEnd());
-            pstmt.setFloat(5, off.getOffDiscount());
-            pstmt.setString(6, off.getOffPicture());
+            pstmt.setString(1, the.getTheName());
+            pstmt.setString(2, the.getTheDescription());
 
             int result = pstmt.executeUpdate();
 
@@ -108,40 +91,38 @@ public class OfferDAO extends DAO {
 
     @Override
     public Vector findAll() {
-        Vector<Offer> offerList = new Vector<Offer>();
-        Offer offer = null;
+        Vector<Theme> themeList = new Vector<Theme>();
+        Theme theme = null;
 
         String query = "SELECT * FROM " + TABLE;
+
         try (PreparedStatement pstmt = this.connect.prepareStatement(query)) {
 
             ResultSet rs = pstmt.executeQuery();
             if (rs.isBeforeFirst()) {
 
                 while (rs.next()) {
-                    offer = new Offer();
-                    offer.setOffId(rs.getInt(ID));
-                    offer.setOffName(rs.getString(NAME));
-                    offer.setOffText(rs.getString(TEXT));
-                    offer.setOffDateStart(rs.getString(START));
-                    offer.setOffDateEnd(rs.getString(END));
-                    offer.setOffDiscount(rs.getFloat(DISCOUNT));
-                    offer.setOffPicture(rs.getString(PICTURE));
+                    theme = new Theme();
+                    theme.setTheId(rs.getInt(ID));
+                    theme.setTheName(rs.getString(NAME));
+                    theme.setTheDescription(rs.getString(DESCRIPTION));
+
                 }
             } else {
-                throw new SQLException("ResultSet was emplty");
+                throw new SQLException("ResultSet was empty");
             }
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
             ex.printStackTrace();
         }
-        return offerList;
+        return themeList;
     }
 
     @Override
     public Object findById(int id) {
-        Offer offer = null;
+        Theme theme = null;
         StringBuffer query = new StringBuffer();
-        query.append("SELECT * FORM " + TABLE + " WHERE ")
+        query.append("SELECT * FROM " + TABLE + " WHERE ")
                 .append(ID)
                 .append(" = ")
                 .append("'" + id + "'");
@@ -153,13 +134,9 @@ public class OfferDAO extends DAO {
             if (rs.isBeforeFirst()) {
 
                 while (rs.next()) {
-                    offer.setOffId(rs.getInt(ID));
-                    offer.setOffName(rs.getString(NAME));
-                    offer.setOffText(rs.getString(TEXT));
-                    offer.setOffDateStart(rs.getString(START));
-                    offer.setOffDateEnd(rs.getString(END));
-                    offer.setOffDiscount(rs.getFloat(DISCOUNT));
-                    offer.setOffPicture(rs.getString(PICTURE));
+                    theme.setTheId(rs.getInt(ID));
+                    theme.setTheName(rs.getString(NAME));
+                    theme.setTheDescription(rs.getString(DESCRIPTION));
                 }
             } else {
                 throw new SQLException("ResultSet was empty");
@@ -168,7 +145,7 @@ public class OfferDAO extends DAO {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
             ex.printStackTrace();
         }
-        return offer;
+        return theme;
     }
 
     @Override
@@ -177,10 +154,10 @@ public class OfferDAO extends DAO {
     }
 
     @Override
-    public Vector<Offer> findByCriteria(String criteria, String term) {
+    public Vector<Theme> findByCriteria(String criteria, String term) {
 
-        Vector<Offer> offerList = new Vector<Offer>();
-        Offer offer = null;
+        Vector<Theme> themeList = new Vector<Theme>();
+        Theme theme = null;
 
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FROM " + TABLE + "WHERE ")
@@ -197,13 +174,10 @@ public class OfferDAO extends DAO {
             if (rs.isBeforeFirst()) {
 
                 while (rs.next()) {
-                    offer.setOffId(rs.getInt(ID));
-                    offer.setOffName(rs.getString(NAME));
-                    offer.setOffText(rs.getString(TEXT));
-                    offer.setOffDateStart(rs.getString(START));
-                    offer.setOffDateEnd(rs.getString(END));
-                    offer.setOffDiscount(rs.getFloat(DISCOUNT));
-                    offer.setOffPicture(rs.getString(PICTURE));
+                    theme = new Theme();
+                    theme.setTheId(rs.getInt(ID));
+                    theme.setTheName(rs.getString(NAME));
+                    theme.setTheDescription(rs.getString(DESCRIPTION));
                 }
             } else {
                 throw new SQLException("ResultSet was empty");
@@ -212,6 +186,6 @@ public class OfferDAO extends DAO {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
             ex.printStackTrace();
         }
-        return offerList;  
+        return themeList;
     }
 }
