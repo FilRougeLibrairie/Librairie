@@ -6,20 +6,17 @@
 package ui;
 
 import ClassObjet.Customer;
+import Names.SQLNames;
+import SQLS.ConnexionBase;
+import SQLS.CustomerDAO;
+import SQLS.DAO;
 import java.util.Vector;
 
-/**
- *
- * @author cdi312
- */
-public class JFCustomer extends javax.swing.JFrame {
+public class JFCustomer extends javax.swing.JFrame implements SQLNames {
 
-    /**
-     * Creates new form Customer
-     */
-    
     public JFCustomer() {
         initComponents();
+        
     }
 
     /**
@@ -892,15 +889,43 @@ public class JFCustomer extends javax.swing.JFrame {
         setSize(new java.awt.Dimension(842, 838));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-   
+
     private void btnSearchMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSearchMouseReleased
 
         String criteria = comboSearch.getSelectedItem().toString();
         String term = tfSearch.getText();
-
         Vector<Customer> customerList = new Vector<Customer>();
+        if (term != null && !term.isEmpty()) {
+            switch (criteria) {
+                case "Nom":
+                    criteria = CustomerNames.LAST_NAME;
+                    break;
+                case "Prénom":
+                    criteria = CustomerNames.FIRST_NAME;
+                    break;
+                case "Nom Société":
+                    criteria = CustomerNames.COMPANY;
+                    break;
+                case "Email":
+                    criteria = CustomerNames.EMAIL;
+                    break;
+                case "N° Téléphone":
+                    criteria = CustomerNames.PHONE;
+                    break;
+                case "Adresse IP":
+                    criteria = CustomerNames.IP;
+                    break;
+                default:
+                    System.out.println("Je n'ai pas compris");
+            }
+        }
 
-        
+        DAO customerDAO = new CustomerDAO();
+        customerList = ((CustomerDAO) customerDAO).findByCriteria(criteria, term);
+       // customerList = customerDAO.findAll();
+        for (Customer cus : customerList) {
+            System.out.println(cus.toString());
+        }
     }//GEN-LAST:event_btnSearchMouseReleased
 
     /**

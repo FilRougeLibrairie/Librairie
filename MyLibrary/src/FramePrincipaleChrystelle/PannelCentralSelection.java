@@ -7,6 +7,10 @@ package FramePrincipaleChrystelle;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import javax.swing.JPanel;
 
 /**
@@ -21,6 +25,10 @@ public class PannelCentralSelection extends javax.swing.JPanel {
     public PannelCentralSelection() {
         initComponents();
 
+        menuAdmin.setVisible(false);
+        menuProduct.setVisible(false);
+        menuPurchase.setVisible(false);
+        jpPrincipal.setVisible(false);
     }
 
     @SuppressWarnings("unchecked")
@@ -63,11 +71,12 @@ public class PannelCentralSelection extends javax.swing.JPanel {
         bAccess = new javax.swing.JLabel();
         jPanel22 = new javax.swing.JPanel();
         bModerate = new javax.swing.JLabel();
-        jTabbedPaneGeneral = new javax.swing.JTabbedPane();
-        jpPurchase = new javax.swing.JPanel();
-        jpAdmin = new javax.swing.JPanel();
-        jpStatistics = new javax.swing.JPanel();
-        jpProduct = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
+        jBClient = new javax.swing.JButton();
+        jBProduct = new javax.swing.JButton();
+        jBAdmin = new javax.swing.JButton();
+        jBStat = new javax.swing.JButton();
+        jpPrincipal = new javax.swing.JPanel();
 
         setBackground(new java.awt.Color(51, 153, 0));
         setAutoscrolls(true);
@@ -326,6 +335,11 @@ public class PannelCentralSelection extends javax.swing.JPanel {
                 jPanel13MouseMoved(evt);
             }
         });
+        jPanel13.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel13MouseClicked(evt);
+            }
+        });
 
         bAutor.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         bAutor.setText("Auteur");
@@ -388,6 +402,11 @@ public class PannelCentralSelection extends javax.swing.JPanel {
         jPanel15.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseMoved(java.awt.event.MouseEvent evt) {
                 jPanel15MouseMoved(evt);
+            }
+        });
+        jPanel15.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel15MouseClicked(evt);
             }
         });
 
@@ -600,6 +619,11 @@ public class PannelCentralSelection extends javax.swing.JPanel {
                 jPanel20MouseMoved(evt);
             }
         });
+        jPanel20.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel20MouseClicked(evt);
+            }
+        });
 
         bSearchEmployee.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         bSearchEmployee.setText("Afficher Employé");
@@ -718,68 +742,74 @@ public class PannelCentralSelection extends javax.swing.JPanel {
 
         add(jpMenu, java.awt.BorderLayout.WEST);
 
-        jTabbedPaneGeneral.setMinimumSize(new java.awt.Dimension(0, 800));
-        jTabbedPaneGeneral.setPreferredSize(new java.awt.Dimension(800, 800));
-        jTabbedPaneGeneral.addMouseListener(new java.awt.event.MouseAdapter() {
+        jPanel1.setBackground(new java.awt.Color(0, 0, 0));
+
+        jBClient.setText("CLIENT");
+        jBClient.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTabbedPaneGeneralMouseClicked(evt);
+                jBClientMouseClicked(evt);
             }
         });
 
-        jpPurchase.setBackground(new java.awt.Color(102, 102, 255));
-        jpPurchase.setPreferredSize(new java.awt.Dimension(1000, 800));
-        jpPurchase.setLayout(new java.awt.BorderLayout());
-        jTabbedPaneGeneral.addTab("Commande", jpPurchase);
+        jBProduct.setText("EDITION");
+        jBProduct.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jBProductMouseClicked(evt);
+            }
+        });
+        jBProduct.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBProductActionPerformed(evt);
+            }
+        });
 
-        jpAdmin.setMaximumSize(new java.awt.Dimension(32767, 600));
-        jpAdmin.setLayout(null);
-        jTabbedPaneGeneral.addTab("Administratration", jpAdmin);
+        jBAdmin.setText("ADMINISTRATION");
+        jBAdmin.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jBAdminMouseClicked(evt);
+            }
+        });
 
-        jpStatistics.setPreferredSize(new java.awt.Dimension(1000, 800));
-        jpStatistics.setLayout(new java.awt.BorderLayout());
-        jTabbedPaneGeneral.addTab("Statistics", jpStatistics);
+        jBStat.setText("STATISTIQUES");
+        jBStat.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jBStatMouseClicked(evt);
+            }
+        });
 
-        jpProduct.setPreferredSize(new java.awt.Dimension(1000, 800));
-        jpProduct.setLayout(new java.awt.BorderLayout());
-        jTabbedPaneGeneral.addTab("Produit", jpProduct);
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(160, 160, 160)
+                .addComponent(jBClient, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jBProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jBAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jBStat, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(251, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jBClient, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jBProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jBAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jBStat, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
-        add(jTabbedPaneGeneral, java.awt.BorderLayout.CENTER);
+        add(jPanel1, java.awt.BorderLayout.PAGE_START);
+
+        jpPrincipal.setBackground(new java.awt.Color(255, 51, 51));
+        jpPrincipal.setLayout(null);
+        add(jpPrincipal, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jTabbedPaneGeneralMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTabbedPaneGeneralMouseClicked
-
-        System.out.println(jTabbedPaneGeneral.getSelectedIndex());
-
-        if (jTabbedPaneGeneral.getSelectedIndex() == 0) {
-            menuProduct.setVisible(false);
-            menuPurchase.setVisible(true);
-            menuAdmin.setVisible(false);
-
-            //   menuStatistics.setVisible(false);
-        }
-
-        if (jTabbedPaneGeneral.getSelectedIndex() == 3) {
-            menuPurchase.setVisible(false);
-            menuProduct.setVisible(true);
-            menuAdmin.setVisible(false);
-            //   menuStatistics.setVisible(false);
-        }
-
-        if (jTabbedPaneGeneral.getSelectedIndex() == 1) {
-            menuPurchase.setVisible(false);
-            menuProduct.setVisible(false);
-            menuAdmin.setVisible(true);
-            //   menuStatistics.setVisible(false);
-        }
-
-        if (jTabbedPaneGeneral.getSelectedIndex() == 2) {
-            menuPurchase.setVisible(false);
-            menuProduct.setVisible(false);
-            menuAdmin.setVisible(false);
-            //   menuStatistics.setVisible(false);
-        }
-
-    }//GEN-LAST:event_jTabbedPaneGeneralMouseClicked
 
     private void jPanel10MouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel10MouseMoved
 
@@ -916,9 +946,16 @@ public class PannelCentralSelection extends javax.swing.JPanel {
     }//GEN-LAST:event_bEditorMouseMoved
 
     private void bEditorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bEditorMouseClicked
-
+        
+        
+        
     }//GEN-LAST:event_bEditorMouseClicked
 
+    
+    
+    
+    
+    
     private void jPanel12MouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel12MouseMoved
         resetColor(jPanel11);
         setColor(jPanel12);
@@ -942,7 +979,18 @@ public class PannelCentralSelection extends javax.swing.JPanel {
     }//GEN-LAST:event_bAutorMouseMoved
 
     private void bAutorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bAutorMouseClicked
-        // TODO add your handling code here:
+
+
+        jpPrincipal.removeAll();
+        jpPrincipal.validate();
+        
+        AddAutor addAutor=new AddAutor();
+        jpPrincipal.setLayout(new BorderLayout());
+        jpPrincipal.add(addAutor,BorderLayout.NORTH);
+        jpPrincipal.setVisible(true);
+        
+        jpPrincipal.revalidate();
+        
     }//GEN-LAST:event_bAutorMouseClicked
 
     private void jPanel13MouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel13MouseMoved
@@ -1015,8 +1063,27 @@ public class PannelCentralSelection extends javax.swing.JPanel {
         resetColor(jPanel18);
     }//GEN-LAST:event_bKeyWordMouseMoved
 
+    
+    
+    
+    
+    
+    
+    
     private void bKeyWordMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bKeyWordMouseClicked
-        // TODO add your handling code here:
+
+        jpPrincipal.removeAll();
+        jpPrincipal.validate();
+        
+        AddKeyWord addKW=new AddKeyWord();
+        jpPrincipal.setLayout(new BorderLayout());
+        jpPrincipal.add(addKW,BorderLayout.NORTH);
+        jpPrincipal.setVisible(true);
+        
+        jpPrincipal.revalidate();
+        
+        
+        
     }//GEN-LAST:event_bKeyWordMouseClicked
 
     private void jPanel18MouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel18MouseMoved
@@ -1101,10 +1168,13 @@ public class PannelCentralSelection extends javax.swing.JPanel {
 
     private void bAddEmployeeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bAddEmployeeMouseClicked
 
-        jpAdmin.setVisible(false);
-        jpAdmin.setLayout(new BorderLayout());
-        jpAdmin.add(new AddEmployee(), BorderLayout.CENTER);
-        jpAdmin.setVisible(true);
+jpPrincipal.setBackground(Color.black);
+
+//        this.remove(jpPrincipal);
+//        jpPrincipal.setVisible(false);
+//        jpPrincipal.setLayout(new BorderLayout());
+//        jpPrincipal.add(new AddEmployee(), BorderLayout.CENTER);
+//        jpPrincipal.setVisible(true);
 
 // TODO add your handling code here:
     }//GEN-LAST:event_bAddEmployeeMouseClicked
@@ -1179,6 +1249,78 @@ public class PannelCentralSelection extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_bModerateMouseClicked
 
+    private void jBProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBProductActionPerformed
+        
+        
+    }//GEN-LAST:event_jBProductActionPerformed
+
+    private void jBClientMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBClientMouseClicked
+        menuAdmin.setVisible(false);
+        menuProduct.setVisible(false);
+        menuPurchase.setVisible(true);
+        
+    }//GEN-LAST:event_jBClientMouseClicked
+
+    private void jBProductMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBProductMouseClicked
+        menuAdmin.setVisible(false);
+        menuProduct.setVisible(true);
+        menuPurchase.setVisible(false);
+    }//GEN-LAST:event_jBProductMouseClicked
+
+    private void jBStatMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBStatMouseClicked
+        menuAdmin.setVisible(false);
+        menuProduct.setVisible(false);
+        menuPurchase.setVisible(false);
+    }//GEN-LAST:event_jBStatMouseClicked
+
+    private void jBAdminMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBAdminMouseClicked
+        menuAdmin.setVisible(true);
+        menuProduct.setVisible(false);
+        menuPurchase.setVisible(false);
+    }//GEN-LAST:event_jBAdminMouseClicked
+
+    private void jPanel13MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel13MouseClicked
+        
+        
+        jpPrincipal.removeAll();
+        jpPrincipal.validate();
+        
+        
+        AddAutor addAutor=new AddAutor();
+       
+        jpPrincipal.setLayout(new BorderLayout());
+        jpPrincipal.add(addAutor,BorderLayout.NORTH);
+        jpPrincipal.setVisible(true);
+        
+        jpPrincipal.revalidate();
+        
+    }//GEN-LAST:event_jPanel13MouseClicked
+
+    private void jPanel15MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel15MouseClicked
+
+        
+        jpPrincipal.removeAll();
+        jpPrincipal.validate();
+        
+        AddKeyWord addKW=new AddKeyWord();
+        jpPrincipal.setLayout(new BorderLayout());
+        jpPrincipal.add(addKW,BorderLayout.NORTH);
+        jpPrincipal.setVisible(true);
+        
+        
+        
+        
+        
+        
+        
+        
+    }//GEN-LAST:event_jPanel15MouseClicked
+
+    private void jPanel20MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel20MouseClicked
+jpPrincipal.setBackground(Color.black);
+// TODO add your handling code here:
+    }//GEN-LAST:event_jPanel20MouseClicked
+
     void setColor(JPanel panel) {
         panel.setBackground(new Color(102, 102, 102));
     }
@@ -1203,6 +1345,11 @@ public class PannelCentralSelection extends javax.swing.JPanel {
     private javax.swing.JLabel bShipping;
     private javax.swing.JLabel bSubTheme;
     private javax.swing.JLabel bTheme;
+    private javax.swing.JButton jBAdmin;
+    private javax.swing.JButton jBClient;
+    private javax.swing.JButton jBProduct;
+    private javax.swing.JButton jBStat;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
@@ -1219,12 +1366,8 @@ public class PannelCentralSelection extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
-    private javax.swing.JTabbedPane jTabbedPaneGeneral;
-    private javax.swing.JPanel jpAdmin;
     private javax.swing.JPanel jpMenu;
-    private javax.swing.JPanel jpProduct;
-    private javax.swing.JPanel jpPurchase;
-    private javax.swing.JPanel jpStatistics;
+    private javax.swing.JPanel jpPrincipal;
     private javax.swing.JPanel menuAdmin;
     private javax.swing.JPanel menuProduct;
     private javax.swing.JPanel menuPurchase;

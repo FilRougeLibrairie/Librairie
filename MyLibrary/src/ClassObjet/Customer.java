@@ -24,6 +24,7 @@ public class Customer {
     private String cusIP;
     private int cusStatus;
     private String cusComment;
+   
 
     //Constructor
     public Customer() {
@@ -134,5 +135,12 @@ public class Customer {
     public String getCusComment() {
         return cusComment;
     }
+
+    @Override
+    public String toString() {
+        return "Customer{" + "cusID=" + cusID + ", cusGender=" + cusGender + ", cusFirstName=" + cusFirstName + ", cusLastName=" + cusLastName + ", cusOrganisationName=" + cusOrganisationName + ", cusEmail=" + cusEmail + ", cusPhoneNumber=" + cusPhoneNumber + ", cusDateOfBirth=" + cusDateOfBirth + ", cusPassword=" + cusPassword + ", cusSalt=" + cusSalt + ", cusIP=" + cusIP + ", cusStatus=" + cusStatus + ", cusComment=" + cusComment + '}';
+    }
+    
+    
 
 }
