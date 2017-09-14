@@ -1,51 +1,39 @@
 
 package SQLS;
 
-
-import ClassObjet.Author;
-import Names.SQLNames.AuthorNames;
+import ClassObjet.Shipper;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
 
 
+public class ShipperDAO extends DAO {
+    
+    
+    
+    private final String TABLE = "Shipper";
 
-public class AuthorDAO extends DAO{
-    
-    
-    
-     private final String TABLE = "Author";
-    private final String ID = AuthorNames.ID;   
-    private final String LAST_NAME = AuthorNames.LAST_NAME;
-    private final String FIRST_NAME = AuthorNames.FIRST_NAME;
-    private final String BIOGRAPHY = AuthorNames.BIOGRAPHY; 
-    private final String STATUS_CODE = AuthorNames.STATUS_CODE;
-    
-    
-   
-    private String COLUMNS_CREATE = LAST_NAME + ", " + FIRST_NAME + ", " + BIOGRAPHY + ", "
-            + STATUS_CODE;
+    private final String ID = ShipperNames.ID;
+    private final String NAME = ShipperNames.NAME;
 
-    public AuthorDAO() {
-       super(); 
+    private String COLUMNS_CREATE = NAME ;
+
+    public ShipperDAO() {
+        super();
     }
-    
- 
+
     @Override
     public void create(Object obj) {
-        Author aut = (Author) obj;
-        String query = "IF NOT EXISTS (SELECT * FROM " + TABLE + " WHERE " + ID + " = '" + aut.getAutId() + "')"
+        Shipper ship = (Shipper) obj;
+        String query = "IF NOT EXISTS (SELECT * FROM " + TABLE + " WHERE " + ID + " = '" + ship.getShipperId() + "')"
                 + "INSERT INTO " + TABLE + " (" + COLUMNS_CREATE + ")"
-                + "VALUES (?, ?, ?, ?)";
+                + "VALUES (?)";
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query);) {
 
-            pstmt.setString(1, aut.getAutLastName());
-            pstmt.setString(2, aut.getAutFirstName());
-            pstmt.setString(3, aut.getAutBiography());
-            pstmt.setInt(4, aut.getAutStatusCode());
-            
+            pstmt.setString(1, ship.getShipperName());
+           
 
             int result = pstmt.executeUpdate();
 
@@ -55,16 +43,14 @@ public class AuthorDAO extends DAO{
         }
     }
 
-    
-    
     @Override
     public void delete(Object obj) {
-        int autId = ((Author) obj).getAutId();
+        int shipId = ((Shipper) obj).getShipperId();
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FROM " + TABLE + " WHERE ")
                 .append(ID)
                 .append(" = ")
-                .append("'" + autId + "'");
+                .append("'" + shipId + "'");
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
             pstmt.executeQuery();
@@ -76,30 +62,19 @@ public class AuthorDAO extends DAO{
 
     @Override
     public void update(Object obj) {
-        Author aut = (Author) obj;
+        Shipper ship = (Shipper) obj;
         StringBuilder query = new StringBuilder("UPDATE " + TABLE + " SET ");
+        query.append(NAME).append(" = ? ");
         
-        
-        
-        
-        query.append(LAST_NAME).append(" = ?, ");
-        query.append(FIRST_NAME).append(" = ?, ");
-        query.append(LAST_NAME).append(" = ?, ");
-        query.append(BIOGRAPHY).append(" = ?, ");
-        query.append(STATUS_CODE).append(" = ? ");
-       
 
         query.append("WHERE " + ID + " = '")
-                .append(aut.getAutId())
+                .append(ship.getShipperId())
                 .append("'");
 
         try (PreparedStatement pstmt = connect.prepareStatement(query.toString());) {
 
-            pstmt.setString(1, aut.getAutLastName());
-            pstmt.setString(2, aut.getAutFirstName());
-            pstmt.setString(3, aut.getAutBiography());
-            pstmt.setInt(4, aut.getAutStatusCode());
-            
+            pstmt.setString(1, ship.getShipperName());
+        
 
             int result = pstmt.executeUpdate();
 
@@ -110,9 +85,11 @@ public class AuthorDAO extends DAO{
         }
     }
 
+    
+    
     @Override
-    public Author findById(int id) {
-        Author author = null;
+    public Shipper findById(int id) {
+        Shipper shipper = null;
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FROM " + TABLE + " WHERE ")
                 .append(ID)
@@ -126,13 +103,10 @@ public class AuthorDAO extends DAO{
             if (rs.isBeforeFirst()) {
 
                 while (rs.next()) {
-                    author = new Author();
-                    author.setAutId(rs.getInt(ID));
-                    author.setAutLastName(rs.getString(LAST_NAME));
-                    author.setAutFirstName(rs.getString(FIRST_NAME));
-                    author.setAutBiography(rs.getString(BIOGRAPHY));
-                    author.setAutStatusCode(rs.getInt(STATUS_CODE));
-                    
+                    shipper = new Shipper();
+                    shipper.setShipperId(rs.getInt(ID));
+                    shipper.setShipperName(rs.getString(NAME));
+                   
                 }
             } else {
                 throw new SQLException("ResultSet was empty");
@@ -143,25 +117,19 @@ public class AuthorDAO extends DAO{
             ex.printStackTrace();
 
         }
-        return author;
+        return shipper;
     }
 
-    
-    
-    
-    
     @Override
     public Object findByName(String name) {
+        
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    
- 
-    
     @Override
     public Vector findAll() {
-        Vector<Author> authorList = new Vector<Author>();
-        Author author = null;
+        Vector<Shipper> shipperList = new Vector<Shipper>();
+        Shipper shipper = null;
 
         String query = "SELECT * FROM " + TABLE;
 
@@ -171,15 +139,10 @@ public class AuthorDAO extends DAO{
             if (rs.isBeforeFirst()) {
 
                 while (rs.next()) {
-                    author = new Author();
-                    author.setAutId(rs.getInt(ID));
-                    author.setAutLastName(rs.getString(LAST_NAME));
-                    author.setAutFirstName(rs.getString(FIRST_NAME));
-                    author.setAutBiography(rs.getString(BIOGRAPHY));
-                    author.setAutStatusCode(rs.getInt(STATUS_CODE));
-                    
-                    
-                    authorList.add(author);
+                    shipper = new Shipper();
+                    shipper.setShipperId(rs.getInt(ID));
+                    shipper.setShipperName(rs.getString(NAME));
+                    shipperList.add(shipper);
                 }
             } else {
                 throw new SQLException("ResultSet was empty");
@@ -190,16 +153,14 @@ public class AuthorDAO extends DAO{
             ex.printStackTrace();
 
         }
-        return authorList;
+        return shipperList;
     }
 
-    
-    
     @Override
-    public Vector<Author> findByCriteria(String criteria, String term) {
+    public Vector<Shipper> findByCriteria(String criteria, String term) {
 
-        Vector<Author> authorList = new Vector<Author>();
-        Author author = null;
+        Vector<Shipper> shipperList = new Vector<Shipper>();
+        Shipper shipper = null;
 
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FROM " + TABLE + " WHERE ")
@@ -216,13 +177,11 @@ public class AuthorDAO extends DAO{
             if (rs.isBeforeFirst()) {
 
                 while (rs.next()) {
-                    author = new Author();
-                    author.setAutId(rs.getInt(ID));
-                    author.setAutLastName(rs.getString(LAST_NAME));
-                    author.setAutFirstName(rs.getString(FIRST_NAME));  
-                    author.setAutBiography(rs.getString(BIOGRAPHY));
-                    author.setAutStatusCode(rs.getInt(STATUS_CODE));
-                    authorList.add(author);
+                    shipper = new Shipper();
+                    shipper.setShipperId(rs.getInt(ID));
+                    shipper.setShipperName(rs.getString(NAME));
+                    
+                    shipperList.add(shipper);
                 }
             } else {
                 throw new SQLException("ResultSet was empty");
@@ -233,27 +192,18 @@ public class AuthorDAO extends DAO{
             ex.printStackTrace();
 
         }
-        return authorList;
+        return shipperList;
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
 }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+

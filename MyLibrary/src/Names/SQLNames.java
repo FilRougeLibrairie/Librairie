@@ -166,7 +166,7 @@ public interface SQLNames {
         public static final String NAME = "staName";
     }
 
-    public static class PayementNames {
+    public static class PaymentNames {
 
         public static final String ID = "payId";
         public static final String PURCHASE_ID = "purId";
