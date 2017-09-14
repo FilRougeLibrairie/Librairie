@@ -189,7 +189,7 @@ public class AddressDAO extends DAO {
     }
 
     @Override
-    public Object findById(int id) {
+    public Address findById(int id) {
         Address address = null;
         Customer cus = null;
         StringBuffer query = new StringBuffer();
