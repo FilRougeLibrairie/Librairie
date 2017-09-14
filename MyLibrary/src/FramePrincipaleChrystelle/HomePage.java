@@ -17,18 +17,12 @@ import java.security.NoSuchAlgorithmException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import ui.JFMain;
-//import ui.JPCustomer;
 import utils.Crypto;
 
-/**
- *
- * @author Chrys
- */
+
 public class HomePage extends javax.swing.JFrame {
 
-    /**
-     * Creates new form NewJFrame
-     */
+    
     Employee loggedEmp;
     Header panel1;
     PannelCentralSelection panel2;

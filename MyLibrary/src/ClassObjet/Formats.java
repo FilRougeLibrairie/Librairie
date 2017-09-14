@@ -12,21 +12,33 @@ package ClassObjet;
 public class Formats {
     
     private String forName;
+    private int forId;
     
     //Constructor
 
     public Formats() {
     }
-    
+
+   
     //Setters
 
     public void setForName(String forName) {
         this.forName = forName;
     }
+
+    public void setForId(int forId) {
+        this.forId = forId;
+    }
+    
     //Getters
 
     public String getForName() {
         return forName;
     }
+
+    public int getForId() {
+        return forId;
+    }
+    
     
 }
