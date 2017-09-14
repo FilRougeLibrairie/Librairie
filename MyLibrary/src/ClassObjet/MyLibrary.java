@@ -18,6 +18,11 @@ public class MyLibrary {
     private String myLibPhone;
     private String myLibSiret;
     private String myLibCGU;
+    private String myLibAddNumber;
+    private String myLibAddStreetName;
+    private String myLibAddComplement;
+    private String myLibAddZipCode;
+    private String myLibAddCity;
     
     //Constructor
 
@@ -54,6 +59,27 @@ public class MyLibrary {
     public void setMyLibCGU(String myLibCGU) {
         this.myLibCGU = myLibCGU;
     }
+
+    public void setMyLibAddNumber(String myLibAddNumber) {
+        this.myLibAddNumber = myLibAddNumber;
+    }
+
+    public void setMyLibAddStreetName(String myLibAddStreetName) {
+        this.myLibAddStreetName = myLibAddStreetName;
+    }
+
+    public void setMyLibAddComplement(String myLibAddComplement) {
+        this.myLibAddComplement = myLibAddComplement;
+    }
+
+    public void setMyLibAddZipCode(String myLibAddZipCode) {
+        this.myLibAddZipCode = myLibAddZipCode;
+    }
+
+    public void setMyLibAddCity(String myLibAddCity) {
+        this.myLibAddCity = myLibAddCity;
+    }
+    
     
     
     //Getters
@@ -85,5 +111,26 @@ public class MyLibrary {
     public String getMyLibCGU() {
         return myLibCGU;
     }
+
+    public String getMyLibAddNumber() {
+        return myLibAddNumber;
+    }
+
+    public String getMyLibAddStreetName() {
+        return myLibAddStreetName;
+    }
+
+    public String getMyLibAddComplement() {
+        return myLibAddComplement;
+    }
+
+    public String getMyLibAddZipCode() {
+        return myLibAddZipCode;
+    }
+
+    public String getMyLibAddCity() {
+        return myLibAddCity;
+    }
+    
     
 }
