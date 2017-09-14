@@ -14,7 +14,6 @@ import java.util.Vector;
 public class ShippingCost {
 
     private int shipId;
-    private Vector<Shipper> shipperList;
     private String shipName;
     private Float shipCost;
 
@@ -30,13 +29,7 @@ public class ShippingCost {
         this.shipId = shipId;
     }
 
-    public Vector<Shipper> getShipperList() {
-        return shipperList;
-    }
-
-    public void setShipperList(Vector<Shipper> shipperList) {
-        this.shipperList = shipperList;
-    }
+   
 
     public String getShipName() {
         return shipName;
@@ -54,12 +47,6 @@ public class ShippingCost {
         this.shipCost = shipCost;
     }
 
-    public void addShipper(Shipper shipper){
-        shipperList.add(shipper);
-    }
-
-    public void removeShipper(Shipper shipper){
-        shipperList.remove(shipper);
-    }
+  
 
 }
