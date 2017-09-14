@@ -9,7 +9,6 @@ import ClassObjet.Customer;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Vector;
 
 /**
@@ -17,6 +16,8 @@ import java.util.Vector;
  * @author ggarvanese
  */
 public class CustomerDAO extends DAO {
+    
+    private final String TABLE = "Customer";
 
     private final String ID = CustomerNames.ID;
     private final String GENDER = CustomerNames.GENDER;
@@ -32,7 +33,7 @@ public class CustomerDAO extends DAO {
     private final String STATUS = CustomerNames.STATUS;
     private final String COMMENT = CustomerNames.COMMENT;
 
-    private String COLUMNS = GENDER + ", " + FIRST_NAME + ", " + LAST_NAME + ", "
+    private String COLUMNS_CREATE = GENDER + ", " + FIRST_NAME + ", " + LAST_NAME + ", "
             + COMPANY + ", " + EMAIL + ", " + PHONE + ", " + BIRTHDAY + ", "
             + PASSWORD + ", " + SALT + ", " + IP + ", " + STATUS + ", " + COMMENT;
 
@@ -43,8 +44,8 @@ public class CustomerDAO extends DAO {
     @Override
     public void create(Object obj) {
         Customer cus = (Customer) obj;
-        String query = "IF NOT EXISTS (SELECT * FROM CONTACT WHERE " + ID + " = '" + cus.getCusID() + "')"
-                + "INSERT INTO CONTACT (" + COLUMNS + ")"
+        String query = "IF NOT EXISTS (SELECT * FROM " + TABLE + " WHERE " + ID + " = '" + cus.getCusID() + "')"
+                + "INSERT INTO " + TABLE + " (" + COLUMNS_CREATE + ")"
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query);) {
@@ -65,7 +66,7 @@ public class CustomerDAO extends DAO {
             int result = pstmt.executeUpdate();
 
         } catch (SQLException ex) {
-            System.err.println("ERROR SAVING CONTACT : " + ex.getErrorCode() + " / " + ex.getMessage());
+            System.err.println("ERROR SAVING Object : " + ex.getErrorCode() + " / " + ex.getMessage());
             ex.getStackTrace();
         }
     }
@@ -74,7 +75,7 @@ public class CustomerDAO extends DAO {
     public void delete(Object obj) {
         int cusId = ((Customer) obj).getCusID();
         StringBuffer query = new StringBuffer();
-        query.append("SELECT * FROM Customer WHERE ")
+        query.append("SELECT * FROM " + TABLE + " WHERE ")
                 .append(ID)
                 .append(" = ")
                 .append("'" + cusId + "'");
@@ -82,15 +83,15 @@ public class CustomerDAO extends DAO {
         try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
             pstmt.executeQuery();
         } catch (SQLException ex) {
-            System.out.println("ERROR Retrieving Customer : " + ex.getMessage());
+            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
             ex.printStackTrace();
         }
     }
 
     @Override
     public void update(Object obj) {
-        Customer cus = (Customer)obj;
-        StringBuilder query = new StringBuilder("UPDATE Customer SET ");
+        Customer cus = (Customer) obj;
+        StringBuilder query = new StringBuilder("UPDATE " + TABLE + " SET ");
         query.append(GENDER).append(" = ?, ");
         query.append(FIRST_NAME).append(" = ?, ");
         query.append(LAST_NAME).append(" = ?, ");
@@ -126,7 +127,7 @@ public class CustomerDAO extends DAO {
             int result = pstmt.executeUpdate();
 
         } catch (SQLException ex) {
-            System.out.println("ERROR UPDATING CONTACT : " + ex.getMessage());
+            System.out.println("ERROR UPDATING Object : " + ex.getMessage());
             ex.printStackTrace();
 
         }
@@ -136,7 +137,7 @@ public class CustomerDAO extends DAO {
     public Customer findById(int id) {
         Customer customer = null;
         StringBuffer query = new StringBuffer();
-        query.append("SELECT * FROM Customer WHERE ")
+        query.append("SELECT * FROM " + TABLE + " WHERE ")
                 .append(ID)
                 .append(" = ")
                 .append("'" + id + "'");
@@ -168,7 +169,7 @@ public class CustomerDAO extends DAO {
             }
 
         } catch (SQLException ex) {
-            System.out.println("ERROR Retrieving Customer : " + ex.getMessage());
+            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
             ex.printStackTrace();
 
         }
@@ -185,7 +186,7 @@ public class CustomerDAO extends DAO {
         Vector<Customer> customerList = new Vector<Customer>();
         Customer customer = null;
 
-        String query = "SELECT * FROM Customer";
+        String query = "SELECT * FROM " + TABLE;
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query)) {
 
@@ -214,20 +215,21 @@ public class CustomerDAO extends DAO {
             }
 
         } catch (SQLException ex) {
-            System.out.println("ERROR Retrieving Customer : " + ex.getMessage());
+            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
             ex.printStackTrace();
 
         }
         return customerList;
     }
 
+    @Override
     public Vector<Customer> findByCriteria(String criteria, String term) {
 
         Vector<Customer> customerList = new Vector<Customer>();
         Customer customer = null;
 
         StringBuffer query = new StringBuffer();
-        query.append("SELECT * FROM Customer WHERE ")
+        query.append("SELECT * FROM " + TABLE + " WHERE ")
                 .append(criteria)
                 .append(" = ")
                 .append("'" + term + "'");
@@ -262,7 +264,7 @@ public class CustomerDAO extends DAO {
             }
 
         } catch (SQLException ex) {
-            System.out.println("ERROR Retrieving Customer : " + ex.getMessage());
+            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
             ex.printStackTrace();
 
         }

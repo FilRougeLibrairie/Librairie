@@ -84,4 +84,9 @@ public class EmployeeDAO extends DAO<Employee> {
     public Employee findByName(String name) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    @Override
+    public Vector<Employee> findByCriteria(String criteria, String term) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

@@ -94,7 +94,6 @@ public interface SQLNames {
         public static final String ID = "ediId";
         public static final String NAME = "ediName";
         public static final String PRESENTATION = "ediPresentation";
-        public static final String IP = "cusIP";
         public static final String STATUS = "ediStatusCode";
     }
 
