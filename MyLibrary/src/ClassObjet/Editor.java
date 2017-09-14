@@ -11,6 +11,7 @@ package ClassObjet;
  */
 public class Editor {
 
+    private int ediId;
     private String ediName;
     private String ediPresentation;
     private int ediStatusCode;
@@ -20,6 +21,11 @@ public class Editor {
     }
 
     //Setters
+    
+    public void setEdiId(int ediId) {
+        this.ediId = ediId;
+    }
+
     public void setEdiName(String ediName) {
         this.ediName = ediName;
     }
@@ -33,6 +39,11 @@ public class Editor {
     }
 
     //Getters
+    
+    public int getEdiId() {
+        return ediId;
+    }
+
     public String getEdiName() {
         return ediName;
     }

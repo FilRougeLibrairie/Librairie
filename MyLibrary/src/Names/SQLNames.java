@@ -145,7 +145,7 @@ public interface SQLNames {
         public static final String NAME = "offName";
         public static final String TEXT = "offText";
         public static final String START = "offDateStart";
-        public static final String END = "offDateStart";
+        public static final String END = "offDateEnd";
         public static final String DISCOUNT = "offDiscount";
         public static final String PICTURE = "offPicture";
     }
