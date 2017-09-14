@@ -5,7 +5,7 @@
  */
 package SQLS;
 
-import ClassObjet.Editor;
+import ClassObjet.Offer;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,33 +15,40 @@ import java.util.Vector;
  *
  * @author cdi312
  */
-public class EditorDAO extends DAO {
+public class OfferDAO extends DAO {
 
-    private final String TABLE = "Editor";
+    private final String TABLE = "Offer";
 
-    public final String ID = EditorNames.ID;
-    public final String NAME = EditorNames.NAME;
-    public final String PRESENTATION = EditorNames.PRESENTATION;
-    public final String STATUS = EditorNames.STATUS;
+    private final String ID = OfferNames.ID;
+    private final String NAME = OfferNames.NAME;
+    private final String TEXT = OfferNames.TEXT;
+    private final String START = OfferNames.START;
+    private final String END = OfferNames.END;
+    private final String DISCOUNT = OfferNames.DISCOUNT;
+    private final String PICTURE = OfferNames.PICTURE;
 
-    private String COLUMNS_CREATE = ID + ", " + NAME + ", " + PRESENTATION + ", " + STATUS;
+    private String COLUMNS_CREATE = ID + ", " + NAME + ", " + TEXT
+            + ", " + START + ", " + END + ", " + DISCOUNT + ", " + PICTURE;
 
-    public EditorDAO() {
+    public OfferDAO() {
         super();
     }
 
     @Override
     public void create(Object obj) {
-        Editor edi = (Editor) obj;
-        String query = "IF NOT EXISTS (SELECT * FROM " + TABLE + " WHERE " + ID + " = '" + edi.getEdiId() + "')"
+        Offer off = (Offer) obj;
+        String query = "IF NOT EXISTS (SELECT * FROM " + TABLE + " WHERE " + ID + " = '" + off.getOffId() + "')"
                 + "INSERT INTO " + TABLE + " (" + COLUMNS_CREATE + ")"
                 + "VALUES (?, ?, ?)";
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query);) {
-
-            pstmt.setString(1, edi.getEdiName());
-            pstmt.setString(2, edi.getEdiPresentation());
-            pstmt.setInt(3, edi.getEdiStatusCode());
+            pstmt.setInt(1, off.getOffId());
+            pstmt.setString(2, off.getOffName());
+            pstmt.setString(3, off.getOffText());
+            pstmt.setString(4, off.getOffDateStart());
+            pstmt.setString(5, off.getOffDateEnd());
+            pstmt.setFloat(6, off.getOffDiscount());
+            pstmt.setString(7, off.getOffPicture());
 
             int result = pstmt.executeUpdate();
 
@@ -53,12 +60,12 @@ public class EditorDAO extends DAO {
 
     @Override
     public void delete(Object obj) {
-        int ediId = ((Editor) obj).getEdiId();
+        int offId = ((Offer) obj).getOffId();
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FROM " + TABLE + " WHERE ")
                 .append(ID)
                 .append(" = ")
-                .append("'" + ediId + "'");
+                .append("'" + offId + "'");
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
             pstmt.executeQuery();
@@ -70,20 +77,26 @@ public class EditorDAO extends DAO {
 
     @Override
     public void update(Object obj) {
-        Editor edi = (Editor) obj;
+        Offer off = (Offer) obj;
         StringBuilder query = new StringBuilder("UPDATE " + TABLE + " SET ");
         query.append(NAME).append(" =?, ");
-        query.append(PRESENTATION).append(" =?, ");
-        query.append(STATUS).append(" =? ");
+        query.append(TEXT).append(" =?, ");
+        query.append(START).append(" =?, ");
+        query.append(END).append(" =?, ");
+        query.append(DISCOUNT).append(" =?, ");
+        query.append(PICTURE).append(" =? ");
 
         query.append("WHERE " + ID + " = '")
-                .append(edi.getEdiId())
+                .append(off.getOffId())
                 .append("'");
 
         try (PreparedStatement pstmt = connect.prepareStatement(query.toString());) {
-            pstmt.setString(1, edi.getEdiName());
-            pstmt.setString(2, edi.getEdiPresentation());
-            pstmt.setInt(3, edi.getEdiStatusCode());
+            pstmt.setString(1, off.getOffName());
+            pstmt.setString(2, off.getOffText());
+            pstmt.setString(3, off.getOffDateStart());
+            pstmt.setString(4, off.getOffDateEnd());
+            pstmt.setFloat(5, off.getOffDiscount());
+            pstmt.setString(6, off.getOffPicture());
 
             int result = pstmt.executeUpdate();
 
@@ -95,38 +108,38 @@ public class EditorDAO extends DAO {
 
     @Override
     public Vector findAll() {
-        Vector<Editor> editorList = new Vector<Editor>();
-        Editor editor = null;
+        Vector<Offer> offerList = new Vector<Offer>();
+        Offer offer = null;
 
         String query = "SELECT * FROM " + TABLE;
-
         try (PreparedStatement pstmt = this.connect.prepareStatement(query)) {
 
             ResultSet rs = pstmt.executeQuery();
             if (rs.isBeforeFirst()) {
 
                 while (rs.next()) {
-                    editor = new Editor();
-                    editor.setEdiId(rs.getInt(ID));
-                    editor.setEdiName(rs.getString(NAME));
-                    editor.setEdiPresentation(rs.getString(PRESENTATION));
-                    editor.setEdiStatusCode(rs.getInt(STATUS));
+                    offer = new Offer();
+                    offer.setOffId(rs.getInt(ID));
+                    offer.setOffName(rs.getString(NAME));
+                    offer.setOffText(rs.getString(TEXT));
+                    offer.setOffDateStart(rs.getString(START));
+                    offer.setOffDateEnd(rs.getString(END));
+                    offer.setOffDiscount(rs.getFloat(DISCOUNT));
+                    offer.setOffPicture(rs.getString(PICTURE));
                 }
-
             } else {
-                throw new SQLException("ResultSet was empty");
+                throw new SQLException("ResultSet was emplty");
             }
-
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
             ex.printStackTrace();
         }
-        return editorList;
+        return offerList;
     }
 
     @Override
     public Object findById(int id) {
-        Editor editor = null;
+        Offer offer = null;
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FORM " + TABLE + " WHERE ")
                 .append(ID)
@@ -140,10 +153,13 @@ public class EditorDAO extends DAO {
             if (rs.isBeforeFirst()) {
 
                 while (rs.next()) {
-                    editor.setEdiId(rs.getInt(ID));
-                    editor.setEdiName(rs.getString(NAME));
-                    editor.setEdiPresentation(rs.getString(PRESENTATION));
-                    editor.setEdiStatusCode(rs.getInt(STATUS));
+                    offer.setOffId(rs.getInt(ID));
+                    offer.setOffName(rs.getString(NAME));
+                    offer.setOffText(rs.getString(TEXT));
+                    offer.setOffDateStart(rs.getString(START));
+                    offer.setOffDateEnd(rs.getString(END));
+                    offer.setOffDiscount(rs.getFloat(DISCOUNT));
+                    offer.setOffPicture(rs.getString(PICTURE));
                 }
             } else {
                 throw new SQLException("ResultSet was empty");
@@ -152,7 +168,7 @@ public class EditorDAO extends DAO {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
             ex.printStackTrace();
         }
-        return editor;
+        return offer;
     }
 
     @Override
@@ -161,10 +177,10 @@ public class EditorDAO extends DAO {
     }
 
     @Override
-    public Vector<Editor> findByCriteria(String criteria, String term) {
+    public Vector findByCriteria(String criteria, String term) {
 
-        Vector<Editor> editorList = new Vector<Editor>();
-        Editor editor = null;
+        Vector<Offer> offerList = new Vector<Offer>();
+        Offer offer = null;
 
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FROM " + TABLE + "WHERE ")
@@ -181,11 +197,13 @@ public class EditorDAO extends DAO {
             if (rs.isBeforeFirst()) {
 
                 while (rs.next()) {
-                    editor = new Editor();
-                    editor.setEdiId(rs.getInt(ID));
-                    editor.setEdiName(rs.getString(NAME));
-                    editor.setEdiPresentation(rs.getString(PRESENTATION));
-                    editor.setEdiStatusCode(rs.getInt(STATUS));
+                    offer.setOffId(rs.getInt(ID));
+                    offer.setOffName(rs.getString(NAME));
+                    offer.setOffText(rs.getString(TEXT));
+                    offer.setOffDateStart(rs.getString(START));
+                    offer.setOffDateEnd(rs.getString(END));
+                    offer.setOffDiscount(rs.getFloat(DISCOUNT));
+                    offer.setOffPicture(rs.getString(PICTURE));
                 }
             } else {
                 throw new SQLException("ResultSet was empty");
@@ -194,6 +212,6 @@ public class EditorDAO extends DAO {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
             ex.printStackTrace();
         }
-        return editorList;
+        return offerList;  
     }
 }
