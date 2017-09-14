@@ -13,7 +13,7 @@ public class Address {
 
     private int addId;
     private Customer cusResidId;
-    private Customer cusChargerId;
+    private Customer cusChargeId;
     private String addLabel;
     private String addFirstName;
     private String addLastName;
@@ -40,8 +40,8 @@ public class Address {
         this.cusResidId = cusResidId;
     }
 
-    public void setCusChargerId(Customer cusChargerId) {
-        this.cusChargerId = cusChargerId;
+    public void setCusChargeId(Customer cusChargerId) {
+        this.cusChargeId = cusChargerId;
     }
 
     public void setAddLabel(String addLabel) {
@@ -101,8 +101,8 @@ public class Address {
         return cusResidId;
     }
 
-    public Customer getCusChargerId() {
-        return cusChargerId;
+    public Customer getCusChargeId() {
+        return cusChargeId;
     }
 
     public String getAddLabel() {
@@ -155,7 +155,7 @@ public class Address {
 
     @Override
     public String toString() {
-        return "Address{" + "addId=" + addId + ", cusResidId=" + cusResidId + ", cusChargerId=" + cusChargerId + ", addLabel=" + addLabel + ", addFirstName=" + addFirstName + ", addLastName=" + addLastName + ", addCompany=" + addCompany + ", addNumber=" + addNumber + ", addStreetType=" + addStreetType + ", addStreetName=" + addStreetName + ", addComplement=" + addComplement + ", addZipCode=" + addZipCode + ", addCity=" + addCity + ", addSecurityCode=" + addSecurityCode + ", addPhone=" + addPhone + '}';
+        return "Address{" + "addId=" + addId + ", cusResidId=" + cusResidId + ", cusChargerId=" + cusChargeId + ", addLabel=" + addLabel + ", addFirstName=" + addFirstName + ", addLastName=" + addLastName + ", addCompany=" + addCompany + ", addNumber=" + addNumber + ", addStreetType=" + addStreetType + ", addStreetName=" + addStreetName + ", addComplement=" + addComplement + ", addZipCode=" + addZipCode + ", addCity=" + addCity + ", addSecurityCode=" + addSecurityCode + ", addPhone=" + addPhone + '}';
     }
     
     
