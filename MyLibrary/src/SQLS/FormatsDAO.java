@@ -76,7 +76,7 @@ public class FormatsDAO extends DAO{
       
         Formats form = (Formats)obj;
         StringBuilder query = new StringBuilder("UPDATE Formats SET ");
-        query.append(FORNAME).append(" = ?, ");
+        query.append(FORNAME).append(" = ? ");
         
 
         query.append("WHERE " + ID + " = '")

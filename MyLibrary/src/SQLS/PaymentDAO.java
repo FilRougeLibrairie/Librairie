@@ -1,51 +1,57 @@
-
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package SQLS;
 
-
-import ClassObjet.Author;
-import Names.SQLNames.AuthorNames;
+import ClassObjet.Payment;
+import ClassObjet.Purchase;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
 
+/**
+ *
+ * @author cdi303
+ */
+public class PaymentDAO extends DAO{
+    
+    
+    
+    
+     private final String TABLE = "Payment";
 
+    private final String ID = PaymentNames.ID;
+    private final String PURCHASE_ID = PaymentNames.PURCHASE_ID;  
+    private final String VALIDATION = PaymentNames.VALIDATION;
+    private final String CHOICE= PaymentNames.CHOICE;
+    private final String DATE = PaymentNames.DATE;
+    
 
-public class AuthorDAO extends DAO{
-    
-    
-    
-     private final String TABLE = "Author";
-    private final String ID = AuthorNames.ID;   
-    private final String LAST_NAME = AuthorNames.LAST_NAME;
-    private final String FIRST_NAME = AuthorNames.FIRST_NAME;
-    private final String BIOGRAPHY = AuthorNames.BIOGRAPHY; 
-    private final String STATUS_CODE = AuthorNames.STATUS_CODE;
-    
-    
-   
-    private String COLUMNS_CREATE = LAST_NAME + ", " + FIRST_NAME + ", " + BIOGRAPHY + ", "
-            + STATUS_CODE;
+    private String COLUMNS_CREATE = PURCHASE_ID + ", " + VALIDATION  + ", " + CHOICE + ", "
+            + DATE;
 
-    public AuthorDAO() {
-       super(); 
+    public PaymentDAO() {
+        
+        super();
     }
+
     
- 
     @Override
     public void create(Object obj) {
-        Author aut = (Author) obj;
-        String query = "IF NOT EXISTS (SELECT * FROM " + TABLE + " WHERE " + ID + " = '" + aut.getAutId() + "')"
+        Payment pay = (Payment) obj;
+        String query = "IF NOT EXISTS (SELECT * FROM " + TABLE + " WHERE " + ID + " = '" + pay.getPayId() + "')"
                 + "INSERT INTO " + TABLE + " (" + COLUMNS_CREATE + ")"
                 + "VALUES (?, ?, ?, ?)";
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query);) {
 
-            pstmt.setString(1, aut.getAutLastName());
-            pstmt.setString(2, aut.getAutFirstName());
-            pstmt.setString(3, aut.getAutBiography());
-            pstmt.setInt(4, aut.getAutStatusCode());
-            
+            pstmt.setInt(1, pay.getPurId().getPurId());
+            pstmt.setBoolean(2, pay.getPayValidate());
+            pstmt.setString(3, pay.getPayChoice());
+            pstmt.setString(4, pay.getPayDate());
 
             int result = pstmt.executeUpdate();
 
@@ -55,16 +61,14 @@ public class AuthorDAO extends DAO{
         }
     }
 
-    
-    
     @Override
     public void delete(Object obj) {
-        int autId = ((Author) obj).getAutId();
+        int payId = ((Payment) obj).getPayId();
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FROM " + TABLE + " WHERE ")
                 .append(ID)
                 .append(" = ")
-                .append("'" + autId + "'");
+                .append("'" + payId + "'");
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
             pstmt.executeQuery();
@@ -74,32 +78,26 @@ public class AuthorDAO extends DAO{
         }
     }
 
+    
     @Override
     public void update(Object obj) {
-        Author aut = (Author) obj;
+        Payment pay = (Payment) obj;
         StringBuilder query = new StringBuilder("UPDATE " + TABLE + " SET ");
-        
-        
-        
-        
-        query.append(LAST_NAME).append(" = ?, ");
-        query.append(FIRST_NAME).append(" = ?, ");
-        query.append(LAST_NAME).append(" = ?, ");
-        query.append(BIOGRAPHY).append(" = ?, ");
-        query.append(STATUS_CODE).append(" = ? ");
-       
+        query.append(PURCHASE_ID).append(" = ?, ");
+        query.append(VALIDATION).append(" = ?, ");
+        query.append(CHOICE ).append(" = ?, ");
+        query.append(DATE).append(" = ? ");
 
         query.append("WHERE " + ID + " = '")
-                .append(aut.getAutId())
+                .append(pay.getPayId())
                 .append("'");
 
         try (PreparedStatement pstmt = connect.prepareStatement(query.toString());) {
 
-            pstmt.setString(1, aut.getAutLastName());
-            pstmt.setString(2, aut.getAutFirstName());
-            pstmt.setString(3, aut.getAutBiography());
-            pstmt.setInt(4, aut.getAutStatusCode());
-            
+            pstmt.setInt(1, pay.getPurId().getPurId());
+            pstmt.setBoolean(2, pay.getPayValidate());
+            pstmt.setString(3, pay.getPayChoice());
+            pstmt.setString(4, pay.getPayDate());
 
             int result = pstmt.executeUpdate();
 
@@ -111,8 +109,8 @@ public class AuthorDAO extends DAO{
     }
 
     @Override
-    public Author findById(int id) {
-        Author author = null;
+    public Payment findById(int id) {
+        Payment payment = null;
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FROM " + TABLE + " WHERE ")
                 .append(ID)
@@ -126,13 +124,15 @@ public class AuthorDAO extends DAO{
             if (rs.isBeforeFirst()) {
 
                 while (rs.next()) {
-                    author = new Author();
-                    author.setAutId(rs.getInt(ID));
-                    author.setAutLastName(rs.getString(LAST_NAME));
-                    author.setAutFirstName(rs.getString(FIRST_NAME));
-                    author.setAutBiography(rs.getString(BIOGRAPHY));
-                    author.setAutStatusCode(rs.getInt(STATUS_CODE));
-                    
+                    payment = new Payment();
+                    payment.setPayId(rs.getInt(ID));
+                    Purchase pur = new Purchase();
+                    pur.setPurId(rs.getInt(PURCHASE_ID));
+                    payment.setPurId(pur);
+                    payment.setPayValidate(rs.getBoolean(VALIDATION));
+                    payment.setPayChoice(rs.getString(CHOICE));
+                    payment.setPayDate(rs.getString(ID));
+                  
                 }
             } else {
                 throw new SQLException("ResultSet was empty");
@@ -143,11 +143,9 @@ public class AuthorDAO extends DAO{
             ex.printStackTrace();
 
         }
-        return author;
+        return payment;
     }
-
-    
-    
+  
     
     
     @Override
@@ -155,13 +153,10 @@ public class AuthorDAO extends DAO{
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    
- 
-    
     @Override
     public Vector findAll() {
-        Vector<Author> authorList = new Vector<Author>();
-        Author author = null;
+        Vector<Payment> paymentList = new Vector<Payment>();
+        Payment payment = null;
 
         String query = "SELECT * FROM " + TABLE;
 
@@ -171,15 +166,15 @@ public class AuthorDAO extends DAO{
             if (rs.isBeforeFirst()) {
 
                 while (rs.next()) {
-                    author = new Author();
-                    author.setAutId(rs.getInt(ID));
-                    author.setAutLastName(rs.getString(LAST_NAME));
-                    author.setAutFirstName(rs.getString(FIRST_NAME));
-                    author.setAutBiography(rs.getString(BIOGRAPHY));
-                    author.setAutStatusCode(rs.getInt(STATUS_CODE));
-                    
-                    
-                    authorList.add(author);
+                    payment = new Payment();
+                    payment.setPayId(rs.getInt(ID));
+                    Purchase pur = new Purchase();
+                    pur.setPurId(rs.getInt(PURCHASE_ID));
+                    payment.setPurId(pur);
+                    payment.setPayValidate(rs.getBoolean(VALIDATION));
+                    payment.setPayChoice(rs.getString(CHOICE));
+                    payment.setPayDate(rs.getString(DATE));
+                    paymentList.add(payment);
                 }
             } else {
                 throw new SQLException("ResultSet was empty");
@@ -190,16 +185,14 @@ public class AuthorDAO extends DAO{
             ex.printStackTrace();
 
         }
-        return authorList;
+        return paymentList;
     }
 
-    
-    
     @Override
-    public Vector<Author> findByCriteria(String criteria, String term) {
+    public Vector<Payment> findByCriteria(String criteria, String term) {
 
-        Vector<Author> authorList = new Vector<Author>();
-        Author author = null;
+        Vector<Payment> paymentList = new Vector<Payment>();
+        Payment payment = null;
 
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FROM " + TABLE + " WHERE ")
@@ -216,13 +209,15 @@ public class AuthorDAO extends DAO{
             if (rs.isBeforeFirst()) {
 
                 while (rs.next()) {
-                    author = new Author();
-                    author.setAutId(rs.getInt(ID));
-                    author.setAutLastName(rs.getString(LAST_NAME));
-                    author.setAutFirstName(rs.getString(FIRST_NAME));  
-                    author.setAutBiography(rs.getString(BIOGRAPHY));
-                    author.setAutStatusCode(rs.getInt(STATUS_CODE));
-                    authorList.add(author);
+                     payment = new Payment();
+                    payment.setPayId(rs.getInt(ID));
+                    Purchase pur = new Purchase();
+                    pur.setPurId(rs.getInt(PURCHASE_ID));
+                    payment.setPurId(pur);
+                    payment.setPayValidate(rs.getBoolean(VALIDATION));
+                    payment.setPayChoice(rs.getString(CHOICE));
+                    payment.setPayDate(rs.getString(DATE));
+                    paymentList.add(payment);
                 }
             } else {
                 throw new SQLException("ResultSet was empty");
@@ -233,27 +228,31 @@ public class AuthorDAO extends DAO{
             ex.printStackTrace();
 
         }
-        return authorList;
+        return paymentList;
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
 }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
