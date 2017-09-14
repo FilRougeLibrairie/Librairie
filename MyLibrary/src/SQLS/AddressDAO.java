@@ -1,11 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package SQLS;
 
 import ClassObjet.Address;
+import ClassObjet.Customer;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -148,6 +145,7 @@ public class AddressDAO extends DAO {
     public Vector findAll() {
         Vector<Address> addressList = new Vector<Address>();
         Address address = null;
+        Customer cus = null;
 
         String query = "SELECT * FROM " + TABLE;
 
@@ -158,9 +156,12 @@ public class AddressDAO extends DAO {
 
                 while (rs.next()) {
                     address = new Address();
+                    cus = new Customer();
+
                     address.setAddId(rs.getInt(ID));
-                    address.setCusResidId.(rs.getString(CUST_RESIDENCE_ID));
-                    address.setCusChargeId(rs.getString(CUST_CHARGE_ID));
+                    cus.setCusID(rs.getInt(CUST_RESIDENCE_ID));
+                    address.setCusResidId(cus);
+                    address.setCusChargeId(cus);
                     address.setAddLabel(rs.getString(LABEL));
                     address.setAddFirstName(rs.getString(FIRST_NAME));
                     address.setAddLastName(rs.getString(LAST_NAME));
@@ -169,11 +170,11 @@ public class AddressDAO extends DAO {
                     address.setAddStreetType(rs.getString(STREET_TYPE));
                     address.setAddStreetName(rs.getString(STREET_NAME));
                     address.setAddComplement(rs.getString(COMPLEMENT));
-                    address.setAddZipCode(rs.getInt(ZIP_CODE));
+                    address.setAddZipCode(rs.getString(ZIP_CODE));
                     address.setAddCity(rs.getString(CITY));
                     address.setAddSecurityCode(rs.getString(SECURITY_CODE));
                     address.setAddPhone(rs.getString(PHONE));
-                    customerList.add(customer);
+                    addressList.add(address);
                 }
             } else {
                 throw new SQLException("ResultSet was empty");
@@ -184,12 +185,56 @@ public class AddressDAO extends DAO {
             ex.printStackTrace();
 
         }
-        return customerList;
+        return addressList;
     }
 
     @Override
     public Object findById(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Address address = null;
+        Customer cus = null;
+        StringBuffer query = new StringBuffer();
+        query.append("SELECT * FROM " + TABLE + " WHERE ")
+                .append(ID)
+                .append(" = ")
+                .append("'" + id + "'");
+
+        try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.isBeforeFirst()) {
+
+                while (rs.next()) {
+                    address = new Address();
+                    cus = new Customer();
+
+                    address.setAddId(rs.getInt(ID));
+                    cus.setCusID(rs.getInt(CUST_RESIDENCE_ID));
+                    address.setCusResidId(cus);
+                    address.setCusChargeId(cus);
+                    address.setAddLabel(rs.getString(LABEL));
+                    address.setAddFirstName(rs.getString(FIRST_NAME));
+                    address.setAddLastName(rs.getString(LAST_NAME));
+                    address.setAddCompany(rs.getString(COMPANY));
+                    address.setAddNumber(rs.getString(STREET_NUMBER));
+                    address.setAddStreetType(rs.getString(STREET_TYPE));
+                    address.setAddStreetName(rs.getString(STREET_NAME));
+                    address.setAddComplement(rs.getString(COMPLEMENT));
+                    address.setAddZipCode(rs.getString(ZIP_CODE));
+                    address.setAddCity(rs.getString(CITY));
+                    address.setAddSecurityCode(rs.getString(SECURITY_CODE));
+                    address.setAddPhone(rs.getString(PHONE));
+                }
+            } else {
+                throw new SQLException("ResultSet was empty");
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
+            ex.printStackTrace();
+
+        }
+        return address;
     }
 
     @Override
@@ -199,7 +244,56 @@ public class AddressDAO extends DAO {
 
     @Override
     public Vector findByCriteria(String criteria, String term) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Vector<Address> addressList = new Vector<Address>();
+        Customer cus = null;
+        Address address = null;
+
+        StringBuffer query = new StringBuffer();
+        query.append("SELECT * FROM " + TABLE + " WHERE ")
+                .append(criteria)
+                .append(" = ")
+                .append("'" + term + "'");
+
+        System.out.println();
+
+        try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.isBeforeFirst()) {
+
+                while (rs.next()) {
+                    address = new Address();
+                    cus = new Customer();
+
+                    address.setAddId(rs.getInt(ID));
+                    cus.setCusID(rs.getInt(CUST_RESIDENCE_ID));
+                    address.setCusResidId(cus);
+                    address.setCusChargeId(cus);
+                    address.setAddLabel(rs.getString(LABEL));
+                    address.setAddFirstName(rs.getString(FIRST_NAME));
+                    address.setAddLastName(rs.getString(LAST_NAME));
+                    address.setAddCompany(rs.getString(COMPANY));
+                    address.setAddNumber(rs.getString(STREET_NUMBER));
+                    address.setAddStreetType(rs.getString(STREET_TYPE));
+                    address.setAddStreetName(rs.getString(STREET_NAME));
+                    address.setAddComplement(rs.getString(COMPLEMENT));
+                    address.setAddZipCode(rs.getString(ZIP_CODE));
+                    address.setAddCity(rs.getString(CITY));
+                    address.setAddSecurityCode(rs.getString(SECURITY_CODE));
+                    address.setAddPhone(rs.getString(PHONE));
+                    addressList.add(address);
+                }
+            } else {
+                throw new SQLException("ResultSet was empty");
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
+            ex.printStackTrace();
+
+        }
+        return addressList;
     }
 
 }
