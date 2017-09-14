@@ -20,7 +20,7 @@ public class KeywordsDAO extends DAO {
     public void create(Object obj) {
         Keywords kw = (Keywords) obj;
         String query = "IF NOT EXISTS (SELECT * FROM KEYWORDS')"
-                + "INSERT INTO KEYNAME (" + COLUMNS + ")"
+                + "INSERT INTO KEYWORDS (" + COLUMNS + ")"
                 + "VALUES (?)";
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query);) {
@@ -127,7 +127,7 @@ public class KeywordsDAO extends DAO {
                 while (rs.next()) {
                     kw = new Keywords();
                     kw.setKeyName(rs.getString(NAME));
-                    
+                    keywordsList.add(kw);
                 }
             } else {
                 throw new SQLException("ResultSet was empty");

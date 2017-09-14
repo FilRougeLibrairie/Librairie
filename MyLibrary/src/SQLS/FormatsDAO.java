@@ -1,71 +1,39 @@
 
 package SQLS;
 
+import ClassObjet.Formats;
 import Names.SQLNames.FormatsNames;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Vector;
 
 
-public class FormatsDAO {
+public class FormatsDAO extends DAO{
     private final String ID = FormatsNames.ID;
     private final String FORNAME = FormatsNames.NAME;
    
     
-    private String COLUMNS = ID + ", " + FORNAME ;
-}
-
-
-
-
-
-
-
-
-
-public class CustomerDAO extends DAO {
-
-    private final String ID = CustomerNames.ID;
-    private final String GENDER = CustomerNames.GENDER;
-    private final String FIRST_NAME = CustomerNames.FIRST_NAME;
-    private final String LAST_NAME = CustomerNames.LAST_NAME;
-    private final String COMPANY = CustomerNames.COMPANY;
-    private final String EMAIL = CustomerNames.EMAIL;
-    private final String PHONE = CustomerNames.PHONE;
-    private final String BIRTHDAY = CustomerNames.BIRTHDAY;
-    private final String PASSWORD = CustomerNames.PASSWORD;
-    private final String SALT = CustomerNames.SALT;
-    private final String IP = CustomerNames.IP;
-    private final String STATUS = CustomerNames.STATUS;
-    private final String COMMENT = CustomerNames.COMMENT;
-
-    private String COLUMNS = GENDER + ", " + FIRST_NAME + ", " + LAST_NAME + ", "
-            + COMPANY + ", " + EMAIL + ", " + PHONE + ", " + BIRTHDAY + ", "
-            + PASSWORD + ", " + SALT + ", " + IP + ", " + STATUS + ", " + COMMENT;
-
-    public CustomerDAO() {
+    private String COLUMNS =  FORNAME ;
+    
+    
+    public FormatsDAO() {
         super();
     }
-
-    @Override
+    
+   
+    
+       @Override
     public void create(Object obj) {
-        Customer cus = (Customer) obj;
-        String query = "IF NOT EXISTS (SELECT * FROM CONTACT WHERE " + ID + " = '" + cus.getCusID() + "')"
-                + "INSERT INTO CONTACT (" + COLUMNS + ")"
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        Formats form = (Formats) obj;
+        String query = "IF NOT EXISTS (SELECT * FROM FORMATS WHERE " + ID + " = '" + form.getForId() + "')"
+                + "INSERT INTO FORMATS (" + COLUMNS + ")"
+                + "VALUES (?)";
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query);) {
 
-            pstmt.setString(1, cus.getCusGender());
-            pstmt.setString(2, cus.getCusFirstName());
-            pstmt.setString(3, cus.getCusLastName());
-            pstmt.setString(4, cus.getCusOrganisationName());
-            pstmt.setString(5, cus.getCusEmail());
-            pstmt.setString(6, cus.getCusPhoneNumber());
-            pstmt.setString(7, cus.getCusDateOfBirth());
-            pstmt.setString(8, cus.getCusPassword());
-            pstmt.setString(9, cus.getCusSalt());
-            pstmt.setString(10, cus.getCusIP());
-            pstmt.setInt(11, cus.getCusStatus());
-            pstmt.setString(12, cus.getCusComment());
-
+            pstmt.setString(1, form.getForName());
+           
             int result = pstmt.executeUpdate();
 
         } catch (SQLException ex) {
@@ -74,14 +42,21 @@ public class CustomerDAO extends DAO {
         }
     }
 
+    
+    
+    
+    
+    
     @Override
     public void delete(Object obj) {
-        int cusId = ((Customer) obj).getCusID();
+       
+    
+        int formId = ((Formats) obj).getForId();
         StringBuffer query = new StringBuffer();
-        query.append("SELECT * FROM Customer WHERE ")
+        query.append("SELECT * FROM Formats WHERE ")
                 .append(ID)
                 .append(" = ")
-                .append("'" + cusId + "'");
+                .append("'" + formId + "'");
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
             pstmt.executeQuery();
@@ -89,43 +64,29 @@ public class CustomerDAO extends DAO {
             System.out.println("ERROR Retrieving Customer : " + ex.getMessage());
             ex.printStackTrace();
         }
+ 
+    
     }
 
+    
+    
     @Override
     public void update(Object obj) {
-        Customer cus = (Customer)obj;
-        StringBuilder query = new StringBuilder("UPDATE Customer SET ");
-        query.append(GENDER).append(" = ?, ");
-        query.append(FIRST_NAME).append(" = ?, ");
-        query.append(LAST_NAME).append(" = ?, ");
-        query.append(COMPANY).append(" = ?, ");
-        query.append(EMAIL).append(" = ?, ");
-        query.append(PHONE).append(" = ?, ");
-        query.append(BIRTHDAY).append(" = ?, ");
-        query.append(PASSWORD).append(" = ?, ");
-        query.append(SALT).append(" = ?, ");
-        query.append(IP).append(" = ?, ");
-        query.append(STATUS).append(" = ?, ");
-        query.append(COMMENT).append(" = ?, ");
+ 
+      
+        Formats form = (Formats)obj;
+        StringBuilder query = new StringBuilder("UPDATE Formats SET ");
+        query.append(FORNAME).append(" = ?, ");
+        
 
         query.append("WHERE " + ID + " = '")
-                .append(cus.getCusID())
+                .append(form.getForId())
                 .append("'");
 
         try (PreparedStatement pstmt = connect.prepareStatement(query.toString());) {
 
-            pstmt.setString(1, cus.getCusFirstName());
-            pstmt.setString(2, cus.getCusLastName());
-            pstmt.setString(3, cus.getCusEmail());
-            pstmt.setString(4, cus.getCusPhoneNumber());
-            pstmt.setString(5, cus.getCusGender());
-            pstmt.setString(6, cus.getCusDateOfBirth());
-            pstmt.setString(7, cus.getCusOrganisationName());
-            pstmt.setString(8, cus.getCusPassword());
-            pstmt.setString(9, cus.getCusSalt());
-            pstmt.setInt(10, cus.getCusStatus());
-            pstmt.setString(11, cus.getCusComment());
-            pstmt.setString(12, cus.getCusIP());
+            pstmt.setString(1, form.getForName());
+            
 
             int result = pstmt.executeUpdate();
 
@@ -135,37 +96,27 @@ public class CustomerDAO extends DAO {
 
         }
     }
+    
+ 
 
     @Override
-    public Customer findById(int id) {
-        Customer customer = null;
+    public Object findById(int id) {   
+        Formats form = null;
         StringBuffer query = new StringBuffer();
-        query.append("SELECT * FROM Customer WHERE ")
+        query.append("SELECT * FROM FORMATS WHERE ")
                 .append(ID)
                 .append(" = ")
                 .append("'" + id + "'");
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
-
             ResultSet rs = pstmt.executeQuery();
 
             if (rs.isBeforeFirst()) {
-
                 while (rs.next()) {
-                    customer = new Customer();
-                    customer.setCusID(rs.getInt(ID));
-                    customer.setCusGender(rs.getString(GENDER));
-                    customer.setCusFirstName(rs.getString(FIRST_NAME));
-                    customer.setCusLastName(rs.getString(LAST_NAME));
-                    customer.setCusOrganisationName(rs.getString(COMPANY));
-                    customer.setCusEmail(rs.getString(EMAIL));
-                    customer.setCusPhoneNumber(rs.getString(PHONE));
-                    customer.setCusDateOfBirth(rs.getString(BIRTHDAY));
-                    customer.setCusPassword(rs.getString(PASSWORD));
-                    customer.setCusSalt(rs.getString(SALT));
-                    customer.setCusIP(rs.getString(IP));
-                    customer.setCusStatus(rs.getInt(STATUS));
-                    customer.setCusComment(rs.getString(COMMENT));
+                    form = new Formats();
+                    form.setForId(rs.getInt(ID));
+                    form.setForName(rs.getString(FORNAME));
+                    
                 }
             } else {
                 throw new SQLException("ResultSet was empty");
@@ -176,20 +127,20 @@ public class CustomerDAO extends DAO {
             ex.printStackTrace();
 
         }
-        return customer;
+        return form;
     }
-
-    @Override
-    public Object findByName(String name) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+        
+   
+    
+    
+    ////////////////////////
 
     @Override
     public Vector findAll() {
-        Vector<Customer> customerList = new Vector<Customer>();
-        Customer customer = null;
+        Vector<Formats> formatsList = new Vector<Formats>();
+        Formats format = null;
 
-        String query = "SELECT * FROM Customer";
+        String query = "SELECT * FROM FORMATS";
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query)) {
 
@@ -197,21 +148,11 @@ public class CustomerDAO extends DAO {
             if (rs.isBeforeFirst()) {
 
                 while (rs.next()) {
-                    customer = new Customer();
-                    customer.setCusID(rs.getInt(ID));
-                    customer.setCusGender(rs.getString(GENDER));
-                    customer.setCusFirstName(rs.getString(FIRST_NAME));
-                    customer.setCusLastName(rs.getString(LAST_NAME));
-                    customer.setCusOrganisationName(rs.getString(COMPANY));
-                    customer.setCusEmail(rs.getString(EMAIL));
-                    customer.setCusPhoneNumber(rs.getString(PHONE));
-                    customer.setCusDateOfBirth(rs.getString(BIRTHDAY));
-                    customer.setCusPassword(rs.getString(PASSWORD));
-                    customer.setCusSalt(rs.getString(SALT));
-                    customer.setCusIP(rs.getString(IP));
-                    customer.setCusStatus(rs.getInt(STATUS));
-                    customer.setCusComment(rs.getString(COMMENT));
-                    customerList.add(customer);
+                    format = new Formats();
+                    format.setForId(rs.getInt(ID));
+                    format.setForName(rs.getString(FORNAME));
+                    
+                    formatsList.add(format);
                 }
             } else {
                 throw new SQLException("ResultSet was empty");
@@ -222,16 +163,19 @@ public class CustomerDAO extends DAO {
             ex.printStackTrace();
 
         }
-        return customerList;
+        return formatsList;
     }
 
-    public Vector<Customer> findByCriteria(String criteria, String term) {
+  
+    
+    
+    public Vector<Formats> findByCriteria(String criteria, String term) {
 
-        Vector<Customer> customerList = new Vector<Customer>();
-        Customer customer = null;
+        Vector<Formats> formatsList = new Vector<Formats>();
+        Formats format = null;
 
         StringBuffer query = new StringBuffer();
-        query.append("SELECT * FROM Customer WHERE ")
+        query.append("SELECT * FROM Formats WHERE ")
                 .append(criteria)
                 .append(" = ")
                 .append("'" + term + "'");
@@ -245,21 +189,10 @@ public class CustomerDAO extends DAO {
             if (rs.isBeforeFirst()) {
 
                 while (rs.next()) {
-                    customer = new Customer();
-                    customer.setCusID(rs.getInt(ID));
-                    customer.setCusGender(rs.getString(GENDER));
-                    customer.setCusFirstName(rs.getString(FIRST_NAME));
-                    customer.setCusLastName(rs.getString(LAST_NAME));
-                    customer.setCusOrganisationName(rs.getString(COMPANY));
-                    customer.setCusEmail(rs.getString(EMAIL));
-                    customer.setCusPhoneNumber(rs.getString(PHONE));
-                    customer.setCusDateOfBirth(rs.getString(BIRTHDAY));
-                    customer.setCusPassword(rs.getString(PASSWORD));
-                    customer.setCusSalt(rs.getString(SALT));
-                    customer.setCusIP(rs.getString(IP));
-                    customer.setCusStatus(rs.getInt(STATUS));
-                    customer.setCusComment(rs.getString(COMMENT));
-                    customerList.add(customer);
+                    format = new Formats();
+                    format.setForId(rs.getInt(ID));
+                    format.setForName(rs.getString(FORNAME));
+                    formatsList.add(format);
                 }
             } else {
                 throw new SQLException("ResultSet was empty");
@@ -270,6 +203,49 @@ public class CustomerDAO extends DAO {
             ex.printStackTrace();
 
         }
-        return customerList;
+        return formatsList;
+    }
+
+    @Override
+    public Object findByName(String forName) {
+        
+        
+        
+          Formats form = null;
+        StringBuffer query = new StringBuffer();
+        query.append("SELECT * FROM FORMATS WHERE ")
+                .append(FORNAME)
+                .append(" = ")
+                .append("'" + forName + "'");
+
+        try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.isBeforeFirst()) {
+
+                while (rs.next()) {
+                    form = new Formats();
+                    form.setForName(rs.getString(FORNAME));
+
+                }
+            } else {
+                throw new SQLException("ResultSet was empty");
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("ERROR Retrieving Customer : " + ex.getMessage());
+            ex.printStackTrace();
+
+        }
+        return form;
+        
+        
+        
+        
+        
+        
+        
+        
     }
 }
