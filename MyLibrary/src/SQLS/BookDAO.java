@@ -20,7 +20,7 @@ public class BookDAO extends DAO {
 
     private final String ISBN_13 = BookNames.ISBN_13;
     private final String VAT_CODE = BookNames.VAT_CODE;
-    private final String EDITOR_CODE = BookNames.EDITOR_CODE;
+    private final String EDITOR_ID = BookNames.EDITOR_ID;
     private final String TITLE = BookNames.TITLE;
     private final String SUBTITLE = BookNames.SUBTITLE;
     private final String PUBLICATION_YEAR = BookNames.PUBLICATION_YEAR;
@@ -35,13 +35,13 @@ public class BookDAO extends DAO {
 
     Vector<Book> bookList;
     private Book book;
-    private Vat vatCode;
-    private Editor ediId;
-    private BookLanguage booLangCode;
+    private Vat vat;
+    private Editor editor;
+    private BookLanguage language;
     private Formats format;
 
     private String COLUMNS_CREATE = ISBN_13 + ", " + VAT_CODE + ", "
-            + EDITOR_CODE + ", " + TITLE + ", " + SUBTITLE + ", "
+            + EDITOR_ID + ", " + TITLE + ", " + SUBTITLE + ", "
             + PUBLICATION_YEAR + ", " + PRICE_HT + ", " + RESUME + ", "
             + QUANTITY + ", " + STATUS + ", " + FRONT_COVER + ", "
             + PAGE_NUMBER + ", " + LANGUAGE_ID + ", " + FORMAT_ID;
@@ -65,7 +65,7 @@ public class BookDAO extends DAO {
             pstmt.setString(4, book.getBooTitle());
             pstmt.setString(5, book.getBooSubtitle());
             pstmt.setString(6, book.getBooPublishYear());
-            pstmt.setInt(7, book.getBooPriceHT());
+            pstmt.setFloat(7, book.getBooPriceHT());
             pstmt.setString(8, book.getBooResume());
             pstmt.setInt(9, book.getBooQuantity());
             pstmt.setInt(10, book.getBooStatus());
@@ -104,7 +104,7 @@ public class BookDAO extends DAO {
         book = (Book) obj;
         StringBuilder query = new StringBuilder("UPDATE " + TABLE + " SET ");
         query.append(VAT_CODE).append(" = ?, ");
-        query.append(EDITOR_CODE).append(" = ?, ");
+        query.append(EDITOR_ID).append(" = ?, ");
         query.append(TITLE).append(" = ?, ");
         query.append(SUBTITLE).append(" = ?, ");
         query.append(PUBLICATION_YEAR).append(" = ? ");
@@ -128,7 +128,7 @@ public class BookDAO extends DAO {
             pstmt.setString(3, book.getBooTitle());
             pstmt.setString(4, book.getBooSubtitle());
             pstmt.setString(5, book.getBooPublishYear());
-            pstmt.setInt(6, book.getBooPriceHT());
+            pstmt.setFloat(6, book.getBooPriceHT());
             pstmt.setString(7, book.getBooResume());
             pstmt.setInt(8, book.getBooQuantity());
             pstmt.setInt(9, book.getBooStatus());
@@ -150,9 +150,9 @@ public class BookDAO extends DAO {
     public Vector findAll() {
         bookList = new Vector<Book>();
         book = null;
-        vatCode = null;
-        ediId = null;
-        booLangCode = null;
+        vat = null;
+        editor = null;
+        language = null;
         format = null;
 
         String query = "SELECT * FROM " + TABLE;
@@ -164,15 +164,29 @@ public class BookDAO extends DAO {
 
                 while (rs.next()) {
                     book = new Book();
-                    vatCode = new Vat();
-                    ediId = new Editor();
-                    booLangCode = new BookLanguage();
+                    vat = new Vat();
+                    editor = new Editor();
+                    language = new BookLanguage();
                     format = new Formats();
-                    
+
                     book.setBooIsbn13(rs.getString(ISBN_13));
-                    
-                    //////   RUNNING  ///////////
-                    
+                    vat.setVatCode(rs.getInt(VAT_CODE));
+                    book.setVatCode(vat);
+                    editor.setEdiId(rs.getInt(EDITOR_ID));
+                    book.setEdiId(editor);
+                    book.setBooTitle(rs.getString(TITLE));
+                    book.setBooSubtitle(rs.getString(SUBTITLE));
+                    book.setBooPublishYear(rs.getString(PUBLICATION_YEAR));
+                    book.setBooPriceHT(rs.getFloat(PRICE_HT));
+                    book.setBooResume(rs.getString(RESUME));
+                    book.setBooQuantity(rs.getInt(QUANTITY));
+                    book.setBooStatus(rs.getInt(STATUS));
+                    book.setBooFrontCover(rs.getString(FRONT_COVER));
+                    book.setBooPageNumber(rs.getInt(PAGE_NUMBER));
+                    language.setBooLangCode(rs.getInt(LANGUAGE_ID));
+                    book.setBooLangCode(language);
+                    format.setForId(rs.getInt(FORMAT_ID));
+                    book.setFormat(format);
 
                     bookList.add(book);
                 }
@@ -189,18 +203,129 @@ public class BookDAO extends DAO {
     }
 
     @Override
-    public Object findById(int id) {
+    public Book find(int id) {
+        book = null;
+        vat = null;
+        editor = null;
+        language = null;
+        format = null;
+        StringBuffer query = new StringBuffer();
+        query.append("SELECT * FROM " + TABLE + " WHERE ")
+                .append(ISBN_13)
+                .append(" = ")
+                .append("'" + id + "'");
+
+        try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.isBeforeFirst()) {
+
+                while (rs.next()) {
+                    book = new Book();
+                    vat = new Vat();
+                    editor = new Editor();
+                    language = new BookLanguage();
+                    format = new Formats();
+
+                    book.setBooIsbn13(rs.getString(ISBN_13));
+                    vat.setVatCode(rs.getInt(VAT_CODE));
+                    book.setVatCode(vat);
+                    editor.setEdiId(rs.getInt(EDITOR_ID));
+                    book.setEdiId(editor);
+                    book.setBooTitle(rs.getString(TITLE));
+                    book.setBooSubtitle(rs.getString(SUBTITLE));
+                    book.setBooPublishYear(rs.getString(PUBLICATION_YEAR));
+                    book.setBooPriceHT(rs.getFloat(PRICE_HT));
+                    book.setBooResume(rs.getString(RESUME));
+                    book.setBooQuantity(rs.getInt(QUANTITY));
+                    book.setBooStatus(rs.getInt(STATUS));
+                    book.setBooFrontCover(rs.getString(FRONT_COVER));
+                    book.setBooPageNumber(rs.getInt(PAGE_NUMBER));
+                    language.setBooLangCode(rs.getInt(LANGUAGE_ID));
+                    book.setBooLangCode(language);
+                    format.setForId(rs.getInt(FORMAT_ID));
+                    book.setFormat(format);
+
+                }
+            } else {
+                throw new SQLException("ResultSet was empty");
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
+            ex.printStackTrace();
+
+        }
+        return book;
+    }
+
+    @Override
+    public Object find(String name) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object findByName(String name) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    public Vector findByColumn(String column, String term) {
+        bookList = new Vector<Book>();
+        book = null;
+        vat = null;
+        editor = null;
+        language = null;
+        format = null;
 
-    @Override
-    public Vector findByCriteria(String criteria, String term) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        StringBuffer query = new StringBuffer();
+        query.append("SELECT * FROM " + TABLE + " WHERE ")
+                .append(column)
+                .append(" = ")
+                .append("'" + term + "'");
+
+        System.out.println();
+
+        try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.isBeforeFirst()) {
+
+                while (rs.next()) {
+                   book = new Book();
+                    vat = new Vat();
+                    editor = new Editor();
+                    language = new BookLanguage();
+                    format = new Formats();
+
+                    book.setBooIsbn13(rs.getString(ISBN_13));
+                    vat.setVatCode(rs.getInt(VAT_CODE));
+                    book.setVatCode(vat);
+                    editor.setEdiId(rs.getInt(EDITOR_ID));
+                    book.setEdiId(editor);
+                    book.setBooTitle(rs.getString(TITLE));
+                    book.setBooSubtitle(rs.getString(SUBTITLE));
+                    book.setBooPublishYear(rs.getString(PUBLICATION_YEAR));
+                    book.setBooPriceHT(rs.getFloat(PRICE_HT));
+                    book.setBooResume(rs.getString(RESUME));
+                    book.setBooQuantity(rs.getInt(QUANTITY));
+                    book.setBooStatus(rs.getInt(STATUS));
+                    book.setBooFrontCover(rs.getString(FRONT_COVER));
+                    book.setBooPageNumber(rs.getInt(PAGE_NUMBER));
+                    language.setBooLangCode(rs.getInt(LANGUAGE_ID));
+                    book.setBooLangCode(language);
+                    format.setForId(rs.getInt(FORMAT_ID));
+                    book.setFormat(format);
+
+                    bookList.add(book);
+                }
+            } else {
+                throw new SQLException("ResultSet was empty");
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
+            ex.printStackTrace();
+
+        }
+        return bookList;
     }
 
 }

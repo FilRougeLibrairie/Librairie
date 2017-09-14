@@ -128,12 +128,12 @@ public class StatusDisplayDAO extends DAO<StatusDisplay> {
      }
     
         @Override
-    public Vector<StatusDisplay> findByCriteria(String criteria, String term) {
+    public Vector<StatusDisplay> findByColumn(String column, String term) {
          Vector<StatusDisplay> StatusDisplayList = new Vector<StatusDisplay>();
         StatusDisplay stadi = null;
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FROM " + TABLE + " WHERE ")
-                .append(criteria)
+                .append(column)
                 .append(" = ")
                 .append("'" + term + "'");
 
@@ -163,7 +163,7 @@ public class StatusDisplayDAO extends DAO<StatusDisplay> {
     }
     
     @Override
-    public StatusDisplay findById(int id) {
+    public StatusDisplay find(int id) {
         StatusDisplay stadi = null;
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FROM " + TABLE + " WHERE ")
@@ -194,7 +194,7 @@ public class StatusDisplayDAO extends DAO<StatusDisplay> {
         return stadi;   }
     
     @Override
-    public StatusDisplay findByName(String name) {
+    public StatusDisplay find(String name) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     

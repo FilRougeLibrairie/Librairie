@@ -20,10 +20,10 @@ public abstract class DAO<T> implements SQLNames{
 
     public abstract Vector<T> findAll();
 
-    public abstract T findById(int id);
+    public abstract T find(int id);
 
-    public abstract T findByName(String name);
+    public abstract T find(String name);
     
-    public abstract Vector<T> findByCriteria(String criteria, String term);
+    public abstract Vector<T> findByColumn(String column, String term);
     
 }

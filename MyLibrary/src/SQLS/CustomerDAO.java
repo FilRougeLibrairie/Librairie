@@ -134,7 +134,7 @@ public class CustomerDAO extends DAO {
     }
 
     @Override
-    public Customer findById(int id) {
+    public Customer find(int id) {
         Customer customer = null;
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FROM " + TABLE + " WHERE ")
@@ -177,7 +177,7 @@ public class CustomerDAO extends DAO {
     }
 
     @Override
-    public Object findByName(String name) {
+    public Object find(String name) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -223,14 +223,14 @@ public class CustomerDAO extends DAO {
     }
 
     @Override
-    public Vector<Customer> findByCriteria(String criteria, String term) {
+    public Vector<Customer> findByColumn(String column, String term) {
 
         Vector<Customer> customerList = new Vector<Customer>();
         Customer customer = null;
 
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FROM " + TABLE + " WHERE ")
-                .append(criteria)
+                .append(column)
                 .append(" = ")
                 .append("'" + term + "'");
 

@@ -77,7 +77,7 @@ public class KeywordsDAO extends DAO {
         
         
     @Override
-    public Keywords findByName(String keyName) {
+    public Keywords find(String keyName) {
         Keywords kw = null;
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FROM Keywords WHERE ")
@@ -146,14 +146,14 @@ public class KeywordsDAO extends DAO {
         
            
 
-    public Vector<Keywords> findByCriteria(String criteria, String term) {
+    public Vector<Keywords> findByColumn(String column, String term) {
 
         Vector<Keywords> keywordsList = new Vector<Keywords>();
         Keywords kw = null;
 
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FROM KEYWORDS WHERE ")
-                .append(criteria)
+                .append(column)
                 .append(" = ")
                 .append("'" + term + "'");
 
@@ -185,7 +185,7 @@ public class KeywordsDAO extends DAO {
     }
 
     @Override
-    public Object findById(int id) {
+    public Object find(int id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
         

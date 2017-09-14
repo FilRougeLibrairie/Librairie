@@ -100,7 +100,7 @@ public class FormatsDAO extends DAO{
  
 
     @Override
-    public Object findById(int id) {   
+    public Object find(int id) {   
         Formats form = null;
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FROM FORMATS WHERE ")
@@ -169,14 +169,14 @@ public class FormatsDAO extends DAO{
   
     
     
-    public Vector<Formats> findByCriteria(String criteria, String term) {
+    public Vector<Formats> findByColumn(String column, String term) {
 
         Vector<Formats> formatsList = new Vector<Formats>();
         Formats format = null;
 
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FROM Formats WHERE ")
-                .append(criteria)
+                .append(column)
                 .append(" = ")
                 .append("'" + term + "'");
 
@@ -207,7 +207,7 @@ public class FormatsDAO extends DAO{
     }
 
     @Override
-    public Object findByName(String forName) {
+    public Object find(String forName) {
         
         
         

@@ -147,7 +147,7 @@ public class OrderLineDAO extends DAO {
     }
 
     @Override
-    public OrderLine findById(int id) {
+    public OrderLine find(int id) {
         pur = null;
         ordLine = null;
         book = null;
@@ -189,12 +189,12 @@ public class OrderLineDAO extends DAO {
     }
 
     @Override
-    public Object findByName(String name) {
+    public Object find(String name) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Vector findByCriteria(String criteria, String term) {
+    public Vector findByColumn(String column, String term) {
         orderLineList = new Vector<OrderLine>();
         pur = null;
         ordLine = null;
@@ -202,7 +202,7 @@ public class OrderLineDAO extends DAO {
 
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FROM " + TABLE + " WHERE ")
-                .append(criteria)
+                .append(column)
                 .append(" = ")
                 .append("'" + term + "'");
 

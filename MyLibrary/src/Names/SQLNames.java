@@ -45,7 +45,7 @@ public interface SQLNames {
 
         public static final String ISBN_13 = "booIsbn13";
         public static final String VAT_CODE = "vatCode";
-        public static final String EDITOR_CODE = "ediId";
+        public static final String EDITOR_ID = "ediId";
         public static final String TITLE = "booTitle";
         public static final String SUBTITLE = "booSubtitle";
         public static final String PUBLICATION_YEAR = "booPublishYear";

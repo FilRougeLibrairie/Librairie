@@ -88,7 +88,7 @@ public class ShipperDAO extends DAO {
     
     
     @Override
-    public Shipper findById(int id) {
+    public Shipper find(int id) {
         Shipper shipper = null;
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FROM " + TABLE + " WHERE ")
@@ -121,7 +121,7 @@ public class ShipperDAO extends DAO {
     }
 
     @Override
-    public Object findByName(String name) {
+    public Object find(String name) {
         
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
@@ -157,14 +157,14 @@ public class ShipperDAO extends DAO {
     }
 
     @Override
-    public Vector<Shipper> findByCriteria(String criteria, String term) {
+    public Vector<Shipper> findByColumn(String column, String term) {
 
         Vector<Shipper> shipperList = new Vector<Shipper>();
         Shipper shipper = null;
 
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FROM " + TABLE + " WHERE ")
-                .append(criteria)
+                .append(column)
                 .append(" = ")
                 .append("'" + term + "'");
 

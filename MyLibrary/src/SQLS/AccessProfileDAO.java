@@ -123,12 +123,12 @@ public class AccessProfileDAO extends DAO<AccessProfile> {
      }
     
         @Override
-    public Vector<AccessProfile> findByCriteria(String criteria, String term) {
+    public Vector<AccessProfile> findByColumn(String column, String term) {
          Vector<AccessProfile> accessprofileList = new Vector<AccessProfile>();
         AccessProfile acc = null;
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FROM " + TABLE + " WHERE ")
-                .append(criteria)
+                .append(column)
                 .append(" = ")
                 .append("'" + term + "'");
 
@@ -158,7 +158,7 @@ public class AccessProfileDAO extends DAO<AccessProfile> {
     }
     
     @Override
-    public AccessProfile findById(int id) {
+    public AccessProfile find(int id) {
         AccessProfile acc = null;
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FROM " + TABLE + " WHERE ")
@@ -189,7 +189,7 @@ public class AccessProfileDAO extends DAO<AccessProfile> {
         return acc;   }
     
     @Override
-    public AccessProfile findByName(String name) {
+    public AccessProfile find(String name) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     

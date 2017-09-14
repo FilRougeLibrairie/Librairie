@@ -119,7 +119,7 @@ public class ThemeDAO extends DAO {
     }
 
     @Override
-    public Object findById(int id) {
+    public Object find(int id) {
         Theme theme = null;
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FROM " + TABLE + " WHERE ")
@@ -149,19 +149,19 @@ public class ThemeDAO extends DAO {
     }
 
     @Override
-    public Object findByName(String name) {
+    public Object find(String name) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Vector<Theme> findByCriteria(String criteria, String term) {
+    public Vector<Theme> findByColumn(String column, String term) {
 
         Vector<Theme> themeList = new Vector<Theme>();
         Theme theme = null;
 
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FROM " + TABLE + "WHERE ")
-                .append(criteria)
+                .append(column)
                 .append(" = ")
                 .append("'" + term + "'");
 

@@ -189,7 +189,7 @@ public class AddressDAO extends DAO {
     }
 
     @Override
-    public Address findById(int id) {
+    public Address find(int id) {
         Address address = null;
         Customer cus = null;
         StringBuffer query = new StringBuffer();
@@ -238,19 +238,19 @@ public class AddressDAO extends DAO {
     }
 
     @Override
-    public Object findByName(String name) {
+    public Object find(String name) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Vector findByCriteria(String criteria, String term) {
+    public Vector findByColumn(String column, String term) {
         Vector<Address> addressList = new Vector<Address>();
         Customer cus = null;
         Address address = null;
 
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FROM " + TABLE + " WHERE ")
-                .append(criteria)
+                .append(column)
                 .append(" = ")
                 .append("'" + term + "'");
 
