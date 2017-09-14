@@ -11,7 +11,7 @@ package ClassObjet;
  */
 public class BookLanguage {
     
-    private String booLangCode;
+    private int booLangCode;
     private String booLangName;
     
     //Constructor
@@ -21,7 +21,7 @@ public class BookLanguage {
     
     //Setters
     
-    public void setBooLangCode(String booLangCode) {
+    public void setBooLangCode(int booLangCode) {
         this.booLangCode = booLangCode;
     }
 
@@ -31,7 +31,7 @@ public class BookLanguage {
     
     //Getters
 
-    public String getBooLangCode() {
+    public int getBooLangCode() {
         return booLangCode;
     }
 
