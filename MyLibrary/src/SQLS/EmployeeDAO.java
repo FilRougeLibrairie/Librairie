@@ -33,29 +33,31 @@ public class EmployeeDAO extends DAO<Employee> {
     
     // Constructor
     public EmployeeDAO(ConnexionBase conn) {
-        super(conn);
+        super();
     }
 
     @Override
-    public boolean create(Employee obj) {
-        return false;
+    public void create(Employee obj) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public boolean delete(Employee obj) {
-        return false;
+    public void delete(Employee obj) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public boolean update(Employee obj) {
-        return false;
+    public void update(Employee obj) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+
 
    
     public Employee find(int id) {
         Employee employee = new Employee();
         try {
-            ResultSet result = this.connect.getInstance().createStatement(
+            ResultSet result = this.connect.createStatement(
                     ResultSet.TYPE_SCROLL_INSENSITIVE,
                     ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Employee WHERE empId = " + id);
            
@@ -83,6 +85,11 @@ public class EmployeeDAO extends DAO<Employee> {
 
     @Override
     public Employee findByName(String name) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Vector<Employee> findByCriteria(String criteria, String term) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

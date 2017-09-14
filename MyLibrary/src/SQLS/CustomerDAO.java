@@ -89,7 +89,7 @@ public class CustomerDAO extends DAO {
 
     @Override
     public void update(Object obj) {
-        Customer cus = (Customer)obj;
+        Customer cus = (Customer) obj;
         StringBuilder query = new StringBuilder("UPDATE Customer SET ");
         query.append(GENDER).append(" = ?, ");
         query.append(FIRST_NAME).append(" = ?, ");
@@ -221,6 +221,7 @@ public class CustomerDAO extends DAO {
         return customerList;
     }
 
+    @Override
     public Vector<Customer> findByCriteria(String criteria, String term) {
 
         Vector<Customer> customerList = new Vector<Customer>();
