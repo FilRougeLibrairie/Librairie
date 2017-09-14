@@ -153,7 +153,7 @@
     <Component class="javax.swing.JLabel" name="jLabel1">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="2" name="C:\Users\cdi303\Documents\NetBeansProjects\Librairie\MyLibrary\src\FramePrincipaleChrystelle\Library-logo.png"/>
+          <Image iconType="2" name="C:\Users\Chrys\Documents\NetBeansProjects\Librairie\Librairie\MyLibrary\src\FramePrincipaleChrystelle\Library-logo.png"/>
         </Property>
         <Property name="alignmentX" type="float" value="0.5"/>
         <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">

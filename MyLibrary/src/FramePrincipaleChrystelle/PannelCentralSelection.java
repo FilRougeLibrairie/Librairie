@@ -581,9 +581,14 @@ public class PannelCentralSelection extends javax.swing.JPanel {
                 jPanel19MouseMoved(evt);
             }
         });
+        jPanel19.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel19MouseClicked(evt);
+            }
+        });
 
         bAddEmployee.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        bAddEmployee.setText("Ajouter Employé");
+        bAddEmployee.setText("Ajouter un employé");
         bAddEmployee.setAlignmentX(0.5F);
         bAddEmployee.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseDragged(java.awt.event.MouseEvent evt) {
@@ -806,7 +811,7 @@ public class PannelCentralSelection extends javax.swing.JPanel {
 
         add(jPanel1, java.awt.BorderLayout.PAGE_START);
 
-        jpPrincipal.setBackground(new java.awt.Color(255, 51, 51));
+        jpPrincipal.setBackground(new java.awt.Color(0, 0, 0));
         jpPrincipal.setLayout(null);
         add(jpPrincipal, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
@@ -983,12 +988,10 @@ public class PannelCentralSelection extends javax.swing.JPanel {
 
         jpPrincipal.removeAll();
         jpPrincipal.validate();
-        
         AddAutor addAutor=new AddAutor();
         jpPrincipal.setLayout(new BorderLayout());
         jpPrincipal.add(addAutor,BorderLayout.NORTH);
         jpPrincipal.setVisible(true);
-        
         jpPrincipal.revalidate();
         
     }//GEN-LAST:event_bAutorMouseClicked
@@ -1073,13 +1076,11 @@ public class PannelCentralSelection extends javax.swing.JPanel {
     private void bKeyWordMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bKeyWordMouseClicked
 
         jpPrincipal.removeAll();
-        jpPrincipal.validate();
-        
+        jpPrincipal.validate(); 
         AddKeyWord addKW=new AddKeyWord();
         jpPrincipal.setLayout(new BorderLayout());
         jpPrincipal.add(addKW,BorderLayout.NORTH);
         jpPrincipal.setVisible(true);
-        
         jpPrincipal.revalidate();
         
         
@@ -1155,7 +1156,7 @@ public class PannelCentralSelection extends javax.swing.JPanel {
     }//GEN-LAST:event_bEventMouseClicked
 
     private void bAddEmployeeMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bAddEmployeeMouseDragged
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_bAddEmployeeMouseDragged
 
     private void bAddEmployeeMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bAddEmployeeMouseMoved
@@ -1168,15 +1169,18 @@ public class PannelCentralSelection extends javax.swing.JPanel {
 
     private void bAddEmployeeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bAddEmployeeMouseClicked
 
-jpPrincipal.setBackground(Color.black);
 
-//        this.remove(jpPrincipal);
-//        jpPrincipal.setVisible(false);
-//        jpPrincipal.setLayout(new BorderLayout());
-//        jpPrincipal.add(new AddEmployee(), BorderLayout.CENTER);
-//        jpPrincipal.setVisible(true);
 
-// TODO add your handling code here:
+        jpPrincipal.removeAll();
+        jpPrincipal.validate();
+        AddEmployee addEmployee=new AddEmployee();
+        jpPrincipal.setLayout(new BorderLayout());
+        jpPrincipal.add(addEmployee,BorderLayout.NORTH);
+        jpPrincipal.setVisible(true);
+        jpPrincipal.revalidate();
+
+
+
     }//GEN-LAST:event_bAddEmployeeMouseClicked
 
     private void jPanel19MouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel19MouseMoved
@@ -1255,6 +1259,7 @@ jpPrincipal.setBackground(Color.black);
     }//GEN-LAST:event_jBProductActionPerformed
 
     private void jBClientMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBClientMouseClicked
+        jpPrincipal.setVisible(false);
         menuAdmin.setVisible(false);
         menuProduct.setVisible(false);
         menuPurchase.setVisible(true);
@@ -1262,18 +1267,21 @@ jpPrincipal.setBackground(Color.black);
     }//GEN-LAST:event_jBClientMouseClicked
 
     private void jBProductMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBProductMouseClicked
+        jpPrincipal.setVisible(false);
         menuAdmin.setVisible(false);
         menuProduct.setVisible(true);
         menuPurchase.setVisible(false);
     }//GEN-LAST:event_jBProductMouseClicked
 
     private void jBStatMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBStatMouseClicked
+        jpPrincipal.setVisible(false);
         menuAdmin.setVisible(false);
         menuProduct.setVisible(false);
         menuPurchase.setVisible(false);
     }//GEN-LAST:event_jBStatMouseClicked
 
     private void jBAdminMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBAdminMouseClicked
+        jpPrincipal.setVisible(false);
         menuAdmin.setVisible(true);
         menuProduct.setVisible(false);
         menuPurchase.setVisible(false);
@@ -1284,14 +1292,10 @@ jpPrincipal.setBackground(Color.black);
         
         jpPrincipal.removeAll();
         jpPrincipal.validate();
-        
-        
         AddAutor addAutor=new AddAutor();
-       
         jpPrincipal.setLayout(new BorderLayout());
         jpPrincipal.add(addAutor,BorderLayout.NORTH);
         jpPrincipal.setVisible(true);
-        
         jpPrincipal.revalidate();
         
     }//GEN-LAST:event_jPanel13MouseClicked
@@ -1301,7 +1305,6 @@ jpPrincipal.setBackground(Color.black);
         
         jpPrincipal.removeAll();
         jpPrincipal.validate();
-        
         AddKeyWord addKW=new AddKeyWord();
         jpPrincipal.setLayout(new BorderLayout());
         jpPrincipal.add(addKW,BorderLayout.NORTH);
@@ -1320,6 +1323,29 @@ jpPrincipal.setBackground(Color.black);
 jpPrincipal.setBackground(Color.black);
 // TODO add your handling code here:
     }//GEN-LAST:event_jPanel20MouseClicked
+
+    private void jPanel19MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel19MouseClicked
+        
+        
+        
+         jpPrincipal.removeAll();
+        jpPrincipal.validate();
+        AddEmployee addEmployee=new AddEmployee();
+        jpPrincipal.setLayout(new BorderLayout());
+        jpPrincipal.add(addEmployee,BorderLayout.NORTH);
+        jpPrincipal.setVisible(true);
+        jpPrincipal.revalidate();
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    }//GEN-LAST:event_jPanel19MouseClicked
 
     void setColor(JPanel panel) {
         panel.setBackground(new Color(102, 102, 102));
