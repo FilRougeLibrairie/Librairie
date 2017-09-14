@@ -79,7 +79,7 @@ public class EmployeeDAO extends DAO<Employee> {
         query.append(DATE_END).append(" = ?, ");
         query.append(STATUS).append(" = ?, ");
         query.append(PROFILE).append(" = ?, ");
-        query.append(COMMENT).append(" = ?, ");
+        query.append(COMMENT).append(" = ? ");
 
         query.append("WHERE " + ID + " = '")
                 .append(emp.getEmpId())
@@ -125,7 +125,7 @@ public class EmployeeDAO extends DAO<Employee> {
     }
 
     @Override
-    public Employee findById(int id) {
+    public Employee find(int id) {
         Employee employee = null;
         AccessProfile acc = null;
         StringBuffer query = new StringBuffer();
@@ -209,18 +209,18 @@ public class EmployeeDAO extends DAO<Employee> {
     }
 
     @Override
-    public Employee findByName(String name) {
+    public Employee find(String name) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Vector<Employee> findByCriteria(String criteria, String term) {
+    public Vector<Employee> findByColumn(String column, String term) {
          Vector<Employee> employeeList = new Vector<Employee>();
         Employee employee = null;
         AccessProfile acc = null;
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FROM " + TABLE + " WHERE ")
-                .append(criteria)
+                .append(column)
                 .append(" = ")
                 .append("'" + term + "'");
 

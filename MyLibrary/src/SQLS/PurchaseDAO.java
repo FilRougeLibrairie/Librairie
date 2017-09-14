@@ -168,7 +168,7 @@ public class PurchaseDAO extends DAO {
     }
 
     @Override
-    public Purchase findById(int id) {
+    public Purchase find(int id) {
         pur = null;
         cus = null;
         shipCost = null;
@@ -217,12 +217,12 @@ public class PurchaseDAO extends DAO {
     }
 
     @Override
-    public Object findByName(String name) {
+    public Object find(String name) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Vector findByCriteria(String criteria, String term) {
+    public Vector findByColumn(String column, String term) {
         purList = new Vector<Purchase>();
         pur = null;
         cus = null;
@@ -232,7 +232,7 @@ public class PurchaseDAO extends DAO {
 
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FROM " + TABLE + " WHERE ")
-                .append(criteria)
+                .append(column)
                 .append(" = ")
                 .append("'" + term + "'");
 

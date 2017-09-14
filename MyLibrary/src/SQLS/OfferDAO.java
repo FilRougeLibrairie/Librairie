@@ -138,7 +138,7 @@ public class OfferDAO extends DAO {
     }
 
     @Override
-    public Object findById(int id) {
+    public Object find(int id) {
         Offer offer = null;
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FORM " + TABLE + " WHERE ")
@@ -172,19 +172,19 @@ public class OfferDAO extends DAO {
     }
 
     @Override
-    public Object findByName(String name) {
+    public Object find(String name) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Vector<Offer> findByCriteria(String criteria, String term) {
+    public Vector<Offer> findByColumn(String column, String term) {
 
         Vector<Offer> offerList = new Vector<Offer>();
         Offer offer = null;
 
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FROM " + TABLE + "WHERE ")
-                .append(criteria)
+                .append(column)
                 .append(" = ")
                 .append("'" + term + "'");
 

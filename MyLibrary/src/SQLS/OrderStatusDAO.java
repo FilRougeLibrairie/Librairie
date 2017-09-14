@@ -69,7 +69,7 @@ public class OrderStatusDAO extends DAO {
     public void update(Object obj) {
         OrderStatus ord = (OrderStatus) obj;
         StringBuilder query = new StringBuilder("UPDATE " + TABLE + " SET ");
-        query.append(NAME).append(" = ?, ");
+        query.append(NAME).append(" = ? ");
 
         query.append("WHERE " + CODE + " = '")
                 .append(ord.getStaCode())
@@ -121,7 +121,7 @@ public class OrderStatusDAO extends DAO {
     }
 
     @Override
-    public OrderStatus findById(int id) {
+    public OrderStatus find(int id) {
         OrderStatus ord = null;
 
         StringBuffer query = new StringBuffer();
@@ -156,18 +156,18 @@ public class OrderStatusDAO extends DAO {
     }
 
     @Override
-    public Object findByName(String name) {
+    public Object find(String name) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Vector findByCriteria(String criteria, String term) {
+    public Vector findByColumn(String column, String term) {
         Vector<OrderStatus> ordList = new Vector<OrderStatus>();
         OrderStatus ord = null;
 
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FROM " + TABLE + " WHERE ")
-                .append(criteria)
+                .append(column)
                 .append(" = ")
                 .append("'" + term + "'");
 

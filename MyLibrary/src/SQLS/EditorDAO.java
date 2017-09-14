@@ -125,7 +125,7 @@ public class EditorDAO extends DAO {
     }
 
     @Override
-    public Object findById(int id) {
+    public Object find(int id) {
         Editor editor = null;
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FORM " + TABLE + " WHERE ")
@@ -156,19 +156,19 @@ public class EditorDAO extends DAO {
     }
 
     @Override
-    public Object findByName(String name) {
+    public Object find(String name) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Vector<Editor> findByCriteria(String criteria, String term) {
+    public Vector<Editor> findByColumn(String column, String term) {
 
         Vector<Editor> editorList = new Vector<Editor>();
         Editor editor = null;
 
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FROM " + TABLE + "WHERE ")
-                .append(criteria)
+                .append(column)
                 .append(" = ")
                 .append("'" + term + "'");
 

@@ -111,7 +111,7 @@ public class AuthorDAO extends DAO{
     }
 
     @Override
-    public Author findById(int id) {
+    public Author find(int id) {
         Author author = null;
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FROM " + TABLE + " WHERE ")
@@ -151,7 +151,7 @@ public class AuthorDAO extends DAO{
     
     
     @Override
-    public Object findByName(String name) {
+    public Object find(String name) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -196,14 +196,14 @@ public class AuthorDAO extends DAO{
     
     
     @Override
-    public Vector<Author> findByCriteria(String criteria, String term) {
+    public Vector<Author> findByColumn(String column, String term) {
 
         Vector<Author> authorList = new Vector<Author>();
         Author author = null;
 
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FROM " + TABLE + " WHERE ")
-                .append(criteria)
+                .append(column)
                 .append(" = ")
                 .append("'" + term + "'");
 

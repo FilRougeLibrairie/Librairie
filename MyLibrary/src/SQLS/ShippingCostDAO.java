@@ -122,12 +122,12 @@ public class ShippingCostDAO extends DAO<ShippingCost> {
     }
 
     @Override
-    public Vector<ShippingCost> findByCriteria(String criteria, String term) {
+    public Vector<ShippingCost> findByColumn(String column, String term) {
         Vector<ShippingCost> ShippingCostList = new Vector<ShippingCost>();
         ShippingCost shipcost = null;
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FROM " + TABLE + " WHERE ")
-                .append(criteria)
+                .append(column)
                 .append(" = ")
                 .append("'" + term + "'");
 
@@ -158,7 +158,7 @@ public class ShippingCostDAO extends DAO<ShippingCost> {
     }
 
     @Override
-    public ShippingCost findById(int id) {
+    public ShippingCost find(int id) {
         ShippingCost shipcost = null;
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FROM " + TABLE + " WHERE ")
@@ -191,7 +191,7 @@ public class ShippingCostDAO extends DAO<ShippingCost> {
     }
 
     @Override
-    public ShippingCost findByName(String name) {
+    public ShippingCost find(String name) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

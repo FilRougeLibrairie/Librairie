@@ -921,7 +921,7 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
         }
 
         DAO customerDAO = new CustomerDAO();
-        customerList = ((CustomerDAO) customerDAO).findByCriteria(criteria, term);
+        customerList = ((CustomerDAO) customerDAO).findByColumn(criteria, term);
         
        // customerList = customerDAO.findAll();
         for (Customer cus : customerList) {

@@ -18,7 +18,7 @@ public class Book {
     private String booTitle;
     private String booSubtitle;
     private String booPublishYear;
-    private int booPriceHT;
+    private float booPriceHT;
     private String booResume;
     private int booQuantity;
     private int booStatus;
@@ -63,7 +63,7 @@ public class Book {
         this.booPublishYear = booPublishYear;
     }
 
-    public void setBooPriceHT(int booPriceHT) {
+    public void setBooPriceHT(float booPriceHT) {
         this.booPriceHT = booPriceHT;
     }
 
@@ -120,7 +120,7 @@ public class Book {
         return booPublishYear;
     }
 
-    public int getBooPriceHT() {
+    public float getBooPriceHT() {
         return booPriceHT;
     }
 

@@ -87,7 +87,7 @@ public class MyLibraryDAO extends DAO<MyLibrary>{
         query.append(STREET_NAME).append(" = ?, ");
         query.append(COMPLEMENT).append(" = ?, ");
         query.append(ZIP_CODE).append(" = ?, ");
-        query.append(CITY).append(" = ?, ");
+        query.append(CITY).append(" = ? ");
 
         query.append("WHERE " + ID + " = '")
                 .append(mylib.getMyLibId())
@@ -134,7 +134,7 @@ public class MyLibraryDAO extends DAO<MyLibrary>{
     }
 
     @Override
-    public MyLibrary findById(int id) {
+    public MyLibrary find(int id) {
         MyLibrary myLibrary = null;
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FROM " + TABLE + " WHERE ")
@@ -214,17 +214,17 @@ public class MyLibraryDAO extends DAO<MyLibrary>{
     }
 
     @Override
-    public MyLibrary findByName(String name) {
+    public MyLibrary find(String name) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Vector<MyLibrary> findByCriteria(String criteria, String term) {
+    public Vector<MyLibrary> findByColumn(String column, String term) {
          Vector<MyLibrary> myLibraryList = new Vector<MyLibrary>();
         MyLibrary myLibrary = null;
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FROM " + TABLE + " WHERE ")
-                .append(criteria)
+                .append(column)
                 .append(" = ")
                 .append("'" + term + "'");
 

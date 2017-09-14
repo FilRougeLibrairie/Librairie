@@ -109,7 +109,7 @@ public class PaymentDAO extends DAO{
     }
 
     @Override
-    public Payment findById(int id) {
+    public Payment find(int id) {
         Payment payment = null;
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FROM " + TABLE + " WHERE ")
@@ -149,7 +149,7 @@ public class PaymentDAO extends DAO{
     
     
     @Override
-    public Object findByName(String name) {
+    public Object find(String name) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -189,14 +189,14 @@ public class PaymentDAO extends DAO{
     }
 
     @Override
-    public Vector<Payment> findByCriteria(String criteria, String term) {
+    public Vector<Payment> findByColumn(String column, String term) {
 
         Vector<Payment> paymentList = new Vector<Payment>();
         Payment payment = null;
 
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FROM " + TABLE + " WHERE ")
-                .append(criteria)
+                .append(column)
                 .append(" = ")
                 .append("'" + term + "'");
 
