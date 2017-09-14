@@ -11,7 +11,7 @@ package ClassObjet;
  */
 public class AccessProfile {
 
-    private int accProfilCode;
+    private int accProfileCode;
     private String accProfileName;
 
     //Constructor
@@ -19,8 +19,8 @@ public class AccessProfile {
     }
 
     //Setters
-    public void setAccProfileCode(int accProfilCode) {
-        this.accProfilCode = accProfilCode;
+    public void setAccProfileCode(int accProfileCode) {
+        this.accProfileCode = accProfileCode;
     }
 
     public void setAccProfileName(String accProfileName) {
@@ -29,7 +29,7 @@ public class AccessProfile {
 
     //Getters
     public int getAccProfileCode() {
-        return accProfilCode;
+        return accProfileCode;
     }
 
     public String getAccProfileName() {
@@ -38,7 +38,7 @@ public class AccessProfile {
 
     @Override
     public String toString() {
-        return "Access Profile Code : " + accProfilCode + " / Access Profile Name : " + accProfileName;
+        return "Access Profile Code : " + accProfileCode + " / Access Profile Name : " + accProfileName;
     }
     
     

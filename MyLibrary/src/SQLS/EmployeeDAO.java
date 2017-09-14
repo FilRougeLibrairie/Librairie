@@ -1,35 +1,37 @@
 package SQLS;
 
+
+import ClassObjet.AccessProfile;
 import ClassObjet.Employee;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
 
 /**
  *
- * @author ggarvanese
+ * @author Tofi
  */
 public class EmployeeDAO extends DAO<Employee> {
 
-    private final String ID = "empId";
-    private final String FIRSTNAME = "empLastName";
-    private final String LASTNAME = "empFirstName";
-    private final String LOGIN = "empLogin";
-    private final String PASSWORD = "empPassword";
-    private final String SALT = "empSalt";
-    private final String DATE_START = "empDateStart";
-    private final String DATE_END = "empDateEnd";
-    private final String STATUS = "empStatus";
-    private final String PROFILE = "accProfileCode";
-    private final String COMMENT = "empComment";
+    private final String TABLE = "Employee";
     
-    private String STMT_COLUMNS = ID + "," + FIRSTNAME + "," + LASTNAME + "," + LOGIN
-            + "," + PASSWORD + "," + SALT + "," + DATE_START + "," + DATE_END + "," + STATUS
-             + "," + PROFILE + "," + COMMENT;
+    private final String ID = EmployeeNames.ID;
+    private final String LAST_NAME = EmployeeNames.LAST_NAME;
+    private final String FIRST_NAME = EmployeeNames.FIRST_NAME;
+    private final String LOGIN = EmployeeNames.LOGIN;
+    private final String PASSWORD = EmployeeNames.PASSWORD;
+    private final String SALT = EmployeeNames.SALT;
+    private final String DATE_START = EmployeeNames.DATE_START;
+    private final String DATE_END = EmployeeNames.DATE_END;
+    private final String STATUS = EmployeeNames.STATUS;
+    private final String PROFILE = EmployeeNames.ACCESS_PROFILE;
+    private final String COMMENT = EmployeeNames.COMMENT;
     
-    private String PSTMT_COLUMNS = FIRSTNAME + "," + LASTNAME + "," + LOGIN
-            + "," + PASSWORD + "," + SALT + "," + DATE_START + "," + DATE_END + "," + STATUS
-             + "," + PROFILE + "," + COMMENT + ID;
+    private String COLUMNS_CREATE = LAST_NAME + ", " + FIRST_NAME + ", " + LOGIN + ", "
+            + PASSWORD + ", " + SALT + ", " + DATE_START + ", " + DATE_END + ", "
+            + STATUS + ", " + PROFILE + ", " + COMMENT;
+    
     
     // Constructor
     public EmployeeDAO() {
@@ -38,47 +40,173 @@ public class EmployeeDAO extends DAO<Employee> {
 
     @Override
     public void create(Employee obj) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+              Employee emp = (Employee) obj;
+        String query = "IF NOT EXISTS (SELECT * FROM " + TABLE + " WHERE " + ID + " = '" + emp.getEmpId() + "')"
+                + "INSERT INTO " + TABLE + " (" + COLUMNS_CREATE + ")"
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-    @Override
-    public void delete(Employee obj) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try (PreparedStatement pstmt = this.connect.prepareStatement(query);) {
+
+            pstmt.setString(1, emp.getEmpLastName());
+            pstmt.setString(2, emp.getEmpFirstName());
+            pstmt.setString(3, emp.getEmpLogin());
+            pstmt.setString(4, emp.getEmpPassword());
+            pstmt.setString(5, emp.getEmpSalt());
+            pstmt.setString(6, emp.getEmpDateStart());
+            pstmt.setString(7, emp.getEmpDateEnd());
+            pstmt.setInt(8, emp.getEmpStatus());
+            pstmt.setInt(9, emp.getAccProfileCode().getAccProfileCode());
+            pstmt.setString(10, emp.getEmpComment());
+            
+            int result = pstmt.executeUpdate();
+
+        } catch (SQLException ex) {
+            System.err.println("ERROR SAVING Object : " + ex.getErrorCode() + " / " + ex.getMessage());
+            ex.getStackTrace();
+        }
     }
 
     @Override
     public void update(Employee obj) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       Employee emp = (Employee) obj;
+        StringBuilder query = new StringBuilder("UPDATE " + TABLE + " SET ");
+        query.append(LAST_NAME).append(" = ?, ");
+        query.append(FIRST_NAME).append(" = ?, ");
+        query.append(LOGIN).append(" = ?, ");
+        query.append(PASSWORD).append(" = ?, ");
+        query.append(SALT).append(" = ?, ");
+        query.append(DATE_START).append(" = ?, ");
+        query.append(DATE_END).append(" = ?, ");
+        query.append(STATUS).append(" = ?, ");
+        query.append(PROFILE).append(" = ?, ");
+        query.append(COMMENT).append(" = ?, ");
+
+        query.append("WHERE " + ID + " = '")
+                .append(emp.getEmpId())
+                .append("'");
+
+        try (PreparedStatement pstmt = connect.prepareStatement(query.toString());) {
+
+            pstmt.setString(1, emp.getEmpLastName());
+            pstmt.setString(2, emp.getEmpFirstName());
+            pstmt.setString(3, emp.getEmpLogin());
+            pstmt.setString(4, emp.getEmpPassword());
+            pstmt.setString(5, emp.getEmpSalt());
+            pstmt.setString(6, emp.getEmpDateStart());
+            pstmt.setString(7, emp.getEmpDateEnd());
+            pstmt.setInt(8, emp.getEmpStatus());
+            pstmt.setInt(9, emp.getAccProfileCode().getAccProfileCode());
+            pstmt.setString(10, emp.getEmpComment());
+
+            int result = pstmt.executeUpdate();
+
+        } catch (SQLException ex) {
+            System.out.println("ERROR UPDATING Object : " + ex.getMessage());
+            ex.printStackTrace();
+
+        }
+    }
+    
+    @Override
+    public void delete(Employee obj) {
+         int empId = ((Employee) obj).getEmpId();
+        StringBuffer query = new StringBuffer();
+        query.append("SELECT * FROM " + TABLE + " WHERE ")
+                .append(ID)
+                .append(" = ")
+                .append("'" + empId + "'");
+
+        try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
+            pstmt.executeQuery();
+        } catch (SQLException ex) {
+            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
+            ex.printStackTrace();
+        }
     }
 
-
-
-     @Override
+    @Override
     public Employee findById(int id) {
-        Employee employee = new Employee();
-        try {
-            ResultSet result = this.connect.createStatement(
-                    ResultSet.TYPE_SCROLL_INSENSITIVE,
-                    ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Employee WHERE empId = " + id);
-           
-            if (result.first()) {
-                employee = new Employee();
-                employee.setEmpId(id);
-                employee.setEmpFirstName(result.getString(FIRSTNAME));
-                employee.setEmpLastName(result.getString(LASTNAME));
+        Employee employee = null;
+        AccessProfile acc = null;
+        StringBuffer query = new StringBuffer();
+        query.append("SELECT * FROM " + TABLE + " WHERE ")
+                .append(ID)
+                .append(" = ")
+                .append("'" + id + "'");
+
+        try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.isBeforeFirst()) {
+
+                while (rs.next()) {
+                    employee = new Employee();
+                    employee.setEmpId(rs.getInt(ID));
+                    employee.setEmpLastName(rs.getString(LAST_NAME));
+                    employee.setEmpFirstName(rs.getString(FIRST_NAME));
+                    employee.setEmpLogin(rs.getString(LOGIN));
+                    employee.setEmpPassword(rs.getString(PASSWORD));
+                    employee.setEmpSalt(rs.getString(SALT));
+                    employee.setEmpDateStart(rs.getString(DATE_START));
+                    employee.setEmpDateEnd(rs.getString(DATE_END));
+                    employee.setEmpStatus(rs.getInt(STATUS));
+                    acc = new AccessProfile();
+                    acc.setAccProfileCode(rs.getInt(PROFILE));
+                    employee.setAccProfileCode(acc);
+                    employee.setEmpComment(rs.getString(COMMENT));
+                }
+            } else {
+                throw new SQLException("ResultSet was empty");
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+
+        } catch (SQLException ex) {
+            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
+            ex.printStackTrace();
+
         }
         return employee;
     }
 
     @Override
     public Vector<Employee> findAll() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+        Vector<Employee> employeeList = new Vector<Employee>();
+        Employee employee = null;
+        AccessProfile acc = null;    
+        String query = "SELECT * FROM " + TABLE;
 
-  
+        try (PreparedStatement pstmt = this.connect.prepareStatement(query)) {
+
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.isBeforeFirst()) {
+
+                while (rs.next()) {
+                    employee = new Employee();
+                    employee.setEmpId(rs.getInt(ID));
+                    employee.setEmpLastName(rs.getString(LAST_NAME));
+                    employee.setEmpFirstName(rs.getString(FIRST_NAME));
+                    employee.setEmpLogin(rs.getString(LOGIN));
+                    employee.setEmpPassword(rs.getString(PASSWORD));
+                    employee.setEmpSalt(rs.getString(SALT));
+                    employee.setEmpDateStart(rs.getString(DATE_START));
+                    employee.setEmpDateEnd(rs.getString(DATE_END));
+                    employee.setEmpStatus(rs.getInt(STATUS));
+                    acc = new AccessProfile();
+                    acc.setAccProfileCode(rs.getInt(PROFILE));
+                    employee.setAccProfileCode(acc);
+                    employee.setEmpComment(rs.getString(COMMENT));
+                }
+            } else {
+                throw new SQLException("ResultSet was empty");
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
+            ex.printStackTrace();
+
+        }
+        return employeeList;
+    }
 
     @Override
     public Employee findByName(String name) {
@@ -87,6 +215,48 @@ public class EmployeeDAO extends DAO<Employee> {
 
     @Override
     public Vector<Employee> findByCriteria(String criteria, String term) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+         Vector<Employee> employeeList = new Vector<Employee>();
+        Employee employee = null;
+        AccessProfile acc = null;
+        StringBuffer query = new StringBuffer();
+        query.append("SELECT * FROM " + TABLE + " WHERE ")
+                .append(criteria)
+                .append(" = ")
+                .append("'" + term + "'");
+
+        System.out.println();
+
+        try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.isBeforeFirst()) {
+
+                while (rs.next()) {
+                    employee = new Employee();
+                    employee.setEmpId(rs.getInt(ID));
+                    employee.setEmpLastName(rs.getString(LAST_NAME));
+                    employee.setEmpFirstName(rs.getString(FIRST_NAME));
+                    employee.setEmpLogin(rs.getString(LOGIN));
+                    employee.setEmpPassword(rs.getString(PASSWORD));
+                    employee.setEmpSalt(rs.getString(SALT));
+                    employee.setEmpDateStart(rs.getString(DATE_START));
+                    employee.setEmpDateEnd(rs.getString(DATE_END));
+                    employee.setEmpStatus(rs.getInt(STATUS));
+                    acc = new AccessProfile();
+                    acc.setAccProfileCode(rs.getInt(PROFILE));
+                    employee.setAccProfileCode(acc);
+                    employee.setEmpComment(rs.getString(COMMENT));
+                }
+            } else {
+                throw new SQLException("ResultSet was empty");
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
+            ex.printStackTrace();
+
+        }
+        return employeeList;
     }
 }
