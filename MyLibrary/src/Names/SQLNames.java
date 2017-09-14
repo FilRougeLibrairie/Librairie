@@ -86,7 +86,7 @@ public interface SQLNames {
 
         public static final String STATUS_CODE = "staCode";
         public static final String PURCHASE_ID = "purId";
-        public static final String FIRST_NAME = "detTime";
+        public static final String DATE_TIME = "detTime";
     }
 
     public static class EditorNames {
@@ -145,7 +145,7 @@ public interface SQLNames {
         public static final String NAME = "offName";
         public static final String TEXT = "offText";
         public static final String START = "offDateStart";
-        public static final String END = "offDateStart";
+        public static final String END = "offDateEnd";
         public static final String DISCOUNT = "offDiscount";
         public static final String PICTURE = "offPicture";
     }
@@ -162,11 +162,11 @@ public interface SQLNames {
 
     public static class OrderStatusNames {
 
-        public static final String CODE = "staCode";
-        public static final String NAME = "staName";
+        public static final String CODE = "statCode";
+        public static final String NAME = "statName";
     }
 
-    public static class PayementNames {
+    public static class PaymentNames {
 
         public static final String ID = "payId";
         public static final String PURCHASE_ID = "purId";
