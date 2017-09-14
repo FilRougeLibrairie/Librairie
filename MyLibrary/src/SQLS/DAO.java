@@ -24,4 +24,6 @@ public abstract class DAO<T> implements SQLNames{
 
     public abstract T findByName(String name);
     
+    public abstract Vector<T> findByCriteria(String criteria, String term);
+    
 }
