@@ -56,7 +56,7 @@ public class KeywordsDAO extends DAO {
     public void update(Object obj) {
         Keywords kw = (Keywords) obj;
         StringBuilder query = new StringBuilder("UPDATE KEYWORDS SET ");
-        query.append(NAME).append(" = ?, ");
+        query.append(NAME).append(" = ? ");
 
         query.append("WHERE " + NAME + " = '")
                 .append(kw.getKeyName())

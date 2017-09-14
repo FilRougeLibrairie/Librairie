@@ -200,16 +200,11 @@ public interface SQLNames {
         public static final String STATUS = "revStatus";
     }
 
-    public static class ShipperNames {
-
-        public static final String ID = "ShipperId";
-        public static final String NAME = "ShipperName";
-    }
+    
 
     public static class ShippingCostNames {
 
         public static final String ID = "shipId";
-        public static final String SHIPPER_ID = "shipperId";
         public static final String NAME = "shipName";
         public static final String COST = "shipCost";
     }

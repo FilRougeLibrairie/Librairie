@@ -13,7 +13,7 @@ public class Payment {
 
     private int payId;
     private Purchase purId;
-    private int payValidate;
+    private Boolean payValidate;
     private String payChoice;
     private String payDate;
 
@@ -30,9 +30,7 @@ public class Payment {
         this.purId = purId;
     }
 
-    public void setPayValidate(int payValidate) {
-        this.payValidate = payValidate;
-    }
+   
 
     public void setPayChoice(String payChoice) {
         this.payChoice = payChoice;
@@ -51,9 +49,7 @@ public class Payment {
         return purId;
     }
 
-    public int getPayValidate() {
-        return payValidate;
-    }
+    
 
     public String getPayChoice() {
         return payChoice;
@@ -62,5 +58,17 @@ public class Payment {
     public String getPayDate() {
         return payDate;
     }
+
+    public Boolean getPayValidate() {
+        return payValidate;
+    }
+
+    public void setPayValidate(Boolean payValidate) {
+        this.payValidate = payValidate;
+    }
+    
+    
+    
+    
 
 }
