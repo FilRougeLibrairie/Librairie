@@ -12,25 +12,46 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
 
     Vector<Customer> customerList;
     Vector customerTableList;
+    
+    
 
+    private enum Gender {
+        MALE("H"),
+        FEMALE("F");     
+        private final String databaseName;
+
+        private Gender(String databaseName) {
+            this.databaseName = databaseName;
+        }
+        public String getDatabaseName() {
+            return databaseName;
+        }
+    }
+    
+    private enum Status {
+        INACTIVE,
+        ACTIVE,
+        BLACKLIST;
+    }
+
+    
+    // Constructor
     public JFCustomer() {
         initComponents();
 
         tableCustomers.setCellSelectionEnabled(true);
 
     }
-    
-    
-    private void setTableCustomerModel(){
+
+    private void setTableCustomerModel() {
         tableCustomers.setModel(initTableCustomersModel());
     }
-    
+
     private DefaultTableModel initTableCustomersModel() {
 
         Vector v = new Vector();
         v.add("Résultats");
 
-        System.out.println("************************" + customerTableList);
         return new javax.swing.table.DefaultTableModel(
                 customerTableList, v) {
 
@@ -43,11 +64,36 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
 //                    }
                 };
     }
-    
-    
-    
-    
-    private void fillCustomerFields(Customer cus){
+
+    private void fillCustomerFields(Customer cus) {
+        String gender = cus.getCusGender().trim();
+        Boolean isMale = gender.equalsIgnoreCase(Gender.MALE.getDatabaseName());
+        Boolean isFemale = gender.equalsIgnoreCase(Gender.FEMALE.getDatabaseName());
+        
+        if(isMale){
+            comboGender.setSelectedIndex(Gender.MALE.ordinal());
+        }else if(isFemale){
+            comboGender.setSelectedIndex(Gender.FEMALE.ordinal());
+        }
+        
+        int status = cus.getCusStatus();       
+        Boolean isActive = (status == Status.ACTIVE.ordinal());
+        Boolean isInactive = (status == Status.INACTIVE.ordinal());
+        Boolean isBlacklisted = (status == Status.BLACKLIST.ordinal());
+        
+        if(isActive){
+            comboStatus.setSelectedIndex(Status.ACTIVE.ordinal());
+            System.out.println("ACTIVE ORDINAL : " + Status.ACTIVE.ordinal());
+        }
+        if(isInactive){
+            comboStatus.setSelectedIndex(Status.INACTIVE.ordinal());
+            System.out.println("INACTIVE ORDINAL : " + Status.INACTIVE.ordinal());
+        }
+        if(isBlacklisted){
+            comboStatus.setSelectedIndex(Status.BLACKLIST.ordinal());
+            System.out.println("BLACKLIST ORDINAL : " + Status.BLACKLIST.ordinal());
+        }
+
         tfLastName.setText(cus.getCusLastName());
         tfFirstName.setText(cus.getCusFirstName());
         tfCompany.setText(cus.getCusOrganisationName());
@@ -56,16 +102,19 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
         tfEmail.setText(cus.getCusEmail());
         tfIPAdress.setText(cus.getCusIP());
         tfComment.setText(cus.getCusComment());
-        tfPassword.setText(cus.getCusPassword());
-        
     }
-    
-    
-    
-    
-    
-    
-    
+
+    private void clearCustomerFields() {
+        tfLastName.setText("");
+        tfFirstName.setText("");
+        tfCompany.setText("");
+        tfBirthday.setText("");
+        tfPhone.setText("");
+        tfEmail.setText("");
+        tfPassword.setText("");
+        tfIPAdress.setText("");
+        tfComment.setText("");
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -790,9 +839,14 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
 
         jLabel41.setText("Statut");
 
-        comboStatus.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Actif", "Inactif", "BlackListé" }));
+        comboStatus.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Inactif", "Actif", "BlackListé" }));
 
         comboGender.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Homme", "Femme" }));
+        comboGender.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboGenderActionPerformed(evt);
+            }
+        });
 
         jInternalFrame1.setPreferredSize(new java.awt.Dimension(200, 400));
         jInternalFrame1.setVisible(true);
@@ -828,6 +882,11 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
         bntCreateNew.setForeground(new java.awt.Color(255, 255, 255));
         bntCreateNew.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         bntCreateNew.setText("Créer nouveau client");
+        bntCreateNew.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                bntCreateNewMouseReleased(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -1042,9 +1101,7 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
 
         if (criteria.equalsIgnoreCase("Tous les clients")) {
             customerList = customerDAO.findAll();
-        }
-
-        if (term != null && !term.isEmpty()) {
+        } else if (term != null && !term.isEmpty()) {
             switch (criteria) {
                 case "Nom":
                     criteria = CustomerNames.LAST_NAME;
@@ -1082,22 +1139,28 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
     }//GEN-LAST:event_btnSearchMouseReleased
 
     private void tableCustomersMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableCustomersMouseReleased
-       
+
         for (int ligne = 0; ligne < tableCustomers.getRowCount(); ligne++) {
-            
-             if(tableCustomers.isRowSelected(ligne)) {
-                
-                 CustomerTable cusTable = (CustomerTable) tableCustomers.getValueAt(ligne, 0);
-                 Customer cus = cusTable.getCustomer();
-                 
-                 fillCustomerFields(cus);
+
+            if (tableCustomers.isRowSelected(ligne)) {
+
+                CustomerTable cusTable = (CustomerTable) tableCustomers.getValueAt(ligne, 0);
+                Customer cus = cusTable.getCustomer();
+
+                fillCustomerFields(cus);
             }
         }
-        
-        
-        
-        
+
+
     }//GEN-LAST:event_tableCustomersMouseReleased
+
+    private void bntCreateNewMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bntCreateNewMouseReleased
+        clearCustomerFields();
+    }//GEN-LAST:event_bntCreateNewMouseReleased
+
+    private void comboGenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboGenderActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_comboGenderActionPerformed
 
     /**
      * @param args the command line arguments

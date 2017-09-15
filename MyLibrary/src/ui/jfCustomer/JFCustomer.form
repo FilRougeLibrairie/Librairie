@@ -1241,8 +1241,8 @@
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="3">
-                <StringItem index="0" value="Actif"/>
-                <StringItem index="1" value="Inactif"/>
+                <StringItem index="0" value="Inactif"/>
+                <StringItem index="1" value="Actif"/>
                 <StringItem index="2" value="BlackList&#xe9;"/>
               </StringArray>
             </Property>
@@ -1257,6 +1257,9 @@
               </StringArray>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="comboGenderActionPerformed"/>
+          </Events>
         </Component>
         <Container class="javax.swing.JInternalFrame" name="jInternalFrame1">
           <Properties>
@@ -1384,6 +1387,9 @@
                     <Property name="horizontalAlignment" type="int" value="0"/>
                     <Property name="text" type="java.lang.String" value="Cr&#xe9;er nouveau client"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="bntCreateNewMouseReleased"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>

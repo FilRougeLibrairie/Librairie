@@ -234,8 +234,8 @@ public class CustomerDAO extends DAO {
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FROM " + TABLE + " WHERE ")
                 .append(column)
-                .append(" = ")
-                .append("'" + term + "'");
+                .append(" LIKE ")
+                .append("'" + term + "%'");
 
         System.out.println(query);
 
