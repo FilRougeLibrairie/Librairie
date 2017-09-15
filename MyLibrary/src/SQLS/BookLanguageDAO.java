@@ -5,8 +5,8 @@
  */
 package SQLS;
 
-import ClassObjet.AccessProfile;
-import ClassObjet.ShippingCost;
+import ClassObjet.BookLanguage;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,33 +14,31 @@ import java.util.Vector;
 
 /**
  *
- * @author cdi305
+ * @author CDI305
  */
-public class ShippingCostDAO extends DAO<ShippingCost> {
+public class BookLanguageDAO extends DAO<BookLanguage> {
 
-    private final String TABLE = "ShippingCost";
-    private final String ID = ShippingCostNames.ID;
-    private final String NAME = ShippingCostNames.NAME;
-    private final String COST = ShippingCostNames.COST;
+    private final String TABLE = "BookLanguage";
+    private final String CODE = BookLanguageNames.CODE;
+    private final String NAME = BookLanguageNames.NAME;
 
-    private String COLUMNS_CREATE = ID + ", " + NAME + ", " + COST;
+    private String COLUMNS_CREATE = CODE + ", " + NAME;
 
     //Constructor
-    public ShippingCostDAO() {
+    public BookLanguageDAO() {
         super();
     }
 
     @Override
-    public void create(ShippingCost obj) {
-        ShippingCost shipcost = (ShippingCost) obj;
-        String query = "IF NOT EXISTS (SELECT * FROM " + TABLE + " WHERE " + ID + " = '" + shipcost.getShipId() + "')"
+    public void create(BookLanguage obj) {
+        BookLanguage bookLang = (BookLanguage) obj;
+        String query = "IF NOT EXISTS (SELECT * FROM " + TABLE + " WHERE " + CODE + " = '" + bookLang.getBooLangCode() + "')"
                 + "INSERT INTO " + TABLE + " (" + COLUMNS_CREATE + ")"
-                + "VALUES (?, ?)";
+                + "VALUES (?)";
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query);) {
 
-            pstmt.setString(1, shipcost.getShipName());
-            pstmt.setFloat(2, shipcost.getShipCost());
+            pstmt.setString(1, bookLang.getBooLangName());
 
             int result = pstmt.executeUpdate();
 
@@ -51,21 +49,18 @@ public class ShippingCostDAO extends DAO<ShippingCost> {
     }
 
     @Override
-    public void update(ShippingCost obj) {
-        ShippingCost shipcost = (ShippingCost) obj;
+    public void update(BookLanguage obj) {
+        BookLanguage bookLang = (BookLanguage) obj;
         StringBuilder query = new StringBuilder("UPDATE " + TABLE + " SET ");
-        query.append(NAME).append(" = ?, ");
-        query.append(COST).append(" = ? ");
+        query.append(NAME).append(" = ? ");
 
-        query.append("WHERE " + ID + " = '")
-                .append(shipcost.getShipId())
+        query.append("WHERE " + CODE + " = '")
+                .append(bookLang.getBooLangCode())
                 .append("'");
 
         try (PreparedStatement pstmt = connect.prepareStatement(query.toString());) {
 
-            pstmt.setString(1, shipcost.getShipName());
-            pstmt.setFloat(2, shipcost.getShipCost());
-
+            pstmt.setString(1, bookLang.getBooLangName());
             int result = pstmt.executeUpdate();
 
         } catch (SQLException ex) {
@@ -76,13 +71,13 @@ public class ShippingCostDAO extends DAO<ShippingCost> {
     }
 
     @Override
-    public void delete(ShippingCost obj) {
-        int shipcostId = ((ShippingCost) obj).getShipId();
+    public void delete(BookLanguage obj) {
+        int bookLangId = ((BookLanguage) obj).getBooLangCode();
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FROM " + TABLE + " WHERE ")
-                .append(ID)
+                .append(CODE)
                 .append(" = ")
-                .append("'" + shipcostId + "'");
+                .append("'" + bookLangId + "'");
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
             pstmt.executeQuery();
@@ -93,9 +88,9 @@ public class ShippingCostDAO extends DAO<ShippingCost> {
     }
 
     @Override
-    public Vector<ShippingCost> findAll() {
-        Vector<ShippingCost> ShippingCostList = new Vector<ShippingCost>();
-        ShippingCost shipcost = null;
+    public Vector<BookLanguage> findAll() {
+        Vector<BookLanguage> bookLangList = new Vector<BookLanguage>();
+        BookLanguage bookLang = null;
         String query = "SELECT * FROM " + TABLE;
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query)) {
@@ -104,10 +99,9 @@ public class ShippingCostDAO extends DAO<ShippingCost> {
             if (rs.isBeforeFirst()) {
 
                 while (rs.next()) {
-                    shipcost = new ShippingCost();
-                    shipcost.setShipId(rs.getInt(ID));
-                    shipcost.setShipName(rs.getString(NAME));
-                    shipcost.setShipCost(rs.getFloat(COST));
+                    bookLang = new BookLanguage();
+                    bookLang.setBooLangCode(rs.getInt(CODE));
+                    bookLang.setBooLangName(rs.getString(NAME));
                 }
             } else {
                 throw new SQLException("ResultSet was empty");
@@ -118,13 +112,13 @@ public class ShippingCostDAO extends DAO<ShippingCost> {
             ex.printStackTrace();
 
         }
-        return ShippingCostList;
+        return bookLangList;
     }
 
     @Override
-    public Vector<ShippingCost> findByColumn(String column, String term) {
-        Vector<ShippingCost> ShippingCostList = new Vector<ShippingCost>();
-        ShippingCost shipcost = null;
+    public Vector<BookLanguage> findByColumn(String column, String term) {
+        Vector<BookLanguage> bookLangList = new Vector<BookLanguage>();
+        BookLanguage bookLang = null;
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FROM " + TABLE + " WHERE ")
                 .append(column)
@@ -140,10 +134,9 @@ public class ShippingCostDAO extends DAO<ShippingCost> {
             if (rs.isBeforeFirst()) {
 
                 while (rs.next()) {
-                    shipcost = new ShippingCost();
-                    shipcost.setShipId(rs.getInt(ID));
-                    shipcost.setShipName(rs.getString(NAME));
-                    shipcost.setShipCost(rs.getFloat(COST));
+                    bookLang = new BookLanguage();
+                    bookLang.setBooLangCode(rs.getInt(CODE));
+                    bookLang.setBooLangName(rs.getString(NAME));
                 }
             } else {
                 throw new SQLException("ResultSet was empty");
@@ -154,15 +147,15 @@ public class ShippingCostDAO extends DAO<ShippingCost> {
             ex.printStackTrace();
 
         }
-        return ShippingCostList;
+        return bookLangList;
     }
 
     @Override
-    public ShippingCost find(int id) {
-        ShippingCost shipcost = null;
+    public BookLanguage find(int id) {
+        BookLanguage bookLang = null;
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FROM " + TABLE + " WHERE ")
-                .append(ID)
+                .append(CODE)
                 .append(" = ")
                 .append("'" + id + "'");
 
@@ -173,10 +166,9 @@ public class ShippingCostDAO extends DAO<ShippingCost> {
             if (rs.isBeforeFirst()) {
 
                 while (rs.next()) {
-                    shipcost = new ShippingCost();
-                    shipcost.setShipId(rs.getInt(ID));
-                    shipcost.setShipName(rs.getString(NAME));
-                    shipcost.setShipCost(rs.getFloat(COST));
+                    bookLang = new BookLanguage();
+                    bookLang.setBooLangCode(rs.getInt(CODE));
+                    bookLang.setBooLangName(rs.getString(NAME));
                 }
             } else {
                 throw new SQLException("ResultSet was empty");
@@ -187,11 +179,11 @@ public class ShippingCostDAO extends DAO<ShippingCost> {
             ex.printStackTrace();
 
         }
-        return shipcost;
+        return bookLang;
     }
 
     @Override
-    public ShippingCost find(String name) {
+    public BookLanguage find(String name) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
