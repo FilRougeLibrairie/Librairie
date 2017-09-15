@@ -5,6 +5,8 @@
  */
 package ClassObjet;
 
+import java.util.Vector;
+
 /**
  *
  * @author Tofi
@@ -16,6 +18,10 @@ public class Keywords {
     //Constructor
     public Keywords() {
     }
+    
+     public Keywords(String keyName) {
+        this.keyName = keyName;
+    }
 
     //Setters
     public void setKeyName(String keyName) {
@@ -26,5 +32,11 @@ public class Keywords {
     public String getKeyName() {
         return keyName;
     }
-
+     public Vector getVector() {
+        Vector v= new Vector();
+       
+        v.add(this.keyName);
+      
+        return v;
+    }
 }

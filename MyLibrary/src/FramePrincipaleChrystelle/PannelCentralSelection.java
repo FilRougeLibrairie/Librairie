@@ -7,10 +7,6 @@ package FramePrincipaleChrystelle;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import javax.swing.JPanel;
 
 /**
@@ -985,14 +981,14 @@ public class PannelCentralSelection extends javax.swing.JPanel {
 
     private void bAutorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bAutorMouseClicked
 
-
-        jpPrincipal.removeAll();
-        jpPrincipal.validate();
-        AddAutor addAutor=new AddAutor();
-        jpPrincipal.setLayout(new BorderLayout());
-        jpPrincipal.add(addAutor,BorderLayout.NORTH);
-        jpPrincipal.setVisible(true);
-        jpPrincipal.revalidate();
+//
+//        jpPrincipal.removeAll();
+//        jpPrincipal.validate();
+//        AddAutor addAutor=new AddAutor();
+//        jpPrincipal.setLayout(new BorderLayout());
+//        jpPrincipal.add(addAutor,BorderLayout.NORTH);
+//        jpPrincipal.setVisible(true);
+//        jpPrincipal.revalidate();
         
     }//GEN-LAST:event_bAutorMouseClicked
 
@@ -1077,7 +1073,7 @@ public class PannelCentralSelection extends javax.swing.JPanel {
 
         jpPrincipal.removeAll();
         jpPrincipal.validate(); 
-        AddKeyWord addKW=new AddKeyWord();
+        KWPanel addKW=new KWPanel();
         jpPrincipal.setLayout(new BorderLayout());
         jpPrincipal.add(addKW,BorderLayout.NORTH);
         jpPrincipal.setVisible(true);
@@ -1170,14 +1166,14 @@ public class PannelCentralSelection extends javax.swing.JPanel {
     private void bAddEmployeeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bAddEmployeeMouseClicked
 
 
-
-        jpPrincipal.removeAll();
-        jpPrincipal.validate();
-        AddEmployee addEmployee=new AddEmployee();
-        jpPrincipal.setLayout(new BorderLayout());
-        jpPrincipal.add(addEmployee,BorderLayout.NORTH);
-        jpPrincipal.setVisible(true);
-        jpPrincipal.revalidate();
+//
+//        jpPrincipal.removeAll();
+//        jpPrincipal.validate();
+//        AddEmployee addEmployee=new AddEmployee();
+//        jpPrincipal.setLayout(new BorderLayout());
+//        jpPrincipal.add(addEmployee,BorderLayout.NORTH);
+//        jpPrincipal.setVisible(true);
+//        jpPrincipal.revalidate();
 
 
 
@@ -1290,13 +1286,13 @@ public class PannelCentralSelection extends javax.swing.JPanel {
     private void jPanel13MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel13MouseClicked
         
         
-        jpPrincipal.removeAll();
-        jpPrincipal.validate();
-        AddAutor addAutor=new AddAutor();
-        jpPrincipal.setLayout(new BorderLayout());
-        jpPrincipal.add(addAutor,BorderLayout.NORTH);
-        jpPrincipal.setVisible(true);
-        jpPrincipal.revalidate();
+//        jpPrincipal.removeAll();
+//        jpPrincipal.validate();
+//        AddAutor addAutor=new AddAutor();
+//        jpPrincipal.setLayout(new BorderLayout());
+//        jpPrincipal.add(addAutor,BorderLayout.NORTH);
+//        jpPrincipal.setVisible(true);
+//        jpPrincipal.revalidate();
         
     }//GEN-LAST:event_jPanel13MouseClicked
 
@@ -1305,7 +1301,7 @@ public class PannelCentralSelection extends javax.swing.JPanel {
         
         jpPrincipal.removeAll();
         jpPrincipal.validate();
-        AddKeyWord addKW=new AddKeyWord();
+        KWPanel addKW=new KWPanel();
         jpPrincipal.setLayout(new BorderLayout());
         jpPrincipal.add(addKW,BorderLayout.NORTH);
         jpPrincipal.setVisible(true);
@@ -1327,15 +1323,15 @@ jpPrincipal.setBackground(Color.black);
     private void jPanel19MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel19MouseClicked
         
         
-        
-         jpPrincipal.removeAll();
-        jpPrincipal.validate();
-        AddEmployee addEmployee=new AddEmployee();
-        jpPrincipal.setLayout(new BorderLayout());
-        jpPrincipal.add(addEmployee,BorderLayout.NORTH);
-        jpPrincipal.setVisible(true);
-        jpPrincipal.revalidate();
-        
+//        
+//         jpPrincipal.removeAll();
+//        jpPrincipal.validate();
+//        AddEmployee addEmployee=new AddEmployee();
+//        jpPrincipal.setLayout(new BorderLayout());
+//        jpPrincipal.add(addEmployee,BorderLayout.NORTH);
+//        jpPrincipal.setVisible(true);
+//        jpPrincipal.revalidate();
+//        
         
         
         
