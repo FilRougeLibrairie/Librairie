@@ -6,6 +6,7 @@
 package SQLS;
 
 import ClassObjet.Customer;
+import exceptions.ResultsetException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -75,7 +76,7 @@ public class CustomerDAO extends DAO {
     public void delete(Object obj) {
         int cusId = ((Customer) obj).getCusID();
         StringBuffer query = new StringBuffer();
-        query.append("SELECT * FROM " + TABLE + " WHERE ")
+        query.append("DELETE FROM " + TABLE + " WHERE ")
                 .append(ID)
                 .append(" = ")
                 .append("'" + cusId + "'");
@@ -141,6 +142,8 @@ public class CustomerDAO extends DAO {
                 .append(ID)
                 .append(" = ")
                 .append("'" + id + "'");
+        
+        System.out.println(query);
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
 
@@ -234,12 +237,12 @@ public class CustomerDAO extends DAO {
                 .append(" = ")
                 .append("'" + term + "'");
 
-        System.out.println();
+        System.out.println(query);
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
 
             ResultSet rs = pstmt.executeQuery();
-
+            System.out.println("*** Is Beforfirst : *** " + rs.isBeforeFirst());
             if (rs.isBeforeFirst()) {
 
                 while (rs.next()) {
@@ -260,7 +263,7 @@ public class CustomerDAO extends DAO {
                     customerList.add(customer);
                 }
             } else {
-                throw new SQLException("ResultSet was empty");
+                throw new ResultsetException("ResultSet was empty");
             }
 
         } catch (SQLException ex) {

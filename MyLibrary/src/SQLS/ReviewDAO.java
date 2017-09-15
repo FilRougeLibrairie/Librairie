@@ -107,7 +107,7 @@ public class ReviewDAO extends DAO<Review> {
     public void delete(Review obj) {
         int revId = ((Review) obj).getRevId();
         StringBuffer query = new StringBuffer();
-        query.append("SELECT * FROM " + TABLE + " WHERE ")
+        query.append("DELETE FROM " + TABLE + " WHERE ")
                 .append(ID)
                 .append(" = ")
                 .append("'" + revId + "'");

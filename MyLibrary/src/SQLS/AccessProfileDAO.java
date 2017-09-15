@@ -82,7 +82,7 @@ public class AccessProfileDAO extends DAO<AccessProfile> {
     public void delete(AccessProfile obj) {
      int accProfileCode = ((AccessProfile) obj).getAccProfileCode();
         StringBuffer query = new StringBuffer();
-        query.append("SELECT * FROM " + TABLE + " WHERE ")
+        query.append("DELETE FROM " + TABLE + " WHERE ")
                 .append(PROFILE_CODE)
                 .append(" = ")
                 .append("'" + accProfileCode + "'");

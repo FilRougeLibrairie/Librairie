@@ -39,7 +39,7 @@ public class KeywordsDAO extends DAO {
     public void delete(Object obj) {
         String kw = ((Keywords) obj).getKeyName();
         StringBuffer query = new StringBuffer();
-        query.append("SELECT * FROM KEYWORDS WHERE ")
+        query.append("DELETE FROM KEYWORDS WHERE ")
                 .append(NAME)
                 .append(" = ")
                 .append("'" + kw + "'");

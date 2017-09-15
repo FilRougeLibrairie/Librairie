@@ -74,7 +74,7 @@ public class BookLanguageDAO extends DAO<BookLanguage> {
     public void delete(BookLanguage obj) {
         int bookLangId = ((BookLanguage) obj).getBooLangCode();
         StringBuffer query = new StringBuffer();
-        query.append("SELECT * FROM " + TABLE + " WHERE ")
+        query.append("DELETE FROM " + TABLE + " WHERE ")
                 .append(CODE)
                 .append(" = ")
                 .append("'" + bookLangId + "'");

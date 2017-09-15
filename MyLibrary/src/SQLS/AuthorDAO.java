@@ -61,7 +61,7 @@ public class AuthorDAO extends DAO{
     public void delete(Object obj) {
         int autId = ((Author) obj).getAutId();
         StringBuffer query = new StringBuffer();
-        query.append("SELECT * FROM " + TABLE + " WHERE ")
+        query.append("DELETE FROM " + TABLE + " WHERE ")
                 .append(ID)
                 .append(" = ")
                 .append("'" + autId + "'");

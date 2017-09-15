@@ -53,7 +53,7 @@ public class FormatsDAO extends DAO{
     
         int formId = ((Formats) obj).getForId();
         StringBuffer query = new StringBuffer();
-        query.append("SELECT * FROM Formats WHERE ")
+        query.append("DELETE FROM Formats WHERE ")
                 .append(ID)
                 .append(" = ")
                 .append("'" + formId + "'");

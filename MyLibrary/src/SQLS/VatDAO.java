@@ -79,7 +79,7 @@ public class VatDAO extends DAO<Vat> {
     public void delete(Vat obj) {
         int vatId = ((Vat) obj).getVatCode();
         StringBuffer query = new StringBuffer();
-        query.append("SELECT * FROM " + TABLE + " WHERE ")
+        query.append("DELETE FROM " + TABLE + " WHERE ")
                 .append(CODE)
                 .append(" = ")
                 .append("'" + vatId + "'");

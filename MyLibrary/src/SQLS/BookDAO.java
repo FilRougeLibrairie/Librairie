@@ -86,7 +86,7 @@ public class BookDAO extends DAO {
     public void delete(Object obj) {
         String bookId = ((Book) obj).getBooIsbn13();
         StringBuffer query = new StringBuffer();
-        query.append("SELECT * FROM " + TABLE + " WHERE ")
+        query.append("DELETE FROM " + TABLE + " WHERE ")
                 .append(ISBN_13)
                 .append(" = ")
                 .append("'" + bookId + "'");

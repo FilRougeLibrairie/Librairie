@@ -55,7 +55,7 @@ public class EditorDAO extends DAO {
     public void delete(Object obj) {
         int ediId = ((Editor) obj).getEdiId();
         StringBuffer query = new StringBuffer();
-        query.append("SELECT * FROM " + TABLE + " WHERE ")
+        query.append("DELETE FROM " + TABLE + " WHERE ")
                 .append(ID)
                 .append(" = ")
                 .append("'" + ediId + "'");
@@ -63,7 +63,7 @@ public class EditorDAO extends DAO {
         try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
             pstmt.executeQuery();
         } catch (SQLException ex) {
-            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
+            System.out.println("ERROR Deleting Object : " + ex.getMessage());
             ex.printStackTrace();
         }
     }
