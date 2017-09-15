@@ -78,7 +78,7 @@ public class AddressDAO extends DAO {
     public void delete(Object obj) {
         int addrId = ((Address) obj).getAddId();
         StringBuffer query = new StringBuffer();
-        query.append("SELECT * FROM " + TABLE + " WHERE ")
+        query.append("DELETE FROM " + TABLE + " WHERE ")
                 .append(ID)
                 .append(" = ")
                 .append("'" + addrId + "'");

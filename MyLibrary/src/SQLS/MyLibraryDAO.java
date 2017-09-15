@@ -120,7 +120,7 @@ public class MyLibraryDAO extends DAO<MyLibrary>{
     public void delete(MyLibrary obj) {
          int myLibId = ((MyLibrary) obj).getMyLibId();
         StringBuffer query = new StringBuffer();
-        query.append("SELECT * FROM " + TABLE + " WHERE ")
+        query.append("DELETE FROM " + TABLE + " WHERE ")
                 .append(ID)
                 .append(" = ")
                 .append("'" + myLibId + "'");

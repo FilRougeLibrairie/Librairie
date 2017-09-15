@@ -5,6 +5,7 @@
  */
 package ui;
 
+import ui.jfCustomer.JFCustomer;
 import ClassObjet.Employee;
 import exceptions.CryptoException;
 import java.awt.Dimension;

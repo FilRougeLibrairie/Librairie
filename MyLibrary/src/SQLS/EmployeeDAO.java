@@ -111,7 +111,7 @@ public class EmployeeDAO extends DAO<Employee> {
     public void delete(Employee obj) {
          int empId = ((Employee) obj).getEmpId();
         StringBuffer query = new StringBuffer();
-        query.append("SELECT * FROM " + TABLE + " WHERE ")
+        query.append("DELETE FROM " + TABLE + " WHERE ")
                 .append(ID)
                 .append(" = ")
                 .append("'" + empId + "'");

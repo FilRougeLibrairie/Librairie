@@ -87,7 +87,7 @@ public class StatusDisplayDAO extends DAO<StatusDisplay> {
     public void delete(StatusDisplay obj) {
      int staCode = ((StatusDisplay) obj).getStaCode();
         StringBuffer query = new StringBuffer();
-        query.append("SELECT * FROM " + TABLE + " WHERE ")
+        query.append("DELETE FROM " + TABLE + " WHERE ")
                 .append(STATUS_CODE)
                 .append(" = ")
                 .append("'" + staCode + "'");

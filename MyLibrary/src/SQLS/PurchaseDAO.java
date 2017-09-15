@@ -70,7 +70,7 @@ public class PurchaseDAO extends DAO {
     public void delete(Object obj) {
         int purId = ((Purchase) obj).getPurId();
         StringBuffer query = new StringBuffer();
-        query.append("SELECT * FROM " + TABLE + " WHERE ")
+        query.append("DELETE FROM " + TABLE + " WHERE ")
                 .append(ID)
                 .append(" = ")
                 .append("'" + purId + "'");

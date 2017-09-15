@@ -62,7 +62,7 @@ public class OrderLineDAO extends DAO {
     public void delete(Object obj) {
         int ordLineId = ((OrderLine) obj).getOrdLineId();
         StringBuffer query = new StringBuffer();
-        query.append("SELECT * FROM " + TABLE + " WHERE ")
+        query.append("DELETE FROM " + TABLE + " WHERE ")
                 .append(ID)
                 .append(" = ")
                 .append("'" + ordLineId + "'");

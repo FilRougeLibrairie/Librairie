@@ -88,7 +88,7 @@ public class SubThemeDAO extends DAO<SubTheme>{
     public void delete(SubTheme obj) {
         int subTheId = ((SubTheme) obj).getSubId();
         StringBuffer query = new StringBuffer();
-        query.append("SELECT * FROM " + TABLE + " WHERE ")
+        query.append("DELETE FROM " + TABLE + " WHERE ")
                 .append(ID)
                 .append(" = ")
                 .append("'" + subTheId + "'");

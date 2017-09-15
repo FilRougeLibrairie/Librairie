@@ -52,7 +52,7 @@ public class OrderStatusDAO extends DAO {
     public void delete(Object obj) {
         int ordCode = ((OrderStatus) obj).getStaCode();
         StringBuffer query = new StringBuffer();
-        query.append("SELECT * FROM " + TABLE + " WHERE ")
+        query.append("DELETE FROM " + TABLE + " WHERE ")
                 .append(CODE)
                 .append(" = ")
                 .append("'" + ordCode + "'");

@@ -1,9 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package ui;
+package ui.jfCustomer;
 
 import ClassObjet.Customer;
 import Names.SQLNames;
@@ -11,13 +6,66 @@ import SQLS.ConnexionBase;
 import SQLS.CustomerDAO;
 import SQLS.DAO;
 import java.util.Vector;
+import javax.swing.table.DefaultTableModel;
 
 public class JFCustomer extends javax.swing.JFrame implements SQLNames {
 
+    Vector<Customer> customerList;
+    Vector customerTableList;
+
     public JFCustomer() {
         initComponents();
+
+        tableCustomers.setCellSelectionEnabled(true);
+
+    }
+    
+    
+    private void setTableCustomerModel(){
+        tableCustomers.setModel(initTableCustomersModel());
+    }
+    
+    private DefaultTableModel initTableCustomersModel() {
+
+        Vector v = new Vector();
+        v.add("Résultats");
+
+        System.out.println("************************" + customerTableList);
+        return new javax.swing.table.DefaultTableModel(
+                customerTableList, v) {
+
+//                    boolean[] canEdit = new boolean[]{
+//                        true, false, true, false
+//                    };
+//
+//                    public boolean isCellEditable(int rowIndex, int columnIndex) {
+//                        return canEdit[columnIndex];
+//                    }
+                };
+    }
+    
+    
+    
+    
+    private void fillCustomerFields(Customer cus){
+        tfLastName.setText(cus.getCusLastName());
+        tfFirstName.setText(cus.getCusFirstName());
+        tfCompany.setText(cus.getCusOrganisationName());
+        tfBirthday.setText(cus.getCusDateOfBirth());
+        tfPhone.setText(cus.getCusPhoneNumber());
+        tfEmail.setText(cus.getCusEmail());
+        tfIPAdress.setText(cus.getCusIP());
+        tfComment.setText(cus.getCusComment());
+        tfPassword.setText(cus.getCusPassword());
         
     }
+    
+    
+    
+    
+    
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -134,13 +182,12 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
         comboSearch = new javax.swing.JComboBox();
         tfSearch = new javax.swing.JTextField();
         jScrollPane6 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tableCustomers = new javax.swing.JTable();
         jScrollPane7 = new javax.swing.JScrollPane();
         tfComment = new javax.swing.JTextPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
-        setPreferredSize(new java.awt.Dimension(800, 800));
 
         jPanel9.setBackground(new java.awt.Color(255, 255, 255));
         jPanel9.setPreferredSize(new java.awt.Dimension(900, 630));
@@ -793,9 +840,9 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
             .addComponent(bntCreateNew, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
         );
 
-        comboSearch.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Nom", "Prénom", "Nom Société", "Email", "N° Téléphone", "Adresse IP" }));
+        comboSearch.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Tous les clients", "Nom", "Prénom", "Nom Société", "Email", "N° Téléphone", "Adresse IP" }));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tableCustomers.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null},
                 {null},
@@ -808,15 +855,20 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
                 "Résultat"
             }
         ) {
-            Class[] types = new Class [] {
-                java.lang.String.class
+            boolean[] canEdit = new boolean [] {
+                false
             };
 
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
-        jScrollPane6.setViewportView(jTable1);
+        tableCustomers.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                tableCustomersMouseReleased(evt);
+            }
+        });
+        jScrollPane6.setViewportView(tableCustomers);
 
         javax.swing.GroupLayout jInternalFrame1Layout = new javax.swing.GroupLayout(jInternalFrame1.getContentPane());
         jInternalFrame1.getContentPane().setLayout(jInternalFrame1Layout);
@@ -984,8 +1036,14 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
     private void btnSearchMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSearchMouseReleased
 
         String criteria = comboSearch.getSelectedItem().toString();
-        String term = tfSearch.getText();
-        Vector<Customer> customerList = new Vector<Customer>();
+        String term = tfSearch.getText().trim();
+        customerList = new Vector<Customer>();
+        CustomerDAO customerDAO = new CustomerDAO();
+
+        if (criteria.equalsIgnoreCase("Tous les clients")) {
+            customerList = customerDAO.findAll();
+        }
+
         if (term != null && !term.isEmpty()) {
             switch (criteria) {
                 case "Nom":
@@ -1007,18 +1065,39 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
                     criteria = CustomerNames.IP;
                     break;
                 default:
-                    System.out.println("Je n'ai pas compris");
+                    throw new TypeNotPresentException(term, null);
             }
+
+            customerList = customerDAO.findByColumn(criteria, term);
         }
 
-        DAO customerDAO = new CustomerDAO();
-        customerList = ((CustomerDAO) customerDAO).findByColumn(criteria, term);
-        
-       // customerList = customerDAO.findAll();
+        customerTableList = new Vector();
         for (Customer cus : customerList) {
-            System.out.println(cus.toString());
+            CustomerTable customerTable = new CustomerTable(cus);
+            customerTableList.add(customerTable.getVector());
         }
+
+        setTableCustomerModel();
+
     }//GEN-LAST:event_btnSearchMouseReleased
+
+    private void tableCustomersMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableCustomersMouseReleased
+       
+        for (int ligne = 0; ligne < tableCustomers.getRowCount(); ligne++) {
+            
+             if(tableCustomers.isRowSelected(ligne)) {
+                
+                 CustomerTable cusTable = (CustomerTable) tableCustomers.getValueAt(ligne, 0);
+                 Customer cus = cusTable.getCustomer();
+                 
+                 fillCustomerFields(cus);
+            }
+        }
+        
+        
+        
+        
+    }//GEN-LAST:event_tableCustomersMouseReleased
 
     /**
      * @param args the command line arguments
@@ -1130,8 +1209,8 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
+    private javax.swing.JTable tableCustomers;
     private javax.swing.JTable tableDeliverAdresses;
     private javax.swing.JTable tableReview;
     private javax.swing.JTable tabletfInvoiceAdresses;

@@ -79,7 +79,7 @@ public class ShippingCostDAO extends DAO<ShippingCost> {
     public void delete(ShippingCost obj) {
         int shipcostId = ((ShippingCost) obj).getShipId();
         StringBuffer query = new StringBuffer();
-        query.append("SELECT * FROM " + TABLE + " WHERE ")
+        query.append("DELETE FROM " + TABLE + " WHERE ")
                 .append(ID)
                 .append(" = ")
                 .append("'" + shipcostId + "'");

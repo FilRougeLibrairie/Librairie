@@ -53,7 +53,7 @@ public class ThemeDAO extends DAO {
     public void delete(Object obj) {
         int theId = ((Theme) obj).getTheId();
         StringBuffer query = new StringBuffer();
-        query.append("SELECT * FROM " + TABLE + " WHERE ")
+        query.append("DELETE FROM " + TABLE + " WHERE ")
                 .append(ID)
                 .append(" = ")
                 .append("'" + theId + "'");
