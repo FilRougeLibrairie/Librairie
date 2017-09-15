@@ -5,8 +5,8 @@
  */
 package SQLS;
 
-import ClassObjet.AccessProfile;
-import ClassObjet.ShippingCost;
+import ClassObjet.BookLanguage;
+import ClassObjet.Vat;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,33 +14,33 @@ import java.util.Vector;
 
 /**
  *
- * @author cdi305
+ * @author CDI305
  */
-public class ShippingCostDAO extends DAO<ShippingCost> {
+public class VatDAO extends DAO<Vat> {
 
-    private final String TABLE = "ShippingCost";
-    private final String ID = ShippingCostNames.ID;
-    private final String NAME = ShippingCostNames.NAME;
-    private final String COST = ShippingCostNames.COST;
+    private final String TABLE = "Vat";
+    private final String CODE = VATNames.CODE;
+    private final String RATE = VATNames.RATE;
+    private final String NAME = VATNames.NAME;
 
-    private String COLUMNS_CREATE = ID + ", " + NAME + ", " + COST;
+    private String COLUMNS_CREATE = CODE + ", " + RATE + ", " + NAME;
 
     //Constructor
-    public ShippingCostDAO() {
+    public VatDAO() {
         super();
     }
 
     @Override
-    public void create(ShippingCost obj) {
-        ShippingCost shipcost = (ShippingCost) obj;
-        String query = "IF NOT EXISTS (SELECT * FROM " + TABLE + " WHERE " + ID + " = '" + shipcost.getShipId() + "')"
+    public void create(Vat obj) {
+        Vat vat = (Vat) obj;
+        String query = "IF NOT EXISTS (SELECT * FROM " + TABLE + " WHERE " + CODE + " = '" + vat.getVatCode() + "')"
                 + "INSERT INTO " + TABLE + " (" + COLUMNS_CREATE + ")"
                 + "VALUES (?, ?)";
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query);) {
 
-            pstmt.setString(1, shipcost.getShipName());
-            pstmt.setFloat(2, shipcost.getShipCost());
+            pstmt.setFloat(1, vat.getVatRate());
+            pstmt.setString(2, vat.getVatName());
 
             int result = pstmt.executeUpdate();
 
@@ -51,20 +51,20 @@ public class ShippingCostDAO extends DAO<ShippingCost> {
     }
 
     @Override
-    public void update(ShippingCost obj) {
-        ShippingCost shipcost = (ShippingCost) obj;
+    public void update(Vat obj) {
+        Vat vat = (Vat) obj;
         StringBuilder query = new StringBuilder("UPDATE " + TABLE + " SET ");
-        query.append(NAME).append(" = ?, ");
-        query.append(COST).append(" = ? ");
+        query.append(RATE).append(" = ?, ");
+        query.append(NAME).append(" = ? ");
 
-        query.append("WHERE " + ID + " = '")
-                .append(shipcost.getShipId())
+        query.append("WHERE " + CODE + " = '")
+                .append(vat.getVatCode())
                 .append("'");
 
         try (PreparedStatement pstmt = connect.prepareStatement(query.toString());) {
 
-            pstmt.setString(1, shipcost.getShipName());
-            pstmt.setFloat(2, shipcost.getShipCost());
+            pstmt.setFloat(1, vat.getVatRate());
+            pstmt.setString(2, vat.getVatName());
 
             int result = pstmt.executeUpdate();
 
@@ -76,13 +76,13 @@ public class ShippingCostDAO extends DAO<ShippingCost> {
     }
 
     @Override
-    public void delete(ShippingCost obj) {
-        int shipcostId = ((ShippingCost) obj).getShipId();
+    public void delete(Vat obj) {
+        int vatId = ((Vat) obj).getVatCode();
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FROM " + TABLE + " WHERE ")
-                .append(ID)
+                .append(CODE)
                 .append(" = ")
-                .append("'" + shipcostId + "'");
+                .append("'" + vatId + "'");
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
             pstmt.executeQuery();
@@ -93,9 +93,9 @@ public class ShippingCostDAO extends DAO<ShippingCost> {
     }
 
     @Override
-    public Vector<ShippingCost> findAll() {
-        Vector<ShippingCost> ShippingCostList = new Vector<ShippingCost>();
-        ShippingCost shipcost = null;
+    public Vector<Vat> findAll() {
+        Vector<Vat> vatList = new Vector<Vat>();
+        Vat vat = null;
         String query = "SELECT * FROM " + TABLE;
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query)) {
@@ -104,10 +104,10 @@ public class ShippingCostDAO extends DAO<ShippingCost> {
             if (rs.isBeforeFirst()) {
 
                 while (rs.next()) {
-                    shipcost = new ShippingCost();
-                    shipcost.setShipId(rs.getInt(ID));
-                    shipcost.setShipName(rs.getString(NAME));
-                    shipcost.setShipCost(rs.getFloat(COST));
+                    vat = new Vat();
+                    vat.setVatCode(rs.getInt(CODE));
+                    vat.setVatRate(rs.getFloat(RATE));
+                    vat.setVatName(rs.getString(NAME));
                 }
             } else {
                 throw new SQLException("ResultSet was empty");
@@ -118,13 +118,13 @@ public class ShippingCostDAO extends DAO<ShippingCost> {
             ex.printStackTrace();
 
         }
-        return ShippingCostList;
+        return vatList;
     }
 
     @Override
-    public Vector<ShippingCost> findByColumn(String column, String term) {
-        Vector<ShippingCost> ShippingCostList = new Vector<ShippingCost>();
-        ShippingCost shipcost = null;
+    public Vector<Vat> findByColumn(String column, String term) {
+        Vector<Vat> vatList = new Vector<Vat>();
+        Vat vat = null;
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FROM " + TABLE + " WHERE ")
                 .append(column)
@@ -140,10 +140,10 @@ public class ShippingCostDAO extends DAO<ShippingCost> {
             if (rs.isBeforeFirst()) {
 
                 while (rs.next()) {
-                    shipcost = new ShippingCost();
-                    shipcost.setShipId(rs.getInt(ID));
-                    shipcost.setShipName(rs.getString(NAME));
-                    shipcost.setShipCost(rs.getFloat(COST));
+                    vat = new Vat();
+                    vat.setVatCode(rs.getInt(CODE));
+                    vat.setVatRate(rs.getFloat(RATE));
+                    vat.setVatName(rs.getString(NAME));
                 }
             } else {
                 throw new SQLException("ResultSet was empty");
@@ -154,15 +154,15 @@ public class ShippingCostDAO extends DAO<ShippingCost> {
             ex.printStackTrace();
 
         }
-        return ShippingCostList;
+        return vatList;
     }
 
     @Override
-    public ShippingCost find(int id) {
-        ShippingCost shipcost = null;
+    public Vat find(int id) {
+        Vat vat = null;
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FROM " + TABLE + " WHERE ")
-                .append(ID)
+                .append(CODE)
                 .append(" = ")
                 .append("'" + id + "'");
 
@@ -173,10 +173,10 @@ public class ShippingCostDAO extends DAO<ShippingCost> {
             if (rs.isBeforeFirst()) {
 
                 while (rs.next()) {
-                    shipcost = new ShippingCost();
-                    shipcost.setShipId(rs.getInt(ID));
-                    shipcost.setShipName(rs.getString(NAME));
-                    shipcost.setShipCost(rs.getFloat(COST));
+                    vat = new Vat();
+                    vat.setVatCode(rs.getInt(CODE));
+                    vat.setVatRate(rs.getFloat(RATE));
+                    vat.setVatName(rs.getString(NAME));
                 }
             } else {
                 throw new SQLException("ResultSet was empty");
@@ -187,11 +187,11 @@ public class ShippingCostDAO extends DAO<ShippingCost> {
             ex.printStackTrace();
 
         }
-        return shipcost;
+        return vat;
     }
 
     @Override
-    public ShippingCost find(String name) {
+    public Vat find(String name) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

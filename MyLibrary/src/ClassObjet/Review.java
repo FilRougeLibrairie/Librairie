@@ -19,6 +19,7 @@ public class Review {
     private String revComment;
     private String revDate;
     private String revIP;
+    private String revStatus;
 
     //Constructor
     public Review() {
@@ -57,6 +58,12 @@ public class Review {
         this.revIP = revIP;
     }
 
+    public void setRevStatus(String revStatus) {
+        this.revStatus = revStatus;
+    }
+    
+    
+    
     //Getters
     public int getRevId() {
         return revId;
@@ -90,4 +97,9 @@ public class Review {
         return revIP;
     }
 
+    public String getRevStatus() {
+        return revStatus;
+    }
+    
+    
 }

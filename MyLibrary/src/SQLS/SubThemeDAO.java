@@ -5,8 +5,10 @@
  */
 package SQLS;
 
-import ClassObjet.AccessProfile;
-import ClassObjet.ShippingCost;
+import ClassObjet.BookLanguage;
+import ClassObjet.SubTheme;
+import ClassObjet.Theme;
+import static Names.SQLNames.StatusDisplayNames.CODE;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,33 +16,38 @@ import java.util.Vector;
 
 /**
  *
- * @author cdi305
+ * @author CDI305
  */
-public class ShippingCostDAO extends DAO<ShippingCost> {
+public class SubThemeDAO extends DAO<SubTheme>{
+    
+        private final String TABLE = "SubTheme";
+        
+        private final String ID = SubThemeNames.ID;
+        private final String THEME_ID = SubThemeNames.THEME_ID;
+        private final String NAME = SubThemeNames.NAME;
+        private final String DESCRIPTION = SubThemeNames.DESCRIPTION;
 
-    private final String TABLE = "ShippingCost";
-    private final String ID = ShippingCostNames.ID;
-    private final String NAME = ShippingCostNames.NAME;
-    private final String COST = ShippingCostNames.COST;
-
-    private String COLUMNS_CREATE = ID + ", " + NAME + ", " + COST;
+    private String COLUMNS_CREATE = ID + ", " + THEME_ID + "' " + NAME + "' " + DESCRIPTION ;
 
     //Constructor
-    public ShippingCostDAO() {
+
+    public SubThemeDAO() {
         super();
     }
+    
 
     @Override
-    public void create(ShippingCost obj) {
-        ShippingCost shipcost = (ShippingCost) obj;
-        String query = "IF NOT EXISTS (SELECT * FROM " + TABLE + " WHERE " + ID + " = '" + shipcost.getShipId() + "')"
+    public void create(SubTheme obj) {
+        SubTheme subThe = (SubTheme) obj;
+        String query = "IF NOT EXISTS (SELECT * FROM " + TABLE + " WHERE " + ID + " = '" + subThe.getSubId() + "')"
                 + "INSERT INTO " + TABLE + " (" + COLUMNS_CREATE + ")"
-                + "VALUES (?, ?)";
+                + "VALUES (?, ?, ?)";
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query);) {
 
-            pstmt.setString(1, shipcost.getShipName());
-            pstmt.setFloat(2, shipcost.getShipCost());
+            pstmt.setInt(1, subThe.getTheId().getTheId());
+            pstmt.setString(2, subThe.getSubName());
+            pstmt.setString(3, subThe.getSubDescription());
 
             int result = pstmt.executeUpdate();
 
@@ -51,21 +58,23 @@ public class ShippingCostDAO extends DAO<ShippingCost> {
     }
 
     @Override
-    public void update(ShippingCost obj) {
-        ShippingCost shipcost = (ShippingCost) obj;
+    public void update(SubTheme obj) {
+        SubTheme subThe = (SubTheme) obj;
         StringBuilder query = new StringBuilder("UPDATE " + TABLE + " SET ");
+        query.append(THEME_ID).append(" = ?, ");
         query.append(NAME).append(" = ?, ");
-        query.append(COST).append(" = ? ");
+        query.append(DESCRIPTION).append(" = ? ");
 
         query.append("WHERE " + ID + " = '")
-                .append(shipcost.getShipId())
+                .append(subThe.getSubId())
                 .append("'");
 
         try (PreparedStatement pstmt = connect.prepareStatement(query.toString());) {
 
-            pstmt.setString(1, shipcost.getShipName());
-            pstmt.setFloat(2, shipcost.getShipCost());
-
+            pstmt.setInt(1, subThe.getTheId().getTheId());
+            pstmt.setString(2, subThe.getSubName());
+            pstmt.setString(3, subThe.getSubDescription());
+            
             int result = pstmt.executeUpdate();
 
         } catch (SQLException ex) {
@@ -76,13 +85,13 @@ public class ShippingCostDAO extends DAO<ShippingCost> {
     }
 
     @Override
-    public void delete(ShippingCost obj) {
-        int shipcostId = ((ShippingCost) obj).getShipId();
+    public void delete(SubTheme obj) {
+        int subTheId = ((SubTheme) obj).getSubId();
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FROM " + TABLE + " WHERE ")
                 .append(ID)
                 .append(" = ")
-                .append("'" + shipcostId + "'");
+                .append("'" + subTheId + "'");
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
             pstmt.executeQuery();
@@ -93,9 +102,10 @@ public class ShippingCostDAO extends DAO<ShippingCost> {
     }
 
     @Override
-    public Vector<ShippingCost> findAll() {
-        Vector<ShippingCost> ShippingCostList = new Vector<ShippingCost>();
-        ShippingCost shipcost = null;
+    public Vector<SubTheme> findAll() {
+        Vector<SubTheme> subThemeList = new Vector<SubTheme>();
+        SubTheme subThe = null;
+        Theme the = null;
         String query = "SELECT * FROM " + TABLE;
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query)) {
@@ -104,10 +114,12 @@ public class ShippingCostDAO extends DAO<ShippingCost> {
             if (rs.isBeforeFirst()) {
 
                 while (rs.next()) {
-                    shipcost = new ShippingCost();
-                    shipcost.setShipId(rs.getInt(ID));
-                    shipcost.setShipName(rs.getString(NAME));
-                    shipcost.setShipCost(rs.getFloat(COST));
+                    subThe = new SubTheme();
+                    the = new Theme();
+                    the.setTheId(rs.getInt(THEME_ID));
+                    subThe.setTheId(the);
+                    subThe.setSubName(rs.getString(NAME));
+                    subThe.setSubDescription(rs.getString(DESCRIPTION));
                 }
             } else {
                 throw new SQLException("ResultSet was empty");
@@ -118,13 +130,14 @@ public class ShippingCostDAO extends DAO<ShippingCost> {
             ex.printStackTrace();
 
         }
-        return ShippingCostList;
+        return subThemeList;
     }
 
     @Override
-    public Vector<ShippingCost> findByColumn(String column, String term) {
-        Vector<ShippingCost> ShippingCostList = new Vector<ShippingCost>();
-        ShippingCost shipcost = null;
+    public Vector<SubTheme> findByColumn(String column, String term) {
+        Vector<SubTheme> subThemeList = new Vector<SubTheme>();
+        SubTheme subThe = null;
+        Theme the = null;
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FROM " + TABLE + " WHERE ")
                 .append(column)
@@ -140,10 +153,12 @@ public class ShippingCostDAO extends DAO<ShippingCost> {
             if (rs.isBeforeFirst()) {
 
                 while (rs.next()) {
-                    shipcost = new ShippingCost();
-                    shipcost.setShipId(rs.getInt(ID));
-                    shipcost.setShipName(rs.getString(NAME));
-                    shipcost.setShipCost(rs.getFloat(COST));
+                    subThe = new SubTheme();
+                    the = new Theme();
+                    the.setTheId(rs.getInt(THEME_ID));
+                    subThe.setTheId(the);
+                    subThe.setSubName(rs.getString(NAME));
+                    subThe.setSubDescription(rs.getString(DESCRIPTION));
                 }
             } else {
                 throw new SQLException("ResultSet was empty");
@@ -154,15 +169,16 @@ public class ShippingCostDAO extends DAO<ShippingCost> {
             ex.printStackTrace();
 
         }
-        return ShippingCostList;
+        return subThemeList;
     }
 
     @Override
-    public ShippingCost find(int id) {
-        ShippingCost shipcost = null;
+    public SubTheme find(int id) {
+        SubTheme subThe = null;
+        Theme the = null;
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FROM " + TABLE + " WHERE ")
-                .append(ID)
+                .append(CODE)
                 .append(" = ")
                 .append("'" + id + "'");
 
@@ -173,10 +189,12 @@ public class ShippingCostDAO extends DAO<ShippingCost> {
             if (rs.isBeforeFirst()) {
 
                 while (rs.next()) {
-                    shipcost = new ShippingCost();
-                    shipcost.setShipId(rs.getInt(ID));
-                    shipcost.setShipName(rs.getString(NAME));
-                    shipcost.setShipCost(rs.getFloat(COST));
+                    subThe = new SubTheme();
+                    the = new Theme();
+                    the.setTheId(rs.getInt(THEME_ID));
+                    subThe.setTheId(the);
+                    subThe.setSubName(rs.getString(NAME));
+                    subThe.setSubDescription(rs.getString(DESCRIPTION));
                 }
             } else {
                 throw new SQLException("ResultSet was empty");
@@ -187,12 +205,15 @@ public class ShippingCostDAO extends DAO<ShippingCost> {
             ex.printStackTrace();
 
         }
-        return shipcost;
+        return subThe;
     }
 
     @Override
-    public ShippingCost find(String name) {
+    public SubTheme find(String name) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    
+    
+    
 }
