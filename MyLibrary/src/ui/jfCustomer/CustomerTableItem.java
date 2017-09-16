@@ -9,12 +9,12 @@ import java.util.Vector;
  */
 
 
-public class CustomerTable {
+public class CustomerTableItem {
 
     Customer customer;
     String name;
 
-    public CustomerTable(Customer customer) {
+    public CustomerTableItem(Customer customer) {
         this.customer = customer;
         this.name = this.customer.getCusLastName() + " " + this.customer.getCusFirstName();
     }

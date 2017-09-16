@@ -93,6 +93,7 @@ public class AddressDAO extends DAO {
 
     @Override
     public void update(Object obj) {
+        System.out.println("COUCOCUC");
         Address addr = (Address) obj;
         StringBuilder query = new StringBuilder("UPDATE " + TABLE + " SET ");
         query.append(CUST_RESIDENCE_ID).append(" = ?, ");
@@ -296,4 +297,55 @@ public class AddressDAO extends DAO {
         return addressList;
     }
 
+    
+    public Vector findByCustomerId(int customerId) {
+        Vector<Address> addressList = new Vector<Address>();
+        Customer cus = null;
+        Address address = null;
+        StringBuffer query = new StringBuffer();
+        query.append("SELECT * FROM " + TABLE + " WHERE ")
+                .append(CUST_CHARGE_ID)
+                .append(" = ")
+                .append(customerId);
+
+        try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.isBeforeFirst()) {
+
+                while (rs.next()) {
+                    address = new Address();
+                    cus = new Customer();
+
+                    address.setAddId(rs.getInt(ID));
+                    cus.setCusID(rs.getInt(CUST_RESIDENCE_ID));
+                    address.setCusResidId(cus);
+                    address.setCusChargeId(cus);
+                    address.setAddLabel(rs.getString(LABEL));
+                    address.setAddFirstName(rs.getString(FIRST_NAME));
+                    address.setAddLastName(rs.getString(LAST_NAME));
+                    address.setAddCompany(rs.getString(COMPANY));
+                    address.setAddNumber(rs.getString(STREET_NUMBER));
+                    address.setAddStreetType(rs.getString(STREET_TYPE));
+                    address.setAddStreetName(rs.getString(STREET_NAME));
+                    address.setAddComplement(rs.getString(COMPLEMENT));
+                    address.setAddZipCode(rs.getString(ZIP_CODE));
+                    address.setAddCity(rs.getString(CITY));
+                    address.setAddSecurityCode(rs.getString(SECURITY_CODE));
+                    address.setAddPhone(rs.getString(PHONE));
+                    addressList.add(address);
+                }
+            } else {
+                throw new SQLException("ResultSet was empty");
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
+            ex.printStackTrace();
+
+        }
+        return addressList;
+    }
+    
 }

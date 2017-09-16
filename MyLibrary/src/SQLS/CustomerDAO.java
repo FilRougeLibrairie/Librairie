@@ -57,7 +57,7 @@ public class CustomerDAO extends DAO {
             pstmt.setString(4, cus.getCusOrganisationName());
             pstmt.setString(5, cus.getCusEmail());
             pstmt.setString(6, cus.getCusPhoneNumber());
-            pstmt.setString(7, cus.getCusDateOfBirth());
+            pstmt.setDate(7, cus.getCusDateOfBirth());
             pstmt.setString(8, cus.getCusPassword());
             pstmt.setString(9, cus.getCusSalt());
             pstmt.setString(10, cus.getCusIP());
@@ -91,19 +91,20 @@ public class CustomerDAO extends DAO {
 
     @Override
     public void update(Object obj) {
+        System.out.println("JE SUIS DANS UPDATE");
         Customer cus = (Customer) obj;
         StringBuilder query = new StringBuilder("UPDATE " + TABLE + " SET ");
-        query.append(GENDER).append(" = ?, ");
         query.append(FIRST_NAME).append(" = ?, ");
         query.append(LAST_NAME).append(" = ?, ");
-        query.append(COMPANY).append(" = ?, ");
         query.append(EMAIL).append(" = ?, ");
         query.append(PHONE).append(" = ?, ");
+        query.append(GENDER).append(" = ?, ");
         query.append(BIRTHDAY).append(" = ?, ");
+        query.append(COMPANY).append(" = ?, ");
         query.append(PASSWORD).append(" = ?, ");
         query.append(SALT).append(" = ?, ");
-        query.append(IP).append(" = ?, ");
         query.append(STATUS).append(" = ?, ");
+        query.append(IP).append(" = ?, ");
         query.append(COMMENT).append(" = ? ");
 
         query.append("WHERE " + ID + " = '")
@@ -117,13 +118,13 @@ public class CustomerDAO extends DAO {
             pstmt.setString(3, cus.getCusEmail());
             pstmt.setString(4, cus.getCusPhoneNumber());
             pstmt.setString(5, cus.getCusGender());
-            pstmt.setString(6, cus.getCusDateOfBirth());
+            pstmt.setDate(6, cus.getCusDateOfBirth());
             pstmt.setString(7, cus.getCusOrganisationName());
             pstmt.setString(8, cus.getCusPassword());
             pstmt.setString(9, cus.getCusSalt());
             pstmt.setInt(10, cus.getCusStatus());
-            pstmt.setString(11, cus.getCusComment());
-            pstmt.setString(12, cus.getCusIP());
+            pstmt.setString(11, cus.getCusIP());
+            pstmt.setString(12, cus.getCusComment());
 
             int result = pstmt.executeUpdate();
 
@@ -189,7 +190,7 @@ public class CustomerDAO extends DAO {
         Vector<Customer> customerList = new Vector<Customer>();
         Customer customer = null;
 
-        String query = "SELECT * FROM " + TABLE;
+        String query = "SELECT * FROM " + TABLE + " ORDER BY " + CustomerNames.LAST_NAME;
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query)) {
 
@@ -234,15 +235,59 @@ public class CustomerDAO extends DAO {
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FROM " + TABLE + " WHERE ")
                 .append(column)
-                .append(" = ")
-                .append("'" + term + "'");
-
-        System.out.println(query);
+                .append(" LIKE ")
+                .append("'" + term + "%'");
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
 
             ResultSet rs = pstmt.executeQuery();
-            System.out.println("*** Is Beforfirst : *** " + rs.isBeforeFirst());
+
+            if (rs.isBeforeFirst()) {
+
+                while (rs.next()) {
+                    customer = new Customer();
+                    customer.setCusID(rs.getInt(ID));
+                    customer.setCusGender(rs.getString(GENDER));
+                    customer.setCusFirstName(rs.getString(FIRST_NAME));
+                    customer.setCusLastName(rs.getString(LAST_NAME));
+                    customer.setCusOrganisationName(rs.getString(COMPANY));
+                    customer.setCusEmail(rs.getString(EMAIL));
+                    customer.setCusPhoneNumber(rs.getString(PHONE));
+                    customer.setCusDateOfBirth(rs.getString(BIRTHDAY));
+                    customer.setCusPassword(rs.getString(PASSWORD));
+                    customer.setCusSalt(rs.getString(SALT));
+                    customer.setCusIP(rs.getString(IP));
+                    customer.setCusStatus(rs.getInt(STATUS));
+                    customer.setCusComment(rs.getString(COMMENT));
+                    customerList.add(customer);
+                }
+            } else {
+                throw new ResultsetException("ResultSet was empty");
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
+            ex.printStackTrace();
+
+        }
+        return customerList;
+    }
+    
+    public Vector<Customer> findByColumn(String column, int term) {
+
+        Vector<Customer> customerList = new Vector<Customer>();
+        Customer customer = null;
+
+        StringBuffer query = new StringBuffer();
+        query.append("SELECT * FROM " + TABLE + " WHERE ")
+                .append(column)
+                .append(" = ")
+                .append(term);
+
+        try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
+
+            ResultSet rs = pstmt.executeQuery();
+
             if (rs.isBeforeFirst()) {
 
                 while (rs.next()) {

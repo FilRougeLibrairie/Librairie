@@ -2,10 +2,12 @@ package SQLS;
 
 import ClassObjet.Address;
 import ClassObjet.Customer;
+import ClassObjet.OrderStatus;
 import ClassObjet.Purchase;
 import ClassObjet.ShippingCost;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.Vector;
 
@@ -272,6 +274,103 @@ public class PurchaseDAO extends DAO {
 
         }
         return purList;
+    }
+
+    public Vector<Purchase> findByCustomerId(int customerId) {
+        Vector<Purchase> purList = new Vector<Purchase>();
+        Customer cus = null;
+        Purchase pur = null;
+        StringBuffer query = new StringBuffer();
+        query.append("SELECT * FROM " + TABLE + " WHERE ")
+                .append(CUSTOMER_ID)
+                .append(" = ")
+                .append(customerId);
+
+        try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.isBeforeFirst()) {
+
+                while (rs.next()) {
+                    pur = new Purchase();
+                    cus = new Customer();
+                    shipCost = new ShippingCost();
+                    addrDelivery = new Address();
+                    addrInvoice = new Address();
+
+                    pur.setPurId(rs.getInt(ID));
+                    cus.setCusID(rs.getInt(CUSTOMER_ID));
+                    shipCost.setShipId(rs.getInt(SHIPPING_COST));
+                    pur.setShippingCostId(shipCost);
+                    addrDelivery.setAddId(rs.getInt(ADDRESS_DELIVERY));
+                    pur.setAddDeliveryId(addrDelivery);
+                    addrInvoice.setAddId(rs.getInt(ADDRESS_INVOICE));
+                    pur.setAddInvoiceId(addrInvoice);
+                    pur.setPurIP(rs.getString(IP));
+                    pur.setShippingDate(rs.getString(SHIPPING_DATE));
+                    pur.setShippingNumber(rs.getInt(SHIPPING_NUMBER));
+                    purList.add(pur);
+                }
+            } else {
+                throw new SQLException("ResultSet was empty");
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
+            ex.printStackTrace();
+
+        }
+        return purList;
+    }
+
+    public Vector<OrderStatus> findAllOrderStatus(int purchaseId) {
+        Vector<OrderStatus> osList = new Vector<OrderStatus>();
+        OrderStatus os;
+        StringBuffer query = new StringBuffer();
+        query.append("SELECT pur.purId, ord.staCode, ord.staName, det.detTime ")
+                .append("FROM OrderStatus ord ")
+                .append("JOIN Determinate det ")
+                .append("ON ord.staCode = det.staCode ")
+                .append("JOIN Purchase pur ")
+                .append("ON det.purId = pur.purId ")
+                .append("WHERE ")
+                .append("pur." + ID)
+                .append(" = ")
+                .append("?");   
+
+        try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
+            
+            pstmt.setInt(1, purchaseId);
+            
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.isBeforeFirst()) {
+
+                while (rs.next()) {
+                    os = new OrderStatus();
+                    os.setPurchase(pur);
+                    os.setStaCode(rs.getInt(OrderStatusNames.CODE));
+                    os.setStaName(rs.getString(OrderStatusNames.NAME));
+                    os.setStatusDate(rs.getString(DeterminateNames.DATE_TIME));
+                    osList.add(os);
+//                    System.out.println(rs.getString(ID));
+//                    System.out.println(rs.getString(OrderStatusNames.CODE));
+//                    System.out.println(rs.getString(OrderStatusNames.NAME));
+//                    System.out.println(rs.getString(DeterminateNames.DATE_TIME));
+//                    System.out.println("*************************");
+                }
+            } else {
+                throw new SQLException("ResultSet was empty");
+            }
+
+        } catch (SQLException ex) {
+//            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
+//            ex.printStackTrace();
+
+        }
+        return osList;
+
     }
 
 }
