@@ -16,6 +16,8 @@ public class OrderStatus {
     private int staCode;
     private String staName;
     Vector<Purchase> purchaseList;
+    Purchase purchase;
+    String StatusDate;
 
     //Constructor
     public OrderStatus() {
@@ -53,6 +55,22 @@ public class OrderStatus {
 
     public void removePurchase(Purchase purchase){
         purchaseList.remove(purchase);
+    }
+
+    public String getStatusDate() {
+        return StatusDate;
+    }
+
+    public void setStatusDate(String StatusDate) {
+        this.StatusDate = StatusDate;
+    }
+
+    public Purchase getPurchase() {
+        return purchase;
+    }
+
+    public void setPurchase(Purchase purchase) {
+        this.purchase = purchase;
     }
 
 }

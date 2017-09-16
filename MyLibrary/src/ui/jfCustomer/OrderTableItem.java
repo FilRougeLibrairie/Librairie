@@ -19,7 +19,13 @@ public class OrderTableItem {
         this.reference = purchase.getPurId();
         System.out.println(purchase);
         this.date = purchase.getShippingDate();
-        this.status = "PAS DE STATUS (OrderTableItem)";
+        String lastStatusName = purchase.getOrderstatusList().lastElement().getStaName();
+        if (lastStatusName == null || lastStatusName.isEmpty()) {
+            this.status = "Status non renseigné";
+        } else {
+            this.status = lastStatusName;
+        }
+
     }
 
     public Vector getVector() {

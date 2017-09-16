@@ -162,8 +162,8 @@ public interface SQLNames {
 
     public static class OrderStatusNames {
 
-        public static final String CODE = "statCode";
-        public static final String NAME = "statName";
+        public static final String CODE = "staCode";
+        public static final String NAME = "staName";
     }
 
     public static class PaymentNames {

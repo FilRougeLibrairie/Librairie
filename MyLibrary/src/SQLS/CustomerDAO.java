@@ -91,19 +91,20 @@ public class CustomerDAO extends DAO {
 
     @Override
     public void update(Object obj) {
+        System.out.println("JE SUIS DANS UPDATE");
         Customer cus = (Customer) obj;
         StringBuilder query = new StringBuilder("UPDATE " + TABLE + " SET ");
-        query.append(GENDER).append(" = ?, ");
         query.append(FIRST_NAME).append(" = ?, ");
         query.append(LAST_NAME).append(" = ?, ");
-        query.append(COMPANY).append(" = ?, ");
         query.append(EMAIL).append(" = ?, ");
         query.append(PHONE).append(" = ?, ");
+        query.append(GENDER).append(" = ?, ");
         query.append(BIRTHDAY).append(" = ?, ");
+        query.append(COMPANY).append(" = ?, ");
         query.append(PASSWORD).append(" = ?, ");
         query.append(SALT).append(" = ?, ");
-        query.append(IP).append(" = ?, ");
         query.append(STATUS).append(" = ?, ");
+        query.append(IP).append(" = ?, ");
         query.append(COMMENT).append(" = ? ");
 
         query.append("WHERE " + ID + " = '")
@@ -122,8 +123,8 @@ public class CustomerDAO extends DAO {
             pstmt.setString(8, cus.getCusPassword());
             pstmt.setString(9, cus.getCusSalt());
             pstmt.setInt(10, cus.getCusStatus());
-            pstmt.setString(11, cus.getCusComment());
-            pstmt.setString(12, cus.getCusIP());
+            pstmt.setString(11, cus.getCusIP());
+            pstmt.setString(12, cus.getCusComment());
 
             int result = pstmt.executeUpdate();
 
@@ -189,7 +190,7 @@ public class CustomerDAO extends DAO {
         Vector<Customer> customerList = new Vector<Customer>();
         Customer customer = null;
 
-        String query = "SELECT * FROM " + TABLE;
+        String query = "SELECT * FROM " + TABLE + " ORDER BY " + CustomerNames.LAST_NAME;
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query)) {
 
