@@ -151,7 +151,19 @@ public class Customer {
 
     @Override
     public String toString() {
-        return "Customer{" + "cusID=" + cusID + ", cusGender=" + cusGender + ", cusFirstName=" + cusFirstName + ", cusLastName=" + cusLastName + ", cusOrganisationName=" + cusOrganisationName + ", cusEmail=" + cusEmail + ", cusPhoneNumber=" + cusPhoneNumber + ", cusDateOfBirth=" + cusDateOfBirth + ", cusPassword=" + cusPassword + ", cusSalt=" + cusSalt + ", cusIP=" + cusIP + ", cusStatus=" + cusStatus + ", cusComment=" + cusComment + '}';
+        return "Customer number :" + cusID + "\n"
+                + "Gender : " + cusGender + "\n"
+                + "FirstName : " + cusFirstName + "\n"
+                + "LastName : " + cusLastName + "\n"
+                + "OrganisationName : " + cusOrganisationName + "\n"
+                + "Email : " + cusEmail + "\n"
+                + "Phone Number : " + cusPhoneNumber + "\n"
+                + "DateOfBirth : " + cusDateOfBirth + "\n"
+                + "cusPassword : " + cusPassword + "\n"
+                + "Salt : " + cusSalt + "\n"
+                + "IP : " + cusIP + "\n"
+                + "Status : " + cusStatus + "\n"
+                + "Comment : " + cusComment;
     }
     
     

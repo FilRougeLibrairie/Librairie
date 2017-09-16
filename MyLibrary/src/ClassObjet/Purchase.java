@@ -112,7 +112,14 @@ public class Purchase {
 
     @Override
     public String toString() {
-        return "Purchase{" + "purId=" + purId + ", cusId=" + cusId + ", shippingCostId=" + shippingCostId + ", addDeliveryId=" + addDeliveryId + ", addInvoiceId=" + addInvoiceId + ", purIP=" + purIP + ", shippingDate=" + shippingDate + ", shippingNumber=" + shippingNumber + '}';
+        return "Purchase Id :" + purId + "\n"
+                + "customer Id : " + cusId + "\n"
+                + "Shipping Cost Id : " + shippingCostId + "\n"
+                + "Delivery Address Id : " + addDeliveryId + "\n"
+                + "Invoice Address Id : " + addInvoiceId + "\n"
+                + "Purchase IP : " + purIP + "\n"
+                + "Shipping Date : " + shippingDate + "\n"
+                + "Shipping Number : " + shippingNumber;
     }
 
 }

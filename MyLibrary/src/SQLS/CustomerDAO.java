@@ -17,7 +17,7 @@ import java.util.Vector;
  * @author ggarvanese
  */
 public class CustomerDAO extends DAO {
-    
+
     private final String TABLE = "Customer";
 
     private final String ID = CustomerNames.ID;
@@ -91,7 +91,6 @@ public class CustomerDAO extends DAO {
 
     @Override
     public void update(Object obj) {
-        System.out.println("JE SUIS DANS UPDATE");
         Customer cus = (Customer) obj;
         StringBuilder query = new StringBuilder("UPDATE " + TABLE + " SET ");
         query.append(FIRST_NAME).append(" = ?, ");
@@ -143,7 +142,7 @@ public class CustomerDAO extends DAO {
                 .append(ID)
                 .append(" = ")
                 .append("'" + id + "'");
-        
+
         System.out.println(query);
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
@@ -272,7 +271,7 @@ public class CustomerDAO extends DAO {
         }
         return customerList;
     }
-    
+
     public Vector<Customer> findByColumn(String column, int term) {
 
         Vector<Customer> customerList = new Vector<Customer>();

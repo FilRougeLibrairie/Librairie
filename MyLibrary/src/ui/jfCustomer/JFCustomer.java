@@ -287,7 +287,6 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
     }
 
     private void loadingAdressTable(Customer cus) {
-
         AddressDAO addressDAO = new AddressDAO();
         Vector<Address> addressList = new Vector<Address>();
         addressList = addressDAO.findByCustomerId(cus.getCusID());
@@ -308,21 +307,8 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
 
         orderTableList = new Vector();
         for (Purchase pur : orderList) {
-
             // Retrieving OrderStatusList
             pur.setOrderstatusList(purchaseDAO.findAllOrderStatus(pur.getPurId()));
-//            try {
-//                for (OrderStatus os : pur.getOrderstatusList()) {
-//                    System.out.println("******** ORDER_STATUS *************");
-//                    System.out.println("STATUS CODE : " + os.getStaCode());
-//                    System.out.println("STATUS NAME : " + os.getStaName());
-//                    System.out.println("DATE VALIDATION : " + os.getStatusDate());
-//                    System.out.println("*********************");
-//                }
-//            } catch (NullPointerException ex) {
-//                System.err.println("No status has been retrieved for this purchase id : " + pur.getPurId());
-//            }
-
             OrderTableItem orderTable = new OrderTableItem(pur);
             orderTableList.add(orderTable.getVector());
         }
@@ -356,30 +342,55 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
         tfDeliverZipCode.setText("");
     }
 
-    private void newCustomerCreation() throws NoSuchAlgorithmException, CryptoException {
-        Customer cus = new Customer();
+    private void customerFactory() throws NoSuchAlgorithmException, CryptoException {
+        Customer cus;
+        if (currentCustomer == null) {
+            cus = new Customer();
+        } else {
+            cus = currentCustomer;
+        }
+
         cus.setCusLastName(tfLastName.getText().trim());
         cus.setCusFirstName(tfFirstName.getText().trim());
         cus.setCusOrganisationName(tfCompany.getText().trim());
         cus.setCusDateOfBirth(tfBirthday.getText().trim());
         cus.setCusPhoneNumber(tfPhone.getText().trim());
         cus.setCusEmail(tfEmail.getText().trim());
-        String[] password = Crypto.createPassword(new String(tfPassword.getPassword()));
-        cus.setCusPassword(password[0]);
-        cus.setCusSalt(password[1]);
-        cus.setCusIP(tfIPAdress.getText());
-        cus.setCusComment(tfComment.getText());
-        cus.setCusGender(comboGender.getSelectedItem().toString().trim());
+        cus.setCusIP(tfIPAdress.getText().trim());
+        cus.setCusComment(tfComment.getText().trim());
+        cus.setCusGender(comboGender.getSelectedItem().toString());
         cus.setCusStatus(comboStatus.getSelectedIndex());
 
+        if (currentCustomer == null && tfPassword.getPassword().length == 0) {
+            System.out.println("*****   ERROR PASSWORD DOES NOT EXISTS *****");
+        } else if (tfPassword.getPassword().length > 0) {
+            String str = new String(tfPassword.getPassword());
+            System.out.println(str);
+            String[] password = Crypto.createPassword(new String(tfPassword.getPassword()));
+            cus.setCusPassword(password[0]);
+            cus.setCusSalt(password[1]);
+        } else {
+            System.out.println("Je suis un client connu qui ne change pas de mot de passe");
+        }
+
+        System.out.println("Un toString du client : " + cus);
+
         CustomerDAO customerDAO = new CustomerDAO();
-        customerDAO.create(cus);
-        clearCustomerFields();
+        if (currentCustomer == null) {
+            customerDAO.create(cus);
+        } else {
+            customerDAO.update(cus);
+        }
+        // clearCustomerFields();
     }
 
-    private void newAddressCreation() throws NoCurrentCustomerException {
-
-        Address addr = new Address();
+    private void addressFactory() throws NoCurrentCustomerException {
+        Address addr;
+        if (currentAddress == null) {
+            addr = new Address();
+        } else {
+            addr = currentAddress;
+        }
         addr.setCusResidId(currentCustomer);
         addr.setCusChargeId(currentCustomer);
         addr.setAddCity(tfDeliverCity.getText().trim());
@@ -397,15 +408,17 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
         addr.setAddStreetType(comboDeliverStreetType.getSelectedItem().toString().trim());
 
         AddressDAO addressDAO = new AddressDAO();
-        addressDAO.create(addr);
+        if (currentCustomer == null) {
+            addressDAO.create(addr);
+        } else {
+            addressDAO.update(addr);
+        }
         addressDAO.findByCustomerId(currentCustomer.getCusID());
         tableDeliverAdresses.setModel(initTableAddressModel());
         clearAddressFields();
-
     }
-    
-    
-    private void searchForCustomer(){
+
+    private void searchForCustomer() {
         if (comboSearch.getSelectedItem() != null) {
             String criteria = comboSearch.getSelectedItem().toString();
             String term = tfSearch.getText().trim();
@@ -446,13 +459,12 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
             setTableCustomerModel();
         }
     }
-    
-    
-    private void refreshAllTableModels(){
-         tableCustomers.repaint();
-         tableDeliverAdresses.repaint();
-         tableOrders.repaint();
-         tableReview.repaint();
+
+    private void refreshAllTableModels() {
+        tableCustomers.repaint();
+        tableDeliverAdresses.repaint();
+        tableOrders.repaint();
+        tableReview.repaint();
     }
 
     /**
@@ -1555,20 +1567,12 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
     }//GEN-LAST:event_tableDeliverAdressesMouseReleased
 
     private void btnSaveCustomerMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSaveCustomerMouseReleased
-        CustomerDAO customerDAO = new CustomerDAO();
-        if (currentCustomer == null) {
-            try {
-                newCustomerCreation();
-
-            } catch (NoSuchAlgorithmException ex) {
-                Logger.getLogger(JFCustomer.class
-                        .getName()).log(Level.SEVERE, null, ex);
-            } catch (CryptoException ex) {
-                Logger.getLogger(JFCustomer.class
-                        .getName()).log(Level.SEVERE, null, ex);
-            }
-        } else {
-            customerDAO.update(currentCustomer);
+        try {
+            customerFactory();
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(JFCustomer.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (CryptoException ex) {
+            Logger.getLogger(JFCustomer.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnSaveCustomerMouseReleased
 
@@ -1582,21 +1586,13 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
     }//GEN-LAST:event_btnNewAdressMouseReleased
 
     private void btnSaveDeliverMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSaveDeliverMouseReleased
-        AddressDAO addressDAO = new AddressDAO();
-        if (currentAddress == null) {
-            newAddressCreation();
-        } else {
-            addressDAO.update(currentAddress);
-            addressDAO.findByCustomerId(currentCustomer.getCusID());
-            tableDeliverAdresses.setModel(initTableAddressModel());
-            clearAddressFields();
-        }
+            addressFactory();
     }//GEN-LAST:event_btnSaveDeliverMouseReleased
 
     private void tfSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfSearchKeyReleased
-         if (evt.getKeyCode()==KeyEvent.VK_ENTER){
-             searchForCustomer();
-         }
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            searchForCustomer();
+        }
     }//GEN-LAST:event_tfSearchKeyReleased
 
     /**

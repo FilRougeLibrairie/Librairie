@@ -93,7 +93,6 @@ public class AddressDAO extends DAO {
 
     @Override
     public void update(Object obj) {
-        System.out.println("COUCOCUC");
         Address addr = (Address) obj;
         StringBuilder query = new StringBuilder("UPDATE " + TABLE + " SET ");
         query.append(CUST_RESIDENCE_ID).append(" = ?, ");

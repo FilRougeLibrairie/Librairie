@@ -10,15 +10,17 @@ import javax.xml.bind.DatatypeConverter;
 
 /**
  * The {@code Crypto} static class is used to create and verify passwords.<br>
- * A SecureRandom generated salt is added to the Password String. Final String is hashed using SHA-512 algorithm
- *@return String[password, salt]
+ * A SecureRandom generated salt is added to the Password String. Final String
+ * is hashed using SHA-512 algorithm
+ *
+ * @return String[password, salt]
  * @author ggarvanese
  */
 public class Crypto {
 
     private final static String HASH_ALGORITHM = "SHA-512";
 
-    public static String[] hashPassword(String salt, String password) throws NoSuchAlgorithmException, CryptoException {
+    public static String hashPassword(String salt, String password) throws NoSuchAlgorithmException, CryptoException {
         String userPassword = new String(password);
         String userSalt;
 
@@ -27,12 +29,12 @@ public class Crypto {
         } else {
             userSalt = salt;
         }
-        
+
         String concatedPassword = userSalt + userPassword;
         MessageDigest digest = MessageDigest.getInstance(HASH_ALGORITHM);
         byte[] hash = digest.digest(concatedPassword.getBytes(StandardCharsets.UTF_8));
         String hashStr = DatatypeConverter.printHexBinary(hash);
-        return new String[]{hashStr,userSalt};
+        return hashStr;
     }
 
     private static String generateSalt() {
@@ -41,14 +43,16 @@ public class Crypto {
     }
 
     /**
-     * 
+     *
      * @param password
-     * @return String[password, salt]
+     * @return String[hashed password, salt]
      * @throws NoSuchAlgorithmException
-     * @throws CryptoException 
+     * @throws CryptoException
      */
     public static String[] createPassword(String password) throws NoSuchAlgorithmException, CryptoException {
-        return hashPassword(generateSalt(), password);
+        String salt = generateSalt();
+        String hash = hashPassword(salt, password);
+        return new String[]{hash, salt};
     }
 
 }
