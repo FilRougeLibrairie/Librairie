@@ -5,6 +5,8 @@
  */
 package ClassObjet;
 
+import java.util.Vector;
+
 /**
  *
  * @author Tofi
@@ -19,6 +21,7 @@ public class Purchase {
     private String purIP;
     private String shippingDate;
     private int shippingNumber;
+    Vector<OrderStatus> orderstatusList;
     
 
     //Constructor
@@ -89,6 +92,27 @@ public class Purchase {
 
     public int getShippingNumber() {
         return shippingNumber;
+    }
+
+    public Vector<OrderStatus> getOrderstatusList() {
+        return orderstatusList;
+    }
+
+    public void setOrderstatusList(Vector<OrderStatus> orderstatusList) {
+        this.orderstatusList = orderstatusList;
+    }
+    
+    public void addOrderStatus(OrderStatus orderStatus){
+        orderstatusList.add(orderStatus);
+    }
+    
+   public void removeOrderStatus(OrderStatus orderStatus){
+        orderstatusList.remove(orderStatus);
+    }
+
+    @Override
+    public String toString() {
+        return "Purchase{" + "purId=" + purId + ", cusId=" + cusId + ", shippingCostId=" + shippingCostId + ", addDeliveryId=" + addDeliveryId + ", addInvoiceId=" + addInvoiceId + ", purIP=" + purIP + ", shippingDate=" + shippingDate + ", shippingNumber=" + shippingNumber + '}';
     }
 
 }

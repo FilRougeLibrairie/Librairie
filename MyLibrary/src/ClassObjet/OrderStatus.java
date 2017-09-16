@@ -5,6 +5,8 @@
  */
 package ClassObjet;
 
+import java.util.Vector;
+
 /**
  *
  * @author Tofi
@@ -13,6 +15,7 @@ public class OrderStatus {
 
     private int staCode;
     private String staName;
+    Vector<Purchase> purchaseList;
 
     //Constructor
     public OrderStatus() {
@@ -34,6 +37,22 @@ public class OrderStatus {
 
     public String getStaName() {
         return staName;
+    }
+
+    public Vector<Purchase> getPurchaseList() {
+        return purchaseList;
+    }
+
+    public void setPurchaseList(Vector<Purchase> purchaseList) {
+        this.purchaseList = purchaseList;
+    }
+    
+    public void addPurchase(Purchase purchase){
+        purchaseList.add(purchase);
+    }
+
+    public void removePurchase(Purchase purchase){
+        purchaseList.remove(purchase);
     }
 
 }

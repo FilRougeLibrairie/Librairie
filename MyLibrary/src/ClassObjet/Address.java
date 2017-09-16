@@ -157,8 +157,5 @@ public class Address {
     public String toString() {
         return "Address{" + "addId=" + addId + ", cusResidId=" + cusResidId + ", cusChargerId=" + cusChargeId + ", addLabel=" + addLabel + ", addFirstName=" + addFirstName + ", addLastName=" + addLastName + ", addCompany=" + addCompany + ", addNumber=" + addNumber + ", addStreetType=" + addStreetType + ", addStreetName=" + addStreetName + ", addComplement=" + addComplement + ", addZipCode=" + addZipCode + ", addCity=" + addCity + ", addSecurityCode=" + addSecurityCode + ", addPhone=" + addPhone + '}';
     }
-    
-    
-    
 
 }

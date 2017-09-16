@@ -5,6 +5,9 @@
  */
 package ClassObjet;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
 /**
  *
  * @author Tofi
@@ -18,7 +21,7 @@ public class Customer {
     private String cusOrganisationName;
     private String cusEmail;
     private String cusPhoneNumber;
-    private String cusDateOfBirth;
+    private java.sql.Date cusDateOfBirth;
     private String cusPassword;
     private String cusSalt;
     private String cusIP;
@@ -60,7 +63,17 @@ public class Customer {
     }
 
     public void setCusDateOfBirth(String cusDateOfBirth) {
-        this.cusDateOfBirth = cusDateOfBirth;
+         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            try {
+                java.util.Date birthday = sdf.parse(cusDateOfBirth);
+                java.sql.Date sqlBirth = new java.sql.Date(birthday.getTime());
+                 this.cusDateOfBirth = sqlBirth;
+            } catch (ParseException ex) {
+                System.out.println("Error formating DATE" + ex.getMessage());
+            }
+            //Date date = Calendar.getInstance().getTime();
+        
+       
     }
 
     public void setCusPassword(String cusPassword) {
@@ -116,8 +129,8 @@ public class Customer {
         return cusPhoneNumber;
     }
 
-    public String getCusDateOfBirth() {
-        return cusDateOfBirth;
+    public java.sql.Date getCusDateOfBirth() {
+        return new java.sql.Date((cusDateOfBirth.getTime()));
     }
 
     public String getCusPassword() {

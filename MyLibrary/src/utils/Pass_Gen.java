@@ -11,7 +11,9 @@ import utils.Crypto;
 public class Pass_Gen {
     public static void main(String[] args) throws NoSuchAlgorithmException, CryptoException {
         
-        System.out.println(Crypto.createPassword("1"));
+       String[] pwd = Crypto.createPassword("1");
+        System.out.println(pwd[0]);
+        System.out.println(pwd[1]);
         
     }
 }

@@ -274,4 +274,52 @@ public class PurchaseDAO extends DAO {
         return purList;
     }
 
+    public Vector<Purchase> findByCustomerId(int customerId) {
+         Vector<Purchase> purList = new Vector<Purchase>();
+        Customer cus = null;
+        Purchase pur = null;
+        StringBuffer query = new StringBuffer();
+        query.append("SELECT * FROM " + TABLE + " WHERE ")
+                .append(CUSTOMER_ID)
+                .append(" = ")
+                .append(customerId);
+
+        try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.isBeforeFirst()) {
+
+                while (rs.next()) {
+                    pur = new Purchase();
+                    cus = new Customer();
+                    shipCost = new ShippingCost();
+                    addrDelivery = new Address();
+                    addrInvoice = new Address();
+                    
+                    pur.setPurId(rs.getInt(ID));
+                    cus.setCusID(rs.getInt(CUSTOMER_ID));
+                    shipCost.setShipId(rs.getInt(SHIPPING_COST));
+                    pur.setShippingCostId(shipCost);
+                    addrDelivery.setAddId(rs.getInt(ADDRESS_DELIVERY));
+                    pur.setAddDeliveryId(addrDelivery);
+                    addrInvoice.setAddId(rs.getInt(ADDRESS_INVOICE));
+                    pur.setAddInvoiceId(addrInvoice);
+                    pur.setPurIP(rs.getString(IP));
+                    pur.setShippingDate(rs.getString(SHIPPING_DATE));
+                    pur.setShippingNumber(rs.getInt(SHIPPING_NUMBER));
+                    purList.add(pur);
+                }
+            } else {
+                throw new SQLException("ResultSet was empty");
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
+            ex.printStackTrace();
+
+        }
+        return purList;
+    }
+
 }
