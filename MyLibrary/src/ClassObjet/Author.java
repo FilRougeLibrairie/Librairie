@@ -24,6 +24,15 @@ public class Author {
     public Author() {
     }
 
+    public Author(int autId, String autLastName, String autFirstName, String autBiography, int autStatusCode) {
+        this.autId = autId;
+        this.autLastName = autLastName;
+        this.autFirstName = autFirstName;
+        this.autBiography = autBiography;
+        this.autStatusCode = autStatusCode;
+    }
+    
+
     //Setters
     public void setAutId(int autId) {
         this.autId = autId;
@@ -83,5 +92,20 @@ public class Author {
         bookList.remove(book);
     }
     
+    public Vector getVector() {
+        Vector v= new Vector();
+       
+        v.add(this.getAutId());
+        v.add(this.getAutLastName());
+        v.add(this.getAutFirstName());
+        v.add(this.getAutBiography());
+        v.add(this.getAutStatusCode());
+      
+        return v;
+    }
+    
+    
     
 }
+
+

@@ -19,13 +19,12 @@ public class KeywordsDAO extends DAO {
     @Override
     public void create(Object obj) {
         Keywords kw = (Keywords) obj;
-        String query = "IF NOT EXISTS (SELECT * FROM KEYWORDS')"
-                + "INSERT INTO KEYWORDS (" + COLUMNS + ")"
-                + "VALUES (?)";
+        
+        
+        String query ="INSERT INTO KEYWORDS VALUES ('"+kw.getKeyName()+"')";
 
+     
         try (PreparedStatement pstmt = this.connect.prepareStatement(query);) {
-
-            pstmt.setString(1, kw.getKeyName());
 
             int result = pstmt.executeUpdate();
 
