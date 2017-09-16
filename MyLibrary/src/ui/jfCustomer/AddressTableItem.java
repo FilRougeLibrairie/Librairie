@@ -7,24 +7,22 @@ import java.util.Vector;
  *
  * @author ggarvanese
  */
-
-
 public class AddressTableItem {
 
-    Address address;
-    String name;
+    private Address address;
+    private String name;
 
     public AddressTableItem(Address address) {
         this.address = address;
         this.name = this.address.getAddLabel();
     }
-    
-     public Vector getVector(){
-        Vector v = new Vector();    
+
+    public Vector getVector() {
+        Vector v = new Vector();
         v.add(this);
         return v;
     }
-    
+
     public Address getAddress() {
         return address;
     }

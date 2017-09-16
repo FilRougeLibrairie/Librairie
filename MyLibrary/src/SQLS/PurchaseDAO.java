@@ -337,12 +337,12 @@ public class PurchaseDAO extends DAO {
                 .append("WHERE ")
                 .append("pur." + ID)
                 .append(" = ")
-                .append("?");   
+                .append("?");
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
-            
+
             pstmt.setInt(1, purchaseId);
-            
+
             ResultSet rs = pstmt.executeQuery();
 
             if (rs.isBeforeFirst()) {
@@ -354,19 +354,13 @@ public class PurchaseDAO extends DAO {
                     os.setStaName(rs.getString(OrderStatusNames.NAME));
                     os.setStatusDate(rs.getString(DeterminateNames.DATE_TIME));
                     osList.add(os);
-//                    System.out.println(rs.getString(ID));
-//                    System.out.println(rs.getString(OrderStatusNames.CODE));
-//                    System.out.println(rs.getString(OrderStatusNames.NAME));
-//                    System.out.println(rs.getString(DeterminateNames.DATE_TIME));
-//                    System.out.println("*************************");
                 }
             } else {
                 throw new SQLException("ResultSet was empty");
             }
 
         } catch (SQLException ex) {
-//            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-//            ex.printStackTrace();
+            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
 
         }
         return osList;

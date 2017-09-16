@@ -20,10 +20,8 @@ public class Review {
     private String revDate;
     private String revIP;
     private String revStatus;
+    private Book book;
 
-    //Constructor
-    public Review() {
-    }
 
     //Setters
     public void setRevId(int revId) {
@@ -100,6 +98,22 @@ public class Review {
     public String getRevStatus() {
         return revStatus;
     }
+
+    public Book getBook() {
+        return book;
+    }
+
+    public void setBook(Book book) {
+        this.book = book;
+    }
+    
+    
+
+    @Override
+    public String toString() {
+        return "Review{" + "revId=" + revId + ", cusId=" + cusId + ", booIsbn13=" + booIsbn13 + ", ordLineId=" + ordLineId + ", revNote=" + revNote + ", revComment=" + revComment + ", revDate=" + revDate + ", revIP=" + revIP + ", revStatus=" + revStatus + '}';
+    }
+    
     
     
 }

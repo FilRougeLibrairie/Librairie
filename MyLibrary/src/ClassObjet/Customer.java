@@ -27,7 +27,6 @@ public class Customer {
     private String cusIP;
     private int cusStatus;
     private String cusComment;
-   
 
     //Constructor
     public Customer() {
@@ -63,17 +62,15 @@ public class Customer {
     }
 
     public void setCusDateOfBirth(String cusDateOfBirth) {
-         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            try {
-                java.util.Date birthday = sdf.parse(cusDateOfBirth);
-                java.sql.Date sqlBirth = new java.sql.Date(birthday.getTime());
-                 this.cusDateOfBirth = sqlBirth;
-            } catch (ParseException ex) {
-                System.out.println("Error formating DATE" + ex.getMessage());
-            }
-            //Date date = Calendar.getInstance().getTime();
-        
-       
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            java.util.Date birthday = sdf.parse(cusDateOfBirth);
+            java.sql.Date sqlBirth = new java.sql.Date(birthday.getTime());
+            this.cusDateOfBirth = sqlBirth;
+        } catch (ParseException ex) {
+            System.out.println("Error formating DATE" + ex.getMessage());
+        }
+
     }
 
     public void setCusPassword(String cusPassword) {
@@ -165,7 +162,4 @@ public class Customer {
                 + "Status : " + cusStatus + "\n"
                 + "Comment : " + cusComment;
     }
-    
-    
-
 }

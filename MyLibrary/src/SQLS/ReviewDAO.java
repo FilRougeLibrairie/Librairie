@@ -223,7 +223,7 @@ public class ReviewDAO extends DAO<Review> {
                 .append(" = ")
                 .append("'" + term + "'");
 
-        System.out.println();
+        System.out.println("DANS LZE STRING");
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
 
@@ -258,5 +258,58 @@ public class ReviewDAO extends DAO<Review> {
         }
         return reviewList;
     }
+    
+     public Vector<Review> findByColumn(String column, int term) {
+        Vector<Review> reviewList = new Vector<Review>();
+        Review review = null;
+        Customer cus = null;
+        OrderLine ord = null;
+        StringBuffer query = new StringBuffer();
+        query.append("SELECT * FROM " + TABLE + " WHERE ")
+                .append(column)
+                .append(" = ")
+                .append(term);
+        
+        
+         System.out.println("COCUOCUOU ?");
+        System.out.println(query);
+
+        try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.isBeforeFirst()) {
+
+                while (rs.next()) {
+                    review = new Review();
+                    review.setRevId(rs.getInt(ID));
+                    cus = new Customer();
+                    cus.setCusID(rs.getInt(CUSTOMER_ID));
+                    review.setCusId(cus);
+                    review.setBooIsbn13(rs.getString(BOOK_ISBN_13));
+                    ord = new OrderLine();
+                    ord.setOrdLineId(rs.getInt(ORDERLINE_ID));
+                    review.setOrdLineId(ord);
+                    review.setRevNote(rs.getFloat(NOTE));
+                    review.setRevComment(rs.getString(COMMENT));
+                    review.setRevDate(rs.getString(DATE));
+                    review.setRevIP(rs.getString(IP));
+                    review.setRevStatus(rs.getString(STATUS));
+                    reviewList.add(review);
+                    System.out.println(review);
+                }
+            } else {
+                throw new SQLException("ResultSet was empty");
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
+            ex.printStackTrace();
+
+        }
+        return reviewList;
+    }
+    
+ 
 
 }

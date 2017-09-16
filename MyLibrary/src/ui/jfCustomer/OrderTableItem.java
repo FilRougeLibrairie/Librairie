@@ -9,15 +9,14 @@ import java.util.Vector;
  */
 public class OrderTableItem {
 
-    Purchase purchase;
-    int reference;
-    String date;
-    String status;
+    private Purchase purchase;
+    private int reference;
+    private String date;
+    private String status;
 
     public OrderTableItem(Purchase purchase) {
         this.purchase = purchase;
         this.reference = purchase.getPurId();
-        System.out.println(purchase);
         this.date = purchase.getShippingDate();
         String lastStatusName = purchase.getOrderstatusList().lastElement().getStaName();
         if (lastStatusName == null || lastStatusName.isEmpty()) {

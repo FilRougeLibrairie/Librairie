@@ -174,7 +174,6 @@ public class CustomerDAO extends DAO {
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
             ex.printStackTrace();
-
         }
         return customer;
     }

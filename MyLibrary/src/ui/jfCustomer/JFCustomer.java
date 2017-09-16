@@ -1,13 +1,17 @@
 package ui.jfCustomer;
 
 import ClassObjet.Address;
+import ClassObjet.Book;
 import ClassObjet.Customer;
 import ClassObjet.OrderStatus;
 import ClassObjet.Purchase;
+import ClassObjet.Review;
 import Names.SQLNames;
 import SQLS.AddressDAO;
+import SQLS.BookDAO;
 import SQLS.CustomerDAO;
 import SQLS.PurchaseDAO;
+import SQLS.ReviewDAO;
 import exceptions.CryptoException;
 import exceptions.NoCurrentCustomerException;
 import java.awt.event.KeyEvent;
@@ -35,6 +39,7 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
     Vector customerTableList;
     Vector addressTableList;
     Vector orderTableList;
+    Vector reviewTableList;
     Vector<String> comboAdressModel;
     Vector<String> comboSearchModel;
     Vector<String> comboStatusModel;
@@ -189,6 +194,22 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
         };
     }
 
+    private void setTableReviewModel() {
+        tableReview.setModel(initTableReviewModel());
+    }
+
+    private DefaultTableModel initTableReviewModel() {
+        Vector v = new Vector();
+        v.add("Date");
+        v.add("ISBN produit");
+        v.add("Nom");
+        v.add("Commentaire");
+        v.add("Note");
+
+        return new javax.swing.table.DefaultTableModel(reviewTableList, v) {
+        };
+    }
+
     private void fillAddressFields(Address addr) {
 
         tfDeliverLabel.setText(addr.getAddLabel());
@@ -283,6 +304,7 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
         tfEmail.setText(cus.getCusEmail());
         tfIPAdress.setText(cus.getCusIP());
         tfComment.setText(cus.getCusComment());
+        tfPassword.setText("");
 
     }
 
@@ -313,6 +335,25 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
             orderTableList.add(orderTable.getVector());
         }
         setTableOrdersModel();
+    }
+
+    private void loadingReviewTable(Customer cus) {
+        ReviewDAO reviewDAO = new ReviewDAO();
+        Vector<Review> reviewList = new Vector<Review>();
+
+        reviewList = reviewDAO.findByColumn(ReviewNames.CUSTOMER_ID, cus.getCusID());
+
+        reviewTableList = new Vector();
+        BookDAO bookDAO = new BookDAO();
+        for (Review rev : reviewList) {
+            Vector<Book> v = bookDAO.findByColumn(BookNames.ISBN_13, rev.getBooIsbn13());
+            for (Book book : v) {
+                rev.setBook(book);
+            }
+            ReviewTableItem reviewTable = new ReviewTableItem(rev);
+            reviewTableList.add(reviewTable.getVector());
+        }
+        setTableReviewModel();
     }
 
     private void clearCustomerFields() {
@@ -365,7 +406,6 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
             System.out.println("*****   ERROR PASSWORD DOES NOT EXISTS *****");
         } else if (tfPassword.getPassword().length > 0) {
             String str = new String(tfPassword.getPassword());
-            System.out.println(str);
             String[] password = Crypto.createPassword(new String(tfPassword.getPassword()));
             cus.setCusPassword(password[0]);
             cus.setCusSalt(password[1]);
@@ -373,15 +413,13 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
             System.out.println("Je suis un client connu qui ne change pas de mot de passe");
         }
 
-        System.out.println("Un toString du client : " + cus);
-
         CustomerDAO customerDAO = new CustomerDAO();
         if (currentCustomer == null) {
             customerDAO.create(cus);
         } else {
             customerDAO.update(cus);
         }
-        // clearCustomerFields();
+        clearCustomerFields();
     }
 
     private void addressFactory() throws NoCurrentCustomerException {
@@ -610,6 +648,7 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
         btnSaveCustomer.setForeground(new java.awt.Color(255, 255, 255));
         btnSaveCustomer.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         btnSaveCustomer.setText("Enregistrer");
+        btnSaveCustomer.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnSaveCustomer.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 btnSaveCustomerMouseReleased(evt);
@@ -711,6 +750,7 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
         btnNewAdress.setForeground(new java.awt.Color(255, 255, 255));
         btnNewAdress.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         btnNewAdress.setText("Nouvelle adresse");
+        btnNewAdress.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnNewAdress.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 btnNewAdressMouseReleased(evt);
@@ -734,6 +774,7 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
         btnSaveDeliver.setForeground(new java.awt.Color(255, 255, 255));
         btnSaveDeliver.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         btnSaveDeliver.setText("Enregister");
+        btnSaveDeliver.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnSaveDeliver.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 btnSaveDeliverMouseReleased(evt);
@@ -939,6 +980,7 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
         btnView.setForeground(new java.awt.Color(255, 255, 255));
         btnView.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         btnView.setText("Visualiser");
+        btnView.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
         javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
         jPanel11.setLayout(jPanel11Layout);
@@ -1013,6 +1055,7 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
         jLabel39.setForeground(new java.awt.Color(255, 255, 255));
         jLabel39.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel39.setText("Enregistrer");
+        jLabel39.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
         javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
         jPanel12.setLayout(jPanel12Layout);
@@ -1267,6 +1310,7 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
         btnSearch.setForeground(new java.awt.Color(255, 255, 255));
         btnSearch.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         btnSearch.setText("Rechercher client");
+        btnSearch.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnSearch.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 btnSearchMouseReleased(evt);
@@ -1292,6 +1336,7 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
         bntCreateNew.setForeground(new java.awt.Color(255, 255, 255));
         bntCreateNew.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         bntCreateNew.setText("Créer nouveau client");
+        bntCreateNew.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         bntCreateNew.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 bntCreateNewMouseReleased(evt);
@@ -1537,8 +1582,8 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
                 currentCustomer = cusTable.getCustomer();
                 fillCustomerFields(currentCustomer);
                 loadingAdressTable(currentCustomer);
+                loadingReviewTable(currentCustomer);
                 loadingOrderTable(currentCustomer);
-
             }
         }
     }//GEN-LAST:event_tableCustomersMouseReleased
@@ -1586,7 +1631,7 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
     }//GEN-LAST:event_btnNewAdressMouseReleased
 
     private void btnSaveDeliverMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSaveDeliverMouseReleased
-            addressFactory();
+        addressFactory();
     }//GEN-LAST:event_btnSaveDeliverMouseReleased
 
     private void tfSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfSearchKeyReleased
