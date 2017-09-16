@@ -1,9 +1,11 @@
+package PanelOk;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package FramePrincipaleChrystelle;
+
 
 import ClassObjet.Keywords;
 import SQLS.KeywordsDAO;
@@ -18,6 +20,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+
+
+
 
 /**
  *
@@ -37,12 +42,8 @@ KeywordsDAO kw = new KeywordsDAO();
         initComponents();
         menuChoose.setVisible(true);
         jTable1.setModel(initTableModel());
-        menuPrinc.removeAll();
-        menuPrinc.revalidate();
-        jpAdd.setVisible(jRAdd.isSelected());
-        jpDelete.setVisible(jRDelete.isSelected());
-        menuPrinc.setVisible(false); 
-        menuPrinc.validate();
+        jpAdd.setVisible(false);
+        jpDelete.setVisible(false);
         
     }
 
@@ -176,7 +177,6 @@ KeywordsDAO kw = new KeywordsDAO();
         jRAdd = new javax.swing.JRadioButton();
         jRDelete = new javax.swing.JRadioButton();
         jSeparator1 = new javax.swing.JSeparator();
-        menuPrinc = new javax.swing.JPanel();
         jpAdd = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jTAddKW = new javax.swing.JTextField();
@@ -187,13 +187,10 @@ KeywordsDAO kw = new KeywordsDAO();
         jButton1 = new javax.swing.JButton();
 
         jPanel1.setPreferredSize(new java.awt.Dimension(800, 700));
-        jPanel1.setLayout(null);
 
         jLabel4.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setText("MOTS CLES");
-        jPanel1.add(jLabel4);
-        jLabel4.setBounds(230, 0, 276, 38);
 
         menuChoose.setMinimumSize(new java.awt.Dimension(200, 200));
 
@@ -221,11 +218,11 @@ KeywordsDAO kw = new KeywordsDAO();
         menuChoose.setLayout(menuChooseLayout);
         menuChooseLayout.setHorizontalGroup(
             menuChooseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 430, Short.MAX_VALUE)
+            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(menuChooseLayout.createSequentialGroup()
                 .addGap(19, 19, 19)
                 .addComponent(jRAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 135, Short.MAX_VALUE)
                 .addComponent(jRDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(54, 54, 54))
         );
@@ -237,13 +234,18 @@ KeywordsDAO kw = new KeywordsDAO();
                 .addGroup(menuChooseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jRAdd)
                     .addComponent(jRDelete))
-                .addGap(0, 150, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
-        jPanel1.add(menuChoose);
-        menuChoose.setBounds(150, 70, 430, 70);
-        jPanel1.add(jSeparator1);
-        jSeparator1.setBounds(-10, 50, 800, 10);
+        jpAdd.addAncestorListener(new javax.swing.event.AncestorListener() {
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
+                jpAddAncestorAdded(evt);
+            }
+            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+            }
+        });
 
         jLabel2.setText("MOT CLE:");
 
@@ -284,6 +286,16 @@ KeywordsDAO kw = new KeywordsDAO();
                 .addContainerGap())
         );
 
+        jpDelete.addAncestorListener(new javax.swing.event.AncestorListener() {
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
+                jpDeleteAncestorAdded(evt);
+            }
+            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+            }
+        });
+
         jScrollPane1.setViewportView(jTable1);
 
         jButton1.setText("Ok");
@@ -319,30 +331,37 @@ KeywordsDAO kw = new KeywordsDAO();
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout menuPrincLayout = new javax.swing.GroupLayout(menuPrinc);
-        menuPrinc.setLayout(menuPrincLayout);
-        menuPrincLayout.setHorizontalGroup(
-            menuPrincLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(menuPrincLayout.createSequentialGroup()
-                .addGroup(menuPrincLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(menuPrincLayout.createSequentialGroup()
-                        .addGap(153, 153, 153)
-                        .addComponent(jpAdd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jpDelete, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(240, 240, 240)
+                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 800, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(160, 160, 160)
+                .addComponent(menuChoose, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(160, 160, 160)
+                .addComponent(jpAdd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(jpDelete, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
-        menuPrincLayout.setVerticalGroup(
-            menuPrincLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, menuPrincLayout.createSequentialGroup()
-                .addContainerGap()
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(12, 12, 12)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10)
+                .addComponent(menuChoose, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10)
                 .addComponent(jpAdd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(4, 4, 4)
-                .addComponent(jpDelete, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(30, 30, 30)
+                .addComponent(jpDelete, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
-
-        jPanel1.add(menuPrinc);
-        menuPrinc.setBounds(0, 140, 790, 510);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -350,7 +369,7 @@ KeywordsDAO kw = new KeywordsDAO();
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 739, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 804, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -376,7 +395,7 @@ KeywordsDAO kw = new KeywordsDAO();
         keyword.setKeyName(a);
         kw.create(keyword);
         jTAddKW.setText("");
-
+        jTable1.setModel(initTableModel());
         jop1.showMessageDialog(null, "Le mot clé a été ajouté avec succès.", "Information", JOptionPane.INFORMATION_MESSAGE);
 
     }//GEN-LAST:event_jBSelectActionPerformed
@@ -393,11 +412,11 @@ KeywordsDAO kw = new KeywordsDAO();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jRAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRAddActionPerformed
-        
+
+          
         if(jRAdd.isSelected()==true){
-            
-            jpDelete.setVisible(false);
             jpAdd.setVisible(true);
+            jpDelete.setVisible(false);
         }
         
         
@@ -406,13 +425,26 @@ KeywordsDAO kw = new KeywordsDAO();
 
     private void jRDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRDeleteActionPerformed
 
+        
         if(jRDelete.isSelected()==true){
-            
-            jpDelete.setVisible(true);
             jpAdd.setVisible(false);
+            jpDelete.setVisible(true);
         }
+            
+            
+            
+        
 // TODO add your handling code here:
     }//GEN-LAST:event_jRDeleteActionPerformed
+
+    private void jpDeleteAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_jpDeleteAncestorAdded
+       
+    }//GEN-LAST:event_jpDeleteAncestorAdded
+
+    private void jpAddAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_jpAddAncestorAdded
+        
+       
+    }//GEN-LAST:event_jpAddAncestorAdded
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -432,6 +464,8 @@ KeywordsDAO kw = new KeywordsDAO();
     private javax.swing.JPanel jpAdd;
     private javax.swing.JPanel jpDelete;
     private javax.swing.JPanel menuChoose;
-    private javax.swing.JPanel menuPrinc;
     // End of variables declaration//GEN-END:variables
+
+
+
 }

@@ -5,6 +5,8 @@
  */
 package FramePrincipaleChrystelle;
 
+import PanelOk.AuthorPanel;
+import PanelOk.KWPanel;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import javax.swing.JPanel;
@@ -981,14 +983,14 @@ public class PannelCentralSelection extends javax.swing.JPanel {
 
     private void bAutorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bAutorMouseClicked
 
-//
-//        jpPrincipal.removeAll();
-//        jpPrincipal.validate();
-//        AddAutor addAutor=new AddAutor();
-//        jpPrincipal.setLayout(new BorderLayout());
-//        jpPrincipal.add(addAutor,BorderLayout.NORTH);
-//        jpPrincipal.setVisible(true);
-//        jpPrincipal.revalidate();
+
+        jpPrincipal.removeAll();
+        jpPrincipal.validate();
+        AuthorPanel addAutor=new AuthorPanel();
+        jpPrincipal.setLayout(new BorderLayout());
+        jpPrincipal.add(addAutor,BorderLayout.NORTH);
+        jpPrincipal.setVisible(true);
+        jpPrincipal.revalidate();
         
     }//GEN-LAST:event_bAutorMouseClicked
 
@@ -1286,13 +1288,13 @@ public class PannelCentralSelection extends javax.swing.JPanel {
     private void jPanel13MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel13MouseClicked
         
         
-//        jpPrincipal.removeAll();
-//        jpPrincipal.validate();
-//        AddAutor addAutor=new AddAutor();
-//        jpPrincipal.setLayout(new BorderLayout());
-//        jpPrincipal.add(addAutor,BorderLayout.NORTH);
-//        jpPrincipal.setVisible(true);
-//        jpPrincipal.revalidate();
+        jpPrincipal.removeAll();
+        jpPrincipal.validate();
+        AuthorPanel addAutor=new AuthorPanel();
+        jpPrincipal.setLayout(new BorderLayout());
+        jpPrincipal.add(addAutor,BorderLayout.NORTH);
+        jpPrincipal.setVisible(true);
+        jpPrincipal.revalidate();
         
     }//GEN-LAST:event_jPanel13MouseClicked
 
@@ -1305,7 +1307,7 @@ public class PannelCentralSelection extends javax.swing.JPanel {
         jpPrincipal.setLayout(new BorderLayout());
         jpPrincipal.add(addKW,BorderLayout.NORTH);
         jpPrincipal.setVisible(true);
-        
+        jpPrincipal.revalidate();
         
         
         
