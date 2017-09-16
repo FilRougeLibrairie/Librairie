@@ -31,6 +31,11 @@ public class Author {
         this.autBiography = autBiography;
         this.autStatusCode = autStatusCode;
     }
+
+    public Author(int autId) {
+        this.autId = autId;
+    }
+    
     
 
     //Setters

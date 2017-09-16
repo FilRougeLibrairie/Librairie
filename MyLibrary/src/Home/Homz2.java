@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package FramePrincipaleChrystelle;
+package Home;
 
 import ClassObjet.Employee;
 import exceptions.CryptoException;
@@ -20,7 +20,7 @@ import ui.JFMain;
 import utils.Crypto;
 
 
-public class HomePage extends javax.swing.JFrame {
+public class Homz2 extends javax.swing.JFrame {
 
     
     Employee loggedEmp;
@@ -30,7 +30,7 @@ public class HomePage extends javax.swing.JFrame {
 
 //    JPCustomer jpc;
 
-    public HomePage() throws IOException {
+    public Homz2() throws IOException {
         initComponents();
         
         
@@ -66,9 +66,9 @@ public class HomePage extends javax.swing.JFrame {
         loggedEmp.setEmpPassword("32D601355049CDBC0E69DA955DACBC271D1A19999043ED1FAAD09F211E433E0917195DF7EC8A09D1B6C223875036CC11A332178B0E97FDEE28AC982938DE96B3");
 
         /////// BYPASS CREDENTIALS
-      firstRun();
-      //  jPanelCredentials.setVisible(false);
-       // initWorkSpace();
+      ///firstRun();
+      jPanelCredentials.setVisible(false);
+        initWorkSpace();
         /////// BYPASS CREDENTIALS
       
       test();
@@ -307,7 +307,7 @@ public class HomePage extends javax.swing.JFrame {
                 Logger.getLogger(JFMain.class
                         .getName()).log(Level.SEVERE, null, ex);
             } catch (CryptoException ex) {
-                Logger.getLogger(HomePage.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Homz2.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }//GEN-LAST:event_jPasswordFieldKeyReleased
@@ -320,7 +320,7 @@ public class HomePage extends javax.swing.JFrame {
             Logger.getLogger(JFMain.class
                     .getName()).log(Level.SEVERE, null, ex);
         } catch (CryptoException ex) {
-            Logger.getLogger(HomePage.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Homz2.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButtonConnexionActionPerformed
 
@@ -342,18 +342,46 @@ public class HomePage extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(HomePage.class
+            java.util.logging.Logger.getLogger(Homz2.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(HomePage.class
+            java.util.logging.Logger.getLogger(Homz2.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(HomePage.class
+            java.util.logging.Logger.getLogger(Homz2.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(HomePage.class
+            java.util.logging.Logger.getLogger(Homz2.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -363,10 +391,10 @@ public class HomePage extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    new HomePage().setVisible(true);
+                    new Homz2().setVisible(true);
 
                 } catch (IOException ex) {
-                    Logger.getLogger(HomePage.class
+                    Logger.getLogger(Homz2.class
                             .getName()).log(Level.SEVERE, null, ex);
                 }
             }

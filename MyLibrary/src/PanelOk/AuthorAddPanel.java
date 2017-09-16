@@ -7,6 +7,7 @@ package PanelOk;
 
 import ClassObjet.Author;
 import SQLS.AuthorDAO;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -43,6 +44,8 @@ public class AuthorAddPanel extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTAuto = new javax.swing.JTextArea();
         jButton1 = new javax.swing.JButton();
+
+        setPreferredSize(new java.awt.Dimension(900, 600));
 
         jLabel1.setText("Prénom");
 
@@ -99,7 +102,7 @@ public class AuthorAddPanel extends javax.swing.JPanel {
                     .addGroup(jpFieldLayout.createSequentialGroup()
                         .addGap(201, 201, 201)
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
         jpFieldLayout.setVerticalGroup(
             jpFieldLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -123,28 +126,29 @@ public class AuthorAddPanel extends javax.swing.JPanel {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addContainerGap(38, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jpField, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(24, 24, 24))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(136, Short.MAX_VALUE)
+                .addComponent(jpField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(121, 121, 121))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jpField, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGap(107, 107, 107)
+                .addComponent(jpField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(132, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
+        JOptionPane jop1=new JOptionPane();
         Author a = new Author();
         if (jRA.isSelected()) {
             a.setAutStatusCode(1);
@@ -158,6 +162,7 @@ public class AuthorAddPanel extends javax.swing.JPanel {
         AuthorDAO ad = new AuthorDAO();
 
         ad.create(a);
+        jop1.showMessageDialog(null, "L'auteur a été ajouté avec succès.", "Information", JOptionPane.INFORMATION_MESSAGE);
 
     }//GEN-LAST:event_jButton1MouseClicked
 

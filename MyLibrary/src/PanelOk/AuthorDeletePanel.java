@@ -13,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Vector;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -136,6 +137,8 @@ public class AuthorDeletePanel extends javax.swing.JPanel {
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
 
+        setPreferredSize(new java.awt.Dimension(900, 600));
+
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel7.setText("Selectionner le contact");
         jLabel7.setVerticalAlignment(javax.swing.SwingConstants.TOP);
@@ -179,25 +182,26 @@ public class AuthorDeletePanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(161, 161, 161)
-                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 529, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(131, 131, 131)
+                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 529, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(171, 171, 171)
+                        .addGap(316, 316, 316)
                         .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(210, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(94, 94, 94)
                 .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addContainerGap(161, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -209,15 +213,6 @@ public class AuthorDeletePanel extends javax.swing.JPanel {
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
 
        
-
-        //
-        //        jTextFieldNom.setText(unContact.getNom());
-        //        jTextFieldPrenom.setText(unContact.getPrenom());
-        //        jTextFieldTelephone.setText(unContact.getTelephone());
-        //        jTextFieldAdresseRue.setText(unContact.getAdresseRue());
-        //        jTextFieldCodePostal.setText(unContact.getCodePostal());
-        //        jTextFieldVille.setText(unContact.getVille());
-        //        jTextFieldMail.setText(unContact.getEmail());
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void jTable1ComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jTable1ComponentShown
@@ -230,11 +225,27 @@ public class AuthorDeletePanel extends javax.swing.JPanel {
 
     private void jButton3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseClicked
 
-        
+        JOptionPane jop1=new JOptionPane();
         jTable1.setModel(initTableModel());
         AuthorDAO ad = new AuthorDAO();
-        ad.delete(jTable1.getCellEditor(jTable1.getSelectedRow(), 0));
-
+        Author aut = new Author();
+        
+        
+        int test=Integer.valueOf(jTable1.getCellEditor(jTable1.getSelectedRow(), 1).toString());
+        
+        
+        System.out.println(test);
+        
+        
+        
+        
+        
+//        
+//        ad.delete();
+//        jTable1.setModel(initTableModel());
+//        jop1.showMessageDialog(null, "L'auteur a été supprimé avec succès.", "Information", JOptionPane.INFORMATION_MESSAGE);
+//        
+        
     }//GEN-LAST:event_jButton3MouseClicked
 
 

@@ -3,12 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package FramePrincipaleChrystelle;
+package Home;
+
 
 import PanelOk.AuthorPanel;
 import PanelOk.KWPanel;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JPanel;
 
 /**
@@ -984,13 +988,14 @@ public class PannelCentralSelection extends javax.swing.JPanel {
     private void bAutorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bAutorMouseClicked
 
 
-        jpPrincipal.removeAll();
-        jpPrincipal.validate();
-        AuthorPanel addAutor=new AuthorPanel();
-        jpPrincipal.setLayout(new BorderLayout());
-        jpPrincipal.add(addAutor,BorderLayout.NORTH);
-        jpPrincipal.setVisible(true);
-        jpPrincipal.revalidate();
+            jpPrincipal.removeAll();
+            jpPrincipal.validate();
+            AuthorPanel addAutor=new AuthorPanel();
+            jpPrincipal.setLayout(new BorderLayout());
+            jpPrincipal.add(addAutor,BorderLayout.NORTH);
+            jpPrincipal.setVisible(true);
+            jpPrincipal.revalidate();
+        
         
     }//GEN-LAST:event_bAutorMouseClicked
 
@@ -1288,13 +1293,15 @@ public class PannelCentralSelection extends javax.swing.JPanel {
     private void jPanel13MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel13MouseClicked
         
         
-        jpPrincipal.removeAll();
-        jpPrincipal.validate();
-        AuthorPanel addAutor=new AuthorPanel();
-        jpPrincipal.setLayout(new BorderLayout());
-        jpPrincipal.add(addAutor,BorderLayout.NORTH);
-        jpPrincipal.setVisible(true);
-        jpPrincipal.revalidate();
+        
+            jpPrincipal.removeAll();
+            jpPrincipal.validate();
+            AuthorPanel addAutor=new AuthorPanel();
+            jpPrincipal.setLayout(new BorderLayout());
+            jpPrincipal.add(addAutor,BorderLayout.NORTH);
+            jpPrincipal.setVisible(true);
+            jpPrincipal.revalidate();
+        
         
     }//GEN-LAST:event_jPanel13MouseClicked
 
