@@ -56,7 +56,7 @@ public class ReviewDAO extends DAO<Review> {
             pstmt.setString(5, rev.getRevComment());
             pstmt.setString(6, rev.getRevDate());
             pstmt.setString(7, rev.getRevIP());
-            pstmt.setString(8, rev.getRevStatus());
+            pstmt.setInt(8, rev.getRevStatus());
 
             int result = pstmt.executeUpdate();
 
@@ -92,7 +92,7 @@ public class ReviewDAO extends DAO<Review> {
             pstmt.setString(5, rev.getRevComment());
             pstmt.setString(6, rev.getRevDate());
             pstmt.setString(7, rev.getRevIP());
-            pstmt.setString(8, rev.getRevStatus());
+            pstmt.setInt(8, rev.getRevStatus());
 
             int result = pstmt.executeUpdate();
 
@@ -151,7 +151,7 @@ public class ReviewDAO extends DAO<Review> {
                     review.setRevComment(rs.getString(COMMENT));
                     review.setRevDate(rs.getString(DATE));
                     review.setRevIP(rs.getString(IP));
-                    review.setRevStatus(rs.getString(STATUS));
+                    review.setRevStatus(rs.getInt(STATUS));
                 }
             } else {
                 throw new SQLException("ResultSet was empty");
@@ -192,7 +192,7 @@ public class ReviewDAO extends DAO<Review> {
                     review.setRevComment(rs.getString(COMMENT));
                     review.setRevDate(rs.getString(DATE));
                     review.setRevIP(rs.getString(IP));
-                    review.setRevStatus(rs.getString(STATUS));
+                    review.setRevStatus(rs.getInt(STATUS));
                 }
             } else {
                 throw new SQLException("ResultSet was empty");
@@ -223,8 +223,6 @@ public class ReviewDAO extends DAO<Review> {
                 .append(" = ")
                 .append("'" + term + "'");
 
-        System.out.println("DANS LZE STRING");
-
         try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
 
             ResultSet rs = pstmt.executeQuery();
@@ -245,7 +243,7 @@ public class ReviewDAO extends DAO<Review> {
                     review.setRevComment(rs.getString(COMMENT));
                     review.setRevDate(rs.getString(DATE));
                     review.setRevIP(rs.getString(IP));
-                    review.setRevStatus(rs.getString(STATUS));
+                    review.setRevStatus(rs.getInt(STATUS));
                 }
             } else {
                 throw new SQLException("ResultSet was empty");
@@ -264,15 +262,11 @@ public class ReviewDAO extends DAO<Review> {
         Review review = null;
         Customer cus = null;
         OrderLine ord = null;
-        StringBuffer query = new StringBuffer();
+        StringBuilder query = new StringBuilder();
         query.append("SELECT * FROM " + TABLE + " WHERE ")
                 .append(column)
                 .append(" = ")
                 .append(term);
-        
-        
-         System.out.println("COCUOCUOU ?");
-        System.out.println(query);
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
 
@@ -294,9 +288,8 @@ public class ReviewDAO extends DAO<Review> {
                     review.setRevComment(rs.getString(COMMENT));
                     review.setRevDate(rs.getString(DATE));
                     review.setRevIP(rs.getString(IP));
-                    review.setRevStatus(rs.getString(STATUS));
+                    review.setRevStatus(rs.getInt(STATUS));
                     reviewList.add(review);
-                    System.out.println(review);
                 }
             } else {
                 throw new SQLException("ResultSet was empty");
@@ -309,7 +302,5 @@ public class ReviewDAO extends DAO<Review> {
         }
         return reviewList;
     }
-    
- 
 
 }
