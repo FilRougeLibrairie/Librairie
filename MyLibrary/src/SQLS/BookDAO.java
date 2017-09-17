@@ -3,7 +3,7 @@ package SQLS;
 import ClassObjet.Book;
 import ClassObjet.BookLanguage;
 import ClassObjet.Editor;
-import ClassObjet.Formats;
+import ClassObjet.Forma;
 import ClassObjet.Vat;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -38,7 +38,7 @@ public class BookDAO extends DAO {
     private Vat vat;
     private Editor editor;
     private BookLanguage language;
-    private Formats format;
+    private Forma format;
 
     private String COLUMNS_CREATE = ISBN_13 + ", " + VAT_CODE + ", "
             + EDITOR_ID + ", " + TITLE + ", " + SUBTITLE + ", "
@@ -167,7 +167,7 @@ public class BookDAO extends DAO {
                     vat = new Vat();
                     editor = new Editor();
                     language = new BookLanguage();
-                    format = new Formats();
+                    format = new Forma();
 
                     book.setBooIsbn13(rs.getString(ISBN_13));
                     vat.setVatCode(rs.getInt(VAT_CODE));
@@ -226,7 +226,7 @@ public class BookDAO extends DAO {
                     vat = new Vat();
                     editor = new Editor();
                     language = new BookLanguage();
-                    format = new Formats();
+                    format = new Forma();
 
                     book.setBooIsbn13(rs.getString(ISBN_13));
                     vat.setVatCode(rs.getInt(VAT_CODE));
@@ -293,7 +293,7 @@ public class BookDAO extends DAO {
                     vat = new Vat();
                     editor = new Editor();
                     language = new BookLanguage();
-                    format = new Formats();
+                    format = new Forma();
 
                     book.setBooIsbn13(rs.getString(ISBN_13));
                     vat.setVatCode(rs.getInt(VAT_CODE));

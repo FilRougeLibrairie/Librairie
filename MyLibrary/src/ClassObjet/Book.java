@@ -32,7 +32,7 @@ public class Book {
     private Vat vatCode;
     private Editor ediId;
     private BookLanguage booLangCode;
-    private Formats format;
+    private Forma format;
 
     //constructor
     public Book() {
@@ -91,7 +91,7 @@ public class Book {
         this.booLangCode = booLangCode;
     }
 
-    public void setFormat(Formats format) {
+    public void setFormat(Forma format) {
         this.format = format;
     }
 
@@ -148,7 +148,7 @@ public class Book {
         return booLangCode;
     }
 
-    public Formats getFormat() {
+    public Forma getFormat() {
         return format;
     }
 

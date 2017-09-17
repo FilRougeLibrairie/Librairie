@@ -19,7 +19,7 @@ public class Review {
     private String revComment;
     private String revDate;
     private String revIP;
-    private String revStatus;
+    private int revStatus;
     private Book book;
 
 
@@ -56,7 +56,7 @@ public class Review {
         this.revIP = revIP;
     }
 
-    public void setRevStatus(String revStatus) {
+    public void setRevStatus(int revStatus) {
         this.revStatus = revStatus;
     }
     
@@ -95,7 +95,7 @@ public class Review {
         return revIP;
     }
 
-    public String getRevStatus() {
+    public int getRevStatus() {
         return revStatus;
     }
 
@@ -106,13 +106,23 @@ public class Review {
     public void setBook(Book book) {
         this.book = book;
     }
-    
-    
 
     @Override
     public String toString() {
-        return "Review{" + "revId=" + revId + ", cusId=" + cusId + ", booIsbn13=" + booIsbn13 + ", ordLineId=" + ordLineId + ", revNote=" + revNote + ", revComment=" + revComment + ", revDate=" + revDate + ", revIP=" + revIP + ", revStatus=" + revStatus + '}';
+        return "Review : " + revId + "\n"
+                + "Customer Id : " + cusId + "\n"
+                + "ISBN13 : " + booIsbn13 + "\n"
+                + "Orderline Id : " + ordLineId + "\n"
+                + "Score : " + revNote + "\n"
+                + "Comment : " + revComment + "\n"
+                + "Date : " + revDate + "\n"
+                + "IP adress : " + revIP + "\n"
+                + "Review Status : " + revStatus;
     }
+    
+    
+
+
     
     
     
