@@ -24,7 +24,7 @@ public class ReviewTableItem {
     public ReviewTableItem(Review review) {
         this.book = review.getBook();
         this.review = review;
-        this.date = review.getRevDate();
+        this.date = review.getRevDate().toString();
         this.isbn = review.getBooIsbn13();
         this.bookTitle = book.getBooTitle();
         this.comment = review.getRevComment();

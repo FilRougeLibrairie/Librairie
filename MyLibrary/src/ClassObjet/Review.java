@@ -5,6 +5,9 @@
  */
 package ClassObjet;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
 /**
  *
  * @author Tofi
@@ -17,7 +20,7 @@ public class Review {
     private OrderLine ordLineId;
     private Float revNote;
     private String revComment;
-    private String revDate;
+    private java.sql.Date revDate;
     private String revIP;
     private int revStatus;
     private Book book;
@@ -49,7 +52,14 @@ public class Review {
     }
 
     public void setRevDate(String revDate) {
-        this.revDate = revDate;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            java.util.Date reviewDate = sdf.parse(revDate);
+            java.sql.Date sqlRevDate = new java.sql.Date(reviewDate.getTime());
+            this.revDate = sqlRevDate;
+        } catch (ParseException ex) {
+            System.out.println("Error formating DATE" + ex.getMessage());
+        }
     }
 
     public void setRevIP(String revIP) {
@@ -87,8 +97,8 @@ public class Review {
         return revComment;
     }
 
-    public String getRevDate() {
-        return revDate;
+    public java.sql.Date getRevDate() {
+        return new java.sql.Date((revDate.getTime()));
     }
 
     public String getRevIP() {

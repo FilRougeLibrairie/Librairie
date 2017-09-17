@@ -15,10 +15,13 @@ import SQLS.ReviewDAO;
 import SQLS.StatusDisplayDAO;
 import exceptions.CryptoException;
 import exceptions.NoCurrentCustomerException;
+import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Properties;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,6 +29,10 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import utils.Crypto;
+import org.jdatepicker.impl.JDatePanelImpl;
+import org.jdatepicker.impl.JDatePickerImpl;
+import org.jdatepicker.impl.UtilDateModel;
+import utils.DateLabelFormatter;
 
 /**
  *
@@ -41,14 +48,17 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
     Vector<String> comboAdressModel;
     Vector<String> comboSearchModel;
     Vector<String> comboStatusModel;
+    Vector<String> comboGenderModel;
+    Vector<String> comboRevStatusModel;
     Customer currentCustomer;
     Address currentAddress;
     Review currentReview;
+    JDatePickerImpl datePicker;
 
     private enum Gender {
 
-        MALE("H"),
-        FEMALE("F");
+        MALE("Homme"),
+        FEMALE("Femme");
         private final String databaseName;
 
         private Gender(String databaseName) {
@@ -76,6 +86,28 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
         }
     }
 
+    private enum ReviewStatus {
+
+        PENDING("En attente", 2),
+        VALIDATED("Validé", 3),
+        REJECTED("Rejeté", 4);
+        private final String databaseName;
+        private final int databaseCode;
+
+        private ReviewStatus(String databaseName, int order) {
+            this.databaseName = databaseName;
+            this.databaseCode = order;
+        }
+
+        public String getDatabaseName() {
+            return databaseName;
+        }
+
+        public int getDatabaseCode() {
+            return databaseCode;
+        }
+    }
+
     private enum SearchCriteria {
 
         TOUS_LES_CLIENTS("Tous les clients"),
@@ -85,7 +117,8 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
         EMAIL("Email"),
         TELEPHONE("Téléphone"),
         IP("Adresse IP"),
-        STATUS("Status");
+        STATUS("Status"),
+        GENDER("Genre");
         private final String databaseName;
 
         private SearchCriteria(String databaseName) {
@@ -112,17 +145,55 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
 
         tableCustomers.setCellSelectionEnabled(true);
         tableOrders.setAutoCreateRowSorter(true);
-        comboInvoiceStreetType.setModel(initAddressComboBoxModel());
+        tableReview.setAutoCreateRowSorter(true);
+        comboDeliverStreetType.setModel(initAddressComboBoxModel());
         comboSearch.setModel(initComboSearchModel());
         comboSearch.setSelectedIndex(0);
         comboStatus.setModel(initComboStatusModel());
         comboStatus.setSelectedIndex(0);
+        comboGender.setModel(initComboGenderModel());
+        comboGender.setSelectedIndex(0);
+        comboRevStatus.setModel(initComboRevStatusModelModel());
+        comboRevStatus.setSelectedIndex(0);
         labelErrorMessage.setVisible(false);
         labelCustomerID.setText("");
 
+        panelSearchByReviewStatus.setVisible(false);
+
+        UtilDateModel model = new UtilDateModel();
+        Properties p = new Properties();
+        p.put("text.today", "Today");
+        p.put("text.month", "Month");
+        p.put("text.year", "Year");
+        JDatePanelImpl datePanel = new JDatePanelImpl(model, p);
+        datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
+        datePicker.setBackground(Color.WHITE);
+        datePicker.setBounds(0, 0, 200, 30);
+        datePicker.setVisible(true);
+        panelDate.setSize(100, 100);
+        panelDate.add(datePicker);
+
+        datePicker.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                datePickerActionPerformed(evt);
+            }
+        });
+
     }
 
-    private DefaultComboBoxModel initComboSearchModel() {
+    private void datePickerActionPerformed(java.awt.event.ActionEvent evt) {
+
+        Date selectedDate = (Date) datePicker.getModel().getValue();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        String date = df.format(selectedDate);
+        
+        System.out.println(date);
+
+    }
+
+
+
+private DefaultComboBoxModel initComboSearchModel() {
         DefaultComboBoxModel model;
         comboSearchModel = new Vector<String>();
         model = new DefaultComboBoxModel(comboSearchModel);
@@ -153,6 +224,26 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
         model = new DefaultComboBoxModel(comboStatusModel);
         for (Status comboItem : Status.values()) {
             comboStatusModel.add(comboItem.getDatabaseName());
+        }
+        return model;
+    }
+
+    private DefaultComboBoxModel initComboRevStatusModelModel() {
+        DefaultComboBoxModel model;
+        comboRevStatusModel = new Vector<String>();
+        model = new DefaultComboBoxModel(comboRevStatusModel);
+        for (ReviewStatus comboItem : ReviewStatus.values()) {
+            comboRevStatusModel.add(comboItem.getDatabaseName());
+        }
+        return model;
+    }
+
+    private DefaultComboBoxModel initComboGenderModel() {
+        DefaultComboBoxModel model;
+        comboGenderModel = new Vector<String>();
+        model = new DefaultComboBoxModel(comboGenderModel);
+        for (Gender comboItem : Gender.values()) {
+            comboGenderModel.add(comboItem.getDatabaseName());
         }
         return model;
     }
@@ -333,7 +424,7 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
         setTableOrdersModel();
     }
 
-    private void loadingReviewTable(Customer cus) {
+    private void loadingReviewTable() {
         ReviewDAO reviewDAO = new ReviewDAO();
         StatusDisplayDAO sdDAO = new StatusDisplayDAO();
         BookDAO bookDAO = new BookDAO();
@@ -341,8 +432,7 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
         ReviewTableItem reviewTableItem;
         StatusDisplay statusDisplay;
 
-        reviewList = reviewDAO.findByColumn(ReviewNames.CUSTOMER_ID, cus.getCusID());
-
+        reviewList = reviewDAO.findByColumn(ReviewNames.CUSTOMER_ID, currentCustomer.getCusID());
         reviewTableList = new Vector();
 
         for (Review rev : reviewList) {
@@ -460,6 +550,28 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
         clearAddressFields();
     }
 
+    private void reviewFactory() {
+        ReviewDAO reviewDAO = new ReviewDAO();
+        int revStatusCode;
+        currentReview.setCusId(currentReview.getCusId());
+        currentReview.setBooIsbn13(currentReview.getBooIsbn13());
+        currentReview.setOrdLineId(currentReview.getOrdLineId());
+        currentReview.setRevNote(currentReview.getRevNote());
+        currentReview.setRevDate(currentReview.getRevDate().toString());
+        currentReview.setRevIP(currentReview.getRevIP());
+        currentReview.setRevComment(tfReview.getText().trim());
+        if (rbtnValidated.isSelected()) {
+            revStatusCode = ReviewStatus.VALIDATED.getDatabaseCode();
+        } else if (rbtnRejected.isSelected()) {
+            revStatusCode = ReviewStatus.REJECTED.getDatabaseCode();
+        } else {
+            revStatusCode = ReviewStatus.PENDING.getDatabaseCode();
+        }
+        currentReview.setRevStatus(revStatusCode);
+
+        reviewDAO.update(currentReview);
+    }
+
     private void searchForCustomer() {
         if (comboSearch.getSelectedItem() != null) {
             String criteria = comboSearch.getSelectedItem().toString();
@@ -474,6 +586,10 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
                 criteria = CustomerNames.STATUS;
                 statusIndex = comboStatus.getSelectedIndex();
                 customerList = customerDAO.findByColumn(criteria, statusIndex);
+            } else if (criteria.equalsIgnoreCase(SearchCriteria.GENDER.getDatabaseName())) {
+                criteria = CustomerNames.GENDER;
+                term = comboGender.getSelectedItem().toString().substring(0, 1).trim();
+                customerList = customerDAO.findByColumn(criteria, term);
             } else if (term != null && !term.isEmpty()) {
                 if (criteria.equalsIgnoreCase(SearchCriteria.NOM.getDatabaseName())) {
                     criteria = CustomerNames.LAST_NAME;
@@ -512,13 +628,13 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
             }
         }
     }
-    
-    private void clearFields(){
+
+    private void clearFields() {
         labelBookISBN.setText("");
         labelBookTitle.setText("");
         tfReview.setText("");
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -597,30 +713,22 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
         jLabel3 = new javax.swing.JLabel();
         rbtnRejected = new javax.swing.JRadioButton();
         jSeparator2 = new javax.swing.JSeparator();
-        comboRevStatus = new javax.swing.JComboBox();
         jLabel6 = new javax.swing.JLabel();
         labelBookISBN = new javax.swing.JLabel();
         jLabel35 = new javax.swing.JLabel();
         labelBookTitle = new javax.swing.JLabel();
+        panelSearchByReviewStatus = new javax.swing.JPanel();
+        comboRevStatus = new javax.swing.JComboBox();
+        jLabel34 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
         tfInvoiceLastName = new javax.swing.JTextField();
         tfInvoiceStreetName = new javax.swing.JTextField();
         tfInvoiceCompany = new javax.swing.JTextField();
         jLabel15 = new javax.swing.JLabel();
-        tfInvoiceStreetNum = new javax.swing.JTextField();
-        tfInvoiceFirstName = new javax.swing.JTextField();
         jLabel18 = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
-        jLabel20 = new javax.swing.JLabel();
-        tfInvoiceZipCode = new javax.swing.JTextField();
-        jLabel21 = new javax.swing.JLabel();
-        tfInvoiceCity = new javax.swing.JTextField();
-        tfInvoiceStreetComplement = new javax.swing.JTextField();
-        jLabel23 = new javax.swing.JLabel();
-        comboInvoiceStreetType = new javax.swing.JComboBox();
         jPanel7 = new javax.swing.JPanel();
         btnSaveInvoiceAdress = new javax.swing.JLabel();
         jLabel44 = new javax.swing.JLabel();
@@ -629,6 +737,8 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
         tabletfInvoiceAdresses = new javax.swing.JTable();
         jPanel15 = new javax.swing.JPanel();
         btnNewAdress2 = new javax.swing.JLabel();
+        jComboBox1 = new javax.swing.JComboBox();
+        panelDate = new javax.swing.JPanel();
         tfPassword = new javax.swing.JPasswordField();
         jLabel40 = new javax.swing.JLabel();
         jLabel41 = new javax.swing.JLabel();
@@ -656,6 +766,12 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
 
         jPanel9.setBackground(new java.awt.Color(255, 255, 255));
         jPanel9.setPreferredSize(new java.awt.Dimension(900, 630));
+
+        tfLastName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tfLastNameActionPerformed(evt);
+            }
+        });
 
         jLabel13.setText("Genre :");
 
@@ -829,7 +945,7 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
                     .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addComponent(tfDeliverLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 158, Short.MAX_VALUE)
                     .addComponent(jPanel13, javax.swing.GroupLayout.DEFAULT_SIZE, 158, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel29)
                     .addComponent(jLabel30)
@@ -935,7 +1051,7 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel5Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {tfDeliverCompany, tfDeliverFirstName, tfDeliverLabel, tfDeliverLastName});
@@ -1007,7 +1123,7 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 876, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 866, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -1021,7 +1137,7 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Commandes", jPanel8);
@@ -1131,32 +1247,72 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
                             .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(rbtnValidated)))))
-                .addContainerGap(17, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel14Layout.setVerticalGroup(
             jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel14Layout.createSequentialGroup()
                 .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(rbtnValidated)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(rbtnRejected)
-                .addGap(17, 17, 17))
+                .addGap(29, 29, 29))
         );
 
-        comboRevStatus.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "En attente", "Validés", "Rejetés" }));
-
+        jLabel6.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
         jLabel6.setText("ISBN :");
 
+        labelBookISBN.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
         labelBookISBN.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         labelBookISBN.setText("labelISBN");
 
+        jLabel35.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
         jLabel35.setText("TITRE :");
 
+        labelBookTitle.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
         labelBookTitle.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         labelBookTitle.setText("LabelTitre");
+
+        panelSearchByReviewStatus.setBackground(new java.awt.Color(255, 255, 255));
+        panelSearchByReviewStatus.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        comboRevStatus.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "En attente", "Validés", "Rejetés" }));
+        comboRevStatus.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                comboRevStatusMouseReleased(evt);
+            }
+        });
+        comboRevStatus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboRevStatusActionPerformed(evt);
+            }
+        });
+
+        jLabel34.setText("Chercher par :");
+
+        javax.swing.GroupLayout panelSearchByReviewStatusLayout = new javax.swing.GroupLayout(panelSearchByReviewStatus);
+        panelSearchByReviewStatus.setLayout(panelSearchByReviewStatusLayout);
+        panelSearchByReviewStatusLayout.setHorizontalGroup(
+            panelSearchByReviewStatusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelSearchByReviewStatusLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelSearchByReviewStatusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(comboRevStatus, 0, 89, Short.MAX_VALUE)
+                    .addComponent(jLabel34, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        panelSearchByReviewStatusLayout.setVerticalGroup(
+            panelSearchByReviewStatusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelSearchByReviewStatusLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel34)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(comboRevStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
         jPanel10.setLayout(jPanel10Layout);
@@ -1167,54 +1323,52 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
                 .addComponent(jPanel12, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(24, 24, 24))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel10Layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 417, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel10Layout.createSequentialGroup()
-                        .addGap(0, 1, Short.MAX_VALUE)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel10Layout.createSequentialGroup()
                         .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel6)
-                            .addComponent(jLabel35))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel35)
+                            .addComponent(jLabel6))
+                        .addGap(45, 45, 45)
                         .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel10Layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addComponent(labelBookTitle))
-                            .addComponent(labelBookISBN))))
+                                .addComponent(labelBookISBN, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(6, 6, 6))
+                            .addComponent(labelBookTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 320, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(comboRevStatus, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(panelSearchByReviewStatus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel10Layout.setVerticalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel10Layout.createSequentialGroup()
                 .addGap(11, 11, 11)
-                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addGroup(jPanel10Layout.createSequentialGroup()
-                        .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(comboRevStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel6)
-                            .addComponent(labelBookISBN))
-                        .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel10Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel35)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel10Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(labelBookTitle)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
                         .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jScrollPane3)
-                            .addComponent(jPanel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addGroup(jPanel10Layout.createSequentialGroup()
+                                .addComponent(panelSearchByReviewStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jPanel14, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                            .addGroup(jPanel10Layout.createSequentialGroup()
+                                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel6)
+                                    .addComponent(labelBookISBN))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel35)
+                                    .addComponent(labelBookTitle))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 14, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel12, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addGap(32, 32, 32))
         );
 
         jTabbedPane1.addTab("Commentaires", jPanel10);
@@ -1222,25 +1376,15 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
         jPanel4.setPreferredSize(new java.awt.Dimension(100, 100));
 
-        jLabel1.setText("Type :");
+        jLabel16.setText("Code :");
 
-        jLabel16.setText("Nom Société :");
+        jLabel17.setText("Date exp");
 
-        jLabel17.setText("N° voie :");
+        jLabel15.setText("Type carte :");
 
-        jLabel15.setText("Prénom :");
+        jLabel18.setText("CVS");
 
-        jLabel18.setText("Nom voie :");
-
-        jLabel19.setText("Nom :");
-
-        jLabel20.setText("Code postal :");
-
-        jLabel21.setText("Ville :");
-
-        jLabel23.setText("Complément adresse :");
-
-        comboInvoiceStreetType.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "rue", "allée ", "avenue", "boulevard ", "chemin ", "route", "impasse", "lieu-dit" }));
+        jLabel19.setText("Titulaire :");
 
         jPanel7.setBackground(new java.awt.Color(51, 102, 255));
         jPanel7.setPreferredSize(new java.awt.Dimension(200, 45));
@@ -1260,7 +1404,7 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
             .addComponent(btnSaveInvoiceAdress, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
         );
 
-        jLabel44.setText("Label adresse :");
+        jLabel44.setText("Label Paiement :");
 
         tabletfInvoiceAdresses.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -1305,6 +1449,21 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
             .addComponent(btnNewAdress2, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
         );
 
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        panelDate.setBackground(new java.awt.Color(255, 255, 255));
+
+        javax.swing.GroupLayout panelDateLayout = new javax.swing.GroupLayout(panelDate);
+        panelDate.setLayout(panelDateLayout);
+        panelDateLayout.setHorizontalGroup(
+            panelDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 219, Short.MAX_VALUE)
+        );
+        panelDateLayout.setVerticalGroup(
+            panelDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 33, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -1316,7 +1475,7 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
                     .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addComponent(tfInvoiceLabel)
                     .addComponent(jPanel15, javax.swing.GroupLayout.DEFAULT_SIZE, 158, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel15)
                     .addComponent(jLabel16)
@@ -1325,85 +1484,57 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
                     .addComponent(jLabel19))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(tfInvoiceFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tfInvoiceLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tfInvoiceCompany, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(tfInvoiceStreetNum, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(comboInvoiceStreetType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(tfInvoiceStreetName, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(45, 45, 45)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel21)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel23)
-                            .addComponent(jLabel20))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(tfInvoiceCity, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(tfInvoiceStreetComplement, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(tfInvoiceZipCode, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(tfInvoiceLastName, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                            .addComponent(tfInvoiceCompany, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                            .addComponent(tfInvoiceStreetName, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(273, 273, 273)
+                        .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(panelDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(24, 24, 24))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGap(10, 10, 10)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jLabel44)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(tfInvoiceLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 111, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel15, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(53, Short.MAX_VALUE))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel23)
-                            .addComponent(tfInvoiceStreetComplement, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(6, 6, 6)
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel20)
-                            .addComponent(tfInvoiceZipCode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(tfInvoiceLastName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel19))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel21)
-                            .addComponent(tfInvoiceCity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel4Layout.createSequentialGroup()
-                            .addComponent(jLabel44)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(tfInvoiceLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                        .addGroup(jPanel4Layout.createSequentialGroup()
-                            .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(tfInvoiceLastName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel19))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(tfInvoiceFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel15))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(tfInvoiceCompany, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel16))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(tfInvoiceStreetNum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel17)
-                                .addComponent(jLabel1)
-                                .addComponent(comboInvoiceStreetType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(tfInvoiceStreetName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel18)))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel15, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(26, Short.MAX_VALUE))
+                            .addComponent(jLabel15)
+                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(tfInvoiceCompany, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel16))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(panelDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel17, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(tfInvoiceStreetName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel18))
+                        .addContainerGap(100, Short.MAX_VALUE))))
         );
 
-        jTabbedPane1.addTab("[ToDelete] Adresse facturation", jPanel4);
+        jTabbedPane1.addTab("Moyens de paiement", jPanel4);
 
         jLabel40.setText("Commentaire :");
 
@@ -1676,8 +1807,8 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
                                 .addComponent(labelErrorMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addComponent(jInternalFrame1, javax.swing.GroupLayout.PREFERRED_SIZE, 344, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jTabbedPane1)
-                .addGap(78, 78, 78))
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 307, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -1686,14 +1817,14 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, 888, Short.MAX_VALUE)
+                .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, 890, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, 718, Short.MAX_VALUE)
+                .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, 675, Short.MAX_VALUE)
                 .addGap(112, 112, 112))
         );
 
@@ -1719,7 +1850,7 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
                 currentCustomer = cusTable.getCustomer();
                 fillCustomerFields(currentCustomer);
                 loadingAdressTable(currentCustomer);
-                loadingReviewTable(currentCustomer);
+                loadingReviewTable();
                 loadingOrderTable(currentCustomer);
             }
         }
@@ -1751,10 +1882,19 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
     private void btnSaveCustomerMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSaveCustomerMouseReleased
         try {
             customerFactory();
-        } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(JFCustomer.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (CryptoException ex) {
-            Logger.getLogger(JFCustomer.class.getName()).log(Level.SEVERE, null, ex);
+
+        
+
+} catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(JFCustomer.class  
+
+.getName()).log(Level.SEVERE, null, ex);
+        } 
+
+catch (CryptoException ex) {
+            Logger.getLogger(JFCustomer.class  
+
+.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnSaveCustomerMouseReleased
 
@@ -1796,9 +1936,7 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
 
     private void btnSaveReviewMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSaveReviewMouseReleased
         if (currentReview != null) {
-            // ReviewDAO reviewDAO = new ReviewDAO();
-            // reviewDAO.update(currentReview);
-            System.out.println(currentReview);
+            reviewFactory();
         }
 
 
@@ -1807,6 +1945,59 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
     private void rbtnValidatedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbtnValidatedActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_rbtnValidatedActionPerformed
+
+    private void tfLastNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfLastNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tfLastNameActionPerformed
+
+    private void comboRevStatusMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_comboRevStatusMouseReleased
+
+//        for (int ligne = 0; ligne < tableReview.getRowCount(); ligne++) {
+//            if (tableCustomers.isRowSelected(ligne)) {
+//                CustomerTableItem cusTable = (CustomerTableItem) tableCustomers.getValueAt(ligne, 0);
+//                currentCustomer = cusTable.getCustomer();
+//                fillCustomerFields(currentCustomer);
+//                loadingAdressTable(currentCustomer);
+//                loadingReviewTable(currentCustomer);
+//                loadingOrderTable(currentCustomer);
+//            }
+//        }
+    }//GEN-LAST:event_comboRevStatusMouseReleased
+
+    private void comboRevStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboRevStatusActionPerformed
+        Vector tabToClear = new Vector();
+        //tabToClear.add(tableReview);
+        // clearTableModels(tabToClear);
+        // clearFields();
+//        if (tableReview != null && tableReview.getRowCount() > 0) {
+//            for (int i = 0; i < tableReview.getRowCount(); i++) {
+//                System.out.println(tableReview.getValueAt(i, 0).toString());
+//            }
+//        }
+        //  String criteria = comboRevStatus.getSelectedItem().toString();
+
+        // System.out.println(  tableReview.getModel().getValueAt(0, 1)     );
+        String criteria = comboRevStatus.getSelectedItem().toString();
+
+//        
+//        if(tableReview != null){
+//            for (int i = 0; i < tableReview.getRowCount(); i++) {
+//              System.out.println(tableReview.getValueAt(i, 1).toString());
+//           }
+//        }
+//        if ( != null) {
+//            for (Object rev : reviewTableList) {
+//                for (Object r : ((ReviewTableItem) rev).getVector()) {
+//                    System.out.println(r.getClass());
+//                }
+//            }
+//        }
+        //   setTableReviewModel();
+        //for(Object rev : reviewTableList){
+        //    System.out.println(reviewTableList);
+        //  }
+
+    }//GEN-LAST:event_comboRevStatusActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1823,20 +2014,32 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
 
-                }
+                
+
+}
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(JFCustomer.class
-                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(JFCustomer.class
-                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(JFCustomer.class
-                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(JFCustomer.class
-                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JFCustomer.class  
+
+.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } 
+
+catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(JFCustomer.class  
+
+.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } 
+
+catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(JFCustomer.class  
+
+.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } 
+
+catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(JFCustomer.class  
+
+.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
@@ -1862,12 +2065,11 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JComboBox comboDeliverStreetType;
     private javax.swing.JComboBox comboGender;
-    private javax.swing.JComboBox comboInvoiceStreetType;
     private javax.swing.JComboBox comboRevStatus;
     private javax.swing.JComboBox comboSearch;
     private javax.swing.JComboBox comboStatus;
+    private javax.swing.JComboBox jComboBox1;
     private javax.swing.JInternalFrame jInternalFrame1;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -1879,10 +2081,7 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel20;
-    private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
-    private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
@@ -1894,6 +2093,7 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
     private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel33;
+    private javax.swing.JLabel jLabel34;
     private javax.swing.JLabel jLabel35;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel40;
@@ -1934,6 +2134,8 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
     private javax.swing.JLabel labelBookTitle;
     private javax.swing.JLabel labelCustomerID;
     private javax.swing.JLabel labelErrorMessage;
+    private javax.swing.JPanel panelDate;
+    private javax.swing.JPanel panelSearchByReviewStatus;
     private javax.swing.JRadioButton rbtnRejected;
     private javax.swing.JRadioButton rbtnValidated;
     private javax.swing.JTable tableCustomers;
@@ -1958,15 +2160,10 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
     private javax.swing.JTextField tfEmail;
     private javax.swing.JTextField tfFirstName;
     private javax.swing.JTextField tfIPAdress;
-    private javax.swing.JTextField tfInvoiceCity;
     private javax.swing.JTextField tfInvoiceCompany;
-    private javax.swing.JTextField tfInvoiceFirstName;
     private javax.swing.JTextField tfInvoiceLabel;
     private javax.swing.JTextField tfInvoiceLastName;
-    private javax.swing.JTextField tfInvoiceStreetComplement;
     private javax.swing.JTextField tfInvoiceStreetName;
-    private javax.swing.JTextField tfInvoiceStreetNum;
-    private javax.swing.JTextField tfInvoiceZipCode;
     private javax.swing.JTextField tfLastName;
     private javax.swing.JPasswordField tfPassword;
     private javax.swing.JTextField tfPhone;

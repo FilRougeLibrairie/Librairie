@@ -54,7 +54,7 @@ public class ReviewDAO extends DAO<Review> {
             pstmt.setInt(3, rev.getOrdLineId().getOrdLineId());
             pstmt.setFloat(4, rev.getRevNote());
             pstmt.setString(5, rev.getRevComment());
-            pstmt.setString(6, rev.getRevDate());
+            pstmt.setDate(6, rev.getRevDate());
             pstmt.setString(7, rev.getRevIP());
             pstmt.setInt(8, rev.getRevStatus());
 
@@ -77,12 +77,13 @@ public class ReviewDAO extends DAO<Review> {
         query.append(COMMENT).append(" = ?, ");
         query.append(DATE).append(" = ?, ");
         query.append(IP).append(" = ?, ");
-        query.append(STATUS).append(" = ?, ");
+        query.append(STATUS).append(" = ? ");
 
-        query.append("WHERE " + ID + " = '")
-                .append(rev.getRevId())
-                .append("'");
+        query.append("WHERE " + ID + " = ")
+                .append(rev.getRevId());
 
+        System.out.println(query);
+        
         try (PreparedStatement pstmt = connect.prepareStatement(query.toString());) {
 
             pstmt.setInt(1, rev.getCusId().getCusID());
@@ -90,7 +91,7 @@ public class ReviewDAO extends DAO<Review> {
             pstmt.setInt(3, rev.getOrdLineId().getOrdLineId());
             pstmt.setFloat(4, rev.getRevNote());
             pstmt.setString(5, rev.getRevComment());
-            pstmt.setString(6, rev.getRevDate());
+            pstmt.setDate(6, rev.getRevDate());
             pstmt.setString(7, rev.getRevIP());
             pstmt.setInt(8, rev.getRevStatus());
 
@@ -256,14 +257,62 @@ public class ReviewDAO extends DAO<Review> {
         }
         return reviewList;
     }
-    
-     public Vector<Review> findByColumn(String column, int term) {
+
+    public Vector<Review> findByColumn(String column, int term) {
         Vector<Review> reviewList = new Vector<Review>();
         Review review = null;
         Customer cus = null;
         OrderLine ord = null;
         StringBuilder query = new StringBuilder();
         query.append("SELECT * FROM " + TABLE + " WHERE ")
+                .append(column)
+                .append(" = ")
+                .append("?");
+
+        try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
+
+            pstmt.setInt(1, term);
+            
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.isBeforeFirst()) {
+
+                while (rs.next()) {
+                    review = new Review();
+                    review.setRevId(rs.getInt(ID));
+                    cus = new Customer();
+                    cus.setCusID(rs.getInt(CUSTOMER_ID));
+                    review.setCusId(cus);
+                    review.setBooIsbn13(rs.getString(BOOK_ISBN_13));
+                    ord = new OrderLine();
+                    ord.setOrdLineId(rs.getInt(ORDERLINE_ID));
+                    review.setOrdLineId(ord);
+                    review.setRevNote(rs.getFloat(NOTE));
+                    review.setRevComment(rs.getString(COMMENT));
+                    review.setRevDate(rs.getString(DATE));
+                    review.setRevIP(rs.getString(IP));
+                    review.setRevStatus(rs.getInt(STATUS));
+                    reviewList.add(review);
+                }
+            } else {
+                throw new SQLException("ResultSet was empty");
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
+            ex.printStackTrace();
+
+        }
+        return reviewList;
+    }
+
+    public Vector<Review> findByCriteria(String column, int term, String criteria) {
+        Vector<Review> reviewList = new Vector<Review>();
+        Review review = null;
+        Customer cus = null;
+        OrderLine ord = null;
+        StringBuilder query = new StringBuilder();
+        query.append("SELECT " + criteria + " FROM " + TABLE + " WHERE ")
                 .append(column)
                 .append(" = ")
                 .append(term);
