@@ -32,7 +32,7 @@ public class Book {
     private Vat vatCode;
     private Editor ediId;
     private BookLanguage booLangCode;
-    private Formats format;
+    private Forma format;
 
     //constructor
     public Book() {
@@ -91,7 +91,7 @@ public class Book {
         this.booLangCode = booLangCode;
     }
 
-    public void setFormat(Formats format) {
+    public void setFormat(Forma format) {
         this.format = format;
     }
 
@@ -148,7 +148,7 @@ public class Book {
         return booLangCode;
     }
 
-    public Formats getFormat() {
+    public Forma getFormat() {
         return format;
     }
 
@@ -221,4 +221,11 @@ public class Book {
         return "Book{" + "booIsbn13=" + booIsbn13 + ", booTitle=" + booTitle + ", booSubtitle=" + booSubtitle + ", booPublishYear=" + booPublishYear + ", booPriceHT=" + booPriceHT + ", booResume=" + booResume + ", booQuantity=" + booQuantity + ", booStatus=" + booStatus + ", booFrontCover=" + booFrontCover + ", booPageNumber=" + booPageNumber + ", authorList=" + authorList + ", subThemeList=" + subThemeList + ", offerList=" + offerList + ", keyWordsList=" + keyWordsList + ", vatCode=" + vatCode + ", ediId=" + ediId + ", booLangCode=" + booLangCode + '}';
     }
 
+    public Vector getVector() {
+        Vector vBook= new Vector();
+       
+        vBook.add(this.booIsbn13);
+      
+        return vBook;
+    }
 }

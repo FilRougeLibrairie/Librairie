@@ -5,20 +5,33 @@
  */
 package ClassObjet;
 
+import java.util.Vector;
+
 /**
  *
  * @author Tofi
  */
-public class Formats {
+public class Forma {
     
     private String forName;
     private int forId;
     
     //Constructor
 
-    public Formats() {
+    public Forma() {
     }
 
+    public Forma(String forName) {
+        this.forName = forName;
+    }
+
+    public Forma(int forId,String forName ) {
+        this.forId = forId;
+        this.forName = forName;
+    }
+
+    
+    
    
     //Setters
 
@@ -39,6 +52,17 @@ public class Formats {
     public int getForId() {
         return forId;
     }
+    
+      public Vector getVector() {
+        Vector v= new Vector();
+       v.add(this.getForId());
+        v.add(this.getForName());
+        
+      
+        return v;
+    }
+    
+    
     
     
 }

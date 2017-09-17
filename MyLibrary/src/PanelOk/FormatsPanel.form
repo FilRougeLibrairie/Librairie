@@ -2,7 +2,7 @@
 
 <Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
   <NonVisualComponents>
-    <Component class="javax.swing.ButtonGroup" name="buttonGroup2">
+    <Component class="javax.swing.ButtonGroup" name="buttonGroup1">
     </Component>
   </NonVisualComponents>
   <AuxValues>
@@ -22,7 +22,7 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jPanel1" pref="804" max="32767" attributes="0"/>
+              <Component id="jPanel1" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -44,20 +44,20 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="240" pref="240" max="-2" attributes="0"/>
                   <Component id="jLabel4" min="-2" pref="276" max="-2" attributes="0"/>
               </Group>
-              <Component id="jSeparator1" min="-2" pref="800" max="-2" attributes="0"/>
-              <Group type="102" attributes="0">
+              <Component id="jSeparator1" alignment="0" min="-2" pref="800" max="-2" attributes="0"/>
+              <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="160" pref="160" max="-2" attributes="0"/>
                   <Component id="menuChoose" min="-2" max="-2" attributes="0"/>
               </Group>
-              <Group type="102" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="160" pref="160" max="-2" attributes="0"/>
                   <Component id="jpAdd" min="-2" max="-2" attributes="0"/>
               </Group>
-              <Group type="102" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="20" pref="20" max="-2" attributes="0"/>
                   <Component id="jpDelete" min="-2" max="-2" attributes="0"/>
               </Group>
@@ -65,7 +65,7 @@
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
                   <Component id="jLabel4" min="-2" pref="38" max="-2" attributes="0"/>
                   <EmptySpace min="12" pref="12" max="-2" attributes="0"/>
                   <Component id="jSeparator1" min="-2" pref="10" max="-2" attributes="0"/>
@@ -86,7 +86,7 @@
               <Font name="Dialog" size="18" style="0"/>
             </Property>
             <Property name="horizontalAlignment" type="int" value="0"/>
-            <Property name="text" type="java.lang.String" value="MOTS CLES"/>
+            <Property name="text" type="java.lang.String" value="FORMATS"/>
           </Properties>
         </Component>
         <Container class="javax.swing.JPanel" name="menuChoose">
@@ -134,7 +134,7 @@
             <Component class="javax.swing.JRadioButton" name="jRAdd">
               <Properties>
                 <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-                  <ComponentRef name="buttonGroup2"/>
+                  <ComponentRef name="buttonGroup1"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Ajouter"/>
               </Properties>
@@ -145,7 +145,7 @@
             <Component class="javax.swing.JRadioButton" name="jRDelete">
               <Properties>
                 <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-                  <ComponentRef name="buttonGroup2"/>
+                  <ComponentRef name="buttonGroup1"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Supprimer"/>
               </Properties>
@@ -173,7 +173,7 @@
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="jLabel2" min="-2" pref="122" max="-2" attributes="0"/>
                       <EmptySpace pref="80" max="32767" attributes="0"/>
-                      <Component id="jTAddKW" min="-2" pref="208" max="-2" attributes="0"/>
+                      <Component id="jTAddFormat" min="-2" pref="208" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -183,7 +183,7 @@
                       <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel2" alignment="3" min="-2" pref="26" max="-2" attributes="0"/>
-                          <Component id="jTAddKW" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jTAddFormat" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace pref="17" max="32767" attributes="0"/>
                       <Component id="jBSelect" min="-2" max="-2" attributes="0"/>
@@ -195,10 +195,10 @@
           <SubComponents>
             <Component class="javax.swing.JLabel" name="jLabel2">
               <Properties>
-                <Property name="text" type="java.lang.String" value="MOT CLE:"/>
+                <Property name="text" type="java.lang.String" value="FORMAT"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="jTAddKW">
+            <Component class="javax.swing.JTextField" name="jTAddFormat">
             </Component>
             <Component class="javax.swing.JButton" name="jBSelect">
               <Properties>
@@ -219,9 +219,9 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
                               <EmptySpace min="-2" pref="44" max="-2" attributes="0"/>
                               <Component id="jScrollPane1" min="-2" pref="680" max="-2" attributes="0"/>
                           </Group>

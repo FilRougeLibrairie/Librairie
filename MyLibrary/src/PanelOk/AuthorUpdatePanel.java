@@ -27,6 +27,7 @@ public class AuthorUpdatePanel extends javax.swing.JPanel {
      */
     public AuthorUpdatePanel() {
         initComponents();
+        jTid.setVisible(false);
     }
 
     private DefaultTableModel initTableModel() {
@@ -283,7 +284,7 @@ public class AuthorUpdatePanel extends javax.swing.JPanel {
                 .addComponent(jpField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(109, Short.MAX_VALUE))
+                .addContainerGap(28, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
