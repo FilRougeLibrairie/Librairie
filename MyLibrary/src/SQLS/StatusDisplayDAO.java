@@ -169,7 +169,8 @@ public class StatusDisplayDAO extends DAO<StatusDisplay> {
         query.append("SELECT * FROM " + TABLE + " WHERE ")
                 .append(STATUS_CODE)
                 .append(" = ")
-                .append("'" + id + "'");
+                .append(id);
+        
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
 
@@ -187,8 +188,7 @@ public class StatusDisplayDAO extends DAO<StatusDisplay> {
             }
 
         } catch (SQLException ex) {
-            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            ex.printStackTrace();
+            ex.getMessage();
 
         }
         return stadi;   }
