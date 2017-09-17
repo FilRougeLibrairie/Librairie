@@ -48,7 +48,7 @@ public class JFBook extends javax.swing.JFrame {
     
     
     
-    private void Enregistrer(java.awt.event.ActionEvent evt) {                                               
+    private void panelSaveNewMouseReleased(java.awt.event.ActionEvent evt) {                                               
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
         } catch (ClassNotFoundException ex) {
@@ -65,8 +65,8 @@ public class JFBook extends javax.swing.JFrame {
             connexion = DriverManager.getConnection(url);
         } catch (SQLException ex) {
             JOptionPane.showInternalMessageDialog(null, "Oops:Connect :"+ex.getErrorCode(), "Connexion au serveur", JOptionPane.ERROR_MESSAGE);
-//            System.err.println("Oops:Connect:" + ex.getErrorCode()
-//                    + "/" + ex.getMessage());
+            System.err.println("Oops:Connect:" + ex.getErrorCode()
+                    + "/" + ex.getMessage());
             return;
         }
 
@@ -79,27 +79,26 @@ public class JFBook extends javax.swing.JFrame {
             String title = tfTitle.getText();
             String subTitle = tfSubTitle.getText();
             String yearEdition = tfYearEdition.getText();
-            String author = tfAuthor.getText();
+            //String author = tfAuthor.getText();
             String priceHt = tfPriceHt.getText();
             String resume = taResume.getText();
             String quantity = String.valueOf(tfQuantity);
             String status = String.valueOf(comboStatus);
-            String numberPages = tfNumberOfPages.getText();
             String pageNumber = String.valueOf(tfNumberOfPages);
             String language = String.valueOf(comboLanguage);
             String format = String.valueOf(comboFormat);
             
       
-//            String query = "INSERT INTO Book VALUES "
-//                    + "('" + isbn + "','" + vat + "','" + editor  + "','" + adresseRue + "','" + codePostal + "','" + ville + "','" + email + "','" + typeContact
-//                    + "','" + telephonePortable
-//                    + "','" + dateNaissance + "')";
-//            stmt.executeUpdate(query);
+            String query = "INSERT INTO Book VALUES "
+                    + "('" + isbn + "','" + vat + "','" + editor  + "','" + title + "','" + subTitle + "','" + yearEdition + "','" + priceHt + "','" + resume
+                    + "','" + quantity + "','" + status + "', '" + "', '" + pageNumber + "', '" + language + "', '" + format  +  "')";
+                    
+            stmt.executeUpdate(query);
         } catch (SQLException ex) {
             JOptionPane.showInternalMessageDialog(null, "Oops: nouvContact" + ex.getMessage(), "Ajout nouveau Contact", JOptionPane.ERROR_MESSAGE);
-//            System.err.println("Erreur nouvContact" + ex.getMessage());
+            System.err.println("Erreur newBook" + ex.getMessage());
         }
-        JOptionPane.showMessageDialog(null, "Contact ajouté", "Ajout d'un contact", JOptionPane.PLAIN_MESSAGE);
+        JOptionPane.showMessageDialog(null, "add book Ok", "Book", JOptionPane.PLAIN_MESSAGE);
     //    jfsupp.synchroCarnet();
         nettoyage();
     }                                              
