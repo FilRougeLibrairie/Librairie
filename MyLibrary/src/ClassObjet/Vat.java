@@ -5,6 +5,8 @@
  */
 package ClassObjet;
 
+import java.util.Vector;
+
 /**
  *
  * @author Tofi
@@ -18,6 +20,14 @@ public class Vat {
     //Constructor
     public Vat() {
     }
+
+    public Vat(int vatCode, Float vatRate, String vatName) {
+        this.vatCode = vatCode;
+        this.vatRate = vatRate;
+        this.vatName = vatName;
+    }
+    
+    
 
     //Setters
     public void setVatCode(int vatCode) {
@@ -43,6 +53,19 @@ public class Vat {
 
     public String getVatName() {
         return vatName;
+    }
+    
+    //vector
+    
+    public Vector getVector() {
+        Vector v= new Vector();
+       
+        v.add(this.getVatCode());
+        v.add(this.getVatRate());
+        v.add(this.getVatName());
+        
+      
+        return v;
     }
 
 }
