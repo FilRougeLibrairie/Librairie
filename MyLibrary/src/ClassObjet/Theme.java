@@ -19,6 +19,20 @@ public class Theme {
     public Theme() {
     }
 
+    public Theme(int theId, String theName, String theDescription) {
+        this.theId = theId;
+        this.theName = theName;
+        this.theDescription = theDescription;
+    }
+
+    public Theme(String theName, String theDescription) {
+        this.theName = theName;
+        this.theDescription = theDescription;
+    }
+
+    
+    
+    
     //Setters
     public void setTheId(int theId) {
         this.theId = theId;
@@ -44,5 +58,21 @@ public class Theme {
     public String getTheDescription() {
         return theDescription;
     }
+    
+    
+    //To string
+
+    
+     // toString
+    @Override
+    public String toString() {
+        return "\n"
+                +  theName 
+                
+                ;
+    }
+    
+    
+    
 
 }

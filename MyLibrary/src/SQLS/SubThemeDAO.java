@@ -20,8 +20,7 @@ import java.util.Vector;
  */
 public class SubThemeDAO extends DAO<SubTheme>{
     
-        private final String TABLE = "SubTheme";
-        
+        private final String TABLE = "SubTheme"; 
         private final String ID = SubThemeNames.ID;
         private final String THEME_ID = SubThemeNames.THEME_ID;
         private final String NAME = SubThemeNames.NAME;

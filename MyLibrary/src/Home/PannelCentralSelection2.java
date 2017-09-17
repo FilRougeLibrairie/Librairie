@@ -5,6 +5,7 @@
  */
 package Home;
 
+import PanelEnCoursChrys.ThemePrinc;
 import PanelOk.AuthorPanel;
 import PanelOk.FormatsPanel;
 import PanelOk.KWPanel;
@@ -446,6 +447,11 @@ public class PannelCentralSelection2 extends javax.swing.JPanel {
         jPanel16.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseMoved(java.awt.event.MouseEvent evt) {
                 jPanel16MouseMoved(evt);
+            }
+        });
+        jPanel16.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel16MouseClicked(evt);
             }
         });
 
@@ -1181,6 +1187,16 @@ public class PannelCentralSelection2 extends javax.swing.JPanel {
 
     private void bThemeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bThemeMouseClicked
 
+        jpPrincipal.removeAll();
+        jpPrincipal.validate();
+        ThemePrinc theme = new ThemePrinc();
+        jpPrincipal.setLayout(new BorderLayout());
+        jpPrincipal.add(theme, BorderLayout.NORTH);
+        jpPrincipal.setVisible(true);
+        jpPrincipal.revalidate();
+        
+        
+        
     }//GEN-LAST:event_bThemeMouseClicked
 
     private void bSubThemeMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bSubThemeMouseMoved
@@ -1454,6 +1470,18 @@ public class PannelCentralSelection2 extends javax.swing.JPanel {
         jpPrincipal.setVisible(true);
         jpPrincipal.revalidate();
     }//GEN-LAST:event_jPanel14MouseClicked
+
+    private void jPanel16MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel16MouseClicked
+        jpPrincipal.removeAll();
+        jpPrincipal.validate();
+        ThemePrinc theme = new ThemePrinc();
+        jpPrincipal.setLayout(new BorderLayout());
+        jpPrincipal.add(theme, BorderLayout.NORTH);
+        jpPrincipal.setVisible(true);
+        jpPrincipal.revalidate();
+        
+
+    }//GEN-LAST:event_jPanel16MouseClicked
 
     void setColor(JPanel panel) {
         panel.setBackground(new Color(102, 102, 102));
