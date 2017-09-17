@@ -1,7 +1,7 @@
 
 package SQLS;
 
-import ClassObjet.Formats;
+import ClassObjet.Forma;
 import Names.SQLNames.FormatsNames;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -25,7 +25,7 @@ public class FormatsDAO extends DAO{
     
        @Override
     public void create(Object obj) {
-        Formats form = (Formats) obj;
+        Forma form = (Forma) obj;
         String query = "IF NOT EXISTS (SELECT * FROM FORMATS WHERE " + ID + " = '" + form.getForId() + "')"
                 + "INSERT INTO FORMATS (" + COLUMNS + ")"
                 + "VALUES (?)";
@@ -50,8 +50,7 @@ public class FormatsDAO extends DAO{
     @Override
     public void delete(Object obj) {
        
-    
-        int formId = ((Formats) obj).getForId();
+        int formId = ((Forma) obj).getForId();
         StringBuffer query = new StringBuffer();
         query.append("DELETE FROM Formats WHERE ")
                 .append(ID)
@@ -74,7 +73,7 @@ public class FormatsDAO extends DAO{
     public void update(Object obj) {
  
       
-        Formats form = (Formats)obj;
+        Forma form = (Forma)obj;
         StringBuilder query = new StringBuilder("UPDATE Formats SET ");
         query.append(FORNAME).append(" = ? ");
         
@@ -101,7 +100,7 @@ public class FormatsDAO extends DAO{
 
     @Override
     public Object find(int id) {   
-        Formats form = null;
+        Forma form = null;
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FROM FORMATS WHERE ")
                 .append(ID)
@@ -113,7 +112,7 @@ public class FormatsDAO extends DAO{
 
             if (rs.isBeforeFirst()) {
                 while (rs.next()) {
-                    form = new Formats();
+                    form = new Forma();
                     form.setForId(rs.getInt(ID));
                     form.setForName(rs.getString(FORNAME));
                     
@@ -137,8 +136,8 @@ public class FormatsDAO extends DAO{
 
     @Override
     public Vector findAll() {
-        Vector<Formats> formatsList = new Vector<Formats>();
-        Formats format = null;
+        Vector<Forma> formatsList = new Vector<Forma>();
+        Forma format = null;
 
         String query = "SELECT * FROM FORMATS";
 
@@ -148,7 +147,7 @@ public class FormatsDAO extends DAO{
             if (rs.isBeforeFirst()) {
 
                 while (rs.next()) {
-                    format = new Formats();
+                    format = new Forma();
                     format.setForId(rs.getInt(ID));
                     format.setForName(rs.getString(FORNAME));
                     
@@ -169,10 +168,10 @@ public class FormatsDAO extends DAO{
   
     
     
-    public Vector<Formats> findByColumn(String column, String term) {
+    public Vector<Forma> findByColumn(String column, String term) {
 
-        Vector<Formats> formatsList = new Vector<Formats>();
-        Formats format = null;
+        Vector<Forma> formatsList = new Vector<Forma>();
+        Forma format = null;
 
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FROM Formats WHERE ")
@@ -189,7 +188,7 @@ public class FormatsDAO extends DAO{
             if (rs.isBeforeFirst()) {
 
                 while (rs.next()) {
-                    format = new Formats();
+                    format = new Forma();
                     format.setForId(rs.getInt(ID));
                     format.setForName(rs.getString(FORNAME));
                     formatsList.add(format);
@@ -211,7 +210,7 @@ public class FormatsDAO extends DAO{
         
         
         
-          Formats form = null;
+          Forma form = null;
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FROM FORMATS WHERE ")
                 .append(FORNAME)
@@ -225,7 +224,7 @@ public class FormatsDAO extends DAO{
             if (rs.isBeforeFirst()) {
 
                 while (rs.next()) {
-                    form = new Formats();
+                    form = new Forma();
                     form.setForName(rs.getString(FORNAME));
 
                 }
