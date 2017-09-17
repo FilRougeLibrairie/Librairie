@@ -23,7 +23,7 @@ public class VatDAO extends DAO<Vat> {
     private final String RATE = VATNames.RATE;
     private final String NAME = VATNames.NAME;
 
-    private String COLUMNS_CREATE = CODE + ", " + RATE + ", " + NAME;
+    private String COLUMNS_CREATE =  RATE + ", " + NAME;
 
     //Constructor
     public VatDAO() {
@@ -33,8 +33,7 @@ public class VatDAO extends DAO<Vat> {
     @Override
     public void create(Vat obj) {
         Vat vat = (Vat) obj;
-        String query = "IF NOT EXISTS (SELECT * FROM " + TABLE + " WHERE " + CODE + " = '" + vat.getVatCode() + "')"
-                + "INSERT INTO " + TABLE + " (" + COLUMNS_CREATE + ")"
+        String query = "INSERT INTO VAT (" + COLUMNS_CREATE+ ")"
                 + "VALUES (?, ?)";
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query);) {

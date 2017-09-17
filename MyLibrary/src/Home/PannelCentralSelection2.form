@@ -436,6 +436,7 @@
               </Properties>
               <Events>
                 <EventHandler event="mouseMoved" listener="java.awt.event.MouseMotionListener" parameters="java.awt.event.MouseEvent" handler="jPanel14MouseMoved"/>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jPanel14MouseClicked"/>
               </Events>
 
               <Layout>
@@ -454,7 +455,7 @@
                 <Component class="javax.swing.JLabel" name="bPrice">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
-                    <Property name="text" type="java.lang.String" value="Prix et Tva"/>
+                    <Property name="text" type="java.lang.String" value="Tva"/>
                     <Property name="alignmentX" type="float" value="0.5"/>
                   </Properties>
                   <Events>

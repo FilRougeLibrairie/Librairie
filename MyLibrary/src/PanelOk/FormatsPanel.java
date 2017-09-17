@@ -123,7 +123,7 @@ FormatsDAO form = new FormatsDAO();
         jSeparator1 = new javax.swing.JSeparator();
         jpAdd = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jTAddKW = new javax.swing.JTextField();
+        jTAddFormat = new javax.swing.JTextField();
         jBSelect = new javax.swing.JButton();
         jpDelete = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -216,7 +216,7 @@ FormatsDAO form = new FormatsDAO();
             .addGroup(jpAddLayout.createSequentialGroup()
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 80, Short.MAX_VALUE)
-                .addComponent(jTAddKW, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jTAddFormat, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jpAddLayout.setVerticalGroup(
             jpAddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -224,7 +224,7 @@ FormatsDAO form = new FormatsDAO();
                 .addGap(21, 21, 21)
                 .addGroup(jpAddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTAddKW, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTAddFormat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
                 .addComponent(jBSelect)
                 .addContainerGap())
@@ -350,11 +350,11 @@ FormatsDAO form = new FormatsDAO();
 
     private void jBSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBSelectActionPerformed
 
-        String a = jTAddKW.getText();
+        String a = jTAddFormat.getText();
        Forma format = new Forma();
         format.setForName(a);
         form.create(format);
-        jTAddKW.setText("");
+        jTAddFormat.setText("");
         jTable1.setModel(initTableModel());
         jop1.showMessageDialog(null, "Le format a été ajouté avec succès.", "Information", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_jBSelectActionPerformed
@@ -397,7 +397,7 @@ FormatsDAO form = new FormatsDAO();
     private javax.swing.JRadioButton jRDelete;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTextField jTAddKW;
+    private javax.swing.JTextField jTAddFormat;
     private javax.swing.JTable jTable1;
     private javax.swing.JToggleButton jToggleButton1;
     private javax.swing.JPanel jpAdd;

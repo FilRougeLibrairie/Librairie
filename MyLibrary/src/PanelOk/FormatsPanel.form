@@ -173,7 +173,7 @@
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="jLabel2" min="-2" pref="122" max="-2" attributes="0"/>
                       <EmptySpace pref="80" max="32767" attributes="0"/>
-                      <Component id="jTAddKW" min="-2" pref="208" max="-2" attributes="0"/>
+                      <Component id="jTAddFormat" min="-2" pref="208" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -183,7 +183,7 @@
                       <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel2" alignment="3" min="-2" pref="26" max="-2" attributes="0"/>
-                          <Component id="jTAddKW" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jTAddFormat" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace pref="17" max="32767" attributes="0"/>
                       <Component id="jBSelect" min="-2" max="-2" attributes="0"/>
@@ -198,7 +198,7 @@
                 <Property name="text" type="java.lang.String" value="FORMAT"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="jTAddKW">
+            <Component class="javax.swing.JTextField" name="jTAddFormat">
             </Component>
             <Component class="javax.swing.JButton" name="jBSelect">
               <Properties>

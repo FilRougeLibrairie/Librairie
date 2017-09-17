@@ -5,10 +5,10 @@
  */
 package Home;
 
-
 import PanelOk.AuthorPanel;
 import PanelOk.FormatsPanel;
 import PanelOk.KWPanel;
+import PanelOk.VatPanel;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import javax.swing.JPanel;
@@ -374,9 +374,14 @@ public class PannelCentralSelection2 extends javax.swing.JPanel {
                 jPanel14MouseMoved(evt);
             }
         });
+        jPanel14.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel14MouseClicked(evt);
+            }
+        });
 
         bPrice.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        bPrice.setText("Prix et Tva");
+        bPrice.setText("Tva");
         bPrice.setAlignmentX(0.5F);
         bPrice.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseMoved(java.awt.event.MouseEvent evt) {
@@ -997,16 +1002,11 @@ public class PannelCentralSelection2 extends javax.swing.JPanel {
     }//GEN-LAST:event_bEditorMouseMoved
 
     private void bEditorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bEditorMouseClicked
-        
-        
-        
+
+
     }//GEN-LAST:event_bEditorMouseClicked
 
-    
-    
-    
-    
-    
+
     private void jPanel12MouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel12MouseMoved
         resetColor(jPanel11);
         setColor(jPanel12);
@@ -1033,16 +1033,15 @@ public class PannelCentralSelection2 extends javax.swing.JPanel {
 
     private void bAutorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bAutorMouseClicked
 
+        jpPrincipal.removeAll();
+        jpPrincipal.validate();
+        AuthorPanel addAutor = new AuthorPanel();
+        jpPrincipal.setLayout(new BorderLayout());
+        jpPrincipal.add(addAutor, BorderLayout.NORTH);
+        jpPrincipal.setVisible(true);
+        jpPrincipal.revalidate();
 
-            jpPrincipal.removeAll();
-            jpPrincipal.validate();
-            AuthorPanel addAutor=new AuthorPanel();
-            jpPrincipal.setLayout(new BorderLayout());
-            jpPrincipal.add(addAutor,BorderLayout.NORTH);
-            jpPrincipal.setVisible(true);
-            jpPrincipal.revalidate();
-        
-        
+
     }//GEN-LAST:event_bAutorMouseClicked
 
     private void jPanel13MouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel13MouseMoved
@@ -1106,7 +1105,16 @@ public class PannelCentralSelection2 extends javax.swing.JPanel {
     }//GEN-LAST:event_bPriceMouseMoved
 
     private void bPriceMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bPriceMouseClicked
-        // TODO add your handling code here:
+
+        jpPrincipal.removeAll();
+        jpPrincipal.validate();
+        VatPanel addVat = new VatPanel();
+        jpPrincipal.setLayout(new BorderLayout());
+        jpPrincipal.add(addVat, BorderLayout.NORTH);
+        jpPrincipal.setVisible(true);
+        jpPrincipal.revalidate();
+
+
     }//GEN-LAST:event_bPriceMouseClicked
 
     private void bKeyWordMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bKeyWordMouseMoved
@@ -1121,25 +1129,18 @@ public class PannelCentralSelection2 extends javax.swing.JPanel {
         resetColor(jPanel23);
     }//GEN-LAST:event_bKeyWordMouseMoved
 
-    
-    
-    
-    
-    
-    
-    
+
     private void bKeyWordMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bKeyWordMouseClicked
 
         jpPrincipal.removeAll();
-        jpPrincipal.validate(); 
-        KWPanel addKW=new KWPanel();
+        jpPrincipal.validate();
+        KWPanel addKW = new KWPanel();
         jpPrincipal.setLayout(new BorderLayout());
-        jpPrincipal.add(addKW,BorderLayout.NORTH);
+        jpPrincipal.add(addKW, BorderLayout.NORTH);
         jpPrincipal.setVisible(true);
         jpPrincipal.revalidate();
-        
-        
-        
+
+
     }//GEN-LAST:event_bKeyWordMouseClicked
 
     private void jPanel18MouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel18MouseMoved
@@ -1216,7 +1217,7 @@ public class PannelCentralSelection2 extends javax.swing.JPanel {
     }//GEN-LAST:event_bEventMouseClicked
 
     private void bAddEmployeeMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bAddEmployeeMouseDragged
-        
+
     }//GEN-LAST:event_bAddEmployeeMouseDragged
 
     private void bAddEmployeeMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bAddEmployeeMouseMoved
@@ -1229,7 +1230,6 @@ public class PannelCentralSelection2 extends javax.swing.JPanel {
 
     private void bAddEmployeeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bAddEmployeeMouseClicked
 
-
 //
 //        jpPrincipal.removeAll();
 //        jpPrincipal.validate();
@@ -1238,8 +1238,6 @@ public class PannelCentralSelection2 extends javax.swing.JPanel {
 //        jpPrincipal.add(addEmployee,BorderLayout.NORTH);
 //        jpPrincipal.setVisible(true);
 //        jpPrincipal.revalidate();
-
-
 
     }//GEN-LAST:event_bAddEmployeeMouseClicked
 
@@ -1314,8 +1312,8 @@ public class PannelCentralSelection2 extends javax.swing.JPanel {
     }//GEN-LAST:event_bModerateMouseClicked
 
     private void jBProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBProductActionPerformed
-        
-        
+
+
     }//GEN-LAST:event_jBProductActionPerformed
 
     private void jBClientMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBClientMouseClicked
@@ -1323,7 +1321,7 @@ public class PannelCentralSelection2 extends javax.swing.JPanel {
         menuAdmin.setVisible(false);
         menuProduct.setVisible(false);
         menuPurchase.setVisible(true);
-        
+
     }//GEN-LAST:event_jBClientMouseClicked
 
     private void jBProductMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBProductMouseClicked
@@ -1348,47 +1346,38 @@ public class PannelCentralSelection2 extends javax.swing.JPanel {
     }//GEN-LAST:event_jBAdminMouseClicked
 
     private void jPanel13MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel13MouseClicked
-        
-        
-        
-            jpPrincipal.removeAll();
-            jpPrincipal.validate();
-            AuthorPanel addAutor=new AuthorPanel();
-            jpPrincipal.setLayout(new BorderLayout());
-            jpPrincipal.add(addAutor,BorderLayout.NORTH);
-            jpPrincipal.setVisible(true);
-            jpPrincipal.revalidate();
-        
-        
+
+        jpPrincipal.removeAll();
+        jpPrincipal.validate();
+        AuthorPanel addAutor = new AuthorPanel();
+        jpPrincipal.setLayout(new BorderLayout());
+        jpPrincipal.add(addAutor, BorderLayout.NORTH);
+        jpPrincipal.setVisible(true);
+        jpPrincipal.revalidate();
+
+
     }//GEN-LAST:event_jPanel13MouseClicked
 
     private void jPanel15MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel15MouseClicked
 
-        
         jpPrincipal.removeAll();
         jpPrincipal.validate();
-        KWPanel addKW=new KWPanel();
+        KWPanel addKW = new KWPanel();
         jpPrincipal.setLayout(new BorderLayout());
-        jpPrincipal.add(addKW,BorderLayout.NORTH);
+        jpPrincipal.add(addKW, BorderLayout.NORTH);
         jpPrincipal.setVisible(true);
         jpPrincipal.revalidate();
-        
-        
-        
-        
-        
-        
-        
+
+
     }//GEN-LAST:event_jPanel15MouseClicked
 
     private void jPanel20MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel20MouseClicked
-jpPrincipal.setBackground(Color.black);
+        jpPrincipal.setBackground(Color.black);
 // TODO add your handling code here:
     }//GEN-LAST:event_jPanel20MouseClicked
 
     private void jPanel19MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel19MouseClicked
-        
-        
+
 //        
 //         jpPrincipal.removeAll();
 //        jpPrincipal.validate();
@@ -1398,21 +1387,11 @@ jpPrincipal.setBackground(Color.black);
 //        jpPrincipal.setVisible(true);
 //        jpPrincipal.revalidate();
 //        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+
     }//GEN-LAST:event_jPanel19MouseClicked
 
     private void jPanel23MouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel23MouseMoved
-    
-        
-        
+
         resetColor(jPanel11);
         resetColor(jPanel12);
         resetColor(jPanel13);
@@ -1422,14 +1401,12 @@ jpPrincipal.setBackground(Color.black);
         resetColor(jPanel17);
         resetColor(jPanel18);
         setColor(jPanel23);
-                
-                
-                
+
+
     }//GEN-LAST:event_jPanel23MouseMoved
 
     private void bFormatsMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bFormatsMouseMoved
 
-        
         resetColor(jPanel11);
         resetColor(jPanel12);
         resetColor(jPanel13);
@@ -1439,42 +1416,44 @@ jpPrincipal.setBackground(Color.black);
         resetColor(jPanel17);
         resetColor(jPanel18);
         setColor(jPanel23);
-                
-        
-        
-        
+
+
     }//GEN-LAST:event_bFormatsMouseMoved
 
     private void bFormatsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bFormatsMouseClicked
         // TODO add your handling code here:
-        
+
         jpPrincipal.removeAll();
         jpPrincipal.validate();
-        FormatsPanel addKW=new FormatsPanel();
+        FormatsPanel addKW = new FormatsPanel();
         jpPrincipal.setLayout(new BorderLayout());
-        jpPrincipal.add(addKW,BorderLayout.NORTH);
+        jpPrincipal.add(addKW, BorderLayout.NORTH);
         jpPrincipal.setVisible(true);
         jpPrincipal.revalidate();
     }//GEN-LAST:event_bFormatsMouseClicked
 
     private void jPanel23MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel23MouseClicked
 
-        
         jpPrincipal.removeAll();
         jpPrincipal.validate();
-        FormatsPanel addKW=new FormatsPanel();
+        FormatsPanel addKW = new FormatsPanel();
         jpPrincipal.setLayout(new BorderLayout());
-        jpPrincipal.add(addKW,BorderLayout.NORTH);
+        jpPrincipal.add(addKW, BorderLayout.NORTH);
         jpPrincipal.setVisible(true);
         jpPrincipal.revalidate();
 
-
-
-
-
-
 // TODO add your handling code here:
     }//GEN-LAST:event_jPanel23MouseClicked
+
+    private void jPanel14MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel14MouseClicked
+        jpPrincipal.removeAll();
+        jpPrincipal.validate();
+        VatPanel addVat = new VatPanel();
+        jpPrincipal.setLayout(new BorderLayout());
+        jpPrincipal.add(addVat, BorderLayout.NORTH);
+        jpPrincipal.setVisible(true);
+        jpPrincipal.revalidate();
+    }//GEN-LAST:event_jPanel14MouseClicked
 
     void setColor(JPanel panel) {
         panel.setBackground(new Color(102, 102, 102));
