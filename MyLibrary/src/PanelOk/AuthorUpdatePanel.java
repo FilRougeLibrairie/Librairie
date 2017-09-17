@@ -123,6 +123,7 @@ public class AuthorUpdatePanel extends javax.swing.JPanel {
         jTFirstName = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTAuto = new javax.swing.JTextArea();
+        jTid = new javax.swing.JTextField();
         jpTable = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
@@ -154,7 +155,8 @@ public class AuthorUpdatePanel extends javax.swing.JPanel {
         jpFieldLayout.setHorizontalGroup(
             jpFieldLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpFieldLayout.createSequentialGroup()
-                .addGap(127, 127, 127)
+                .addComponent(jTid, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(34, 34, 34)
                 .addGroup(jpFieldLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -174,11 +176,14 @@ public class AuthorUpdatePanel extends javax.swing.JPanel {
         jpFieldLayout.setVerticalGroup(
             jpFieldLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpFieldLayout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addGroup(jpFieldLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jRI)
-                    .addComponent(jRA))
+                .addGroup(jpFieldLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jpFieldLayout.createSequentialGroup()
+                        .addGap(21, 21, 21)
+                        .addGroup(jpFieldLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jRI)
+                            .addComponent(jRA)))
+                    .addComponent(jTid, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(8, 8, 8)
                 .addGroup(jpFieldLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -241,6 +246,11 @@ public class AuthorUpdatePanel extends javax.swing.JPanel {
                 jButton2MouseClicked(evt);
             }
         });
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -282,6 +292,7 @@ public class AuthorUpdatePanel extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTable1FocusGained
 
+
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
 
         jTLastName.setText(jTable1.getValueAt(jTable1.getSelectedRow(), 1).toString());
@@ -289,9 +300,11 @@ public class AuthorUpdatePanel extends javax.swing.JPanel {
         jTAuto.setText(jTable1.getValueAt(jTable1.getSelectedRow(), 3).toString());
         if (jTable1.getValueAt(jTable1.getSelectedRow(), 4).toString().equalsIgnoreCase("1")) {
             jRA.setSelected(true);
+
         } else {
             jRI.setSelected(true);
         }
+        jTid.setText(jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString());
 
 
     }//GEN-LAST:event_jTable1MouseClicked
@@ -304,23 +317,45 @@ public class AuthorUpdatePanel extends javax.swing.JPanel {
 
     }//GEN-LAST:event_jTable1PropertyChange
 
+
     private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
+
+    }//GEN-LAST:event_jButton2MouseClicked
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+
+        String id = null;
+        String autL = null;
+        String autF = null;
+        String autA = null;
+        String autS = null;
         JOptionPane jop1 = new JOptionPane();
-        Author a = new Author();
+        jTable1.setModel(initTableModel());
+
+        id = jTid.getText();
+        autF = jTLastName.getText();
+        autL = jTFirstName.getText();
+        autA = jTAuto.getText();
         if (jRA.isSelected()) {
-            a.setAutStatusCode(1);
+            autS = "1";
         }
         if (jRI.isSelected()) {
-            a.setAutStatusCode(2);
+            autS = "2";
         }
-        a.setAutLastName(jTLastName.getText());
-        a.setAutFirstName(jTFirstName.getText());
-        a.setAutBiography(jTAuto.getText());
-        AuthorDAO ad = new AuthorDAO();
 
-        ad.update(a);
+        Author a = new Author();
+        AuthorDAO aut = new AuthorDAO();
+        a.setAutId(Integer.valueOf(id));
+        a.setAutFirstName(autF);
+        a.setAutLastName(autL);
+        a.setAutBiography(autA);
+        a.setAutStatusCode(Integer.valueOf(autS));
+        aut.update(a);
+        jTable1.setModel(initTableModel());
         jop1.showMessageDialog(null, "L'auteur a été modifié avec succès.", "Information", JOptionPane.INFORMATION_MESSAGE);
-    }//GEN-LAST:event_jButton2MouseClicked
+
+
+    }//GEN-LAST:event_jButton2ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -339,6 +374,7 @@ public class AuthorUpdatePanel extends javax.swing.JPanel {
     private javax.swing.JTextField jTFirstName;
     private javax.swing.JTextField jTLastName;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTextField jTid;
     private javax.swing.JPanel jpField;
     private javax.swing.JPanel jpTable;
     // End of variables declaration//GEN-END:variables

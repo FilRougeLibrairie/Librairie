@@ -20,23 +20,23 @@ import ui.JFMain;
 import utils.Crypto;
 
 
-public class Homz2 extends javax.swing.JFrame {
+public class Home extends javax.swing.JFrame {
 
     
     Employee loggedEmp;
     Header panel1;
-    PannelCentralSelection panel2;
+    PannelCentralSelection2 panel2;
     
 
 //    JPCustomer jpc;
 
-    public Homz2() throws IOException {
+    public Home() throws IOException {
         initComponents();
         
         
         
         panel1 = new Header();
-        panel2 = new PannelCentralSelection();
+        panel2 = new PannelCentralSelection2();
         
         // Ajouter le jDeskPrincipal 
         
@@ -307,7 +307,7 @@ public class Homz2 extends javax.swing.JFrame {
                 Logger.getLogger(JFMain.class
                         .getName()).log(Level.SEVERE, null, ex);
             } catch (CryptoException ex) {
-                Logger.getLogger(Homz2.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }//GEN-LAST:event_jPasswordFieldKeyReleased
@@ -320,7 +320,7 @@ public class Homz2 extends javax.swing.JFrame {
             Logger.getLogger(JFMain.class
                     .getName()).log(Level.SEVERE, null, ex);
         } catch (CryptoException ex) {
-            Logger.getLogger(Homz2.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButtonConnexionActionPerformed
 
@@ -342,18 +342,50 @@ public class Homz2 extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Homz2.class
+            java.util.logging.Logger.getLogger(Home.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Homz2.class
+            java.util.logging.Logger.getLogger(Home.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Homz2.class
+            java.util.logging.Logger.getLogger(Home.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Homz2.class
+            java.util.logging.Logger.getLogger(Home.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -391,10 +423,10 @@ public class Homz2 extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    new Homz2().setVisible(true);
+                    new Home().setVisible(true);
 
                 } catch (IOException ex) {
-                    Logger.getLogger(Homz2.class
+                    Logger.getLogger(Home.class
                             .getName()).log(Level.SEVERE, null, ex);
                 }
             }

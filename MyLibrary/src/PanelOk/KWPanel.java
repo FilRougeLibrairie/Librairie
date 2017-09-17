@@ -114,52 +114,7 @@ KeywordsDAO kw = new KeywordsDAO();
         return v;
     }
 
-    public void delete() {
-
-      
-        
-    
-    try {
-        Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-    } catch (ClassNotFoundException ex) {
-        Logger.getLogger(KWPanel.class.getName()).log(Level.SEVERE, null, ex);
-    }
    
-        
-        
-        Connection connexion = null;
-
-       
-  
-    try {
-        connexion = DriverManager.getConnection(
-                "jdbc:sqlserver://localhost:1433;"
-                        + "databaseName=myLibrary;user=sa;password=sa");
-    } catch (SQLException ex) {
-        Logger.getLogger(KWPanel.class.getName()).log(Level.SEVERE, null, ex);
-    }
-   
-        
-
-        String kw =  jTable1.getValueAt(jTable1.getSelectedRow(), jTable1.getSelectedColumn()).toString();
-        StringBuffer query = new StringBuffer();
-        query.append("DELETE FROM KEYWORDS WHERE KEYNAME")
-                .append(" = ")
-                .append("'" + kw + "'");
-
-        try (PreparedStatement pstmt = connexion.prepareStatement(query.toString())) {
-            pstmt.executeQuery();
-        } catch (SQLException ex) {
-            System.out.println("ERROR Retrieving Customer : " + ex.getMessage());
-            ex.printStackTrace();
-        }
-
-    }
-    
-    
-    
-    
-    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -296,6 +251,11 @@ KeywordsDAO kw = new KeywordsDAO();
             }
         });
 
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         jButton1.setText("Ok");
@@ -378,16 +338,12 @@ KeywordsDAO kw = new KeywordsDAO();
         );
     }// </editor-fold>//GEN-END:initComponents
 
-         
-        
-    
-    
-    
     
     private void jBSelectMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBSelectMousePressed
         // TODO add your handling code here:
     }//GEN-LAST:event_jBSelectMousePressed
 
+    
     private void jBSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBSelectActionPerformed
 
         String a = jTAddKW.getText();
@@ -406,7 +362,11 @@ KeywordsDAO kw = new KeywordsDAO();
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
-        delete();
+        Keywords a = new Keywords();
+        KeywordsDAO aut= new KeywordsDAO();
+        
+        a.setKeyName(keyName);
+        aut.delete(a);
         jTable1.setModel(initTableModel());
         jop1.showMessageDialog(null, "Le mot clé a été supprimé avec succès.", "Information", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -418,14 +378,12 @@ KeywordsDAO kw = new KeywordsDAO();
             jpAdd.setVisible(true);
             jpDelete.setVisible(false);
         }
-        
-        
+         
         
     }//GEN-LAST:event_jRAddActionPerformed
 
     private void jRDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRDeleteActionPerformed
-
-        
+       
         if(jRDelete.isSelected()==true){
             jpAdd.setVisible(false);
             jpDelete.setVisible(true);
@@ -445,6 +403,22 @@ KeywordsDAO kw = new KeywordsDAO();
         
        
     }//GEN-LAST:event_jpAddAncestorAdded
+
+    
+    
+    String keyName = null;
+    
+    
+    
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+
+        
+
+        keyName= jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString();
+
+
+
+    }//GEN-LAST:event_jTable1MouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -44,10 +44,10 @@ public class KeywordsDAO extends DAO {
                 .append("'" + kw + "'");
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
-            pstmt.executeQuery();
+          pstmt.executeQuery();
         } catch (SQLException ex) {
-            System.out.println("ERROR Retrieving Customer : " + ex.getMessage());
-            ex.printStackTrace();
+            System.out.println("Done");
+           
         }
     }
 

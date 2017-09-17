@@ -78,13 +78,10 @@ public class AuthorDAO extends DAO{
     public void update(Object obj) {
         Author aut = (Author) obj;
         StringBuilder query = new StringBuilder("UPDATE " + TABLE + " SET ");
-        
-        
-        
-        
+              
+     
         query.append(LAST_NAME).append(" = ?, ");
         query.append(FIRST_NAME).append(" = ?, ");
-        query.append(LAST_NAME).append(" = ?, ");
         query.append(BIOGRAPHY).append(" = ?, ");
         query.append(STATUS_CODE).append(" = ? ");
        
@@ -99,7 +96,6 @@ public class AuthorDAO extends DAO{
             pstmt.setString(2, aut.getAutFirstName());
             pstmt.setString(3, aut.getAutBiography());
             pstmt.setInt(4, aut.getAutStatusCode());
-            
 
             int result = pstmt.executeUpdate();
 

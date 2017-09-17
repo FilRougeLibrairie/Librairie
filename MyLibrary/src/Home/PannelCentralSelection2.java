@@ -19,12 +19,12 @@ import javax.swing.JPanel;
  *
  * @author Chrys
  */
-public class PannelCentralSelection extends javax.swing.JPanel {
+public class PannelCentralSelection2 extends javax.swing.JPanel {
 
     /**
      * Creates new form Panel2
      */
-    public PannelCentralSelection() {
+    public PannelCentralSelection2() {
         initComponents();
 
         menuAdmin.setVisible(false);

@@ -29,8 +29,6 @@ public class AuthorDeletePanel extends javax.swing.JPanel {
         initComponents();
     }
 
-    
-    
     private DefaultTableModel initTableModel() {
         Vector v = new Vector();
         v.add("autld");
@@ -103,31 +101,7 @@ public class AuthorDeletePanel extends javax.swing.JPanel {
 
         return v;
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -148,6 +122,11 @@ public class AuthorDeletePanel extends javax.swing.JPanel {
         jButton3.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jButton3MouseClicked(evt);
+            }
+        });
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
             }
         });
 
@@ -210,9 +189,20 @@ public class AuthorDeletePanel extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTable1FocusGained
 
+    String id = null;
+    String autL =null;
+    String autF=null;
+    String autA= null;
+    String autS=null;
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
 
-       
+        id = jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString();
+        autL=jTable1.getValueAt(jTable1.getSelectedRow(), 1).toString();
+        autF=jTable1.getValueAt(jTable1.getSelectedRow(), 2).toString();
+        autA=jTable1.getValueAt(jTable1.getSelectedRow(), 3).toString();
+        autS=jTable1.getValueAt(jTable1.getSelectedRow(), 4).toString();
+                
+
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void jTable1ComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jTable1ComponentShown
@@ -225,28 +215,25 @@ public class AuthorDeletePanel extends javax.swing.JPanel {
 
     private void jButton3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseClicked
 
-        JOptionPane jop1=new JOptionPane();
-        jTable1.setModel(initTableModel());
-        AuthorDAO ad = new AuthorDAO();
-        Author aut = new Author();
-        
-        
-        int test=Integer.valueOf(jTable1.getCellEditor(jTable1.getSelectedRow(), 1).toString());
-        
-        
-        System.out.println(test);
-        
-        
-        
-        
-        
-//        
-//        ad.delete();
-//        jTable1.setModel(initTableModel());
-//        jop1.showMessageDialog(null, "L'auteur a été supprimé avec succès.", "Information", JOptionPane.INFORMATION_MESSAGE);
-//        
-        
+
     }//GEN-LAST:event_jButton3MouseClicked
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+
+        JOptionPane jop1 = new JOptionPane();
+        jTable1.setModel(initTableModel());
+        Author a = new Author();
+        AuthorDAO aut = new AuthorDAO();
+        a.setAutId(Integer.valueOf(id));
+        a.setAutFirstName(autF);
+        a.setAutLastName(autL);
+        a.setAutBiography(autA);
+        a.setAutStatusCode(Integer.valueOf(autS));
+        aut.delete(a);
+        jTable1.setModel(initTableModel());
+        jop1.showMessageDialog(null, "L'auteur a été supprimé avec succès.", "Information", JOptionPane.INFORMATION_MESSAGE);
+
+    }//GEN-LAST:event_jButton3ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -255,4 +242,47 @@ public class AuthorDeletePanel extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
+
+//    public void delete() {
+//
+//        try {
+//            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+//        } catch (ClassNotFoundException ex) {
+//            System.err.println("Oops:ClassNotFoundException: " + ex.getMessage());
+//        }
+//
+//        Connection connexion = null;
+//
+//        try {
+//            String url = "jdbc:sqlserver://localhost:1433;"
+//                    + "databaseName=myLibrary;user=sa;password=sa";
+//
+//            connexion = DriverManager.getConnection(url);
+//        } catch (SQLException ex) {
+//            System.err.println("Oops:SQLException: " + ex.getErrorCode() + "\n" + ex.getMessage());
+//        }
+//
+//        try {
+//
+//            Statement statement = connexion.createStatement();
+//
+//            String query = "DELETE FROM author WHERE autid=" + id;
+//
+//            statement.executeUpdate(query);
+//
+//            statement.close();
+//
+//        } catch (SQLException ex) {
+//            System.err.println("Oops:Statement:  " + ex.getErrorCode() + "\n" + ex.getMessage());
+//        }
+//
+//        try {
+//            connexion.close();
+//        } catch (SQLException ex) {
+//            Logger.getLogger("Oops:close: " + ex.getMessage());
+//        }
+//
+//        System.out.println("Done!");
+//
+//    }
 }
