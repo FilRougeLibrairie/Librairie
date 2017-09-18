@@ -62,7 +62,7 @@ public class EmployeeDAO extends DAO<Employee> {
 
         } catch (SQLException ex) {
             System.err.println("ERROR SAVING Object : " + ex.getErrorCode() + " / " + ex.getMessage());
-            ex.getStackTrace();
+            
         }
     }
 
@@ -102,7 +102,7 @@ public class EmployeeDAO extends DAO<Employee> {
 
         } catch (SQLException ex) {
             System.out.println("ERROR UPDATING Object : " + ex.getMessage());
-            ex.printStackTrace();
+            
 
         }
     }
@@ -120,7 +120,7 @@ public class EmployeeDAO extends DAO<Employee> {
             pstmt.executeQuery();
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            ex.printStackTrace();
+            
         }
     }
 
@@ -162,7 +162,7 @@ public class EmployeeDAO extends DAO<Employee> {
 
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            ex.printStackTrace();
+            
 
         }
         return employee;
@@ -202,7 +202,7 @@ public class EmployeeDAO extends DAO<Employee> {
 
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            ex.printStackTrace();
+            
 
         }
         return employeeList;
@@ -254,7 +254,7 @@ public class EmployeeDAO extends DAO<Employee> {
 
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            ex.printStackTrace();
+            
 
         }
         return employeeList;

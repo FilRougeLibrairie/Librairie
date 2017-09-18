@@ -14,8 +14,11 @@ import SQLS.PurchaseDAO;
 import SQLS.ReviewDAO;
 import SQLS.StatusDisplayDAO;
 import exceptions.CryptoException;
+import exceptions.MissingInformationException;
 import exceptions.NoCurrentCustomerException;
+import exceptions.ResultsetException;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.event.KeyEvent;
 import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
@@ -32,6 +35,7 @@ import utils.Crypto;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
+import utils.Awt1;
 import utils.DateLabelFormatter;
 
 /**
@@ -54,6 +58,25 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
     Address currentAddress;
     Review currentReview;
     JDatePickerImpl datePicker;
+
+    private final String DELETED_NAME_MASK = "**************";
+    private final String DELETED_DATE_MASK = "1970-01-01";
+    private final String DELETED_PHONE_MASK = "0123456789";
+    private final String DELETED_EMAIL_MASK = "deleted@deleted.com";
+
+    private final String RUE = "Rue";
+    private final String AVENUE = "Avenue";
+    private final String ALLEE = "Allée";
+    private final String BOULEVARD = "Boulevard";
+    private final String CHEMIN = "Chemin";
+    private final String ROUTE = "Route";
+    private final String IMPASSE = "Impasse";
+    private final String LIEU_DIT = "Lieu-dit";
+
+    private class ErrorMessages {
+
+        public static final String IS_EMPTY = "Ce champs est obligatoire";
+    }
 
     private enum Gender {
 
@@ -130,15 +153,6 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
         }
     }
 
-    private final String RUE = "Rue";
-    private final String AVENUE = "Avenue";
-    private final String ALLEE = "Allée";
-    private final String BOULEVARD = "Boulevard";
-    private final String CHEMIN = "Chemin";
-    private final String ROUTE = "Route";
-    private final String IMPASSE = "Impasse";
-    private final String LIEU_DIT = "Lieu-dit";
-
 // Constructor
     public JFCustomer() {
         initComponents();
@@ -147,6 +161,7 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
         tableOrders.setAutoCreateRowSorter(true);
         tableReview.setAutoCreateRowSorter(true);
         comboDeliverStreetType.setModel(initAddressComboBoxModel());
+        comboDeliverStreetType.setSelectedIndex(0);
         comboSearch.setModel(initComboSearchModel());
         comboSearch.setSelectedIndex(0);
         comboStatus.setModel(initComboStatusModel());
@@ -186,14 +201,12 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
         Date selectedDate = (Date) datePicker.getModel().getValue();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         String date = df.format(selectedDate);
-        
+
         System.out.println(date);
 
     }
 
-
-
-private DefaultComboBoxModel initComboSearchModel() {
+    private DefaultComboBoxModel initComboSearchModel() {
         DefaultComboBoxModel model;
         comboSearchModel = new Vector<String>();
         model = new DefaultComboBoxModel(comboSearchModel);
@@ -351,8 +364,8 @@ private DefaultComboBoxModel initComboSearchModel() {
 
     private void fillCustomerFields(Customer cus) {
         String gender = cus.getCusGender().trim();
-        Boolean isMale = gender.equalsIgnoreCase(Gender.MALE.getDatabaseName());
-        Boolean isFemale = gender.equalsIgnoreCase(Gender.FEMALE.getDatabaseName());
+        Boolean isMale = gender.equalsIgnoreCase(Gender.MALE.getDatabaseName().substring(0, 1));
+        Boolean isFemale = gender.equalsIgnoreCase(Gender.FEMALE.getDatabaseName().substring(0, 1));
 
         if (isMale) {
             comboGender.setSelectedIndex(Gender.MALE.ordinal());
@@ -417,9 +430,13 @@ private DefaultComboBoxModel initComboSearchModel() {
         orderTableList = new Vector();
         for (Purchase pur : orderList) {
             // Retrieving OrderStatusList
-            pur.setOrderstatusList(purchaseDAO.findAllOrderStatus(pur.getPurId()));
-            OrderTableItem orderTable = new OrderTableItem(pur);
-            orderTableList.add(orderTable.getVector());
+            try {
+                pur.setOrderstatusList(purchaseDAO.findAllOrderStatus(pur.getPurId()));
+                OrderTableItem orderTable = new OrderTableItem(pur);
+                orderTableList.add(orderTable.getVector());
+            } catch (Exception ex) {
+                System.out.println("Nothing to display");
+            }
         }
         setTableOrdersModel();
     }
@@ -477,7 +494,7 @@ private DefaultComboBoxModel initComboSearchModel() {
         tfDeliverZipCode.setText("");
     }
 
-    private void customerFactory() throws NoSuchAlgorithmException, CryptoException {
+    private void customerFactory() throws NoSuchAlgorithmException, CryptoException, MissingInformationException {
         Customer cus;
         if (currentCustomer == null) {
             cus = new Customer();
@@ -488,7 +505,6 @@ private DefaultComboBoxModel initComboSearchModel() {
         cus.setCusLastName(tfLastName.getText().trim());
         cus.setCusFirstName(tfFirstName.getText().trim());
         cus.setCusOrganisationName(tfCompany.getText().trim());
-        cus.setCusDateOfBirth(tfBirthday.getText().trim());
         cus.setCusPhoneNumber(tfPhone.getText().trim());
         cus.setCusEmail(tfEmail.getText().trim());
         cus.setCusIP(tfIPAdress.getText().trim());
@@ -496,15 +512,19 @@ private DefaultComboBoxModel initComboSearchModel() {
         cus.setCusGender(comboGender.getSelectedItem().toString());
         cus.setCusStatus(comboStatus.getSelectedIndex());
 
+        if (tfBirthday.getText() != null) {
+            cus.setCusDateOfBirth(tfBirthday.getText().trim());
+        }
+
         if (currentCustomer == null && tfPassword.getPassword().length == 0) {
-            System.out.println("*****   ERROR PASSWORD DOES NOT EXISTS *****");
+            throw new MissingInformationException("*****   ERROR PASSWORD DOES NOT EXISTS *****");
         } else if (tfPassword.getPassword().length > 0) {
             String str = new String(tfPassword.getPassword());
             String[] password = Crypto.createPassword(new String(tfPassword.getPassword()));
             cus.setCusPassword(password[0]);
             cus.setCusSalt(password[1]);
         } else {
-            System.out.println("Je suis un client connu qui ne change pas de mot de passe");
+            System.out.println("OK : Je suis un client connu qui ne change pas de mot de passe");
         }
 
         CustomerDAO customerDAO = new CustomerDAO();
@@ -514,6 +534,8 @@ private DefaultComboBoxModel initComboSearchModel() {
             customerDAO.update(cus);
         }
         clearCustomerFields();
+        customerDAO.findAll();
+        clearTableModels(customerTableList);
     }
 
     private void addressFactory() throws NoCurrentCustomerException {
@@ -633,6 +655,53 @@ private DefaultComboBoxModel initComboSearchModel() {
         labelBookISBN.setText("");
         labelBookTitle.setText("");
         tfReview.setText("");
+    }
+
+    private void deleteCustomer() throws NoSuchAlgorithmException, CryptoException {
+        Customer cus;
+        cus = currentCustomer;
+
+        cus.setCusLastName(DELETED_NAME_MASK);
+        cus.setCusFirstName(DELETED_NAME_MASK);
+        cus.setCusOrganisationName(DELETED_NAME_MASK);
+        cus.setCusDateOfBirth(DELETED_DATE_MASK);
+        cus.setCusPhoneNumber(DELETED_PHONE_MASK);
+        cus.setCusEmail(DELETED_EMAIL_MASK);
+        cus.setCusIP("");
+        cus.setCusComment("");
+        cus.setCusGender(comboGender.getSelectedItem().toString());
+        cus.setCusStatus(Status.DELETED.ordinal());
+
+        if (currentCustomer == null && tfPassword.getPassword().length == 0) {
+            System.out.println("*****   ERROR PASSWORD DOES NOT EXISTS *****");
+        } else if (tfPassword.getPassword().length > 0) {
+            String str = new String(tfPassword.getPassword());
+            String[] password = Crypto.createPassword(new String(tfPassword.getPassword()));
+            cus.setCusPassword(password[0]);
+            cus.setCusSalt(password[1]);
+        } else {
+            System.out.println("Je suis un client connu qui ne change pas de mot de passe");
+        }
+
+        CustomerDAO customerDAO = new CustomerDAO();
+        if (currentCustomer == null) {
+            customerDAO.create(cus);
+        } else {
+            customerDAO.update(cus);
+        }
+        clearCustomerFields();
+    }
+
+    private void manageInputError(Boolean state, String component, String message) {
+        Component comp = Awt1.getComponentByName(this, component);
+
+        if(state){
+            labelErrorMessage.setText(message);
+            labelErrorMessage.setVisible(true);
+          //  comp.remove
+        }
+        
+        
     }
 
     /**
@@ -760,6 +829,8 @@ private DefaultComboBoxModel initComboSearchModel() {
         jLabel2 = new javax.swing.JLabel();
         labelCustomerID = new javax.swing.JLabel();
         labelErrorMessage = new javax.swing.JLabel();
+        jPanel17 = new javax.swing.JPanel();
+        btnDeleteCustomer = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -770,6 +841,11 @@ private DefaultComboBoxModel initComboSearchModel() {
         tfLastName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tfLastNameActionPerformed(evt);
+            }
+        });
+        tfLastName.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tfLastNameKeyReleased(evt);
             }
         });
 
@@ -1123,7 +1199,7 @@ private DefaultComboBoxModel initComboSearchModel() {
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 866, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 864, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -1336,7 +1412,7 @@ private DefaultComboBoxModel initComboSearchModel() {
                                 .addComponent(labelBookISBN, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGap(6, 6, 6))
                             .addComponent(labelBookTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 320, Short.MAX_VALUE))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 318, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(panelSearchByReviewStatus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -1475,7 +1551,7 @@ private DefaultComboBoxModel initComboSearchModel() {
                     .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addComponent(tfInvoiceLabel)
                     .addComponent(jPanel15, javax.swing.GroupLayout.DEFAULT_SIZE, 158, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel15)
                     .addComponent(jLabel16)
@@ -1686,6 +1762,7 @@ private DefaultComboBoxModel initComboSearchModel() {
 
         jLabel2.setText("Numéro Client :");
 
+        labelCustomerID.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
         labelCustomerID.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         labelCustomerID.setText("Client Id");
 
@@ -1693,6 +1770,31 @@ private DefaultComboBoxModel initComboSearchModel() {
         labelErrorMessage.setForeground(new java.awt.Color(255, 0, 0));
         labelErrorMessage.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelErrorMessage.setText("ERROR MESSAGE");
+
+        jPanel17.setBackground(new java.awt.Color(51, 102, 255));
+        jPanel17.setPreferredSize(new java.awt.Dimension(200, 45));
+        jPanel17.setRequestFocusEnabled(false);
+
+        btnDeleteCustomer.setForeground(new java.awt.Color(255, 255, 255));
+        btnDeleteCustomer.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btnDeleteCustomer.setText("Supprimer Client");
+        btnDeleteCustomer.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnDeleteCustomer.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                btnDeleteCustomerMouseReleased(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel17Layout = new javax.swing.GroupLayout(jPanel17);
+        jPanel17.setLayout(jPanel17Layout);
+        jPanel17Layout.setHorizontalGroup(
+            jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(btnDeleteCustomer, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE)
+        );
+        jPanel17Layout.setVerticalGroup(
+            jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(btnDeleteCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
+        );
 
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
@@ -1703,49 +1805,48 @@ private DefaultComboBoxModel initComboSearchModel() {
                 .addComponent(jTabbedPane1)
                 .addContainerGap())
             .addGroup(jPanel9Layout.createSequentialGroup()
+                .addComponent(jInternalFrame1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27)
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel9Layout.createSequentialGroup()
-                        .addComponent(labelErrorMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel9Layout.createSequentialGroup()
-                        .addComponent(jInternalFrame1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(27, 27, 27)
-                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel9Layout.createSequentialGroup()
-                                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel8)
-                                    .addComponent(jLabel9)
-                                    .addComponent(jLabel7)
-                                    .addComponent(jLabel13)
-                                    .addComponent(jLabel12)
-                                    .addComponent(jLabel10)
-                                    .addComponent(jLabel11)
-                                    .addComponent(jLabel14)
-                                    .addComponent(jLabel4))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(tfLastName)
-                                    .addComponent(tfFirstName)
-                                    .addComponent(tfCompany)
-                                    .addComponent(comboGender, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(tfBirthday)
-                                    .addComponent(tfPhone)
-                                    .addComponent(tfEmail)
-                                    .addComponent(tfPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(tfIPAdress, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(jPanel9Layout.createSequentialGroup()
-                                .addComponent(jLabel41)
-                                .addGap(85, 85, 85)
-                                .addComponent(comboStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(49, 49, 49)
                         .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel40)
-                            .addGroup(jPanel9Layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(labelCustomerID, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                            .addComponent(jLabel8)
+                            .addComponent(jLabel9)
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel13)
+                            .addComponent(jLabel12)
+                            .addComponent(jLabel10)
+                            .addComponent(jLabel11)
+                            .addComponent(jLabel14)
+                            .addComponent(jLabel4))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(tfLastName)
+                            .addComponent(tfFirstName)
+                            .addComponent(tfCompany)
+                            .addComponent(comboGender, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(tfBirthday)
+                            .addComponent(tfPhone)
+                            .addComponent(tfEmail)
+                            .addComponent(tfPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(tfIPAdress, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addComponent(jLabel41)
+                        .addGap(85, 85, 85)
+                        .addComponent(comboStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(49, 49, 49)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addComponent(jPanel17, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane7, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+                    .addComponent(jLabel40, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel9Layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(labelCustomerID, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(labelErrorMessage, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel9Layout.setVerticalGroup(
@@ -1753,18 +1854,11 @@ private DefaultComboBoxModel initComboSearchModel() {
             .addGroup(jPanel9Layout.createSequentialGroup()
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel9Layout.createSequentialGroup()
-                        .addComponent(jLabel40)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel9Layout.createSequentialGroup()
                         .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel41)
                             .addComponent(comboStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel2)
                             .addComponent(labelCustomerID))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel9Layout.createSequentialGroup()
                                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -1802,10 +1896,18 @@ private DefaultComboBoxModel initComboSearchModel() {
                                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel4)
                                     .addComponent(tfIPAdress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(jPanel9Layout.createSequentialGroup()
-                                .addGap(282, 282, 282)
-                                .addComponent(labelErrorMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addComponent(jInternalFrame1, javax.swing.GroupLayout.PREFERRED_SIZE, 344, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jPanel17, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(jInternalFrame1, javax.swing.GroupLayout.PREFERRED_SIZE, 344, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addComponent(jLabel40)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(labelErrorMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(39, 39, 39)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 307, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -1817,7 +1919,7 @@ private DefaultComboBoxModel initComboSearchModel() {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, 890, Short.MAX_VALUE)
+                .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, 888, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -1882,19 +1984,14 @@ private DefaultComboBoxModel initComboSearchModel() {
     private void btnSaveCustomerMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSaveCustomerMouseReleased
         try {
             customerFactory();
-
-        
-
-} catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(JFCustomer.class  
-
-.getName()).log(Level.SEVERE, null, ex);
-        } 
-
-catch (CryptoException ex) {
-            Logger.getLogger(JFCustomer.class  
-
-.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(JFCustomer.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        } catch (CryptoException ex) {
+            Logger.getLogger(JFCustomer.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        } catch (MissingInformationException ex) {
+            Logger.getLogger(JFCustomer.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnSaveCustomerMouseReleased
 
@@ -1938,7 +2035,6 @@ catch (CryptoException ex) {
         if (currentReview != null) {
             reviewFactory();
         }
-
 
     }//GEN-LAST:event_btnSaveReviewMouseReleased
 
@@ -1999,6 +2095,26 @@ catch (CryptoException ex) {
 
     }//GEN-LAST:event_comboRevStatusActionPerformed
 
+    private void btnDeleteCustomerMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDeleteCustomerMouseReleased
+        try {
+            deleteCustomer();
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(JFCustomer.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (CryptoException ex) {
+            Logger.getLogger(JFCustomer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnDeleteCustomerMouseReleased
+
+    private void tfLastNameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfLastNameKeyReleased
+        if (tfLastName.getText().isEmpty()) {
+            tfLastName.setBackground(new Color(255, 0, 0, 15));
+            System.out.println(evt);
+            manageInputError(true, "btnSaveCustomer", ErrorMessages.IS_EMPTY);
+        } else {
+            tfLastName.setBackground(Color.WHITE);
+        }
+    }//GEN-LAST:event_tfLastNameKeyReleased
+
     /**
      * @param args the command line arguments
      */
@@ -2014,32 +2130,20 @@ catch (CryptoException ex) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
 
-                
-
-}
+                }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(JFCustomer.class  
-
-.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } 
-
-catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(JFCustomer.class  
-
-.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } 
-
-catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(JFCustomer.class  
-
-.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } 
-
-catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(JFCustomer.class  
-
-.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JFCustomer.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(JFCustomer.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(JFCustomer.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(JFCustomer.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
@@ -2054,6 +2158,7 @@ catch (javax.swing.UnsupportedLookAndFeelException ex) {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel bntCreateNew;
+    private javax.swing.JLabel btnDeleteCustomer;
     private javax.swing.JLabel btnNewAdress;
     private javax.swing.JLabel btnNewAdress2;
     private javax.swing.JLabel btnSaveCustomer;
@@ -2112,6 +2217,7 @@ catch (javax.swing.UnsupportedLookAndFeelException ex) {
     private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel15;
+    private javax.swing.JPanel jPanel17;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;

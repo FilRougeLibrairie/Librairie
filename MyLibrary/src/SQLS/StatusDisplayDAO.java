@@ -54,7 +54,7 @@ public class StatusDisplayDAO extends DAO<StatusDisplay> {
 
         } catch (SQLException ex) {
             System.err.println("ERROR SAVING Object : " + ex.getErrorCode() + " / " + ex.getMessage());
-            ex.getStackTrace();
+            
         }
     }
     
@@ -78,7 +78,7 @@ public class StatusDisplayDAO extends DAO<StatusDisplay> {
 
         } catch (SQLException ex) {
             System.out.println("ERROR UPDATING Object : " + ex.getMessage());
-            ex.printStackTrace();
+            
 
         }
     }
@@ -96,7 +96,7 @@ public class StatusDisplayDAO extends DAO<StatusDisplay> {
             pstmt.executeQuery();
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            ex.printStackTrace();
+            
         }}
     
      @Override
@@ -121,7 +121,7 @@ public class StatusDisplayDAO extends DAO<StatusDisplay> {
 
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            ex.printStackTrace();
+            
 
         }
         return StatusDisplayList;
@@ -156,7 +156,7 @@ public class StatusDisplayDAO extends DAO<StatusDisplay> {
 
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            ex.printStackTrace();
+            
 
         }
         return StatusDisplayList;

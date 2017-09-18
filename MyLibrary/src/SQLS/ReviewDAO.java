@@ -62,7 +62,7 @@ public class ReviewDAO extends DAO<Review> {
 
         } catch (SQLException ex) {
             System.err.println("ERROR SAVING Object : " + ex.getErrorCode() + " / " + ex.getMessage());
-            ex.getStackTrace();
+            
         }
     }
 
@@ -99,7 +99,7 @@ public class ReviewDAO extends DAO<Review> {
 
         } catch (SQLException ex) {
             System.out.println("ERROR UPDATING Object : " + ex.getMessage());
-            ex.printStackTrace();
+            
 
         }
     }
@@ -117,7 +117,7 @@ public class ReviewDAO extends DAO<Review> {
             pstmt.executeQuery();
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            ex.printStackTrace();
+            
         }
     }
 
@@ -160,7 +160,7 @@ public class ReviewDAO extends DAO<Review> {
 
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            ex.printStackTrace();
+            
 
         }
         return review;
@@ -201,7 +201,7 @@ public class ReviewDAO extends DAO<Review> {
 
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            ex.printStackTrace();
+            
 
         }
         return reviewList;
@@ -252,7 +252,7 @@ public class ReviewDAO extends DAO<Review> {
 
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            ex.printStackTrace();
+            
 
         }
         return reviewList;
@@ -300,8 +300,6 @@ public class ReviewDAO extends DAO<Review> {
 
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            ex.printStackTrace();
-
         }
         return reviewList;
     }
@@ -346,7 +344,7 @@ public class ReviewDAO extends DAO<Review> {
 
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            ex.printStackTrace();
+            
 
         }
         return reviewList;

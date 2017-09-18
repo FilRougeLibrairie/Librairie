@@ -44,7 +44,7 @@ public class BookLanguageDAO extends DAO<BookLanguage> {
 
         } catch (SQLException ex) {
             System.err.println("ERROR SAVING Object : " + ex.getErrorCode() + " / " + ex.getMessage());
-            ex.getStackTrace();
+            
         }
     }
 
@@ -65,7 +65,7 @@ public class BookLanguageDAO extends DAO<BookLanguage> {
 
         } catch (SQLException ex) {
             System.out.println("ERROR UPDATING Object : " + ex.getMessage());
-            ex.printStackTrace();
+            
 
         }
     }
@@ -83,7 +83,7 @@ public class BookLanguageDAO extends DAO<BookLanguage> {
             pstmt.executeQuery();
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            ex.printStackTrace();
+            
         }
     }
 
@@ -109,7 +109,7 @@ public class BookLanguageDAO extends DAO<BookLanguage> {
 
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            ex.printStackTrace();
+            
 
         }
         return bookLangList;
@@ -144,7 +144,7 @@ public class BookLanguageDAO extends DAO<BookLanguage> {
 
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            ex.printStackTrace();
+            
 
         }
         return bookLangList;
@@ -176,7 +176,7 @@ public class BookLanguageDAO extends DAO<BookLanguage> {
 
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            ex.printStackTrace();
+            
 
         }
         return bookLang;

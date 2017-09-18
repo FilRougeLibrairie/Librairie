@@ -70,7 +70,7 @@ public class AuthorDAO extends DAO{
             pstmt.executeQuery();
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            ex.printStackTrace();
+            
         }
     }
 
@@ -101,7 +101,7 @@ public class AuthorDAO extends DAO{
 
         } catch (SQLException ex) {
             System.out.println("ERROR UPDATING Object : " + ex.getMessage());
-            ex.printStackTrace();
+            
 
         }
     }
@@ -136,7 +136,7 @@ public class AuthorDAO extends DAO{
 
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            ex.printStackTrace();
+            
 
         }
         return author;
@@ -183,7 +183,7 @@ public class AuthorDAO extends DAO{
 
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            ex.printStackTrace();
+            
 
         }
         return authorList;
@@ -226,7 +226,7 @@ public class AuthorDAO extends DAO{
 
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            ex.printStackTrace();
+            
 
         }
         return authorList;

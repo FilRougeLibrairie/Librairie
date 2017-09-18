@@ -38,7 +38,7 @@ public class FormatsDAO extends DAO{
 
         } catch (SQLException ex) {
             System.err.println("ERROR SAVING CONTACT : " + ex.getErrorCode() + " / " + ex.getMessage());
-            ex.getStackTrace();
+            
         }
     }
 
@@ -61,7 +61,7 @@ public class FormatsDAO extends DAO{
             pstmt.executeQuery();
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Customer : " + ex.getMessage());
-            ex.printStackTrace();
+            
         }
  
     
@@ -91,7 +91,7 @@ public class FormatsDAO extends DAO{
 
         } catch (SQLException ex) {
             System.out.println("ERROR UPDATING CONTACT : " + ex.getMessage());
-            ex.printStackTrace();
+            
 
         }
     }
@@ -123,7 +123,7 @@ public class FormatsDAO extends DAO{
 
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Customer : " + ex.getMessage());
-            ex.printStackTrace();
+            
 
         }
         return form;
@@ -159,7 +159,7 @@ public class FormatsDAO extends DAO{
 
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Customer : " + ex.getMessage());
-            ex.printStackTrace();
+            
 
         }
         return formatsList;
@@ -199,7 +199,7 @@ public class FormatsDAO extends DAO{
 
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Customer : " + ex.getMessage());
-            ex.printStackTrace();
+            
 
         }
         return formatsList;
@@ -234,7 +234,7 @@ public class FormatsDAO extends DAO{
 
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Customer : " + ex.getMessage());
-            ex.printStackTrace();
+            
 
         }
         return form;

@@ -69,7 +69,7 @@ public class MyLibraryDAO extends DAO<MyLibrary>{
 
         } catch (SQLException ex) {
             System.err.println("ERROR SAVING Object : " + ex.getErrorCode() + " / " + ex.getMessage());
-            ex.getStackTrace();
+            
         }
     }
 
@@ -111,7 +111,7 @@ public class MyLibraryDAO extends DAO<MyLibrary>{
 
         } catch (SQLException ex) {
             System.out.println("ERROR UPDATING Object : " + ex.getMessage());
-            ex.printStackTrace();
+            
 
         }
     }
@@ -129,7 +129,7 @@ public class MyLibraryDAO extends DAO<MyLibrary>{
             pstmt.executeQuery();
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            ex.printStackTrace();
+            
         }
     }
 
@@ -169,7 +169,7 @@ public class MyLibraryDAO extends DAO<MyLibrary>{
 
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            ex.printStackTrace();
+            
 
         }
         return myLibrary;
@@ -207,7 +207,7 @@ public class MyLibraryDAO extends DAO<MyLibrary>{
 
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            ex.printStackTrace();
+            
 
         }
         return myLibraryList;
@@ -257,7 +257,7 @@ public class MyLibraryDAO extends DAO<MyLibrary>{
 
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            ex.printStackTrace();
+            
 
         }
         return myLibraryList;
