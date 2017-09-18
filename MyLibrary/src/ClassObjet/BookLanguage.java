@@ -18,6 +18,11 @@ public class BookLanguage {
 
     public BookLanguage() {
     }
+
+    public BookLanguage(int booLangCode, String booLangName) {
+        this.booLangCode = booLangCode;
+        this.booLangName = booLangName;
+    }
     
     //Setters
     
@@ -38,6 +43,12 @@ public class BookLanguage {
     public String getBooLangName() {
         return booLangName;
     }
+
+    @Override
+    public String toString() {
+        return booLangName ;
+    }
+    
     
     
 }

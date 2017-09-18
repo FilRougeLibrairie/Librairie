@@ -68,4 +68,10 @@ public class Vat {
         return v;
     }
 
+    @Override
+    public String toString() {
+        return vatRate + " " + vatName;
+    }
+
+    
 }

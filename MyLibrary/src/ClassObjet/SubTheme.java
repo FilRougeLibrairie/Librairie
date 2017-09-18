@@ -23,6 +23,15 @@ public class SubTheme {
     public SubTheme() {
     }
 
+    public SubTheme(int subId, Theme theId, String subName, String subDescription) {
+        this.subId = subId;
+        this.theId = theId;
+        this.subName = subName;
+        this.subDescription = subDescription;
+    }
+    
+    
+    
     //Setters
     public void setSubId(int subId) {
         this.subId = subId;
@@ -73,4 +82,22 @@ public class SubTheme {
         bookList.remove(book);
     }
 
+    public Vector getVector() {
+        Vector v= new Vector();
+       
+        v.add(this.getSubId());
+        v.add(this.getTheId());
+        v.add(this.getSubName());
+        v.add(this.getSubDescription());
+        
+      
+        return v;
+    }
+    
+    @Override
+    public String toString() {
+        return subName;
+    }
+
+    
 }

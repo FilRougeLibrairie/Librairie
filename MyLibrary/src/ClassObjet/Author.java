@@ -108,6 +108,11 @@ public class Author {
       
         return v;
     }
+
+    @Override
+    public String toString() {
+        return autLastName + ", " +  autFirstName ;
+    }
     
     
     
