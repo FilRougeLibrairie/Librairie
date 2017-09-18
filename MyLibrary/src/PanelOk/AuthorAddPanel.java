@@ -51,7 +51,7 @@ public class AuthorAddPanel extends javax.swing.JPanel {
 
         jLabel2.setText("Autobiographie");
 
-        jLabel3.setText("Status");
+        jLabel3.setText("Statut");
 
         jLabel5.setText("Nom");
 

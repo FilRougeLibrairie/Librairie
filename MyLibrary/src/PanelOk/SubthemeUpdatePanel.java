@@ -216,7 +216,7 @@ public class SubthemeUpdatePanel extends javax.swing.JPanel {
             jComboBox1.setSelectedIndex(-1);
         }
 
-        subtheme=(SubTheme) jComboBox1.getSelectedItem();
+//        subtheme=(SubTheme) jComboBox1.getSelectedItem();
 
     }//GEN-LAST:event_jComboBox2ActionPerformed
     

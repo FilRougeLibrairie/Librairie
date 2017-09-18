@@ -32,11 +32,11 @@ public class AuthorUpdatePanel extends javax.swing.JPanel {
 
     private DefaultTableModel initTableModel() {
         Vector v = new Vector();
-        v.add("autld");
-        v.add("autLastName2");
-        v.add("autFirstName");
-        v.add("autoBiography");
-        v.add("autStatusCode");
+        v.add("N° de l'auteur");
+        v.add("Nom ");
+        v.add("Prenom");
+        v.add("Biographie");
+        v.add("Statut");
 
         return new javax.swing.table.DefaultTableModel(
                 initAutorVector(), v) {
@@ -149,6 +149,7 @@ public class AuthorUpdatePanel extends javax.swing.JPanel {
 
         jTAuto.setColumns(20);
         jTAuto.setRows(5);
+        jTAuto.setWrapStyleWord(true);
         jScrollPane1.setViewportView(jTAuto);
 
         javax.swing.GroupLayout jpFieldLayout = new javax.swing.GroupLayout(jpField);
@@ -298,12 +299,21 @@ public class AuthorUpdatePanel extends javax.swing.JPanel {
 
         jTLastName.setText(jTable1.getValueAt(jTable1.getSelectedRow(), 1).toString());
         jTFirstName.setText(jTable1.getValueAt(jTable1.getSelectedRow(), 2).toString());
-        jTAuto.setText(jTable1.getValueAt(jTable1.getSelectedRow(), 3).toString());
+        
+        if(jTable1.getValueAt(jTable1.getSelectedRow(), 3).toString().isEmpty()){
+            jTAuto.setText("");
+        }
+        else{
+            jTAuto.setText(jTable1.getValueAt(jTable1.getSelectedRow(), 3).toString());
+        }
+        
         if (jTable1.getValueAt(jTable1.getSelectedRow(), 4).toString().equalsIgnoreCase("1")) {
             jRA.setSelected(true);
-
-        } else {
+            
+        } 
+        else{
             jRI.setSelected(true);
+            
         }
         jTid.setText(jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString());
 
@@ -340,7 +350,7 @@ public class AuthorUpdatePanel extends javax.swing.JPanel {
         if (jRA.isSelected()) {
             autS = "1";
         }
-        if (jRI.isSelected()) {
+        else {
             autS = "2";
         }
 

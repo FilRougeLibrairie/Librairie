@@ -5,22 +5,20 @@
  */
 package PanelOk;
 
-import java.awt.BorderLayout;
+import PanelEnCoursChrys.LanguageDeletePanel;
+import PanelEnCoursChrys.LanguageUpdatePanel;
 
 /**
  *
  * @author Chrys
  */
-public class AuthorPanel extends javax.swing.JPanel {
+public class LanguagePanel extends javax.swing.JPanel {
 
     /**
-     * Creates new form AuthorPanel1
+     * Creates new form LanguagePanel
      */
-    public AuthorPanel() {
+    public LanguagePanel() {
         initComponents();
-        jpPrinc.setVisible(false);
-        jpPrinc.removeAll();
-        jpPrinc.revalidate();
     }
 
     /**
@@ -42,16 +40,14 @@ public class AuthorPanel extends javax.swing.JPanel {
         jRUpdate = new javax.swing.JRadioButton();
         jRAdd = new javax.swing.JRadioButton();
 
-        setMinimumSize(new java.awt.Dimension(0, 800));
-        setPreferredSize(new java.awt.Dimension(900, 800));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        add(jpPrinc, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 124, 900, 676));
+        add(jpPrinc, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 140, 900, 540));
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel4.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setText("AUTEUR");
+        jLabel4.setText("LANGUE");
         jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(288, 0, 276, 38));
         jPanel1.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, 900, -1));
 
@@ -96,12 +92,11 @@ public class AuthorPanel extends javax.swing.JPanel {
         if (jRDelete.isSelected() == true) {
             jpPrinc.removeAll();
             jpPrinc.validate();
-            
-            jpPrinc.add(new AuthorDeletePanel());
+
+            jpPrinc.add(new LanguageDeletePanel());
             jpPrinc.revalidate();
             jpPrinc.setVisible(true);
-            
-            
+
         }
     }//GEN-LAST:event_jRDeleteActionPerformed
 
@@ -110,8 +105,8 @@ public class AuthorPanel extends javax.swing.JPanel {
         if (jRUpdate.isSelected() == true) {
             jpPrinc.removeAll();
             jpPrinc.validate();
-            
-            jpPrinc.add(new AuthorUpdatePanel());
+
+            jpPrinc.add(new LanguageUpdatePanel());
             jpPrinc.revalidate();
             jpPrinc.setVisible(true);
         }
@@ -121,12 +116,11 @@ public class AuthorPanel extends javax.swing.JPanel {
 
         if (jRAdd.isSelected() == true) {
             jpPrinc.removeAll();
-            
-            jpPrinc.add(new AuthorAddPanel());
+
+            jpPrinc.add(new LanguageAddPanel());
             jpPrinc.revalidate();
             jpPrinc.setVisible(true);
         }
-
     }//GEN-LAST:event_jRAddActionPerformed
 
 

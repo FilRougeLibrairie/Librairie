@@ -12,17 +12,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
 
-/**
- *
- * @author CDI305
- */
+
 public class BookLanguageDAO extends DAO<BookLanguage> {
 
     private final String TABLE = "BookLanguage";
     private final String CODE = BookLanguageNames.CODE;
     private final String NAME = BookLanguageNames.NAME;
 
-    private String COLUMNS_CREATE = CODE + ", " + NAME;
+    private String COLUMNS_CREATE =NAME;
 
     //Constructor
     public BookLanguageDAO() {
@@ -32,9 +29,7 @@ public class BookLanguageDAO extends DAO<BookLanguage> {
     @Override
     public void create(BookLanguage obj) {
         BookLanguage bookLang = (BookLanguage) obj;
-        String query = "IF NOT EXISTS (SELECT * FROM " + TABLE + " WHERE " + CODE + " = '" + bookLang.getBooLangCode() + "')"
-                + "INSERT INTO " + TABLE + " (" + COLUMNS_CREATE + ")"
-                + "VALUES (?)";
+        String query = "INSERT INTO BookLanguage (bookLangName) VALUES (?)";
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query);) {
 
