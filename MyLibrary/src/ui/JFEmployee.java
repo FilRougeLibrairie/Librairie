@@ -5,17 +5,118 @@
  */
 package ui;
 
+import Names.SQLNames;
+import java.util.Vector;
+import javax.swing.DefaultComboBoxModel;
+
 /**
  *
  * @author cdi312
  */
-public class JFEmployee extends javax.swing.JFrame {
+public class JFEmployee extends javax.swing.JFrame implements SQLNames {
+    
+    Vector<String> comboSearchModel;
+    
 
-    /**
-     * Creates new form JFEmployee
-     */
+    private final String DELETED_MENTION = "SUPPRIME";
+    private final String DELETED_NAME_MASK = "***";
+    private final String DELETED_LOGIN_MASK = "***";
+    private final String DELETED_PASSWORD_MASK = "***";
+    private final String DELETED_COMENT_MASK = "***";
+    private final String DELETED_DATE_MASK = "1970-01-01";
+
+    private class ErrorMessages {
+
+        public static final String IS_EMPTY = "Ce champs est obligatoire";
+        public static final String EMPTY_PASSWORD = "Le mot de passe est obligatoire";
+        public static final String CRYPTO = "Un problème de génération du mot de passe est survenu";
+    }
+    
+    private enum Status {
+        ACTIVE ("Actif"),
+        INACTIVE ("Inactif");
+        private final String databaseName;
+        
+        private Status(String databaseName) {
+            this.databaseName = databaseName;
+        }
+        
+        public String getDatabaseName() {
+            return databaseName;
+        }  
+    }
+    
+    private enum Profil {
+        ADMINISTRATOR("Administrateur"),
+        EDITOR("Editeur"),
+        MODERATOR("Moderateur"),
+        CUSTOMER("Client");
+        private final String databaseName;
+        
+        private Profil(String databaseName) {
+            this.databaseName = databaseName;
+        }
+        
+        public String getDatabaseName() {
+            return databaseName;
+        }   
+    }
+    
+    private enum SearchCriteria {
+        
+        ALL_EMPLOYEES("Tous les employés"),
+        SURNAME("Nom"),
+        NAME("Prénom"),
+        LOGIN("Login"),
+        STATUS("Statut"),
+        PROFIL("Profil");
+        private final String databaseName;
+        
+        private SearchCriteria (String databaseName) {
+            this.databaseName = databaseName;
+        }
+        
+        public String getDatabaseName() {
+            return databaseName;
+        } 
+    }
+
     public JFEmployee() {
         initComponents();
+        
+        comboSearch.setModel(initComboSearchModel());
+        
+        
+        private DefaultComboBoxModel initComboSearchModel() {
+            DefaultComboBoxModel model;
+            comboSearchModel = new Vector<String>();
+            model = new DefaultComboBoxModel(comboSearchModel);
+            for (SearchCriteria comboItem : SearchCriteria.values()) {
+                comboSearchModel.add(comboItem.getDatabaseName());
+            }
+            return model;
+        }
+        
+        private DefaultComboBoxModel initComboStatusModel() {
+            DefaultComboBoxModel model;
+            comboStatusModel = new Vector<String>();
+            model = new DefaultComboBoxModel(comboStatusModel);
+            for (Status comboItem : Status.values()) {
+                comboStatusModel.add(comboItem.getDatabaseName());
+            }
+            return model;
+        }
+        private DefaultComboBoxModel initComboProfilModel() {
+            DefaultComboBoxModel model;
+            comboProfilModel = new Vector<String>();
+            model = new DefaultComboBoxModel(comboProfilModel);
+            for (Profil comboItem : profil.values()) {
+                comboProfilModel.add(comboItem.getDatabaseName());
+            }
+            return model;
+        }
+        
+        private DefaultTableModel initTable
     }
 
     /**
