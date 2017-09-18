@@ -16,9 +16,9 @@ import SQLS.StatusDisplayDAO;
 import exceptions.CryptoException;
 import exceptions.MissingInformationException;
 import exceptions.NoCurrentCustomerException;
-import exceptions.ResultsetException;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
 import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
@@ -28,6 +28,7 @@ import java.util.Properties;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.scene.Cursor;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -59,10 +60,12 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
     Review currentReview;
     JDatePickerImpl datePicker;
 
-    private final String DELETED_NAME_MASK = "**************";
+    private final String DELETED_MENTION = "SUPPRIME";
+    private final String DELETED_NAME_MASK = "***";
     private final String DELETED_DATE_MASK = "1970-01-01";
     private final String DELETED_PHONE_MASK = "0123456789";
     private final String DELETED_EMAIL_MASK = "deleted@deleted.com";
+    private final String DELETED_ZIPCODE = "88888";
 
     private final String RUE = "Rue";
     private final String AVENUE = "Avenue";
@@ -76,6 +79,8 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
     private class ErrorMessages {
 
         public static final String IS_EMPTY = "Ce champs est obligatoire";
+        public static final String EMPTY_PASSWORD = "Le mot de passe est obligatoire";
+        public static final String CRYPTO = "Un problème de génération du mot de passe est survenu";
     }
 
     private enum Gender {
@@ -172,6 +177,9 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
         comboRevStatus.setSelectedIndex(0);
         labelErrorMessage.setVisible(false);
         labelCustomerID.setText("");
+
+        panBtnDeleteCustomer.setVisible(false);
+        panBtnDeleteAddress.setVisible(false);
 
         panelSearchByReviewStatus.setVisible(false);
 
@@ -517,7 +525,7 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
         }
 
         if (currentCustomer == null && tfPassword.getPassword().length == 0) {
-            throw new MissingInformationException("*****   ERROR PASSWORD DOES NOT EXISTS *****");
+            throw new MissingInformationException(ErrorMessages.IS_EMPTY);
         } else if (tfPassword.getPassword().length > 0) {
             String str = new String(tfPassword.getPassword());
             String[] password = Crypto.createPassword(new String(tfPassword.getPassword()));
@@ -525,6 +533,12 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
             cus.setCusSalt(password[1]);
         } else {
             System.out.println("OK : Je suis un client connu qui ne change pas de mot de passe");
+        }
+
+        if (tfPassword.getPassword().toString().isEmpty()) {
+            manageInputError(true, "tfPassword", "btnSaveCustomer", ErrorMessages.IS_EMPTY);
+        } else {
+            manageInputError(false, "tfPassword", "btnSaveCustomer", ErrorMessages.IS_EMPTY);
         }
 
         CustomerDAO customerDAO = new CustomerDAO();
@@ -658,50 +672,47 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
     }
 
     private void deleteCustomer() throws NoSuchAlgorithmException, CryptoException {
-        Customer cus;
-        cus = currentCustomer;
-
-        cus.setCusLastName(DELETED_NAME_MASK);
-        cus.setCusFirstName(DELETED_NAME_MASK);
-        cus.setCusOrganisationName(DELETED_NAME_MASK);
-        cus.setCusDateOfBirth(DELETED_DATE_MASK);
-        cus.setCusPhoneNumber(DELETED_PHONE_MASK);
-        cus.setCusEmail(DELETED_EMAIL_MASK);
-        cus.setCusIP("");
-        cus.setCusComment("");
-        cus.setCusGender(comboGender.getSelectedItem().toString());
-        cus.setCusStatus(Status.DELETED.ordinal());
-
-        if (currentCustomer == null && tfPassword.getPassword().length == 0) {
-            System.out.println("*****   ERROR PASSWORD DOES NOT EXISTS *****");
-        } else if (tfPassword.getPassword().length > 0) {
-            String str = new String(tfPassword.getPassword());
-            String[] password = Crypto.createPassword(new String(tfPassword.getPassword()));
-            cus.setCusPassword(password[0]);
-            cus.setCusSalt(password[1]);
-        } else {
-            System.out.println("Je suis un client connu qui ne change pas de mot de passe");
-        }
-
-        CustomerDAO customerDAO = new CustomerDAO();
-        if (currentCustomer == null) {
-            customerDAO.create(cus);
-        } else {
-            customerDAO.update(cus);
-        }
-        clearCustomerFields();
+        comboStatus.setSelectedIndex(Status.DELETED.ordinal());
+        tfLastName.setText(DELETED_NAME_MASK);
+        tfFirstName.setText(DELETED_NAME_MASK);
+        tfCompany.setText("");
+        tfBirthday.setText(DELETED_DATE_MASK);
+        tfPhone.setText(DELETED_PHONE_MASK);
+        tfEmail.setText(DELETED_EMAIL_MASK);
+        tfIPAdress.setText("");
+        tfComment.setText("");
+        tfPassword.setText("");
     }
 
-    private void manageInputError(Boolean state, String component, String message) {
-        Component comp = Awt1.getComponentByName(this, component);
+    private void deleteAddress() {
+        tfDeliverLabel.setText(DELETED_MENTION);
+        tfDeliverFirstName.setText(DELETED_NAME_MASK);
+        tfDeliverLastName.setText(DELETED_NAME_MASK);
+        tfDeliverCompany.setText("");
+        tfDeliverStreetNumber.setText("");
+        tfDeliverStreetName.setText(DELETED_NAME_MASK);
+        tfDeliverStreetComplement.setText("");
+        tfDeliverZipCode.setText(DELETED_ZIPCODE);
+        tfDeliverCity.setText("");
+        tfDeliverSecurityCode.setText("");
+        tfDeliverPhoneNumber.setText(DELETED_PHONE_MASK);
+    }
 
-        if(state){
-            labelErrorMessage.setText(message);
+    private void manageInputError(Boolean ErrorState, String component, String btnToDisable, String errorMessage) {
+        Component btn = Awt1.getComponentByName(this, btnToDisable);
+        Component tf = Awt1.getComponentByName(this, component);
+
+        if (ErrorState) {
+            labelErrorMessage.setText(errorMessage);
             labelErrorMessage.setVisible(true);
-          //  comp.remove
+            btn.setVisible(false);
+            tf.setBackground(new Color(255, 0, 0, 15));
+        } else {
+            labelErrorMessage.setText("");
+            labelErrorMessage.setVisible(false);
+            btn.setVisible(true);
+            tf.setBackground(Color.WHITE);
         }
-        
-        
     }
 
     /**
@@ -765,6 +776,8 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
         btnSaveDeliver = new javax.swing.JLabel();
         jLabel45 = new javax.swing.JLabel();
         tfDeliverLabel = new javax.swing.JTextField();
+        panBtnDeleteAddress = new javax.swing.JPanel();
+        btnDeleteAddress = new javax.swing.JLabel();
         jPanel8 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tableOrders = new javax.swing.JTable();
@@ -829,7 +842,7 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
         jLabel2 = new javax.swing.JLabel();
         labelCustomerID = new javax.swing.JLabel();
         labelErrorMessage = new javax.swing.JLabel();
-        jPanel17 = new javax.swing.JPanel();
+        panBtnDeleteCustomer = new javax.swing.JPanel();
         btnDeleteCustomer = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -1010,6 +1023,30 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
 
         jLabel45.setText("Label adresse :");
 
+        panBtnDeleteAddress.setBackground(new java.awt.Color(51, 102, 255));
+        panBtnDeleteAddress.setPreferredSize(new java.awt.Dimension(200, 45));
+
+        btnDeleteAddress.setForeground(new java.awt.Color(255, 255, 255));
+        btnDeleteAddress.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btnDeleteAddress.setText("Supprimer");
+        btnDeleteAddress.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnDeleteAddress.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                btnDeleteAddressMouseReleased(evt);
+            }
+        });
+
+        javax.swing.GroupLayout panBtnDeleteAddressLayout = new javax.swing.GroupLayout(panBtnDeleteAddress);
+        panBtnDeleteAddress.setLayout(panBtnDeleteAddressLayout);
+        panBtnDeleteAddressLayout.setHorizontalGroup(
+            panBtnDeleteAddressLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(btnDeleteAddress, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE)
+        );
+        panBtnDeleteAddressLayout.setVerticalGroup(
+            panBtnDeleteAddressLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(btnDeleteAddress, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
@@ -1063,7 +1100,10 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
                             .addComponent(tfDeliverZipCode, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(tfDeliverStreetComplement, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(tfDeliverPhoneNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jPanel6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                        .addComponent(panBtnDeleteAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(55, 55, 55)
+                        .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(22, 22, 22))
         );
         jPanel5Layout.setVerticalGroup(
@@ -1126,8 +1166,9 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(panBtnDeleteAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(55, Short.MAX_VALUE))
         );
 
         jPanel5Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {tfDeliverCompany, tfDeliverFirstName, tfDeliverLabel, tfDeliverLastName});
@@ -1430,7 +1471,7 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
                             .addGroup(jPanel10Layout.createSequentialGroup()
                                 .addComponent(panelSearchByReviewStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jPanel14, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                                .addComponent(jPanel14, javax.swing.GroupLayout.DEFAULT_SIZE, 0, Short.MAX_VALUE))
                             .addGroup(jPanel10Layout.createSequentialGroup()
                                 .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel6)
@@ -1612,6 +1653,12 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
 
         jTabbedPane1.addTab("Moyens de paiement", jPanel4);
 
+        tfPassword.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tfPasswordKeyReleased(evt);
+            }
+        });
+
         jLabel40.setText("Commentaire :");
 
         jLabel41.setText("Statut");
@@ -1771,9 +1818,9 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
         labelErrorMessage.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelErrorMessage.setText("ERROR MESSAGE");
 
-        jPanel17.setBackground(new java.awt.Color(51, 102, 255));
-        jPanel17.setPreferredSize(new java.awt.Dimension(200, 45));
-        jPanel17.setRequestFocusEnabled(false);
+        panBtnDeleteCustomer.setBackground(new java.awt.Color(51, 102, 255));
+        panBtnDeleteCustomer.setPreferredSize(new java.awt.Dimension(200, 45));
+        panBtnDeleteCustomer.setRequestFocusEnabled(false);
 
         btnDeleteCustomer.setForeground(new java.awt.Color(255, 255, 255));
         btnDeleteCustomer.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -1785,14 +1832,14 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
             }
         });
 
-        javax.swing.GroupLayout jPanel17Layout = new javax.swing.GroupLayout(jPanel17);
-        jPanel17.setLayout(jPanel17Layout);
-        jPanel17Layout.setHorizontalGroup(
-            jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout panBtnDeleteCustomerLayout = new javax.swing.GroupLayout(panBtnDeleteCustomer);
+        panBtnDeleteCustomer.setLayout(panBtnDeleteCustomerLayout);
+        panBtnDeleteCustomerLayout.setHorizontalGroup(
+            panBtnDeleteCustomerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(btnDeleteCustomer, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE)
         );
-        jPanel17Layout.setVerticalGroup(
-            jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        panBtnDeleteCustomerLayout.setVerticalGroup(
+            panBtnDeleteCustomerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(btnDeleteCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
         );
 
@@ -1837,7 +1884,7 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
                 .addGap(49, 49, 49)
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(jPanel9Layout.createSequentialGroup()
-                        .addComponent(jPanel17, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(panBtnDeleteCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane7, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
@@ -1898,7 +1945,7 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
                                     .addComponent(tfIPAdress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jPanel17, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(panBtnDeleteCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addComponent(jInternalFrame1, javax.swing.GroupLayout.PREFERRED_SIZE, 344, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel9Layout.createSequentialGroup()
                         .addComponent(jLabel40)
@@ -1956,11 +2003,25 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
                 loadingOrderTable(currentCustomer);
             }
         }
+
+        if (currentCustomer != null) {
+            panBtnDeleteCustomer.setVisible(true);
+        }
     }//GEN-LAST:event_tableCustomersMouseReleased
 
     private void bntCreateNewMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bntCreateNewMouseReleased
+        Vector tabToClear = new Vector();
+        tabToClear.add(tableDeliverAdresses);
+        tabToClear.add(tableOrders);
+        tabToClear.add(tableReview);
+        clearTableModels(tabToClear);
+        clearFields();
+
         clearCustomerFields();
+        clearAddressFields();
+
         currentCustomer = null;
+        panBtnDeleteCustomer.setVisible(false);
     }//GEN-LAST:event_bntCreateNewMouseReleased
 
     private void comboGenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboGenderActionPerformed
@@ -1979,19 +2040,22 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
                 fillAddressFields(currentAddress);
             }
         }
+
+        if (currentAddress != null) {
+            panBtnDeleteAddress.setVisible(true);
+        }
     }//GEN-LAST:event_tableDeliverAdressesMouseReleased
 
     private void btnSaveCustomerMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSaveCustomerMouseReleased
         try {
             customerFactory();
+            //  manageInputError(false, "btnSaveCustomer", ErrorMessages.CRYPTO);
         } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(JFCustomer.class
-                    .getName()).log(Level.SEVERE, null, ex);
+            //   manageInputError(true, "btnSaveCustomer", ErrorMessages.CRYPTO);
         } catch (CryptoException ex) {
-            Logger.getLogger(JFCustomer.class
-                    .getName()).log(Level.SEVERE, null, ex);
+            //   manageInputError(true, "btnSaveCustomer", ErrorMessages.CRYPTO);
         } catch (MissingInformationException ex) {
-            Logger.getLogger(JFCustomer.class.getName()).log(Level.SEVERE, null, ex);
+            //  manageInputError(true, "btnSaveCustomer", ErrorMessages.EMPTY_PASSWORD);
         }
     }//GEN-LAST:event_btnSaveCustomerMouseReleased
 
@@ -2002,6 +2066,7 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
     private void btnNewAdressMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnNewAdressMouseReleased
         clearAddressFields();
         currentAddress = null;
+        panBtnDeleteAddress.setVisible(false);
     }//GEN-LAST:event_btnNewAdressMouseReleased
 
     private void btnSaveDeliverMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSaveDeliverMouseReleased
@@ -2096,24 +2161,40 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
     }//GEN-LAST:event_comboRevStatusActionPerformed
 
     private void btnDeleteCustomerMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDeleteCustomerMouseReleased
-        try {
-            deleteCustomer();
-        } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(JFCustomer.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (CryptoException ex) {
-            Logger.getLogger(JFCustomer.class.getName()).log(Level.SEVERE, null, ex);
+        if (currentCustomer != null) {
+            try {
+                deleteCustomer();
+            } catch (NoSuchAlgorithmException ex) {
+                Logger.getLogger(JFCustomer.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (CryptoException ex) {
+                Logger.getLogger(JFCustomer.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_btnDeleteCustomerMouseReleased
 
     private void tfLastNameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfLastNameKeyReleased
         if (tfLastName.getText().isEmpty()) {
             tfLastName.setBackground(new Color(255, 0, 0, 15));
-            System.out.println(evt);
-            manageInputError(true, "btnSaveCustomer", ErrorMessages.IS_EMPTY);
+            manageInputError(true, "tfLastname", "btnSaveCustomer", ErrorMessages.IS_EMPTY);
         } else {
             tfLastName.setBackground(Color.WHITE);
+            manageInputError(false, "tfLastname", "btnSaveCustomer", "");
         }
     }//GEN-LAST:event_tfLastNameKeyReleased
+
+    private void tfPasswordKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfPasswordKeyReleased
+
+    }//GEN-LAST:event_tfPasswordKeyReleased
+
+    private void btnDeleteAddressMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDeleteAddressMouseReleased
+        if (currentCustomer != null && currentAddress != null) {
+            try {
+                deleteAddress();
+            } catch (Exception ex) {
+                Logger.getLogger(JFCustomer.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_btnDeleteAddressMouseReleased
 
     /**
      * @param args the command line arguments
@@ -2158,6 +2239,7 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel bntCreateNew;
+    private javax.swing.JLabel btnDeleteAddress;
     private javax.swing.JLabel btnDeleteCustomer;
     private javax.swing.JLabel btnNewAdress;
     private javax.swing.JLabel btnNewAdress2;
@@ -2217,7 +2299,6 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
     private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel15;
-    private javax.swing.JPanel jPanel17;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -2240,6 +2321,8 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
     private javax.swing.JLabel labelBookTitle;
     private javax.swing.JLabel labelCustomerID;
     private javax.swing.JLabel labelErrorMessage;
+    private javax.swing.JPanel panBtnDeleteAddress;
+    private javax.swing.JPanel panBtnDeleteCustomer;
     private javax.swing.JPanel panelDate;
     private javax.swing.JPanel panelSearchByReviewStatus;
     private javax.swing.JRadioButton rbtnRejected;
