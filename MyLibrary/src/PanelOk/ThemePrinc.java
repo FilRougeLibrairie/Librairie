@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package PanelEnCoursChrys;
+package PanelOk;
 
 /**
  *
@@ -154,7 +154,7 @@ public class ThemePrinc extends javax.swing.JPanel {
 
          if (jRDelete.isSelected() == true) {
             jpPrinc.removeAll();
-            jpPrinc.add(new SubThemeDelete());
+            jpPrinc.add(new ThemeDelete());
             jpPrinc.revalidate();
             jpPrinc.setVisible(true);
         }

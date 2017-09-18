@@ -5,7 +5,7 @@
  */
 package Home;
 
-import PanelEnCoursChrys.ThemePrinc;
+import PanelOk.ThemePrinc;
 import PanelOk.AuthorPanel;
 import PanelOk.FormatsPanel;
 import PanelOk.KWPanel;
