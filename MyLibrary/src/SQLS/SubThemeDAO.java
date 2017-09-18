@@ -38,9 +38,9 @@ public class SubThemeDAO extends DAO<SubTheme>{
     @Override
     public void create(SubTheme obj) {
         SubTheme subThe = (SubTheme) obj;
-        String query = "IF NOT EXISTS (SELECT * FROM " + TABLE + " WHERE " + ID + " = '" + subThe.getSubId() + "')"
-                + "INSERT INTO " + TABLE + " (" + COLUMNS_CREATE + ")"
-                + "VALUES (?, ?, ?)";
+        String query = 
+                "INSERT INTO SUBTHEME(theId,subName,subDescription)"
+                + "VALUES (?,?,?)";
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query);) {
 

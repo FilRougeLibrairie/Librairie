@@ -25,7 +25,7 @@ public class Home extends javax.swing.JFrame {
     
     Employee loggedEmp;
     Header panel1;
-    PannelCentralSelection2 panel2;
+    PannelCentralSelection panel2;
     
 
 //    JPCustomer jpc;
@@ -36,7 +36,7 @@ public class Home extends javax.swing.JFrame {
         
         
         panel1 = new Header();
-        panel2 = new PannelCentralSelection2();
+        panel2 = new PannelCentralSelection();
         
         // Ajouter le jDeskPrincipal 
         
