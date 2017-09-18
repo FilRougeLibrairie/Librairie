@@ -5,7 +5,8 @@
  */
 package Home;
 
-import PanelOk.ThemePrinc;
+import PanelOk.SubthemePanel;
+import PanelOk.ThemePanel;
 import PanelOk.AuthorPanel;
 import PanelOk.FormatsPanel;
 import PanelOk.KWPanel;
@@ -18,12 +19,12 @@ import javax.swing.JPanel;
  *
  * @author Chrys
  */
-public class PannelCentralSelection2 extends javax.swing.JPanel {
+public class PannelCentralSelection extends javax.swing.JPanel {
 
     /**
      * Creates new form Panel2
      */
-    public PannelCentralSelection2() {
+    public PannelCentralSelection() {
         initComponents();
 
         menuAdmin.setVisible(false);
@@ -484,6 +485,11 @@ public class PannelCentralSelection2 extends javax.swing.JPanel {
         jPanel17.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseMoved(java.awt.event.MouseEvent evt) {
                 jPanel17MouseMoved(evt);
+            }
+        });
+        jPanel17.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel17MouseClicked(evt);
             }
         });
 
@@ -1189,7 +1195,7 @@ public class PannelCentralSelection2 extends javax.swing.JPanel {
 
         jpPrincipal.removeAll();
         jpPrincipal.validate();
-        ThemePrinc theme = new ThemePrinc();
+        ThemePanel theme = new ThemePanel();
         jpPrincipal.setLayout(new BorderLayout());
         jpPrincipal.add(theme, BorderLayout.NORTH);
         jpPrincipal.setVisible(true);
@@ -1212,7 +1218,19 @@ public class PannelCentralSelection2 extends javax.swing.JPanel {
     }//GEN-LAST:event_bSubThemeMouseMoved
 
     private void bSubThemeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bSubThemeMouseClicked
-        // TODO add your handling code here:
+
+        
+        jpPrincipal.removeAll();
+        jpPrincipal.validate();
+        SubthemePanel subtheme = new SubthemePanel();
+        jpPrincipal.setLayout(new BorderLayout());
+        jpPrincipal.add(subtheme, BorderLayout.NORTH);
+        jpPrincipal.setVisible(true);
+        jpPrincipal.revalidate();
+
+
+
+        
     }//GEN-LAST:event_bSubThemeMouseClicked
 
     private void bEventMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bEventMouseMoved
@@ -1474,7 +1492,7 @@ public class PannelCentralSelection2 extends javax.swing.JPanel {
     private void jPanel16MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel16MouseClicked
         jpPrincipal.removeAll();
         jpPrincipal.validate();
-        ThemePrinc theme = new ThemePrinc();
+        ThemePanel theme = new ThemePanel();
         jpPrincipal.setLayout(new BorderLayout());
         jpPrincipal.add(theme, BorderLayout.NORTH);
         jpPrincipal.setVisible(true);
@@ -1482,6 +1500,19 @@ public class PannelCentralSelection2 extends javax.swing.JPanel {
         
 
     }//GEN-LAST:event_jPanel16MouseClicked
+
+    private void jPanel17MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel17MouseClicked
+
+        jpPrincipal.removeAll();
+        jpPrincipal.validate();
+        SubthemePanel subtheme = new SubthemePanel();
+        jpPrincipal.setLayout(new BorderLayout());
+        jpPrincipal.add(subtheme, BorderLayout.NORTH);
+        jpPrincipal.setVisible(true);
+        jpPrincipal.revalidate();
+
+
+    }//GEN-LAST:event_jPanel17MouseClicked
 
     void setColor(JPanel panel) {
         panel.setBackground(new Color(102, 102, 102));
