@@ -32,7 +32,8 @@ public class ThemeDAO extends DAO {
     @Override
     public void create(Object obj) {
         Theme the = (Theme) obj;
-        String query = "INSERT INTO " + TABLE + " (" + COLUMNS_CREATE + ")"
+        String query = "IF NOT EXISTS(SELECT * FROM theme WHERE theName= '"+the.getTheName()+"')"
+                +"INSERT INTO " + TABLE + " (" + COLUMNS_CREATE + ")"
                 + "VALUES (?, ?)";
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query);) {

@@ -21,7 +21,8 @@ public class KeywordsDAO extends DAO {
         Keywords kw = (Keywords) obj;
         
         
-        String query ="INSERT INTO KEYWORDS VALUES ('"+kw.getKeyName()+"')";
+        String query ="IF NOT EXISTS(SELECT * FROM keywords WHERE keyName= '"+kw.getKeyName()+"')"
+                +"INSERT INTO KEYWORDS VALUES ('"+kw.getKeyName()+"')";
 
      
         try (PreparedStatement pstmt = this.connect.prepareStatement(query);) {

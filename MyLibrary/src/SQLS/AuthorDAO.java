@@ -35,8 +35,8 @@ public class AuthorDAO extends DAO{
     @Override
     public void create(Object obj) {
         Author aut = (Author) obj;
-        String query =
-                 "INSERT INTO " + TABLE + " (" + COLUMNS_CREATE + ")"
+        String query ="IF NOT EXISTS(SELECT * FROM author WHERE autLastName= '"+aut.getAutLastName()+"' AND autFirstName='"+aut.getAutFirstName()+"')"
+                 +"INSERT INTO " + TABLE + " (" + COLUMNS_CREATE + ")"
                 + "VALUES (?, ?, ?, ?)";
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query);) {

@@ -29,7 +29,8 @@ public class BookLanguageDAO extends DAO<BookLanguage> {
     @Override
     public void create(BookLanguage obj) {
         BookLanguage bookLang = (BookLanguage) obj;
-        String query = "INSERT INTO BookLanguage (bookLangName) VALUES (?)";
+        String query = "IF NOT EXISTS(SELECT * FROM bookLanguage WHERE bookLangName= '"+bookLang.getBooLangName()+"')"
+                +"INSERT INTO BookLanguage (bookLangName) VALUES (?)";
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query);) {
 

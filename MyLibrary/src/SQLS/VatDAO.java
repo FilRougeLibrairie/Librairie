@@ -33,7 +33,8 @@ public class VatDAO extends DAO<Vat> {
     @Override
     public void create(Vat obj) {
         Vat vat = (Vat) obj;
-        String query = "INSERT INTO VAT (" + COLUMNS_CREATE+ ")"
+        String query = "IF NOT EXISTS(SELECT * FROM vat WHERE vatRate= "+vat.getVatRate()+")"
+                + "INSERT INTO VAT (" + COLUMNS_CREATE+ ")"
                 + "VALUES (?, ?)";
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query);) {
