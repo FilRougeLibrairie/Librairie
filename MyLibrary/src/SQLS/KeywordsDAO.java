@@ -30,7 +30,7 @@ public class KeywordsDAO extends DAO {
 
         } catch (SQLException ex) {
             System.err.println("ERROR SAVING CONTACT : " + ex.getErrorCode() + " / " + ex.getMessage());
-            ex.getStackTrace();
+            
         }
     }
 
@@ -69,7 +69,7 @@ public class KeywordsDAO extends DAO {
 
         } catch (SQLException ex) {
             System.out.println("ERROR UPDATING CONTACT : " + ex.getMessage());
-            ex.printStackTrace();
+            
 
         }
     }
@@ -101,7 +101,7 @@ public class KeywordsDAO extends DAO {
 
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Customer : " + ex.getMessage());
-            ex.printStackTrace();
+            
 
         }
         return kw;
@@ -134,7 +134,7 @@ public class KeywordsDAO extends DAO {
 
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Customer : " + ex.getMessage());
-            ex.printStackTrace();
+            
 
         }
         return keywordsList;
@@ -177,7 +177,7 @@ public class KeywordsDAO extends DAO {
 
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Customer : " + ex.getMessage());
-            ex.printStackTrace();
+            
 
         }
         return keywordsList;

@@ -46,7 +46,7 @@ public class ShippingCostDAO extends DAO<ShippingCost> {
 
         } catch (SQLException ex) {
             System.err.println("ERROR SAVING Object : " + ex.getErrorCode() + " / " + ex.getMessage());
-            ex.getStackTrace();
+            
         }
     }
 
@@ -70,7 +70,7 @@ public class ShippingCostDAO extends DAO<ShippingCost> {
 
         } catch (SQLException ex) {
             System.out.println("ERROR UPDATING Object : " + ex.getMessage());
-            ex.printStackTrace();
+            
 
         }
     }
@@ -88,7 +88,7 @@ public class ShippingCostDAO extends DAO<ShippingCost> {
             pstmt.executeQuery();
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            ex.printStackTrace();
+            
         }
     }
 
@@ -115,7 +115,7 @@ public class ShippingCostDAO extends DAO<ShippingCost> {
 
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            ex.printStackTrace();
+            
 
         }
         return ShippingCostList;
@@ -151,7 +151,7 @@ public class ShippingCostDAO extends DAO<ShippingCost> {
 
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            ex.printStackTrace();
+            
 
         }
         return ShippingCostList;
@@ -184,7 +184,7 @@ public class ShippingCostDAO extends DAO<ShippingCost> {
 
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            ex.printStackTrace();
+            
 
         }
         return shipcost;

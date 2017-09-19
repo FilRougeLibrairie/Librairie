@@ -5,8 +5,9 @@
  */
 package PanelOk;
 
+import ClassObjet.SubTheme;
 import ClassObjet.Theme;
-import SQLS.ThemeDAO;
+import SQLS.SubThemeDAO;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -16,27 +17,30 @@ import java.util.Vector;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 
+/**
+ *
+ * @author Chrys
+ */
+public class SubthemeDeletePanel extends javax.swing.JPanel {
 
-public class ThemeDelete extends javax.swing.JPanel {
-    Theme theme = new Theme();
-    Vector v = new Vector();
-    ThemeDAO themeDAO = new ThemeDAO();
+    
+    Theme t = new Theme();
+    SubTheme sub = new SubTheme();
+    SubThemeDAO subthemeDAO = new SubThemeDAO();
     JOptionPane jop1=new JOptionPane();
     
-    
-    public ThemeDelete() {
+    public SubthemeDeletePanel() {
         initComponents();
         jComboBox1.setSelectedIndex(-1);
     }
-
     
-    private DefaultComboBoxModel initThemeModel() {
-        return new DefaultComboBoxModel(initContactVector());
-        
+    private DefaultComboBoxModel initSubthemeModel() {
+        return new DefaultComboBoxModel(initSubThemeVector());
     }
 
-    private Vector initContactVector() {
-
+    // Vector sous theme
+    private Vector initSubThemeVector() {
+        Vector v = new Vector();
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
         } catch (ClassNotFoundException ex) {
@@ -53,14 +57,14 @@ public class ThemeDelete extends javax.swing.JPanel {
             return v;
         }
 
-        String query = "SELECT * FROM theme ORDER BY theName;";
+        String query = "SELECT * FROM subtheme ORDER BY subname;";
         try {
             Statement stmt = connexion.createStatement();
             ResultSet rs = stmt.executeQuery(query);
 
             while (rs.next()) {
 
-                v.add(new Theme(rs.getInt("theId"), rs.getString("theName"), rs.getString("thedescription")));
+                v.add(new SubTheme(rs.getInt("subId"), t, rs.getString("subname"), rs.getString("subdescription")));
 
             }
 
@@ -93,24 +97,21 @@ public class ThemeDelete extends javax.swing.JPanel {
     private void initComponents() {
 
         jComboBox1 = new javax.swing.JComboBox();
-        jLabel1 = new javax.swing.JLabel();
-        jButton4 = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setPreferredSize(new java.awt.Dimension(600, 600));
 
-        jComboBox1.setModel(initThemeModel());
+        jComboBox1.setModel(initSubthemeModel());
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox1ActionPerformed(evt);
             }
         });
 
-        jLabel1.setText("Selectionner un thème:");
-
-        jButton4.setText("SUPPRIMER");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        jButton1.setText("SUPPRIMER");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                jButton1ActionPerformed(evt);
             }
         });
 
@@ -119,49 +120,49 @@ public class ThemeDelete extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(231, 231, 231)
-                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(63, 63, 63)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 65, Short.MAX_VALUE)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 273, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(72, 72, 72))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(82, 82, 82)
+                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 353, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(157, 157, 157)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(108, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox1))
-                .addGap(48, 48, 48)
-                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(309, 309, 309))
+                .addGap(26, 26, 26)
+                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(323, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    
-    Theme t = new Theme();
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
 
-         t = (Theme) jComboBox1.getSelectedItem();
+        
+        
+        sub=(SubTheme) jComboBox1.getSelectedItem();
+        
+        
         
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        
-        themeDAO.delete(t);
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+
+        subthemeDAO.delete(sub);
         jComboBox1.removeAllItems();
-        jComboBox1.setModel(initThemeModel());
-        jop1.showMessageDialog(null, "Le thème a été supprimé avec succès.", "Information", JOptionPane.INFORMATION_MESSAGE);
-    }//GEN-LAST:event_jButton4ActionPerformed
+        jComboBox1.setModel(initSubthemeModel());
+        jop1.showMessageDialog(null, "Le sous thème a été supprimé avec succès.", "Information", JOptionPane.INFORMATION_MESSAGE);
+        jComboBox1.setSelectedIndex(-1);
+
+    }//GEN-LAST:event_jButton1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton1;
     private javax.swing.JComboBox jComboBox1;
-    private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 }

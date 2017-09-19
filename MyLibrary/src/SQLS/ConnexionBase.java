@@ -18,7 +18,7 @@ public class ConnexionBase {
             connect = DriverManager.getConnection(url, user, mdp);
         } catch (SQLException ex) {
             Logger.getLogger(ex.getMessage());
-            ex.printStackTrace();
+            
         }
     }
     

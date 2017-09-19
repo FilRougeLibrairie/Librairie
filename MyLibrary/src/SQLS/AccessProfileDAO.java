@@ -50,7 +50,7 @@ public class AccessProfileDAO extends DAO<AccessProfile> {
 
         } catch (SQLException ex) {
             System.err.println("ERROR SAVING Object : " + ex.getErrorCode() + " / " + ex.getMessage());
-            ex.getStackTrace();
+            
         }}
     
     @Override
@@ -73,7 +73,7 @@ public class AccessProfileDAO extends DAO<AccessProfile> {
 
         } catch (SQLException ex) {
             System.out.println("ERROR UPDATING Object : " + ex.getMessage());
-            ex.printStackTrace();
+            
 
         }
     }
@@ -91,7 +91,7 @@ public class AccessProfileDAO extends DAO<AccessProfile> {
             pstmt.executeQuery();
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            ex.printStackTrace();
+            
         }}
     
      @Override
@@ -116,7 +116,7 @@ public class AccessProfileDAO extends DAO<AccessProfile> {
 
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            ex.printStackTrace();
+            
 
         }
         return accessProfileList;
@@ -151,7 +151,7 @@ public class AccessProfileDAO extends DAO<AccessProfile> {
 
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            ex.printStackTrace();
+            
 
         }
         return accessprofileList;
@@ -183,7 +183,7 @@ public class AccessProfileDAO extends DAO<AccessProfile> {
 
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            ex.printStackTrace();
+            
 
         }
         return acc;   }

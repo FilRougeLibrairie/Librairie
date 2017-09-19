@@ -44,7 +44,7 @@ public class OrderStatusDAO extends DAO {
 
         } catch (SQLException ex) {
             System.err.println("ERROR SAVING Object : " + ex.getErrorCode() + " / " + ex.getMessage());
-            ex.getStackTrace();
+            
         }
     }
 
@@ -61,7 +61,7 @@ public class OrderStatusDAO extends DAO {
             pstmt.executeQuery();
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            ex.printStackTrace();
+            
         }
     }
 
@@ -83,7 +83,7 @@ public class OrderStatusDAO extends DAO {
 
         } catch (SQLException ex) {
             System.out.println("ERROR UPDATING Object : " + ex.getMessage());
-            ex.printStackTrace();
+            
 
         }
     }
@@ -114,7 +114,7 @@ public class OrderStatusDAO extends DAO {
 
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            ex.printStackTrace();
+            
 
         }
         return ordList;
@@ -149,7 +149,7 @@ public class OrderStatusDAO extends DAO {
 
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            ex.printStackTrace();
+            
 
         }
         return ord;
@@ -191,7 +191,7 @@ public class OrderStatusDAO extends DAO {
 
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            ex.printStackTrace();
+            
 
         }
         return ordList;

@@ -81,7 +81,8 @@ public class SubTheme {
     public void removeBook(Book book){
         bookList.remove(book);
     }
-
+    
+    
     public Vector getVector() {
         Vector v= new Vector();
        
@@ -89,15 +90,20 @@ public class SubTheme {
         v.add(this.getTheId());
         v.add(this.getSubName());
         v.add(this.getSubDescription());
-        
       
         return v;
     }
     
+    //to string
+
     @Override
     public String toString() {
-        return subName;
+        return "\n"
+                +  subName ;
     }
-
     
+    
+    
+    
+
 }

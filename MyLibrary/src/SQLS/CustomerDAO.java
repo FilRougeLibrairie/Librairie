@@ -47,7 +47,7 @@ public class CustomerDAO extends DAO {
         Customer cus = (Customer) obj;
         String query = "IF NOT EXISTS (SELECT * FROM " + TABLE + " WHERE " + ID + " = '" + cus.getCusID() + "')"
                 + "INSERT INTO " + TABLE + " (" + COLUMNS_CREATE + ")"
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query);) {
 
@@ -68,7 +68,6 @@ public class CustomerDAO extends DAO {
 
         } catch (SQLException ex) {
             System.err.println("ERROR SAVING Object : " + ex.getErrorCode() + " / " + ex.getMessage());
-            ex.getStackTrace();
         }
     }
 
@@ -85,7 +84,6 @@ public class CustomerDAO extends DAO {
             pstmt.executeQuery();
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            ex.printStackTrace();
         }
     }
 
@@ -129,7 +127,6 @@ public class CustomerDAO extends DAO {
 
         } catch (SQLException ex) {
             System.out.println("ERROR UPDATING Object : " + ex.getMessage());
-            ex.printStackTrace();
 
         }
     }
@@ -173,7 +170,6 @@ public class CustomerDAO extends DAO {
 
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            ex.printStackTrace();
         }
         return customer;
     }
@@ -218,7 +214,6 @@ public class CustomerDAO extends DAO {
 
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            ex.printStackTrace();
 
         }
         return customerList;
@@ -265,7 +260,6 @@ public class CustomerDAO extends DAO {
 
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            ex.printStackTrace();
 
         }
         return customerList;
@@ -310,7 +304,7 @@ public class CustomerDAO extends DAO {
             }
 
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
         }
         return customerList;
     }

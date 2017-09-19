@@ -45,7 +45,7 @@ public class VatDAO extends DAO<Vat> {
 
         } catch (SQLException ex) {
             System.err.println("ERROR SAVING Object : " + ex.getErrorCode() + " / " + ex.getMessage());
-            ex.getStackTrace();
+            
         }
     }
 
@@ -69,7 +69,7 @@ public class VatDAO extends DAO<Vat> {
 
         } catch (SQLException ex) {
             System.out.println("ERROR UPDATING Object : " + ex.getMessage());
-            ex.printStackTrace();
+            
 
         }
     }
@@ -87,7 +87,7 @@ public class VatDAO extends DAO<Vat> {
             pstmt.executeQuery();
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            ex.printStackTrace();
+            
         }
     }
 
@@ -114,7 +114,7 @@ public class VatDAO extends DAO<Vat> {
 
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            ex.printStackTrace();
+            
 
         }
         return vatList;
@@ -150,7 +150,7 @@ public class VatDAO extends DAO<Vat> {
 
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            ex.printStackTrace();
+            
 
         }
         return vatList;
@@ -183,7 +183,7 @@ public class VatDAO extends DAO<Vat> {
 
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            ex.printStackTrace();
+            
 
         }
         return vat;
