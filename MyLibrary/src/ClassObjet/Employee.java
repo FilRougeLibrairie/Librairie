@@ -5,6 +5,10 @@
  */
 package ClassObjet;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import org.eclipse.persistence.internal.helper.SimpleDatabaseType;
+
 /**
  *
  * @author Tofi
@@ -17,8 +21,8 @@ public class Employee {
     private String empLogin;
     private String empPassword;
     private String empSalt;
-    private String empDateStart;
-    private String empDateEnd;
+    private java.sql.Date empDateStart;
+    private java.sql.Date empDateEnd;
     private AccessProfile accProfileCode;
     private int empStatus;
     private String empComment;
@@ -53,11 +57,25 @@ public class Employee {
     }
 
     public void setEmpDateStart(String empDateStart) {
-        this.empDateStart = empDateStart;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            java.util.Date start = sdf.parse(empDateStart);
+            java.sql.Date sqlStartD = new java.sql.Date(start.getTime());
+            this.empDateStart = sqlStartD;
+        } catch (ParseException ex) {
+            System.out.println("Error formating DATE" + ex.getMessage());
+        }
     }
 
     public void setEmpDateEnd(String empDateEnd) {
-        this.empDateEnd = empDateEnd;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyy-MM-dd");
+        try {
+            java.util.Date end = sdf.parse(empDateEnd);
+            java.sql.Date sqlEndD = new java.sql.Date(end.getTime());
+            this.empDateEnd = sqlEndD;
+        } catch (ParseException ex) {
+            System.out.println("Error formating DATE" + ex.getMessage());
+        }
     }
 
     public void setEmpStatus(int empStatus) {
@@ -97,12 +115,12 @@ public class Employee {
         return empSalt;
     }
 
-    public String getEmpDateStart() {
-        return empDateStart;
+    public java.sql.Date getEmpDateStart() {
+        return new java.sql.Date(empDateStart.getTime());
     }
 
-    public String getEmpDateEnd() {
-        return empDateEnd;
+    public java.sql.Date getEmpDateEnd() {
+        return new java.sql.Date(empDateEnd.getTime());
     }
 
     public int getEmpStatus() {
