@@ -5,6 +5,8 @@
  */
 package ClassObjet;
 
+import java.util.Vector;
+
 /**
  *
  * @author Tofi
@@ -15,10 +17,21 @@ public class Editor {
     private String ediName;
     private String ediPresentation;
     private int ediStatusCode;
+    private Vector<Book> bookList;
 
     //Constructor
+
+    public Editor(int ediId, String ediName, String ediPresentation, int ediStatusCode) {
+        this.ediId = ediId;
+        this.ediName = ediName;
+        this.ediPresentation = ediPresentation;
+        this.ediStatusCode = ediStatusCode;
+    }
+
     public Editor() {
     }
+    
+    
 
     //Setters
     
@@ -55,5 +68,26 @@ public class Editor {
     public int getEdiStatusCode() {
         return ediStatusCode;
     }
+    
+     public Vector<Book> getBookList() {
+        return bookList;
+    }
 
+    public Vector getVector() {
+        Vector v= new Vector();
+       
+        v.add(this.getEdiId());
+        v.add(this.getEdiName());
+        v.add(this.getEdiPresentation());
+        v.add(this.getEdiStatusCode());
+      
+        return v;
+    }
+    
+    @Override
+    public String toString() {
+        return ediName ;
+    }
+
+    
 }

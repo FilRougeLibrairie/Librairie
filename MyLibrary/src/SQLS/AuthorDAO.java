@@ -3,11 +3,13 @@ package SQLS;
 
 
 import ClassObjet.Author;
+import ClassObjet.Book;
 import Names.SQLNames.AuthorNames;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
+import static org.eclipse.persistence.sessions.remote.corba.sun.TransporterHelper.id;
 
 
 
@@ -106,6 +108,8 @@ public class AuthorDAO extends DAO{
         }
     }
 
+    
+    
     @Override
     public Author find(int id) {
         Author author = null;

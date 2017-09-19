@@ -18,6 +18,13 @@ public class StatusDisplay {
     public StatusDisplay() {
     }
 
+    public StatusDisplay(int staCode, String staName) {
+        this.staCode = staCode;
+        this.staName = staName;
+    }
+    
+    
+    
     //Setters
     public void setStaCode(int staCode) {
         this.staCode = staCode;
@@ -35,5 +42,12 @@ public class StatusDisplay {
     public String getStaName() {
         return staName;
     }
+
+    @Override
+    public String toString() {
+        return staName;
+    }
+    
+    
 
 }

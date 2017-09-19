@@ -29,8 +29,6 @@ public class SubTheme {
         this.subName = subName;
         this.subDescription = subDescription;
     }
-
-    
     
     
     

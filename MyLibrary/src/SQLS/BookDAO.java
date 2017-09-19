@@ -1,5 +1,6 @@
 package SQLS;
 
+import ClassObjet.Author;
 import ClassObjet.Book;
 import ClassObjet.BookLanguage;
 import ClassObjet.Editor;
@@ -260,13 +261,162 @@ public class BookDAO extends DAO {
         return book;
     }
 
-    @Override
-    public Object find(String name) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Author findAuthorByBook (String isbn) {
+        Author author = null;
+        Book boo = null;
+        StringBuffer query = new StringBuffer();
+        query.append("SELECT aut.autId, autLastName, autFirstName FROM ")
+                .append("Author aut ")
+                .append("JOIN WRITING wri ")
+                .append("ON aut.autID = wri.autID ")
+                .append("JOIN Book boo ")
+                .append("ON wri.booIsbn13 = boo.booIsbn13 ")
+                .append("WHERE wri.booIsbn13 ")
+                .append(" = ")
+                .append("'" + isbn + "'");
+                
+//                
+//                .append(ISBN_13)
+//                .append(" = ")
+//                .append("'" + isbn + "'");
+
+
+        
+        try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.isBeforeFirst()) {
+
+                while (rs.next()) {
+                    author = new Author();
+                    author.setAutId(rs.getInt(AuthorNames.ID));
+                    author.setAutLastName(rs.getString(AuthorNames.FIRST_NAME));
+                    author.setAutFirstName(rs.getString(AuthorNames.LAST_NAME));
+                    
+                    
+                }
+            } else {
+                throw new SQLException("ResultSet was empty");
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
+            ex.printStackTrace();
+
+        }
+        return author;
+        
     }
+    
+    public Author findAuthorByTitle (String isbn) {
+        Author author = null;
+        Book boo = null;
+        StringBuffer query = new StringBuffer();
+        query.append("SELECT aut.autId, autLastName, autFirstName FROM ")
+                .append("Author aut ")
+                .append("JOIN WRITING wri ")
+                .append("ON aut.autID = wri.autID ")
+                .append("JOIN Book boo ")
+                .append("ON wri.booIsbn13 = boo.booIsbn13 ")
+                .append("WHERE wri.booIsbn13 ")
+                .append(" = ")
+                .append("'" + isbn + "'");
+                
+//                
+//                .append(ISBN_13)
+//                .append(" = ")
+//                .append("'" + isbn + "'");
+
+
+        
+        try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.isBeforeFirst()) {
+
+                while (rs.next()) {
+                    author = new Author();
+                    author.setAutId(rs.getInt(AuthorNames.ID));
+                    author.setAutLastName(rs.getString(AuthorNames.FIRST_NAME));
+                    author.setAutFirstName(rs.getString(AuthorNames.LAST_NAME));
+                    
+                    
+                }
+            } else {
+                throw new SQLException("ResultSet was empty");
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
+            ex.printStackTrace();
+
+        }
+        return author;
+        
+    }
+    
+    @Override
+    public Book find(String name) {book = null;
+        vat = null;
+        editor = null;
+        language = null;
+        format = null;
+        StringBuffer query = new StringBuffer();
+        query.append("SELECT * FROM " + TABLE + " WHERE ")
+                .append(ISBN_13)
+                .append(" = ")
+                .append("'" + name + "'");
+
+        try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.isBeforeFirst()) {
+
+                while (rs.next()) {
+                    book = new Book();
+                    vat = new Vat();
+                    editor = new Editor();
+                    language = new BookLanguage();
+                    format = new Forma();
+
+                    book.setBooIsbn13(rs.getString(ISBN_13));
+                    vat.setVatCode(rs.getInt(VAT_CODE));
+                    book.setVatCode(vat);
+                    editor.setEdiId(rs.getInt(EDITOR_ID));
+                    book.setEdiId(editor);
+                    book.setBooTitle(rs.getString(TITLE));
+                    book.setBooSubtitle(rs.getString(SUBTITLE));
+                    book.setBooPublishYear(rs.getString(PUBLICATION_YEAR));
+                    book.setBooPriceHT(rs.getFloat(PRICE_HT));
+                    book.setBooResume(rs.getString(RESUME));
+                    book.setBooQuantity(rs.getInt(QUANTITY));
+                    book.setBooStatus(rs.getInt(STATUS));
+                    book.setBooFrontCover(rs.getString(FRONT_COVER));
+                    book.setBooPageNumber(rs.getInt(PAGE_NUMBER));
+                    language.setBooLangCode(rs.getInt(LANGUAGE_ID));
+                    book.setBooLangCode(language);
+                    format.setForId(rs.getInt(FORMAT_ID));
+                    book.setFormat(format);
+
+                }
+            } else {
+                throw new SQLException("ResultSet was empty");
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
+            ex.printStackTrace();
+
+        }
+        return book;
+    }
+ 
 
     @Override
-    public Vector findByColumn(String column, String term) {
+    public Vector <Book> findByColumn(String column, String term) {
         bookList = new Vector<Book>();
         book = null;
         vat = null;
