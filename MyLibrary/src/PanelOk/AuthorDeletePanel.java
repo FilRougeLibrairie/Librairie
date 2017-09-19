@@ -31,11 +31,11 @@ public class AuthorDeletePanel extends javax.swing.JPanel {
 
     private DefaultTableModel initTableModel() {
         Vector v = new Vector();
-        v.add("autld");
-        v.add("autLastName2");
-        v.add("autFirstName");
-        v.add("autoBiography");
-        v.add("autStatusCode");
+        v.add("N° d'Auteur");
+        v.add("Prenom");
+        v.add("Nom");
+        v.add("Bibliographie");
+        v.add("Statut");
 
         return new javax.swing.table.DefaultTableModel(
                 initAutorVector(), v) {

@@ -120,7 +120,7 @@ public class SubthemeUpdatePanel extends javax.swing.JPanel {
                 jComboBox1ActionPerformed(evt);
             }
         });
-        add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 70, 309, 38));
+        add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 70, 309, 38));
 
         jLabel1.setText("Sous Thème à modifier:");
         add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 60, 189, 40));
@@ -159,14 +159,14 @@ public class SubthemeUpdatePanel extends javax.swing.JPanel {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(68, 68, 68)
-                        .addGroup(jpEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGap(36, 36, 36)
+                        .addGroup(jpEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jtName, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jpEditLayout.createSequentialGroup()
                         .addGap(191, 191, 191)
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(53, Short.MAX_VALUE))
+                .addContainerGap(85, Short.MAX_VALUE))
         );
         jpEditLayout.setVerticalGroup(
             jpEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -194,7 +194,7 @@ public class SubthemeUpdatePanel extends javax.swing.JPanel {
                 jComboBox2ActionPerformed(evt);
             }
         });
-        add(jComboBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 10, 309, 42));
+        add(jComboBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 10, 309, 42));
 
         jLabel4.setText("Thème ");
         add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 20, 185, 35));
@@ -216,7 +216,7 @@ public class SubthemeUpdatePanel extends javax.swing.JPanel {
             jComboBox1.setSelectedIndex(-1);
         }
 
-        subtheme=(SubTheme) jComboBox1.getSelectedItem();
+//        subtheme=(SubTheme) jComboBox1.getSelectedItem();
 
     }//GEN-LAST:event_jComboBox2ActionPerformed
     

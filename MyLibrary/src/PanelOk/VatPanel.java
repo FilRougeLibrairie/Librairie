@@ -191,9 +191,9 @@ public class VatPanel extends javax.swing.JPanel {
             .addGroup(menuChooseLayout.createSequentialGroup()
                 .addGap(19, 19, 19)
                 .addComponent(jRAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 135, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 181, Short.MAX_VALUE)
                 .addComponent(jRDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(54, 54, 54))
+                .addContainerGap())
         );
         menuChooseLayout.setVerticalGroup(
             menuChooseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
