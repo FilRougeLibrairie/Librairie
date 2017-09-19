@@ -74,7 +74,7 @@ public class PurchaseDAO extends DAO {
         query.append("DELETE FROM " + TABLE + " WHERE ")
                 .append(ID)
                 .append(" = ")
-                .append("'" + purId + "'");
+                .append(purId);
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
             pstmt.executeQuery();
@@ -95,9 +95,8 @@ public class PurchaseDAO extends DAO {
         query.append(SHIPPING_DATE).append(" = ?, ");
         query.append(SHIPPING_NUMBER).append(" = ? ");
 
-        query.append("WHERE " + ID + " = '")
-                .append(pur.getPurIP())
-                .append("'");
+        query.append("WHERE " + ID + " = ")
+                .append(pur.getPurIP());
 
         try (PreparedStatement pstmt = connect.prepareStatement(query.toString());) {
 
@@ -117,7 +116,7 @@ public class PurchaseDAO extends DAO {
     }
 
     @Override
-    public Vector findAll() {
+    public Vector<Purchase> findAll() {
         purList = new Vector<Purchase>();
         pur = null;
         cus = null;
