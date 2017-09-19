@@ -1,27 +1,48 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ui.jfPurchase;
 
+import ClassObjet.Address;
+import ClassObjet.Book;
 import ClassObjet.Customer;
+import ClassObjet.OrderLine;
 import ClassObjet.Purchase;
 import Names.SQLNames;
+import SQLS.AddressDAO;
+import SQLS.BookDAO;
 import SQLS.CustomerDAO;
+import SQLS.OrderLineDAO;
 import SQLS.PurchaseDAO;
+import java.awt.Color;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Properties;
 import java.util.Vector;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
+import org.jdatepicker.impl.JDatePanelImpl;
+import org.jdatepicker.impl.JDatePickerImpl;
+import org.jdatepicker.impl.UtilDateModel;
+import utils.DateLabelFormatter;
 
+/**
+ * ***************************************
+ ******************************************
+ *
+ * GUILLAUME IS CODING  *
+ * DON'T TOUCH THIS FILE PLEASE :-)
+ *
+ *****************************************
+ ****************************************
+ */
 public class JFPurchase extends javax.swing.JFrame implements SQLNames {
 
     Vector comboSearchModel;
     Vector<Purchase> purchaseList;
     Vector purchaseTableList;
+    Vector orderStatusTableList;
     PurchaseDAO purchaseDAO;
     Customer currentCustomer;
     Purchase currentPurchase;
+    JDatePickerImpl datePicker;
 
     private enum OrderStatus {
 
@@ -66,6 +87,34 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
         initComponents();
 
         comboSearch.setModel(initComboSearchModel());
+        UtilDateModel model = new UtilDateModel();
+        Properties p = new Properties();
+        p.put("text.today", "Today");
+        p.put("text.month", "Month");
+        p.put("text.year", "Year");
+        JDatePanelImpl datePanel = new JDatePanelImpl(model, p);
+        datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
+        datePicker.setBackground(Color.WHITE);
+        datePicker.setBounds(0, 0, 200, 30);
+        datePicker.setVisible(true);
+        panelDate.setSize(100, 100);
+        panelDate.add(datePicker);
+
+        datePicker.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                datePickerActionPerformed(evt);
+            }
+        });
+
+    }
+
+    private void datePickerActionPerformed(java.awt.event.ActionEvent evt) {
+
+        Date selectedDate = (Date) datePicker.getModel().getValue();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        String date = df.format(selectedDate);
+
+        System.out.println(date);
 
     }
 
@@ -100,17 +149,92 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
         }
         setTablePurchaseModel();
     }
-    
-    private void loadCustomer(){
+
+    private void loadCustomer() {
         CustomerDAO customerDAO = new CustomerDAO();
         Vector<Customer> customerList = new Vector<Customer>();
-        customerList = customerDAO.findByColumn(CustomerNames.ID, currentPurchase.getCusId());
+        Customer cus = customerDAO.find(currentPurchase.getCusId().getCusID());
+        currentCustomer = cus;
         
-        
-        Customer cus;
-        for(Purchase pur : purchaseList){
-            cus = customerDAO.findByColumn(CustomerNames.ID, currentPurchase.getCusId())
+        fillCustomerFields();
+    }
+
+    private void loadAddresses() {
+        AddressDAO addressDAO = new AddressDAO();
+        Address deliveryAddress = addressDAO.find(currentPurchase.getAddDeliveryId().getAddId());
+        Address invoiceAddress = addressDAO.find(currentPurchase.getAddInvoiceId().getAddId());
+        System.out.println("======== DELIVERY ADDR ========");
+        // System.out.println(deliveryAddress);
+        System.out.println("======== INVOICE ADDR ========");
+        // System.out.println(invoiceAddress);
+        System.out.println("==========================");
+    }
+
+    private void loadOrderLineTable() {
+        OrderLineDAO ordLineDAO = new OrderLineDAO();
+        BookDAO bookDAO = new BookDAO();
+        OrderLineTableItem ordItem;
+        orderStatusTableList = new Vector();
+        Vector<OrderLine> orderLineList = ordLineDAO.findByColumn(OrderLineNames.PURCHASE_ID, currentPurchase.getPurId());
+        for (OrderLine ordline : orderLineList) {
+            Book book = bookDAO.find(ordline.getBooIsbn13().getBooIsbn13());
+            ordline.setBooIsbn13(book);
+            ordItem = new OrderLineTableItem(ordline);
+            orderStatusTableList.add(ordItem.getVector());
         }
+        setTableOrderLineModel();
+        calculatePrice();
+    }
+
+    private void calculatePrice() {
+        Float totalHT = 0f;
+        Float totalVAT = 0f;
+        Float totalTTCBOOKS = 0f;
+        Float totalTTC = 0f;
+        int quantity = 0;
+        
+        for (int ligne = 0; ligne < tableOrderLine.getRowCount(); ligne++) {
+            OrderLineTableItem ordLineTable = (OrderLineTableItem) tableOrderLine.getValueAt(ligne, 0);
+            
+            quantity = ordLineTable.getQuantity();
+            totalHT += ordLineTable.getPriceHT() * quantity;
+            totalVAT += ordLineTable.getVat();
+            totalTTCBOOKS += ordLineTable.getPriceTTC();
+            
+        }
+        System.out.println("TOTAL HT = " + totalHT);
+        System.out.println("TOTAL VAT = " + totalVAT);
+        System.out.println("TOTAL TTC BOOKS = " + totalTTCBOOKS);
+        System.out.println(totalTTC = totalHT + totalVAT);
+    }
+
+    private void setTableOrderLineModel() {
+        tableOrderLine.setModel(initTableOrderLineModel());
+    }
+
+    private DefaultTableModel initTableOrderLineModel() {
+        Vector v = new Vector();
+        v.add("ISBN");
+        v.add("Titre");
+        v.add("Prix unitaire H.T");
+        v.add("Quantité");
+        v.add("Prix H.T");
+        v.add("TVA");
+        v.add("Prix TTC");
+
+        return new javax.swing.table.DefaultTableModel(orderStatusTableList, v) {
+        };
+    }
+    
+    private void  fillCustomerFields(){
+        tfCustomerFirstName.setText(currentCustomer.getCusFirstName().trim());
+        tfCustomerLastName.setText(currentCustomer.getCusLastName().trim());
+        tfCustomerCompany.setText(currentCustomer.getCusOrganisationName().trim());
+        tfCustomerBirthDay.setText(currentCustomer.getCusDateOfBirth().toString().trim());
+        tfCustomerPhoneNumber.setText(currentCustomer.getCusPhoneNumber());
+        tfCustomerIP.setText(currentCustomer.getCusIP());
+        tfCustomerComment.setText(currentCustomer.getCusComment());
+        tfCustomerEmail.setText(currentCustomer.getCusEmail());
     }
 
     /**
@@ -137,7 +261,7 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel6 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tableOrderLine = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
@@ -158,6 +282,8 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
         jLabel29 = new javax.swing.JLabel();
         jLabel30 = new javax.swing.JLabel();
         comboStatus = new javax.swing.JComboBox();
+        jPanel18 = new javax.swing.JPanel();
+        btnPurchase1 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jLabel17 = new javax.swing.JLabel();
         jLabel21 = new javax.swing.JLabel();
@@ -195,7 +321,6 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
         jTextField26 = new javax.swing.JTextField();
         jTextField27 = new javax.swing.JTextField();
         jTextField28 = new javax.swing.JTextField();
-        jLabel52 = new javax.swing.JLabel();
         tfInvoiceLabel1 = new javax.swing.JTextField();
         jScrollPane6 = new javax.swing.JScrollPane();
         tabletfInvoiceAdresses1 = new javax.swing.JTable();
@@ -263,18 +388,18 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
         jLabel11 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
         jLabel40 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
-        jTextField5 = new javax.swing.JTextField();
-        jTextField6 = new javax.swing.JTextField();
-        jTextField7 = new javax.swing.JTextField();
-        jComboBox1 = new javax.swing.JComboBox();
+        tfCustomerLastName = new javax.swing.JTextField();
+        tfCustomerFirstName = new javax.swing.JTextField();
+        tfCustomerCompany = new javax.swing.JTextField();
+        tfCustomerPhoneNumber = new javax.swing.JTextField();
+        tfCustomerBirthDay = new javax.swing.JTextField();
+        tfCustomerEmail = new javax.swing.JTextField();
+        tfCustomerIP = new javax.swing.JTextField();
+        comboCustomerStatus = new javax.swing.JComboBox();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTextPane1 = new javax.swing.JTextPane();
+        tfCustomerComment = new javax.swing.JTextPane();
         jPanel11 = new javax.swing.JPanel();
-        btnSaveDeliver2 = new javax.swing.JLabel();
+        btnSaveCustomer = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -290,6 +415,16 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
 
         tableSearchOrder.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
+                {null},
+                {null},
+                {null},
+                {null},
+                {null},
+                {null},
+                {null},
+                {null},
+                {null},
+                {null},
                 {null},
                 {null},
                 {null},
@@ -410,24 +545,44 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
 
         jPanel6.setBackground(new java.awt.Color(255, 255, 255));
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tableOrderLine.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "ISBN", "Titre", "Quantité", "Prix H.T", "T.V.A", "Prix T.T.C"
+                "ISBN", "Titre", "Prix unitaire HT", "Quantité", "Prix H.T", "T.V.A", "Prix T.T.C"
             }
-        ));
-        jScrollPane2.setViewportView(jTable2);
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.String.class, java.lang.Float.class, java.lang.Integer.class, java.lang.Float.class, java.lang.Float.class, java.lang.Float.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tableOrderLine.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                tableOrderLineMouseReleased(evt);
+            }
+        });
+        jScrollPane2.setViewportView(tableOrderLine);
 
         jLabel2.setText("Date de commande :");
 
@@ -449,7 +604,7 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
 
         btnPurchase.setForeground(new java.awt.Color(255, 255, 255));
         btnPurchase.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        btnPurchase.setText("Commander");
+        btnPurchase.setText("Ajouter une ligne");
 
         javax.swing.GroupLayout jPanel16Layout = new javax.swing.GroupLayout(jPanel16);
         jPanel16.setLayout(jPanel16Layout);
@@ -489,6 +644,24 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
         jLabel30.setText("€");
 
         comboStatus.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jPanel18.setBackground(new java.awt.Color(51, 102, 255));
+        jPanel18.setPreferredSize(new java.awt.Dimension(200, 45));
+
+        btnPurchase1.setForeground(new java.awt.Color(255, 255, 255));
+        btnPurchase1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btnPurchase1.setText("Retirer une ligne");
+
+        javax.swing.GroupLayout jPanel18Layout = new javax.swing.GroupLayout(jPanel18);
+        jPanel18.setLayout(jPanel18Layout);
+        jPanel18Layout.setHorizontalGroup(
+            jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(btnPurchase1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE)
+        );
+        jPanel18Layout.setVerticalGroup(
+            jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(btnPurchase1, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
+        );
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -544,7 +717,9 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
                                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addComponent(jLabel30, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                                .addGap(18, 18, 18)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jPanel18, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(23, 23, 23)))
                         .addComponent(comboStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
             .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 641, Short.MAX_VALUE)
@@ -561,8 +736,8 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
                     .addComponent(jLabel13)
                     .addComponent(comboStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel34)
                     .addComponent(labelPriceHT)
@@ -579,7 +754,8 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
                             .addComponent(jLabel6)
                             .addComponent(jLabel27)
                             .addComponent(jLabel28)))
-                    .addComponent(jPanel16, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPanel16, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel18, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel35)
@@ -658,7 +834,8 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
             .addComponent(btnNewAdress, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
         );
 
-        jLabel59.setText("Ajouter label :");
+        jLabel59.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel59.setText("Ajouter un label :");
 
         jPanel9.setBackground(new java.awt.Color(51, 102, 255));
         jPanel9.setPreferredSize(new java.awt.Dimension(200, 45));
@@ -727,7 +904,7 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
                                         .addComponent(jLabel59)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jPanel13, javax.swing.GroupLayout.DEFAULT_SIZE, 232, Short.MAX_VALUE)
+                                            .addComponent(jPanel13, javax.swing.GroupLayout.DEFAULT_SIZE, 215, Short.MAX_VALUE)
                                             .addComponent(tfInvoiceLabel)))
                                     .addGroup(jPanel4Layout.createSequentialGroup()
                                         .addGap(0, 0, Short.MAX_VALUE)
@@ -802,7 +979,7 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
                 .addGap(35, 35, 35))
         );
 
-        jTabbedPane1.addTab("Adressse facturation", jPanel4);
+        jTabbedPane1.addTab("Adresse facturation", jPanel4);
 
         jPanel5.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -811,8 +988,6 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
         jLabel50.setText("Ville :");
 
         jLabel51.setText("Complément adresse :");
-
-        jLabel52.setText("Label adresse :");
 
         tabletfInvoiceAdresses1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -863,18 +1038,19 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
         jPanel14.setLayout(jPanel14Layout);
         jPanel14Layout.setHorizontalGroup(
             jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(btnNewAdress1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 232, Short.MAX_VALUE)
+            .addComponent(btnNewAdress1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 215, Short.MAX_VALUE)
         );
         jPanel14Layout.setVerticalGroup(
             jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(btnNewAdress1, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
+            .addComponent(btnNewAdress1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
         );
 
         comboInvoiceStreetType1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "rue", "allée ", "avenue", "boulevard ", "chemin ", "route", "impasse", "lieu-dit" }));
 
         jLabel58.setText("Type :");
 
-        jLabel60.setText("Ajouter label :");
+        jLabel60.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel60.setText("Ajouter un label :");
 
         jPanel10.setBackground(new java.awt.Color(51, 102, 255));
         jPanel10.setPreferredSize(new java.awt.Dimension(200, 45));
@@ -926,27 +1102,28 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
                                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel5Layout.createSequentialGroup()
                                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel52)
-                                            .addComponent(jLabel55))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jTextField24, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                                .addComponent(jLabel55)
+                                                .addGap(59, 59, 59)
+                                                .addComponent(jTextField24, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(jLabel57)
+                                                    .addComponent(jLabel53))
+                                                .addGap(15, 15, 15)
+                                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(jTextField26)
+                                                    .addComponent(jTextField29))))
+                                        .addGap(43, 43, 43))
                                     .addGroup(jPanel5Layout.createSequentialGroup()
-                                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel57)
-                                            .addComponent(jLabel53))
-                                        .addGap(15, 15, 15)
-                                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jTextField26)
-                                            .addComponent(jTextField29))))
-                                .addGap(43, 43, 43)
+                                        .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addGroup(jPanel5Layout.createSequentialGroup()
                                         .addComponent(jLabel60)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jPanel14, javax.swing.GroupLayout.DEFAULT_SIZE, 232, Short.MAX_VALUE)
+                                            .addComponent(jPanel14, javax.swing.GroupLayout.DEFAULT_SIZE, 215, Short.MAX_VALUE)
                                             .addComponent(tfInvoiceLabel1)))
                                     .addGroup(jPanel5Layout.createSequentialGroup()
                                         .addGap(0, 0, Short.MAX_VALUE)
@@ -975,18 +1152,13 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                        .addGap(13, 13, 13))
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel5Layout.createSequentialGroup()
-                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(tfInvoiceLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel60))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jPanel14, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel52))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)))
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(tfInvoiceLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel60))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel14, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
                 .addComponent(jSeparator5, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1154,9 +1326,18 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
         jPanel12.setBackground(new java.awt.Color(255, 255, 255));
         jPanel12.setPreferredSize(new java.awt.Dimension(100, 100));
 
-        jLabel31.setText("Code :");
+        jLabel31.setText("Numéro :");
 
         jLabel37.setText("Date exp");
+
+        tfInvoiceStreetName.setText("123");
+
+        tfInvoiceCompany.setText("1234567891234567891");
+        tfInvoiceCompany.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tfInvoiceCompanyActionPerformed(evt);
+            }
+        });
 
         jLabel45.setText("Type carte :");
 
@@ -1227,7 +1408,7 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
             .addComponent(btnNewAdress2, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
         );
 
-        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Visa", "MasterCard", "AmericanExpress", "Paypal" }));
 
         panelDate.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -1266,8 +1447,8 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
                         .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(tfInvoiceLastName, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
                             .addComponent(tfInvoiceCompany, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
-                            .addComponent(tfInvoiceStreetName, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jComboBox4, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jComboBox4, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(tfInvoiceStreetName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(273, 273, 273)
                         .addComponent(jPanel15, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(panelDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -1332,26 +1513,26 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
 
         jLabel40.setText("Commentaire :");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Actif", "Inactif", "BlackListé" }));
+        comboCustomerStatus.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Actif", "Inactif", "BlackListé" }));
 
-        jScrollPane3.setViewportView(jTextPane1);
+        jScrollPane3.setViewportView(tfCustomerComment);
 
         jPanel11.setBackground(new java.awt.Color(51, 102, 255));
         jPanel11.setPreferredSize(new java.awt.Dimension(200, 45));
 
-        btnSaveDeliver2.setForeground(new java.awt.Color(255, 255, 255));
-        btnSaveDeliver2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        btnSaveDeliver2.setText("Enregister");
+        btnSaveCustomer.setForeground(new java.awt.Color(255, 255, 255));
+        btnSaveCustomer.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btnSaveCustomer.setText("Enregister");
 
         javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
         jPanel11.setLayout(jPanel11Layout);
         jPanel11Layout.setHorizontalGroup(
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(btnSaveDeliver2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE)
+            .addComponent(btnSaveCustomer, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE)
         );
         jPanel11Layout.setVerticalGroup(
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(btnSaveDeliver2, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
+            .addComponent(btnSaveCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -1373,17 +1554,17 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
                                             .addComponent(jLabel10))
                                         .addGap(46, 46, 46)
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                            .addComponent(tfCustomerCompany, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(tfCustomerFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(tfCustomerLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addComponent(jLabel14)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(tfCustomerBirthDay, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addComponent(jLabel11)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addComponent(tfCustomerPhoneNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(0, 2, Short.MAX_VALUE)
@@ -1401,9 +1582,9 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addComponent(jScrollPane3)
-                                    .addComponent(jTextField7, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextField6, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jComboBox1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(tfCustomerIP, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(tfCustomerEmail, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(comboCustomerStatus, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(45, 45, 45))))
         );
@@ -1415,36 +1596,36 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel8)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(tfCustomerLastName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel9)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(tfCustomerFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel10)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(tfCustomerCompany, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel14)
-                            .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(tfCustomerBirthDay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel11)
-                            .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(tfCustomerPhoneNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(74, 74, 74))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel15)
-                            .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(tfCustomerEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(tfCustomerIP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel12))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel41)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(comboCustomerStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel40)
@@ -1493,11 +1674,19 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
                 PurchaseTableItem purTable = (PurchaseTableItem) tableSearchOrder.getValueAt(ligne, 0);
                 currentPurchase = purTable.getPurchase();
                 loadCustomer();
-             //   loadOrderLineTable();
-            //    loadAddresses();
+                loadOrderLineTable();
+                loadAddresses();
             }
         }
     }//GEN-LAST:event_tableSearchOrderMouseReleased
+
+    private void tfInvoiceCompanyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfInvoiceCompanyActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tfInvoiceCompanyActionPerformed
+
+    private void tableOrderLineMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableOrderLineMouseReleased
+
+    }//GEN-LAST:event_tableOrderLineMouseReleased
 
     /**
      * @param args the command line arguments
@@ -1540,16 +1729,17 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
     private javax.swing.JLabel btnNewAdress2;
     private javax.swing.JLabel btnNewOrder;
     private javax.swing.JLabel btnPurchase;
+    private javax.swing.JLabel btnPurchase1;
+    private javax.swing.JLabel btnSaveCustomer;
     private javax.swing.JLabel btnSaveDeliver;
     private javax.swing.JLabel btnSaveDeliver1;
-    private javax.swing.JLabel btnSaveDeliver2;
     private javax.swing.JLabel btnSaveInvoiceAdress;
     private javax.swing.JLabel btnSearchOrder;
+    private javax.swing.JComboBox comboCustomerStatus;
     private javax.swing.JComboBox comboInvoiceStreetType;
     private javax.swing.JComboBox comboInvoiceStreetType1;
     private javax.swing.JComboBox comboSearch;
     private javax.swing.JComboBox comboStatus;
-    private javax.swing.JComboBox jComboBox1;
     private javax.swing.JComboBox jComboBox2;
     private javax.swing.JComboBox jComboBox3;
     private javax.swing.JComboBox jComboBox4;
@@ -1599,7 +1789,6 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel50;
     private javax.swing.JLabel jLabel51;
-    private javax.swing.JLabel jLabel52;
     private javax.swing.JLabel jLabel53;
     private javax.swing.JLabel jLabel54;
     private javax.swing.JLabel jLabel55;
@@ -1623,6 +1812,7 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
     private javax.swing.JPanel jPanel15;
     private javax.swing.JPanel jPanel16;
     private javax.swing.JPanel jPanel17;
+    private javax.swing.JPanel jPanel18;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -1641,8 +1831,6 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator5;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable2;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField11;
     private javax.swing.JTextField jTextField12;
     private javax.swing.JTextField jTextField13;
@@ -1652,7 +1840,6 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
     private javax.swing.JTextField jTextField17;
     private javax.swing.JTextField jTextField18;
     private javax.swing.JTextField jTextField19;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField20;
     private javax.swing.JTextField jTextField21;
     private javax.swing.JTextField jTextField22;
@@ -1663,22 +1850,25 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
     private javax.swing.JTextField jTextField27;
     private javax.swing.JTextField jTextField28;
     private javax.swing.JTextField jTextField29;
-    private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField30;
     private javax.swing.JTextField jTextField31;
     private javax.swing.JTextField jTextField32;
     private javax.swing.JTextField jTextField33;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
-    private javax.swing.JTextPane jTextPane1;
     private javax.swing.JLabel labelPriceHT;
     private javax.swing.JPanel panelDate;
+    private javax.swing.JTable tableOrderLine;
     private javax.swing.JTable tableSearchOrder;
     private javax.swing.JTable tabletfInvoiceAdresses;
     private javax.swing.JTable tabletfInvoiceAdresses1;
     private javax.swing.JTable tabletfInvoiceAdresses2;
+    private javax.swing.JTextField tfCustomerBirthDay;
+    private javax.swing.JTextPane tfCustomerComment;
+    private javax.swing.JTextField tfCustomerCompany;
+    private javax.swing.JTextField tfCustomerEmail;
+    private javax.swing.JTextField tfCustomerFirstName;
+    private javax.swing.JTextField tfCustomerIP;
+    private javax.swing.JTextField tfCustomerLastName;
+    private javax.swing.JTextField tfCustomerPhoneNumber;
     private javax.swing.JTextField tfInvoiceCompany;
     private javax.swing.JTextField tfInvoiceLabel;
     private javax.swing.JTextField tfInvoiceLabel1;

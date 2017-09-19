@@ -156,7 +156,7 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
         }
     }
 
-// Constructor
+    // Constructor
     public JFCustomer() {
         initComponents();
 

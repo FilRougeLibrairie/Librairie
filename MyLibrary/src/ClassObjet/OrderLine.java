@@ -13,10 +13,10 @@ public class OrderLine {
 
     private int ordLineId;
     private int ordLineQuantity;
-    private int ordBookPriceHT;
+    private Float ordBookPriceHT;
     private Float ordBookVAT;
-    private Purchase purId;
-    private Book booIsbn13;
+    private Purchase purchase;
+    private Book book;
 
     //contstructor
     public OrderLine() {
@@ -28,18 +28,18 @@ public class OrderLine {
     }
 
     public void setPurId(Purchase purId) {
-        this.purId = purId;
+        this.purchase = purId;
     }
 
     public void setBooIsbn13(Book booIsbn13) {
-        this.booIsbn13 = booIsbn13;
+        this.book = booIsbn13;
     }
 
     public void setOrdLineQuantity(int ordLineQuantity) {
         this.ordLineQuantity = ordLineQuantity;
     }
 
-    public void setOrdBookPriceHT(int ordBookPriceHT) {
+    public void setOrdBookPriceHT(Float ordBookPriceHT) {
         this.ordBookPriceHT = ordBookPriceHT;
     }
 
@@ -53,18 +53,18 @@ public class OrderLine {
     }
 
     public Purchase getPurId() {
-        return purId;
+        return purchase;
     }
 
     public Book getBooIsbn13() {
-        return booIsbn13;
+        return book;
     }
 
     public int getOrdLineQuantity() {
         return ordLineQuantity;
     }
 
-    public int getOrdBookPriceHT() {
+    public Float getOrdBookPriceHT() {
         return ordBookPriceHT;
     }
 
@@ -74,7 +74,7 @@ public class OrderLine {
 
     @Override
     public String toString() {
-        return "OrderLine{" + "ordLineId=" + ordLineId + ", ordLineQuantity=" + ordLineQuantity + ", ordBookPriceHT=" + ordBookPriceHT + ", ordBookVAT=" + ordBookVAT + ", purId=" + purId + ", booIsbn13=" + booIsbn13 + '}';
+        return "OrderLine{" + "ordLineId=" + ordLineId + ", ordLineQuantity=" + ordLineQuantity + ", ordBookPriceHT=" + ordBookPriceHT + ", ordBookVAT=" + ordBookVAT + ", purId=" + purchase + ", booIsbn13=" + book + '}';
     }
     
     

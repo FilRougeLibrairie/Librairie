@@ -47,7 +47,7 @@ public class OrderLineDAO extends DAO {
             pstmt.setInt(1, ordLine.getPurId().getPurId());
             pstmt.setString(2, ordLine.getBooIsbn13().getBooIsbn13());
             pstmt.setInt(3, ordLine.getOrdLineQuantity());
-            pstmt.setInt(4, ordLine.getOrdBookPriceHT());
+            pstmt.setFloat(4, ordLine.getOrdBookPriceHT());
             pstmt.setFloat(5, ordLine.getOrdBookVAT());
 
             int result = pstmt.executeUpdate();
@@ -65,7 +65,7 @@ public class OrderLineDAO extends DAO {
         query.append("DELETE FROM " + TABLE + " WHERE ")
                 .append(ID)
                 .append(" = ")
-                .append("'" + ordLineId + "'");
+                .append(ordLineId);
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
             pstmt.executeQuery();
@@ -85,16 +85,15 @@ public class OrderLineDAO extends DAO {
         query.append(PRICE_HT).append(" = ?, ");
         query.append(VAT).append(" = ? ");
 
-        query.append("WHERE " + ID + " = '")
-                .append(ordLine.getOrdLineId())
-                .append("'");
+        query.append("WHERE " + ID + " = ")
+                .append(ordLine.getOrdLineId());
 
         try (PreparedStatement pstmt = connect.prepareStatement(query.toString());) {
 
             pstmt.setInt(1, ordLine.getPurId().getPurId());
             pstmt.setString(2, ordLine.getBooIsbn13().getBooIsbn13());
             pstmt.setInt(3, ordLine.getOrdLineQuantity());
-            pstmt.setInt(4, ordLine.getOrdBookPriceHT());
+            pstmt.setFloat(4, ordLine.getOrdBookPriceHT());
             pstmt.setFloat(5, ordLine.getOrdBookVAT());
 
             int result = pstmt.executeUpdate();
@@ -131,6 +130,7 @@ public class OrderLineDAO extends DAO {
                     ordLine.setBooIsbn13(book);
                     ordLine.setOrdLineQuantity(rs.getInt(QUANTITY));
                     ordLine.setOrdBookVAT(rs.getFloat(VAT));
+                    ordLine.setOrdBookPriceHT(rs.getFloat(PRICE_HT));
 
                     orderLineList.add(ordLine);
                 }
@@ -140,8 +140,6 @@ public class OrderLineDAO extends DAO {
 
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            
-
         }
         return orderLineList;
     }
@@ -175,6 +173,7 @@ public class OrderLineDAO extends DAO {
                     ordLine.setBooIsbn13(book);
                     ordLine.setOrdLineQuantity(rs.getInt(QUANTITY));
                     ordLine.setOrdBookVAT(rs.getFloat(VAT));
+                    ordLine.setOrdBookPriceHT(rs.getFloat(PRICE_HT));
                 }
             } else {
                 throw new SQLException("ResultSet was empty");
@@ -206,7 +205,49 @@ public class OrderLineDAO extends DAO {
                 .append(" = ")
                 .append("'" + term + "'");
 
-        System.out.println();
+        try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.isBeforeFirst()) {
+
+                while (rs.next()) {
+                    ordLine = new OrderLine();
+                    pur = new Purchase();
+                    book = new Book();
+
+                    ordLine.setOrdLineId(rs.getInt(ID));
+                    pur.setPurId(rs.getInt(PURCHASE_ID));
+                    ordLine.setPurId(pur);
+                    book.setBooIsbn13(rs.getString(BOOK_ISBN_13));
+                    ordLine.setBooIsbn13(book);
+                    ordLine.setOrdLineQuantity(rs.getInt(QUANTITY));
+                    ordLine.setOrdBookVAT(rs.getFloat(VAT));
+                    ordLine.setOrdBookPriceHT(rs.getFloat(PRICE_HT));
+                }
+            } else {
+                throw new SQLException("ResultSet was empty");
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
+            
+
+        }
+        return orderLineList;
+    }
+    
+    public Vector findByColumn(String column, int term) {
+        orderLineList = new Vector<OrderLine>();
+        pur = null;
+        ordLine = null;
+        book = null;
+
+        StringBuffer query = new StringBuffer();
+        query.append("SELECT * FROM " + TABLE + " WHERE ")
+                .append(column)
+                .append(" = ")
+                .append(term);
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
 
@@ -226,6 +267,8 @@ public class OrderLineDAO extends DAO {
                     ordLine.setBooIsbn13(book);
                     ordLine.setOrdLineQuantity(rs.getInt(QUANTITY));
                     ordLine.setOrdBookVAT(rs.getFloat(VAT));
+                    ordLine.setOrdBookPriceHT(rs.getFloat(PRICE_HT));
+                    orderLineList.add(ordLine);
                 }
             } else {
                 throw new SQLException("ResultSet was empty");

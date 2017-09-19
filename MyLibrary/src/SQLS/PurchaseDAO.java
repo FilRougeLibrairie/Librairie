@@ -140,6 +140,7 @@ public class PurchaseDAO extends DAO {
 
                     pur.setPurId(rs.getInt(ID));
                     cus.setCusID(rs.getInt(CUSTOMER_ID));
+                    pur.setCusId(cus);
                     shipCost.setShipId(rs.getInt(SHIPPING_COST));
                     pur.setShippingCostId(shipCost);
                     addrDelivery.setAddId(rs.getInt(ADDRESS_DELIVERY));
@@ -149,7 +150,6 @@ public class PurchaseDAO extends DAO {
                     pur.setPurIP(rs.getString(IP));
                     pur.setShippingDate(rs.getString(SHIPPING_DATE));
                     pur.setShippingNumber(rs.getInt(SHIPPING_NUMBER));
-
                     purList.add(pur);
                 }
             } else {
@@ -173,7 +173,7 @@ public class PurchaseDAO extends DAO {
         query.append("SELECT * FROM " + TABLE + " WHERE ")
                 .append(ID)
                 .append(" = ")
-                .append("'" + id + "'");
+                .append(id);
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
 
@@ -228,8 +228,6 @@ public class PurchaseDAO extends DAO {
                 .append(column)
                 .append(" = ")
                 .append("'" + term + "'");
-
-        System.out.println();
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
 

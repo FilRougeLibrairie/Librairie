@@ -36,4 +36,11 @@ public class Shipper {
         return ShipperName;
     }
 
+    @Override
+    public String toString() {
+        return "Shipper{" + "shipperId=" + shipperId + ", ShipperName=" + ShipperName + '}';
+    }
+    
+    
+
 }

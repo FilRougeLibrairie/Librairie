@@ -47,6 +47,11 @@ public class ShippingCost {
         this.shipCost = shipCost;
     }
 
+    @Override
+    public String toString() {
+        return "ShippingCost{" + "shipId=" + shipId + ", shipName=" + shipName + ", shipCost=" + shipCost + '}';
+    }
+
   
 
 }

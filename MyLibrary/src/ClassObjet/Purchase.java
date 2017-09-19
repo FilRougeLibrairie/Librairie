@@ -14,10 +14,10 @@ import java.util.Vector;
 public class Purchase {
 
     private int purId;
-    private Customer cusId;
+    private Customer customer;
     private ShippingCost shippingCostId;
-    private Address addDeliveryId;
-    private Address addInvoiceId;
+    private Address addDelivery;
+    private Address addInvoice;
     private String purIP;
     private String shippingDate;
     private int shippingNumber;
@@ -34,7 +34,7 @@ public class Purchase {
     }
 
     public void setCusId(Customer cusId) {
-        this.cusId = cusId;
+        this.customer = cusId;
     }
 
     public void setShippingCostId(ShippingCost shippingCostId) {
@@ -42,11 +42,11 @@ public class Purchase {
     }
 
     public void setAddDeliveryId(Address addDeliveryId) {
-        this.addDeliveryId = addDeliveryId;
+        this.addDelivery = addDeliveryId;
     }
 
     public void setAddInvoiceId(Address addInvoiceId) {
-        this.addInvoiceId = addInvoiceId;
+        this.addInvoice = addInvoiceId;
     }
 
     public void setPurIP(String purIP) {
@@ -67,7 +67,7 @@ public class Purchase {
     }
 
     public Customer getCusId() {
-        return cusId;
+        return customer;
     }
 
     public ShippingCost getShippingCostId() {
@@ -75,11 +75,11 @@ public class Purchase {
     }
 
     public Address getAddDeliveryId() {
-        return addDeliveryId;
+        return addDelivery;
     }
 
     public Address getAddInvoiceId() {
-        return addInvoiceId;
+        return addInvoice;
     }
 
     public String getPurIP() {
@@ -113,10 +113,10 @@ public class Purchase {
     @Override
     public String toString() {
         return "Purchase Id :" + purId + "\n"
-                + "customer Id : " + cusId + "\n"
-                + "Shipping Cost Id : " + shippingCostId + "\n"
-                + "Delivery Address Id : " + addDeliveryId + "\n"
-                + "Invoice Address Id : " + addInvoiceId + "\n"
+                + "customer : " + customer + "\n"
+                + "Shipping Cost : " + shippingCostId + "\n"
+                + "Delivery Address Id : " + addDelivery + "\n"
+                + "Invoice Address Id : " + addInvoice + "\n"
                 + "Purchase IP : " + purIP + "\n"
                 + "Shipping Date : " + shippingDate + "\n"
                 + "Shipping Number : " + shippingNumber;
