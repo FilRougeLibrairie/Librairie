@@ -78,6 +78,7 @@ public class VatDAO extends DAO<Vat> {
     @Override
     public void delete(Vat obj) {
         int vatId = ((Vat) obj).getVatCode();
+       
         StringBuffer query = new StringBuffer();
         query.append("DELETE FROM " + TABLE + " WHERE ")
                 .append(CODE)
