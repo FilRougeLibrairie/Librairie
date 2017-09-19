@@ -155,7 +155,7 @@ public class OrderLineDAO extends DAO {
         query.append("SELECT * FROM " + TABLE + " WHERE ")
                 .append(ID)
                 .append(" = ")
-                .append("'" + id + "'");
+                .append(id);
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
 
