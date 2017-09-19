@@ -5,6 +5,8 @@
  */
 package ClassObjet;
 
+import java.util.Vector;
+
 /**
  *
  * @author Tofi
@@ -44,6 +46,19 @@ public class BookLanguage {
         return booLangName;
     }
 
+    public Vector getVector() {
+        Vector v= new Vector();
+       
+        v.add(this.getBooLangCode());
+        v.add(this.getBooLangName());
+        
+      
+        return v;
+    }
+    
+    
+    
+    // to string
     @Override
     public String toString() {
         return booLangName ;

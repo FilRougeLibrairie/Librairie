@@ -26,7 +26,7 @@ public class FormatsDAO extends DAO{
        @Override
     public void create(Object obj) {
         Forma form = (Forma) obj;
-        String query = "IF NOT EXISTS (SELECT * FROM FORMATS WHERE " + ID + " = '" + form.getForId() + "')"
+        String query = "IF NOT EXISTS (SELECT * FROM FORMATS WHERE " + FORNAME + " = '" + form.getForName()+ "')"
                 + "INSERT INTO FORMATS (" + COLUMNS + ")"
                 + "VALUES (?)";
 
@@ -43,7 +43,30 @@ public class FormatsDAO extends DAO{
     }
 
     
-    
+    public Boolean answer(Forma obj){
+        Boolean answer=true;
+        Forma format = (Forma) obj;
+        String query = "SELECT * FROM Formats WHERE forName= '"+format.getForName()+"'";
+
+        try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.isBeforeFirst()) {
+                answer=true;
+            } else {
+                answer=false;
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
+            
+
+        }
+        return answer;
+        
+        
+    }   
     
     
     
@@ -131,8 +154,6 @@ public class FormatsDAO extends DAO{
         
    
     
-    
-    ////////////////////////
 
     @Override
     public Vector findAll() {
