@@ -2,6 +2,7 @@
 package PanelAModifier;
 
 
+import ClassObjet.ClassAssoc.Association;
 import ClassObjet.SubTheme;
 import ClassObjet.Theme;
 import SQLS.AssociationDAO;
@@ -18,7 +19,7 @@ public class ThemeDelete extends javax.swing.JPanel {
     ThemeDAO themeDAO = new ThemeDAO();
     JOptionPane jop1=new JOptionPane();
     SubThemeDAO subDAO = new SubThemeDAO();
-    AssociationDAO assoc = new AssociationDAO();
+   
     
     
     public ThemeDelete() {
@@ -96,30 +97,23 @@ public class ThemeDelete extends javax.swing.JPanel {
         
         JOptionPane jop1 = new JOptionPane();
         
-        // supprimer dans association
-        
-        
-        
-        
-        //supprimer dans subtheme
-        
+      
         SubTheme subtheme = new SubTheme();
+        
         subtheme.getSubId();
         subtheme.getSubName();
-        subtheme.setTheId(t);
-        subDAO.UpdateByTheme(t.getTheId());
+        subtheme.getSubDescription();
+        subtheme.setTheId(t); 
+        subDAO.updateByTheme(subtheme);
         
         System.out.println("biz");
-        // modifier dans theme 
         themeDAO.updateNoTheme(t);
         
-        System.out.println("biz2");
-        
         //delete dans theme
-        themeDAO.delete(t);
+//        themeDAO.delete(t);
         jComboBox1.removeAllItems();
         jComboBox1.setModel(initThemeModel());
-        jop1.showMessageDialog(null, "Le thème a été supprimé avec succès.", "Information", JOptionPane.INFORMATION_MESSAGE);
+//        jop1.showMessageDialog(null, "Le thème a été supprimé avec succès.", "Information", JOptionPane.INFORMATION_MESSAGE);
          
        
         

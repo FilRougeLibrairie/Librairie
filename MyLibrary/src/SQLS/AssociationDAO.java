@@ -37,13 +37,12 @@ public class AssociationDAO extends DAO<Association>{
     @Override
     public void update(Association obj) {
        
-    Association assoc = (Association) obj;
+        Association assoc = (Association) obj;
         StringBuilder query = new StringBuilder("UPDATE " + TABLE + " SET ");
         query.append(SUBID).append(" = ? ");
 
-        query.append("WHERE " + SUBID + " = '")
-                .append(assoc.getSubId())
-                .append("'");
+        query.append("WHERE " + SUBID + " = '"+assoc.getSubId()+"'");
+                
 
         try (PreparedStatement pstmt = connect.prepareStatement(query.toString());) {
 

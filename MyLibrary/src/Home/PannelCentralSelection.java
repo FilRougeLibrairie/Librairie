@@ -5,6 +5,8 @@
  */
 package Home;
 
+import PanelOk.OfferPanel;
+import PanelEnCoursChrys.OfferPanelDelete;
 import PanelOk.BookLanguagePanel;
 import PanelOk.SubthemePanel;
 import PanelOk.ThemePanel;
@@ -525,6 +527,11 @@ public class PannelCentralSelection extends javax.swing.JPanel {
         jPanel18.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseMoved(java.awt.event.MouseEvent evt) {
                 jPanel18MouseMoved(evt);
+            }
+        });
+        jPanel18.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel18MouseClicked(evt);
             }
         });
 
@@ -1307,6 +1314,15 @@ public class PannelCentralSelection extends javax.swing.JPanel {
 
     private void bEventMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bEventMouseClicked
 
+        
+        
+        jpPrincipal.removeAll();
+        jpPrincipal.validate();
+        OfferPanel offer = new OfferPanel();
+        jpPrincipal.setLayout(new BorderLayout());
+        jpPrincipal.add(offer, BorderLayout.NORTH);
+        jpPrincipal.setVisible(true);
+        jpPrincipal.revalidate();
 
     }//GEN-LAST:event_bEventMouseClicked
 
@@ -1619,6 +1635,27 @@ public class PannelCentralSelection extends javax.swing.JPanel {
         jpPrincipal.setVisible(true);
         jpPrincipal.revalidate();
     }//GEN-LAST:event_bFormats1MouseClicked
+
+    private void jPanel18MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel18MouseClicked
+
+        
+
+        jpPrincipal.removeAll();
+        jpPrincipal.validate();
+        OfferPanel offer = new OfferPanel();
+        jpPrincipal.setLayout(new BorderLayout());
+        jpPrincipal.add(offer, BorderLayout.NORTH);
+        jpPrincipal.setVisible(true);
+        jpPrincipal.revalidate();
+
+
+
+
+
+
+
+// TODO add your handling code here:
+    }//GEN-LAST:event_jPanel18MouseClicked
 
     void setColor(JPanel panel) {
         panel.setBackground(new Color(102, 102, 102));

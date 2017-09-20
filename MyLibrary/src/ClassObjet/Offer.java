@@ -26,6 +26,19 @@ public class Offer {
     public Offer() {
     }
 
+    public Offer(int offId, String offName, String offText, String offDateStart, String offDateEnd, Float offDiscount, String offPicture) {
+        this.offId = offId;
+        this.offName = offName;
+        this.offText = offText;
+        this.offDateStart = offDateStart;
+        this.offDateEnd = offDateEnd;
+        this.offDiscount = offDiscount;
+        this.offPicture = offPicture;
+    }
+    
+    
+    
+
     //Setters
     public void setOffId(int offId) {
         this.offId = offId;
