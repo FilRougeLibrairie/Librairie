@@ -248,6 +248,40 @@ public class SubThemeDAO extends DAO<SubTheme>{
     }
 
     
+    // SEARCH by theme
+    
+     public void UpdateByTheme(int term) {
+         
+        
+        StringBuilder query = new StringBuilder("UPDATE " + TABLE + " SET ");
+        query.append(ID).append(" = ?, ");
+        query.append(THEME_ID).append(" = ?, ");
+        query.append(NAME).append(" = ? ");
+
+        query.append("WHERE " + THEME_ID+ " = '")
+                .append(term)
+                .append("'");
+
+        try (PreparedStatement pstmt = connect.prepareStatement(query.toString());) {
+
+            pstmt.setInt(1, 38);
+            pstmt.setInt(1, 0);
+            pstmt.setString(1, "Inconnu");
+            
+            
+            int result = pstmt.executeUpdate();
+
+        } catch (SQLException ex) {
+            System.out.println("ERROR UPDATING Object : " + ex.getMessage());
+            
+
+        }
+        
+    }
+    
+    
+         
+    
     
     
 }

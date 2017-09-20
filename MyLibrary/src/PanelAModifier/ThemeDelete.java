@@ -2,6 +2,7 @@
 package PanelAModifier;
 
 
+import ClassObjet.SubTheme;
 import ClassObjet.Theme;
 import SQLS.AssociationDAO;
 import SQLS.SubThemeDAO;
@@ -12,7 +13,7 @@ import javax.swing.JOptionPane;
 
 
 public class ThemeDelete extends javax.swing.JPanel {
-    Theme theme = new Theme();
+   
     Vector v = new Vector();
     ThemeDAO themeDAO = new ThemeDAO();
     JOptionPane jop1=new JOptionPane();
@@ -100,9 +101,21 @@ public class ThemeDelete extends javax.swing.JPanel {
         
         
         
+        //supprimer dans subtheme
         
+        SubTheme subtheme = new SubTheme();
+        subtheme.getSubId();
+        subtheme.getSubName();
+        subtheme.setTheId(t);
+        subDAO.UpdateByTheme(t.getTheId());
         
+        System.out.println("biz");
+        // modifier dans theme 
+        themeDAO.updateNoTheme(t);
         
+        System.out.println("biz2");
+        
+        //delete dans theme
         themeDAO.delete(t);
         jComboBox1.removeAllItems();
         jComboBox1.setModel(initThemeModel());
