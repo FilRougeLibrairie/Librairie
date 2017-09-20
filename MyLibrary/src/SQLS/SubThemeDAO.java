@@ -2,12 +2,14 @@
 package SQLS;
 
 
+
 import ClassObjet.SubTheme;
 import ClassObjet.Theme;
 import static Names.SQLNames.StatusDisplayNames.CODE;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Vector;
 
 
@@ -48,6 +50,37 @@ public class SubThemeDAO extends DAO<SubTheme>{
             
         }
     }
+    
+    
+    public Boolean answer(SubTheme obj){
+        Boolean answer=true;
+        SubTheme sub = (SubTheme) obj;
+        String query = "SELECT * FROM subtheme WHERE subname= '"+sub.getSubName()+"'";
+
+        try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.isBeforeFirst()) {
+                answer=true;
+            } else {
+                answer=false;
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
+            
+
+        }
+        return answer;
+        
+        
+    }  
+    
+    
+    
+    
+    
 
     @Override
     public void update(SubTheme obj) {
@@ -125,6 +158,15 @@ public class SubThemeDAO extends DAO<SubTheme>{
         return subThemeList;
     }
 
+    
+    
+    
+  
+    
+    
+    
+    
+    
     @Override
     public Vector<SubTheme> findByColumn(String column, String term) {
         Vector<SubTheme> subThemeList = new Vector<SubTheme>();

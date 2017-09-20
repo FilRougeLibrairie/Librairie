@@ -6,8 +6,8 @@
 package Home;
 
 import PanelOk.BookLanguagePanel;
-import PanelEnCoursChrys.SubthemePanel;
-import PanelEnCoursChrys.ThemePanel;
+import PanelOk.SubthemePanel;
+import PanelOk.ThemePanel;
 import PanelOk.AuthorPanel;
 import PanelOk.FormatPanel;
 import PanelOk.KeywordsPanel;

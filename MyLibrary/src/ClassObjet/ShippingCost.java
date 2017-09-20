@@ -51,7 +51,4 @@ public class ShippingCost {
     public String toString() {
         return "ShippingCost{" + "shipId=" + shipId + ", shipName=" + shipName + ", shipCost=" + shipCost + '}';
     }
-
-  
-
 }

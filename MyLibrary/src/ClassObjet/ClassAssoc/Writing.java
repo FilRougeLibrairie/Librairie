@@ -1,14 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package ClassObjet.ClassAssoc;
 
-/**
- *
- * @author Tofi
- */
+
 public class Writing {
     
     private String booIsbn13;
@@ -18,6 +11,14 @@ public class Writing {
 
     public Writing() {
     }
+
+    public Writing(String booIsbn13, int autId) {
+        this.booIsbn13 = booIsbn13;
+        this.autId = autId;
+    }
+    
+   
+    
     
     //Setters
 
@@ -39,5 +40,6 @@ public class Writing {
         return autId;
     }
     
+
     
 }

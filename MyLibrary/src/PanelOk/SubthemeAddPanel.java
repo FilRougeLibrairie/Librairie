@@ -3,87 +3,31 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package PanelEnCoursChrys;
+package PanelOk;
 
-import ClassObjet.Author;
+
 import ClassObjet.SubTheme;
 import ClassObjet.Theme;
-import SQLS.AuthorDAO;
 import SQLS.SubThemeDAO;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.Vector;
+import SQLS.ThemeDAO;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author Chrys
- */
-public class SubthemeAddPanel extends javax.swing.JPanel {
 
-    /**
-     * Creates new form SubthemeAddPanel
-     */
+public class SubthemeAddPanel extends javax.swing.JPanel {
+    SubThemeDAO sub = new SubThemeDAO();
+    ThemeDAO the = new ThemeDAO();
+    JOptionPane jop1, jop2;
+    
     public SubthemeAddPanel() {
         initComponents();
     }
 
     private DefaultComboBoxModel initThemeModel() {
-        return new DefaultComboBoxModel(initContactVector());
+        return new DefaultComboBoxModel(the.findAll());
     }
 
-    private Vector initContactVector() {
-        Vector v = new Vector();
-        try {
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-        } catch (ClassNotFoundException ex) {
-            System.err.println("Oops:Driver:" + ex.getMessage());
-            return v;
-        }
-        Connection connexion = null;
-        try {
-            connexion = DriverManager.getConnection(
-                    "jdbc:sqlserver://localhost:1433;"
-                    + "databaseName=myLibrary;user=sa;password=sa");
-        } catch (SQLException ex) {
-            System.err.println("Oops:Connection:" + ex.getErrorCode() + ":" + ex.getMessage());
-            return v;
-        }
-
-        String query = "SELECT * FROM theme ORDER BY thename ;";
-        try {
-            Statement stmt = connexion.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
-
-            while (rs.next()) {
-
-                v.add(new Theme(rs.getInt("theId"), rs.getString("theName"), rs.getString("thedescription")));
-
-            }
-
-            rs.close();
-            stmt.close();
-
-        } catch (SQLException ex) {
-            System.err.println("Oops:SQL:" + ex.getErrorCode() + ":" + ex.getMessage());
-            return v;
-        }
-
-        try {
-            connexion.close();
-        } catch (SQLException ex) {
-            System.err.println("Oops:Close:" + ex.getErrorCode() + ":" + ex.getMessage());
-            return v;
-        }
-
-        System.out.println("Done!");
-
-        return v;
-    }
+   
 
     
     @SuppressWarnings("unchecked")
@@ -100,7 +44,7 @@ public class SubthemeAddPanel extends javax.swing.JPanel {
         jLabel3 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
 
-        setPreferredSize(new java.awt.Dimension(600, 600));
+        setPreferredSize(new java.awt.Dimension(900, 600));
 
         jLabel1.setText("Nom du Sous - thème");
 
@@ -137,9 +81,9 @@ public class SubthemeAddPanel extends javax.swing.JPanel {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(133, 133, 133)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(49, 49, 49)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -147,12 +91,12 @@ public class SubthemeAddPanel extends javax.swing.JPanel {
                         .addGap(43, 43, 43)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 310, Short.MAX_VALUE)
-                            .addComponent(jtName)))
+                            .addComponent(jScrollPane1)
+                            .addComponent(jtName, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(203, 203, 203)
+                        .addGap(154, 154, 154)
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(13, Short.MAX_VALUE))
+                .addContainerGap(172, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -201,16 +145,30 @@ public class SubthemeAddPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        JOptionPane jop1=new JOptionPane();
+        
         SubTheme s = new SubTheme();
         s.setSubName(jtName.getText());
         s.setSubDescription(jTDescription.getText());
         s.setTheId(t);
         
-        SubThemeDAO sub = new SubThemeDAO();
-
+        
+        
+        
+        if(sub.answer(s)==false){
         sub.create(s);
         jop1.showMessageDialog(null, "Le sous thème a été ajouté avec succès.", "Information", JOptionPane.INFORMATION_MESSAGE);
+        }
+        else{
+        jop2.showMessageDialog(null,  "Insertion déjà présente dans la base ","Erreur", JOptionPane. WARNING_MESSAGE);    
+        }
+        
+        jComboBox1.setModel(initThemeModel());
+        jtName.setText("");
+        jTDescription.setText("");
+        
+       
+
+        
         
         
     }//GEN-LAST:event_jButton2ActionPerformed

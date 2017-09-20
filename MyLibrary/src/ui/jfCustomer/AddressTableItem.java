@@ -11,10 +11,12 @@ public class AddressTableItem {
 
     private Address address;
     private String name;
+    private int id;
 
     public AddressTableItem(Address address) {
         this.address = address;
         this.name = this.address.getAddLabel();
+        this.id = this.address.getAddId();
     }
 
     public Vector getVector() {
@@ -38,6 +40,15 @@ public class AddressTableItem {
     public void setName(String name) {
         this.name = name;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+    
 
     @Override
     public String toString() {

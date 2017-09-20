@@ -5,8 +5,6 @@
  */
 package PanelOk;
 
-import PanelEnCoursChrys.AuthorDeletePanel;
-import PanelEnCoursChrys.AuthorUpdatePanel;
 import PanelOk.AuthorAddPanel;
 import java.awt.BorderLayout;
 
