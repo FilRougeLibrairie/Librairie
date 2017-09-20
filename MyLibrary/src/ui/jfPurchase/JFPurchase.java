@@ -19,10 +19,12 @@ import java.util.Date;
 import java.util.Properties;
 import java.util.Vector;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
+import ui.jfCustomer.AddressTableItem;
 import utils.DateLabelFormatter;
 import utils.PriceCalculation;
 
@@ -39,6 +41,7 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
 
     Vector comboSearchModel;
     Vector<Purchase> purchaseList;
+    Vector addressTableList;
     Vector purchaseTableList;
     Vector orderStatusTableList;
     PurchaseDAO purchaseDAO;
@@ -141,6 +144,18 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
         return model;
     }
 
+    private void setTableAddressModel() {
+        tableInvoiceAdresses.setModel(initTableAddressModel());
+        tabletShippingAddress.setModel(initTableAddressModel());
+    }
+
+    private DefaultTableModel initTableAddressModel() {
+        Vector v = new Vector();
+        v.add("Adresse");
+        return new javax.swing.table.DefaultTableModel(addressTableList, v) {
+        };
+    }
+
     private void searchForOrder() {
         PurchaseDAO purchaseDAO = new PurchaseDAO();
         purchaseList = purchaseDAO.findAll();
@@ -154,24 +169,44 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
 
     private void loadCustomer() {
         CustomerDAO customerDAO = new CustomerDAO();
-        Vector<Customer> customerList = new Vector<Customer>();
         Customer cus = customerDAO.find(currentPurchase.getCusId().getCusID());
         currentCustomer = cus;
-
         fillCustomerFields();
     }
 
     private void loadAddresses() {
         AddressDAO addressDAO = new AddressDAO();
+        addressTableList = new Vector<Address>();
+        Vector<Address> addressList = addressDAO.findByCustomerId(currentCustomer.getCusID());
         Address deliveryAddress = addressDAO.find(currentPurchase.getAddDeliveryId().getAddId());
         Address invoiceAddress = addressDAO.find(currentPurchase.getAddInvoiceId().getAddId());
+
+        for (Address addr : addressList) {
+            AddressTableItem addressTable = new AddressTableItem(addr);
+            addressTableList.add(addressTable.getVector());
+        }
+
+        setTableAddressModel();
+
+        for (int ligne = 0; ligne < tableInvoiceAdresses.getRowCount(); ligne++) {
+            AddressTableItem addr = (AddressTableItem) tableInvoiceAdresses.getValueAt(ligne, 0);
+            if (addr.getId() == invoiceAddress.getAddId()) {
+                tableInvoiceAdresses.changeSelection(ligne, 0, false, false);
+                fillAddressFields(invoiceAddress);
+            }
+        }
         
-        ////////  DELIVERY ADDRESS ///////////
+        for (int ligne = 0; ligne < tabletShippingAddress.getRowCount(); ligne++) {
+            AddressTableItem addr = (AddressTableItem) tabletShippingAddress.getValueAt(ligne, 0);
+            if (addr.getId() == deliveryAddress.getAddId()) {
+                tabletShippingAddress.changeSelection(ligne, 0, false, false);
+                fillAddressFields(deliveryAddress);
+            }
+        }
+    }
+    
+    private void fillAddressFields(Address addr){
         
-        
-        System.out.println("======== INVOICE ADDR ========");
-        // System.out.println(invoiceAddress);
-        System.out.println("==========================");
     }
 
     private void loadOrderLineTable() {
@@ -198,7 +233,7 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
         Float totalLinesTTC = 0f;
         Float shippingCost;
         Float totalOrderTTC;
-        
+
         shipCostObject = shippingCostDAO.find(currentPurchase.getShippingCostId().getShipId());
         currentPurchase.setShippingCostId(shipCostObject);
         shippingCost = currentPurchase.getShippingCostId().getShipCost();
@@ -209,11 +244,11 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
             Float priceTTCLine = ordLineTable.getPriceTTC();
             totalHT += totalHTLine;
             totalLinesTTC += priceTTCLine;
-        }        
-        
+        }
+
         totalVAT = PriceCalculation.roundedPrice(totalLinesTTC - totalHT);
         totalOrderTTC = PriceCalculation.roundedPrice(totalLinesTTC + shippingCost);
-        
+
         labelPriceHT.setText(String.valueOf(totalHT));
         labelTotalVAT.setText(String.valueOf(totalVAT));
         labelShippingCost.setText(String.valueOf(shippingCost));
@@ -228,8 +263,8 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
         Vector v = new Vector();
         v.add("ISBN");
         v.add("Titre");
-        v.add("Prix unit. HT");
         v.add("Quantité");
+        v.add("Prix unit. HT");
         v.add("Total HT");
         v.add("TVA");
         v.add("Prix TTC");
@@ -241,12 +276,25 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
     private void fillCustomerFields() {
         tfCustomerFirstName.setText(currentCustomer.getCusFirstName().trim());
         tfCustomerLastName.setText(currentCustomer.getCusLastName().trim());
-        tfCustomerCompany.setText(currentCustomer.getCusOrganisationName().trim());
+        if (currentCustomer.getCusOrganisationName() != null) {
+            tfCustomerCompany.setText(currentCustomer.getCusOrganisationName().trim());
+        }
         tfCustomerBirthDay.setText(currentCustomer.getCusDateOfBirth().toString().trim());
         tfCustomerPhoneNumber.setText(currentCustomer.getCusPhoneNumber());
         tfCustomerIP.setText(currentCustomer.getCusIP());
         tfCustomerComment.setText(currentCustomer.getCusComment());
         tfCustomerEmail.setText(currentCustomer.getCusEmail());
+    }
+
+    private void clearTableModels(Vector<JTable> jtableList) {
+        DefaultTableModel tabModel;
+        for (JTable table : jtableList) {
+            tabModel = ((DefaultTableModel) table.getModel());
+            int lignes = tabModel.getRowCount();
+            for (int i = lignes - 1; i >= 0; i--) {
+                tabModel.removeRow(i);
+            }
+        }
     }
 
     /**
@@ -317,7 +365,7 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
         jTextField18 = new javax.swing.JTextField();
         tfInvoiceLabel = new javax.swing.JTextField();
         jScrollPane5 = new javax.swing.JScrollPane();
-        tabletfInvoiceAdresses = new javax.swing.JTable();
+        tableInvoiceAdresses = new javax.swing.JTable();
         jPanel13 = new javax.swing.JPanel();
         btnNewAdress = new javax.swing.JLabel();
         jLabel59 = new javax.swing.JLabel();
@@ -335,7 +383,7 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
         jTextField28 = new javax.swing.JTextField();
         tfInvoiceLabel1 = new javax.swing.JTextField();
         jScrollPane6 = new javax.swing.JScrollPane();
-        tabletfInvoiceAdresses1 = new javax.swing.JTable();
+        tabletShippingAddress = new javax.swing.JTable();
         jLabel53 = new javax.swing.JLabel();
         jLabel54 = new javax.swing.JLabel();
         jLabel55 = new javax.swing.JLabel();
@@ -356,13 +404,6 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
         jTextField32 = new javax.swing.JTextField();
         jLabel32 = new javax.swing.JLabel();
         jTextField33 = new javax.swing.JTextField();
-        jPanel7 = new javax.swing.JPanel();
-        jLabel47 = new javax.swing.JLabel();
-        jLabel48 = new javax.swing.JLabel();
-        jLabel49 = new javax.swing.JLabel();
-        jTextField19 = new javax.swing.JTextField();
-        jComboBox2 = new javax.swing.JComboBox();
-        jComboBox3 = new javax.swing.JComboBox();
         jPanel8 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jLabel38 = new javax.swing.JLabel();
@@ -578,7 +619,7 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
                 java.lang.Object.class, java.lang.String.class, java.lang.Integer.class, java.lang.Float.class, java.lang.Float.class, java.lang.Float.class, java.lang.Float.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false
+                false, false, true, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -592,6 +633,11 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
         tableOrderLine.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 tableOrderLineMouseReleased(evt);
+            }
+        });
+        tableOrderLine.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                tableOrderLinePropertyChange(evt);
             }
         });
         jScrollPane2.setViewportView(tableOrderLine);
@@ -800,7 +846,7 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
 
         jLabel42.setText("Type :");
 
-        tabletfInvoiceAdresses.setModel(new javax.swing.table.DefaultTableModel(
+        tableInvoiceAdresses.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null},
                 {null},
@@ -825,8 +871,8 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
                 return types [columnIndex];
             }
         });
-        tabletfInvoiceAdresses.setPreferredSize(new java.awt.Dimension(15, 160));
-        jScrollPane5.setViewportView(tabletfInvoiceAdresses);
+        tableInvoiceAdresses.setPreferredSize(new java.awt.Dimension(15, 160));
+        jScrollPane5.setViewportView(tableInvoiceAdresses);
 
         jPanel13.setBackground(new java.awt.Color(51, 102, 255));
         jPanel13.setPreferredSize(new java.awt.Dimension(200, 45));
@@ -1001,7 +1047,7 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
 
         jLabel51.setText("Complément adresse :");
 
-        tabletfInvoiceAdresses1.setModel(new javax.swing.table.DefaultTableModel(
+        tabletShippingAddress.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null},
                 {null},
@@ -1026,8 +1072,8 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
                 return types [columnIndex];
             }
         });
-        tabletfInvoiceAdresses1.setPreferredSize(new java.awt.Dimension(15, 160));
-        jScrollPane6.setViewportView(tabletfInvoiceAdresses1);
+        tabletShippingAddress.setPreferredSize(new java.awt.Dimension(15, 160));
+        jScrollPane6.setViewportView(tabletShippingAddress);
 
         jLabel53.setText("Prénom :");
 
@@ -1217,59 +1263,6 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
         );
 
         jTabbedPane1.addTab("Adresse livraison", jPanel5);
-
-        jPanel7.setBackground(new java.awt.Color(255, 255, 255));
-
-        jLabel47.setText("Type de paiment :");
-
-        jLabel48.setText("Validation :");
-
-        jLabel49.setText("Date :");
-
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Visa", "MasterCard", "AmericanExpress", "Paypal" }));
-
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Oui", "Non", " " }));
-
-        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
-        jPanel7.setLayout(jPanel7Layout);
-        jPanel7Layout.setHorizontalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel7Layout.createSequentialGroup()
-                .addGap(191, 191, 191)
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addGroup(jPanel7Layout.createSequentialGroup()
-                        .addComponent(jLabel49)
-                        .addGap(83, 83, 83)
-                        .addComponent(jTextField19, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel7Layout.createSequentialGroup()
-                        .addComponent(jLabel47)
-                        .addGap(18, 18, 18)
-                        .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel7Layout.createSequentialGroup()
-                        .addComponent(jLabel48)
-                        .addGap(55, 55, 55)
-                        .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(205, Short.MAX_VALUE))
-        );
-        jPanel7Layout.setVerticalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel7Layout.createSequentialGroup()
-                .addGap(116, 116, 116)
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel49)
-                    .addComponent(jTextField19, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel47))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel48)
-                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(142, Short.MAX_VALUE))
-        );
-
-        jTabbedPane1.addTab("Paiement", jPanel7);
 
         jPanel8.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -1671,26 +1664,34 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
         System.out.println(evt.getButton());
     }//GEN-LAST:event_btnNewOrderMouseReleased
 
-    private void tabletfInvoiceAdresses2MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabletfInvoiceAdresses2MouseReleased
-
-    }//GEN-LAST:event_tabletfInvoiceAdresses2MouseReleased
-
     private void btnSearchOrderMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSearchOrderMouseReleased
         searchForOrder();
 
     }//GEN-LAST:event_btnSearchOrderMouseReleased
 
     private void tableSearchOrderMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableSearchOrderMouseReleased
+        Vector tabToClear = new Vector();
+        tabToClear.add(tableInvoiceAdresses);
+        tabToClear.add(tabletShippingAddress);
+        tabToClear.add(tableOrderLine);
+        clearTableModels(tabToClear);
+
         for (int ligne = 0; ligne < tableSearchOrder.getRowCount(); ligne++) {
             if (tableSearchOrder.isRowSelected(ligne)) {
-                PurchaseTableItem purTable = (PurchaseTableItem) tableSearchOrder.getValueAt(ligne, 0);
-                currentPurchase = purTable.getPurchase();
-                loadCustomer();
-                loadOrderLineTable();
-                loadAddresses();
+                if ((PurchaseTableItem) tableSearchOrder.getValueAt(ligne, 0) != null) {
+                    PurchaseTableItem purTable = (PurchaseTableItem) tableSearchOrder.getValueAt(ligne, 0);
+                    currentPurchase = purTable.getPurchase();
+                    loadCustomer();
+                    loadOrderLineTable();
+                    loadAddresses();
+                }
             }
         }
     }//GEN-LAST:event_tableSearchOrderMouseReleased
+
+    private void tabletfInvoiceAdresses2MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabletfInvoiceAdresses2MouseReleased
+
+    }//GEN-LAST:event_tabletfInvoiceAdresses2MouseReleased
 
     private void tfInvoiceCompanyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfInvoiceCompanyActionPerformed
         // TODO add your handling code here:
@@ -1699,6 +1700,19 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
     private void tableOrderLineMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableOrderLineMouseReleased
 
     }//GEN-LAST:event_tableOrderLineMouseReleased
+
+    private void tableOrderLinePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_tableOrderLinePropertyChange
+        for (int ligne = 0; ligne < tableOrderLine.getRowCount(); ligne++) {
+            if (tableOrderLine.isRowSelected(ligne)) {
+                for (int column = 0; column < tableOrderLine.getColumnCount(); column++) {
+                    if (tableOrderLine.isColumnSelected(column)) {
+                        System.out.println(tableOrderLine.getValueAt(ligne, column).toString().trim());
+                    }
+                }
+            }
+
+        }
+    }//GEN-LAST:event_tableOrderLinePropertyChange
 
     /**
      * @param args the command line arguments
@@ -1752,8 +1766,6 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
     private javax.swing.JComboBox comboInvoiceStreetType1;
     private javax.swing.JComboBox comboSearch;
     private javax.swing.JComboBox comboStatus;
-    private javax.swing.JComboBox jComboBox2;
-    private javax.swing.JComboBox jComboBox3;
     private javax.swing.JComboBox jComboBox4;
     private javax.swing.JInternalFrame jInternalFrame1;
     private javax.swing.JLabel jLabel1;
@@ -1792,9 +1804,6 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
     private javax.swing.JLabel jLabel43;
     private javax.swing.JLabel jLabel45;
     private javax.swing.JLabel jLabel46;
-    private javax.swing.JLabel jLabel47;
-    private javax.swing.JLabel jLabel48;
-    private javax.swing.JLabel jLabel49;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel50;
     private javax.swing.JLabel jLabel51;
@@ -1827,7 +1836,6 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
-    private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
@@ -1848,7 +1856,6 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
     private javax.swing.JTextField jTextField16;
     private javax.swing.JTextField jTextField17;
     private javax.swing.JTextField jTextField18;
-    private javax.swing.JTextField jTextField19;
     private javax.swing.JTextField jTextField20;
     private javax.swing.JTextField jTextField21;
     private javax.swing.JTextField jTextField22;
@@ -1868,10 +1875,10 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
     private javax.swing.JLabel labelTotalOrderTTC;
     private javax.swing.JLabel labelTotalVAT;
     private javax.swing.JPanel panelDate;
+    private javax.swing.JTable tableInvoiceAdresses;
     private javax.swing.JTable tableOrderLine;
     private javax.swing.JTable tableSearchOrder;
-    private javax.swing.JTable tabletfInvoiceAdresses;
-    private javax.swing.JTable tabletfInvoiceAdresses1;
+    private javax.swing.JTable tabletShippingAddress;
     private javax.swing.JTable tabletfInvoiceAdresses2;
     private javax.swing.JTextField tfCustomerBirthDay;
     private javax.swing.JTextPane tfCustomerComment;
