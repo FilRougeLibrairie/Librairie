@@ -107,6 +107,7 @@ public class VatDAO extends DAO<Vat> {
                     vat.setVatCode(rs.getInt(CODE));
                     vat.setVatRate(rs.getFloat(RATE));
                     vat.setVatName(rs.getString(NAME));
+                    vatList.add(vat);
                 }
             } else {
                 throw new SQLException("ResultSet was empty");
@@ -130,7 +131,7 @@ public class VatDAO extends DAO<Vat> {
                 .append(" = ")
                 .append("'" + term + "'");
 
-        System.out.println();
+        
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
 
@@ -145,7 +146,7 @@ public class VatDAO extends DAO<Vat> {
                     vat.setVatName(rs.getString(NAME));
                 }
             } else {
-                throw new SQLException("ResultSet was empty");
+                throw new SQLException("ResultSet Vat was empty");
             }
 
         } catch (SQLException ex) {

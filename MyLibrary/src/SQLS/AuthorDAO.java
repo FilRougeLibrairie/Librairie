@@ -146,7 +146,47 @@ public class AuthorDAO extends DAO{
         return author;
     }
 
-    
+    public Vector<Author> findAuthorByBook (String isbn) {
+        Vector <Author> vecAuthorList = new Vector <Author>();
+        Author author = null;
+        Book boo = null;
+        StringBuffer query = new StringBuffer();
+        query.append("SELECT aut.autId, autLastName, autFirstName FROM ")
+                .append("Author aut ")
+                .append("JOIN WRITING wri ")
+                .append("ON aut.autID = wri.autID ")
+                .append("JOIN Book boo ")
+                .append("ON wri.booIsbn13 = boo.booIsbn13 ")
+                .append("WHERE wri.booIsbn13 ")
+                .append(" = ")
+                .append("'" + isbn + "'");
+                
+
+        try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.isBeforeFirst()) {
+
+                while (rs.next()) {
+                    author = new Author();
+                    author.setAutId(rs.getInt(AuthorNames.ID));
+                    author.setAutLastName(rs.getString(AuthorNames.LAST_NAME));
+                    author.setAutFirstName(rs.getString(AuthorNames.FIRST_NAME));
+                    vecAuthorList.add(author);
+                }
+            } else {
+                throw new SQLException("");
+            }
+
+        } catch (SQLException ex) {
+          //  System.out.println("ERROR Retrieving Author Object : " + ex.getMessage());
+            
+
+        }
+        return vecAuthorList;
+        
+    }
     
     
     
@@ -190,6 +230,7 @@ public class AuthorDAO extends DAO{
             
 
         }
+        
         return authorList;
     }
 
