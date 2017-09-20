@@ -3,8 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package PanelEnCoursChrys;
+package PanelOk;
 
+import PanelEnCoursChrys.AuthorDeletePanel;
+import PanelEnCoursChrys.AuthorUpdatePanel;
+import PanelOk.AuthorAddPanel;
 import java.awt.BorderLayout;
 
 /**

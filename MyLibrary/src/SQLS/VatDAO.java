@@ -74,6 +74,31 @@ public class VatDAO extends DAO<Vat> {
 
         }
     }
+    
+    public Boolean answer(Vat obj){
+        Boolean answer=true;
+        Vat vat = (Vat) obj;
+        String query = "SELECT * FROM vat WHERE vatRate= '"+vat.getVatRate()+"'";
+
+        try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.isBeforeFirst()) {
+                answer=true;
+            } else {
+                answer=false;
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
+            
+
+        }
+        return answer;
+        
+        
+    }  
 
     @Override
     public void delete(Vat obj) {
