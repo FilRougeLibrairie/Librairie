@@ -26,20 +26,20 @@ public class OrderLineTableItem {
         this.isbn = orderLine.getBooIsbn13().getBooIsbn13();
         this.bookTitle = orderLine.getBooIsbn13().getBooTitle();
         this.quantity = orderLine.getOrdLineQuantity();
-        this.unitPriceHT = orderLine.getOrdBookPriceHT();
+        this.unitPriceHT = PriceCalculation.roundedPrice(orderLine.getOrdBookPriceHT());
         this.totalPriceHT = this.unitPriceHT * quantity;
         this.vat = orderLine.getOrdBookVAT();
-        this.priceTTC = PriceCalculation.calculatePriceTTC(unitPriceHT, vat) * quantity;
+        this.priceTTC = PriceCalculation.roundedPrice(PriceCalculation.calculatePriceTTC(unitPriceHT, vat) * quantity);
     }
     
         public Vector getVector() {
         Vector v = new Vector();
         v.add(this);
         v.add(bookTitle);
-        v.add(unitPriceHT);
         v.add(quantity);
-        v.add(totalPriceHT);
+        v.add(unitPriceHT);
         v.add(vat);
+        v.add(totalPriceHT);
         v.add(priceTTC);
         return v;
     }

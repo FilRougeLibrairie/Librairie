@@ -5,12 +5,14 @@ import ClassObjet.Book;
 import ClassObjet.Customer;
 import ClassObjet.OrderLine;
 import ClassObjet.Purchase;
+import ClassObjet.ShippingCost;
 import Names.SQLNames;
 import SQLS.AddressDAO;
 import SQLS.BookDAO;
 import SQLS.CustomerDAO;
 import SQLS.OrderLineDAO;
 import SQLS.PurchaseDAO;
+import SQLS.ShippingCostDAO;
 import java.awt.Color;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -22,13 +24,13 @@ import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
 import utils.DateLabelFormatter;
+import utils.PriceCalculation;
 
 /**
  * ***************************************
  ******************************************
  *
- * GUILLAUME IS CODING  *
- * DON'T TOUCH THIS FILE PLEASE :-)
+ * GUILLAUME IS CODING * DON'T TOUCH THIS FILE PLEASE :-)
  *
  *****************************************
  ****************************************
@@ -155,7 +157,7 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
         Vector<Customer> customerList = new Vector<Customer>();
         Customer cus = customerDAO.find(currentPurchase.getCusId().getCusID());
         currentCustomer = cus;
-        
+
         fillCustomerFields();
     }
 
@@ -163,8 +165,10 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
         AddressDAO addressDAO = new AddressDAO();
         Address deliveryAddress = addressDAO.find(currentPurchase.getAddDeliveryId().getAddId());
         Address invoiceAddress = addressDAO.find(currentPurchase.getAddInvoiceId().getAddId());
-        System.out.println("======== DELIVERY ADDR ========");
-        // System.out.println(deliveryAddress);
+        
+        ////////  DELIVERY ADDRESS ///////////
+        
+        
         System.out.println("======== INVOICE ADDR ========");
         // System.out.println(invoiceAddress);
         System.out.println("==========================");
@@ -187,25 +191,33 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
     }
 
     private void calculatePrice() {
+        ShippingCostDAO shippingCostDAO = new ShippingCostDAO();
+        ShippingCost shipCostObject;
         Float totalHT = 0f;
         Float totalVAT = 0f;
-        Float totalTTCBOOKS = 0f;
-        Float totalTTC = 0f;
-        int quantity = 0;
+        Float totalLinesTTC = 0f;
+        Float shippingCost;
+        Float totalOrderTTC;
         
+        shipCostObject = shippingCostDAO.find(currentPurchase.getShippingCostId().getShipId());
+        currentPurchase.setShippingCostId(shipCostObject);
+        shippingCost = currentPurchase.getShippingCostId().getShipCost();
+
         for (int ligne = 0; ligne < tableOrderLine.getRowCount(); ligne++) {
             OrderLineTableItem ordLineTable = (OrderLineTableItem) tableOrderLine.getValueAt(ligne, 0);
-            
-            quantity = ordLineTable.getQuantity();
-            totalHT += ordLineTable.getPriceHT() * quantity;
-            totalVAT += ordLineTable.getVat();
-            totalTTCBOOKS += ordLineTable.getPriceTTC();
-            
-        }
-        System.out.println("TOTAL HT = " + totalHT);
-        System.out.println("TOTAL VAT = " + totalVAT);
-        System.out.println("TOTAL TTC BOOKS = " + totalTTCBOOKS);
-        System.out.println(totalTTC = totalHT + totalVAT);
+            Float totalHTLine = ordLineTable.getPriceHT();
+            Float priceTTCLine = ordLineTable.getPriceTTC();
+            totalHT += totalHTLine;
+            totalLinesTTC += priceTTCLine;
+        }        
+        
+        totalVAT = PriceCalculation.roundedPrice(totalLinesTTC - totalHT);
+        totalOrderTTC = PriceCalculation.roundedPrice(totalLinesTTC + shippingCost);
+        
+        labelPriceHT.setText(String.valueOf(totalHT));
+        labelTotalVAT.setText(String.valueOf(totalVAT));
+        labelShippingCost.setText(String.valueOf(shippingCost));
+        labelTotalOrderTTC.setText(String.valueOf(totalOrderTTC));
     }
 
     private void setTableOrderLineModel() {
@@ -216,17 +228,17 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
         Vector v = new Vector();
         v.add("ISBN");
         v.add("Titre");
-        v.add("Prix unitaire H.T");
+        v.add("Prix unit. HT");
         v.add("Quantité");
-        v.add("Prix H.T");
+        v.add("Total HT");
         v.add("TVA");
         v.add("Prix TTC");
 
         return new javax.swing.table.DefaultTableModel(orderStatusTableList, v) {
         };
     }
-    
-    private void  fillCustomerFields(){
+
+    private void fillCustomerFields() {
         tfCustomerFirstName.setText(currentCustomer.getCusFirstName().trim());
         tfCustomerLastName.setText(currentCustomer.getCusLastName().trim());
         tfCustomerCompany.setText(currentCustomer.getCusOrganisationName().trim());
@@ -275,11 +287,11 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
         btnPurchase = new javax.swing.JLabel();
         labelPriceHT = new javax.swing.JLabel();
         jLabel24 = new javax.swing.JLabel();
-        jLabel25 = new javax.swing.JLabel();
+        labelTotalVAT = new javax.swing.JLabel();
         jLabel26 = new javax.swing.JLabel();
-        jLabel27 = new javax.swing.JLabel();
+        labelShippingCost = new javax.swing.JLabel();
         jLabel28 = new javax.swing.JLabel();
-        jLabel29 = new javax.swing.JLabel();
+        labelTotalOrderTTC = new javax.swing.JLabel();
         jLabel30 = new javax.swing.JLabel();
         comboStatus = new javax.swing.JComboBox();
         jPanel18 = new javax.swing.JPanel();
@@ -559,11 +571,11 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
                 {null, null, null, null, null, null, null}
             },
             new String [] {
-                "ISBN", "Titre", "Prix unitaire HT", "Quantité", "Prix H.T", "T.V.A", "Prix T.T.C"
+                "ISBN", "Titre", "Quantité", "Prix unitaire HT", "T.V.A", "Prix H.T", "Prix T.T.C"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.String.class, java.lang.Float.class, java.lang.Integer.class, java.lang.Float.class, java.lang.Float.class, java.lang.Float.class
+                java.lang.Object.class, java.lang.String.class, java.lang.Integer.class, java.lang.Float.class, java.lang.Float.class, java.lang.Float.class, java.lang.Float.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false, false, false, false
@@ -623,21 +635,21 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
         jLabel24.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel24.setText("€");
 
-        jLabel25.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel25.setText("888,88");
+        labelTotalVAT.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        labelTotalVAT.setText("888,88");
 
         jLabel26.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel26.setText("€");
 
-        jLabel27.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel27.setText("888,88");
+        labelShippingCost.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        labelShippingCost.setText("888,88");
 
         jLabel28.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel28.setText("€");
 
-        jLabel29.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
-        jLabel29.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel29.setText("888,88");
+        labelTotalOrderTTC.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
+        labelTotalOrderTTC.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        labelTotalOrderTTC.setText("888,88");
 
         jLabel30.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
         jLabel30.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -697,7 +709,7 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel6Layout.createSequentialGroup()
                                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(jLabel25, javax.swing.GroupLayout.DEFAULT_SIZE, 86, Short.MAX_VALUE)
+                                            .addComponent(labelTotalVAT, javax.swing.GroupLayout.DEFAULT_SIZE, 86, Short.MAX_VALUE)
                                             .addComponent(labelPriceHT, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addGroup(jPanel6Layout.createSequentialGroup()
@@ -708,8 +720,8 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
                                                 .addComponent(jLabel26, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))))
                                     .addGroup(jPanel6Layout.createSequentialGroup()
                                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                            .addComponent(jLabel29, javax.swing.GroupLayout.DEFAULT_SIZE, 86, Short.MAX_VALUE)
-                                            .addComponent(jLabel27, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                            .addComponent(labelTotalOrderTTC, javax.swing.GroupLayout.DEFAULT_SIZE, 86, Short.MAX_VALUE)
+                                            .addComponent(labelShippingCost, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addGroup(jPanel6Layout.createSequentialGroup()
                                                 .addGap(12, 12, 12)
@@ -736,8 +748,8 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
                     .addComponent(jLabel13)
                     .addComponent(comboStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel34)
                     .addComponent(labelPriceHT)
@@ -747,19 +759,19 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel36)
-                            .addComponent(jLabel25)
+                            .addComponent(labelTotalVAT)
                             .addComponent(jLabel26))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel6)
-                            .addComponent(jLabel27)
+                            .addComponent(labelShippingCost)
                             .addComponent(jLabel28)))
                     .addComponent(jPanel16, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel18, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel35)
-                    .addComponent(jLabel29)
+                    .addComponent(labelTotalOrderTTC)
                     .addComponent(jLabel30))
                 .addContainerGap(14, Short.MAX_VALUE))
         );
@@ -1761,11 +1773,8 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
-    private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
-    private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
-    private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel32;
@@ -1855,6 +1864,9 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
     private javax.swing.JTextField jTextField32;
     private javax.swing.JTextField jTextField33;
     private javax.swing.JLabel labelPriceHT;
+    private javax.swing.JLabel labelShippingCost;
+    private javax.swing.JLabel labelTotalOrderTTC;
+    private javax.swing.JLabel labelTotalVAT;
     private javax.swing.JPanel panelDate;
     private javax.swing.JTable tableOrderLine;
     private javax.swing.JTable tableSearchOrder;
