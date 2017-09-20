@@ -52,8 +52,8 @@ public class EmployeeDAO extends DAO<Employee> {
             pstmt.setString(3, emp.getEmpLogin());
             pstmt.setString(4, emp.getEmpPassword());
             pstmt.setString(5, emp.getEmpSalt());
-            pstmt.setString(6, emp.getEmpDateStart());
-            pstmt.setString(7, emp.getEmpDateEnd());
+            pstmt.setDate(6, emp.getEmpDateStart());
+            pstmt.setDate(7, emp.getEmpDateEnd());
             pstmt.setInt(8, emp.getEmpStatus());
             pstmt.setInt(9, emp.getAccProfileCode().getAccProfileCode());
             pstmt.setString(10, emp.getEmpComment());
@@ -92,8 +92,8 @@ public class EmployeeDAO extends DAO<Employee> {
             pstmt.setString(3, emp.getEmpLogin());
             pstmt.setString(4, emp.getEmpPassword());
             pstmt.setString(5, emp.getEmpSalt());
-            pstmt.setString(6, emp.getEmpDateStart());
-            pstmt.setString(7, emp.getEmpDateEnd());
+            pstmt.setDate(6, emp.getEmpDateStart());
+            pstmt.setDate(7, emp.getEmpDateEnd());
             pstmt.setInt(8, emp.getEmpStatus());
             pstmt.setInt(9, emp.getAccProfileCode().getAccProfileCode());
             pstmt.setString(10, emp.getEmpComment());

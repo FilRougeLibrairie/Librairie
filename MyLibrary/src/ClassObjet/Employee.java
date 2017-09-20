@@ -68,13 +68,15 @@ public class Employee {
     }
 
     public void setEmpDateEnd(String empDateEnd) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyy-MM-dd");
-        try {
-            java.util.Date end = sdf.parse(empDateEnd);
-            java.sql.Date sqlEndD = new java.sql.Date(end.getTime());
-            this.empDateEnd = sqlEndD;
-        } catch (ParseException ex) {
-            System.out.println("Error formating DATE" + ex.getMessage());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        if (empDateEnd != null) {
+            try {
+                java.util.Date end = sdf.parse(empDateEnd);
+                java.sql.Date sqlEndD = new java.sql.Date(end.getTime());
+                this.empDateEnd = sqlEndD;
+            } catch (ParseException ex) {
+                System.out.println("Error formating DATE" + ex.getMessage());
+            }
         }
     }
 
