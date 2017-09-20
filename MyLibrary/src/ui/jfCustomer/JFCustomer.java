@@ -430,10 +430,9 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
     private void loadingOrderTable(Customer cus) {
         PurchaseDAO purchaseDAO = new PurchaseDAO();
         Vector<Purchase> orderList = new Vector<Purchase>();
-
         orderList = purchaseDAO.findByCustomerId(cus.getCusID());
-
         orderTableList = new Vector();
+        
         for (Purchase pur : orderList) {
             // Retrieving OrderStatusList
             try {
