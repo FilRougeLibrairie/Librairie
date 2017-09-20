@@ -111,6 +111,7 @@ public class EditorDAO extends DAO {
                     editor.setEdiName(rs.getString(NAME));
                     editor.setEdiPresentation(rs.getString(PRESENTATION));
                     editor.setEdiStatusCode(rs.getInt(STATUS));
+                    editorList.add(editor);
                 }
 
             } else {
@@ -125,14 +126,13 @@ public class EditorDAO extends DAO {
     }
 
     @Override
-    public Object find(int id) {
+    public Editor find(int id) {
         Editor editor = null;
         StringBuffer query = new StringBuffer();
-        query.append("SELECT * FORM " + TABLE + " WHERE ")
+        query.append("SELECT * FROM " + TABLE + " WHERE ")
                 .append(ID)
                 .append(" = ")
-                .append("'" + id + "'");
-
+                .append(id);
         try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
 
             ResultSet rs = pstmt.executeQuery();
@@ -140,6 +140,7 @@ public class EditorDAO extends DAO {
             if (rs.isBeforeFirst()) {
 
                 while (rs.next()) {
+                    editor = new Editor();
                     editor.setEdiId(rs.getInt(ID));
                     editor.setEdiName(rs.getString(NAME));
                     editor.setEdiPresentation(rs.getString(PRESENTATION));

@@ -6,6 +6,8 @@
 package ui.jfEmployee;
 
 import ClassObjet.Employee;
+import ClassObjet.StatusDisplay;
+import java.sql.Date;
 import java.util.Vector;
 
 /**
@@ -15,16 +17,36 @@ import java.util.Vector;
 public class EmployeeTableItem {
     
     Employee employee;
-    String name;
+    StatusDisplay statusDisplayNom;
+    String lastName;
+    String firstName;
+    int status;
+    String profile;
+    java.sql.Date startDate;
+    java.sql.Date endDate;
 
     public EmployeeTableItem(Employee employee) {
         this.employee = employee;
-        this.name = this.employee.getEmpLastName() + " " + this.employee.getEmpFirstName();
+        this.lastName = this.employee.getEmpLastName();
+        this.firstName = this.employee.getEmpFirstName(); 
+        this.status = this.employee.getEmpStatus();
+        this.profile = this.employee.getAccProfileCode().getAccProfileName(); 
+        this.startDate = this.employee.getEmpDateStart();
+//        System.out.println("oui");
+//        if (this.employee.getEmpDateEnd() != null) {
+//           this.endDate = this.employee.getEmpDateEnd();  
+//        } else {          
+//        }     
     }
     
     public Vector getVector() {
         Vector v = new Vector();
         v.add(this);
+        v.add(firstName);
+        v.add(status);
+        v.add(profile); 
+        v.add(startDate);
+//        v.add(endDate);
         return v;
     }
 
@@ -32,20 +54,72 @@ public class EmployeeTableItem {
         return employee;
     }
 
-    public String getName() {
-        return name;
+    public String getLastName() {
+        return lastName;
     }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public StatusDisplay getStatusDisplayNom() {
+        return statusDisplayNom;
+    }
+
+
+    public int getStatus() {
+        return status;
+    }
+
+    public String getProfile() {
+        return profile;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+
 
     public void setEmployee(Employee employee) {
         this.employee = employee;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setStatusDisplayNom(StatusDisplay statusDisplayNom) {
+        this.statusDisplayNom = statusDisplayNom;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public void setProfile(String profile) {
+        this.profile = profile;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
 
     @Override
  public String toString() {
-     return name;
+     return lastName; 
     }
 }

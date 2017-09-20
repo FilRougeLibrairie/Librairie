@@ -61,6 +61,11 @@ public class Forma {
       
         return v;
     }
+
+    @Override
+    public String toString() {
+        return forName ;
+    }
     
     
     

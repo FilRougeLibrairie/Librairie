@@ -122,7 +122,7 @@ public class FormatsDAO extends DAO{
  
 
     @Override
-    public Object find(int id) {   
+    public Forma find(int id) {   
         Forma form = null;
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FROM FORMATS WHERE ")
@@ -136,8 +136,8 @@ public class FormatsDAO extends DAO{
             if (rs.isBeforeFirst()) {
                 while (rs.next()) {
                     form = new Forma();
-                    form.setForId(rs.getInt(ID));
-                    form.setForName(rs.getString(FORNAME));
+                    form.setForId(rs.getInt(FormatsNames.ID));
+                    form.setForName(rs.getString(FormatsNames.NAME));
                     
                 }
             } else {
@@ -156,10 +156,9 @@ public class FormatsDAO extends DAO{
     
 
     @Override
-    public Vector findAll() {
+    public Vector<Forma> findAll() {
         Vector<Forma> formatsList = new Vector<Forma>();
         Forma format = null;
-
         String query = "SELECT * FROM FORMATS";
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query)) {
@@ -171,7 +170,6 @@ public class FormatsDAO extends DAO{
                     format = new Forma();
                     format.setForId(rs.getInt(ID));
                     format.setForName(rs.getString(FORNAME));
-                    
                     formatsList.add(format);
                 }
             } else {

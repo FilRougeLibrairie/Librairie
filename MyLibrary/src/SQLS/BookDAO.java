@@ -5,6 +5,8 @@ import ClassObjet.Book;
 import ClassObjet.BookLanguage;
 import ClassObjet.Editor;
 import ClassObjet.Forma;
+import ClassObjet.SubTheme;
+import ClassObjet.Theme;
 import ClassObjet.Vat;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -261,6 +263,54 @@ public class BookDAO extends DAO {
         return book;
     }
 
+//    public SubTheme findSubThemeByBook (String isbn){
+//        Book boo = null;
+//        SubTheme sub = null;
+//        Theme the = null;
+//        StringBuffer query = new StringBuffer();
+//        query.append("SELECT sub.subId,  subName, sub.theId ")
+//                .append("FROM Book boo ")
+//                .append("JOIN Association ass ")
+//                .append("ON boo.booIsbn13 = ass.booIsbn13 ")
+//                .append("JOIN SubTheme sub ")
+//                .append("ON ass.subId = sub.subId ")
+//                .append("JOIN Theme the ")
+//                .append("ON sub.theId = the.theId ")
+//                .append("WHERE boo.booIsbn13 ")
+//                .append(" = ")
+//                .append("'" + isbn + "'");
+//        
+//        try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
+//
+//            ResultSet rs = pstmt.executeQuery();
+//
+//            if (rs.isBeforeFirst()) {
+//
+//                while (rs.next()) {
+//                    sub = new SubTheme();
+//                    sub.setSubId(rs.getInt(SubThemeNames.ID));
+//                    sub.setSubName(rs.getString(SubThemeNames.NAME));
+//                    the = new Theme();
+//                    the.setTheId(rs.getInt(SubThemeNames.THEME_ID));
+//                    sub.setTheId(the);
+//                    System.out.println("subtheme "+sub.getSubId()+sub.getSubName()+sub.getTheId()+sub.getSubDescription());
+//                    
+//                }
+//            } else {
+//                throw new SQLException("ResultSet Sub was empty");
+//            }
+//
+//        } catch (SQLException ex) {
+//            System.out.println("ERROR sub Retrieving Object : " + ex.getMessage());
+//            
+//
+//        }
+//        return sub;
+//        
+//    }
+        
+    
+    
     public Author findAuthorByBook (String isbn) {
         Author author = null;
         Book boo = null;
@@ -275,13 +325,7 @@ public class BookDAO extends DAO {
                 .append(" = ")
                 .append("'" + isbn + "'");
                 
-//                
-//                .append(ISBN_13)
-//                .append(" = ")
-//                .append("'" + isbn + "'");
 
-
-        
         try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
 
             ResultSet rs = pstmt.executeQuery();
@@ -291,18 +335,16 @@ public class BookDAO extends DAO {
                 while (rs.next()) {
                     author = new Author();
                     author.setAutId(rs.getInt(AuthorNames.ID));
-                    author.setAutLastName(rs.getString(AuthorNames.FIRST_NAME));
-                    author.setAutFirstName(rs.getString(AuthorNames.LAST_NAME));
-                    
-                    
+                    author.setAutLastName(rs.getString(AuthorNames.LAST_NAME));
+                    author.setAutFirstName(rs.getString(AuthorNames.FIRST_NAME));
                 }
             } else {
-                throw new SQLException("ResultSet was empty");
+                throw new SQLException("");
             }
 
         } catch (SQLException ex) {
-            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            ex.printStackTrace();
+          //  System.out.println("ERROR Retrieving Author Object : " + ex.getMessage());
+            
 
         }
         return author;
@@ -323,13 +365,7 @@ public class BookDAO extends DAO {
                 .append(" = ")
                 .append("'" + isbn + "'");
                 
-//                
-//                .append(ISBN_13)
-//                .append(" = ")
-//                .append("'" + isbn + "'");
 
-
-        
         try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
 
             ResultSet rs = pstmt.executeQuery();
@@ -350,7 +386,7 @@ public class BookDAO extends DAO {
 
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            ex.printStackTrace();
+            
 
         }
         return author;
@@ -408,7 +444,7 @@ public class BookDAO extends DAO {
 
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            ex.printStackTrace();
+            
 
         }
         return book;

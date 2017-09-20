@@ -48,7 +48,7 @@ public class Author {
     }
 
     public void setAutLastName(String autLastName) {
-        this.autLastName = autLastName;
+        this.autLastName = autLastName.trim();
     }
 
     public void setAutFirstName(String autFirstName) {
@@ -111,7 +111,7 @@ public class Author {
 
     @Override
     public String toString() {
-        return autLastName + ", " +  autFirstName ;
+        return autLastName + " " +  autFirstName ;
     }
     
     
