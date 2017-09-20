@@ -287,7 +287,7 @@ public class AddressDAO extends DAO {
     }
 
     
-    public Vector findByCustomerId(int customerId) {
+    public Vector<Address> findByCustomerId(int customerId) {
         Vector<Address> addressList = new Vector<Address>();
         Customer cus = null;
         Address address = null;

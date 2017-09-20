@@ -33,7 +33,8 @@ public class VatDAO extends DAO<Vat> {
     @Override
     public void create(Vat obj) {
         Vat vat = (Vat) obj;
-        String query = "INSERT INTO VAT (" + COLUMNS_CREATE+ ")"
+        String query = "IF NOT EXISTS(SELECT * FROM vat WHERE vatRate= "+vat.getVatRate()+")"
+                + "INSERT INTO VAT (" + COLUMNS_CREATE+ ")"
                 + "VALUES (?, ?)";
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query);) {
@@ -73,10 +74,36 @@ public class VatDAO extends DAO<Vat> {
 
         }
     }
+    
+    public Boolean answer(Vat obj){
+        Boolean answer=true;
+        Vat vat = (Vat) obj;
+        String query = "SELECT * FROM vat WHERE vatRate= '"+vat.getVatRate()+"'";
+
+        try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.isBeforeFirst()) {
+                answer=true;
+            } else {
+                answer=false;
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
+            
+
+        }
+        return answer;
+        
+        
+    }  
 
     @Override
     public void delete(Vat obj) {
         int vatId = ((Vat) obj).getVatCode();
+       
         StringBuffer query = new StringBuffer();
         query.append("DELETE FROM " + TABLE + " WHERE ")
                 .append(CODE)

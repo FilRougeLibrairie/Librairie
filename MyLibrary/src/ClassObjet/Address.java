@@ -155,7 +155,20 @@ public class Address {
 
     @Override
     public String toString() {
-        return "Address{" + "addId=" + addId + ", cusResidId=" + cusResidId + ", cusChargerId=" + cusChargeId + ", addLabel=" + addLabel + ", addFirstName=" + addFirstName + ", addLastName=" + addLastName + ", addCompany=" + addCompany + ", addNumber=" + addNumber + ", addStreetType=" + addStreetType + ", addStreetName=" + addStreetName + ", addComplement=" + addComplement + ", addZipCode=" + addZipCode + ", addCity=" + addCity + ", addSecurityCode=" + addSecurityCode + ", addPhone=" + addPhone + '}';
+        return "Address id : " + cusResidId + "\n"
+                + "Invoice Customer id : " + cusChargeId + "\n"
+                + "Label : " + addLabel + "\n"
+                + "FirstName :" + addFirstName + "\n"
+                + "LastName : " + addLastName + "\n"
+                + "Company : " + addCompany + "\n"
+                + "Number=" + addNumber + "\n"
+                + "StreetType : " + addStreetType + "\n"
+                + "StreetName : " + addStreetName + "\n"
+                + "Complement : " + addComplement + "\nh"
+                + "ZipCode : " + addZipCode + "\n"
+                + "City=" + addCity + "\n"
+                + "SecurityCode : " + addSecurityCode + "\n"
+                + "addPhone=" + addPhone;
     }
 
 }

@@ -5,8 +5,10 @@
  */
 package PanelOk;
 
+import ClassObjet.ClassAssoc.Association;
 import ClassObjet.SubTheme;
 import ClassObjet.Theme;
+import SQLS.AssociationDAO;
 import SQLS.SubThemeDAO;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -27,7 +29,7 @@ public class SubthemeDeletePanel extends javax.swing.JPanel {
     Theme t = new Theme();
     SubTheme sub = new SubTheme();
     SubThemeDAO subthemeDAO = new SubThemeDAO();
-    JOptionPane jop1=new JOptionPane();
+    JOptionPane jop1, jop2=new JOptionPane();
     
     public SubthemeDeletePanel() {
         initComponents();
@@ -152,11 +154,36 @@ public class SubthemeDeletePanel extends javax.swing.JPanel {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
-        subthemeDAO.delete(sub);
-        jComboBox1.removeAllItems();
+        
+        
+        
+        // creation de l'objet auteur dans assoc
+       
+         Association assoc = new Association();
+         assoc.getBooIsbn13();
+         assoc.setSubId(sub.getSubId());
+         
+         
+         AssociationDAO writ = new AssociationDAO();
+         
+         writ.update(assoc);
+        
+         //suppression du sous thème
+         
+         
+        subthemeDAO.delete(sub); 
+        jop1.showMessageDialog(null, "Le sous thème a été supprimé avec succès.", "Information", JOptionPane.INFORMATION_MESSAGE);     
         jComboBox1.setModel(initSubthemeModel());
-        jop1.showMessageDialog(null, "Le sous thème a été supprimé avec succès.", "Information", JOptionPane.INFORMATION_MESSAGE);
         jComboBox1.setSelectedIndex(-1);
+        
+        
+        
+//        
+//        subthemeDAO.delete(sub);
+//        jComboBox1.removeAllItems();
+//        jComboBox1.setModel(initSubthemeModel());
+//        jop1.showMessageDialog(null, "Le sous thème a été supprimé avec succès.", "Information", JOptionPane.INFORMATION_MESSAGE);
+//        jComboBox1.setSelectedIndex(-1);
 
     }//GEN-LAST:event_jButton1ActionPerformed
 

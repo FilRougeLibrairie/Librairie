@@ -1,13 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package PanelOk;
 
 import ClassObjet.SubTheme;
 import ClassObjet.Theme;
 import SQLS.SubThemeDAO;
+import SQLS.ThemeDAO;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -26,6 +23,7 @@ public class SubthemeUpdatePanel extends javax.swing.JPanel {
    SubThemeDAO subthemeDAO = new SubThemeDAO();
    SubTheme subtheme =new SubTheme();
    Theme t = new Theme();
+   ThemeDAO themeDAO = new ThemeDAO();
    
    
     public SubthemeUpdatePanel() {
@@ -37,61 +35,11 @@ public class SubthemeUpdatePanel extends javax.swing.JPanel {
     }
 
     private DefaultComboBoxModel initThemeModel() {
-        return new DefaultComboBoxModel(initThemeVector());
+        return new DefaultComboBoxModel(themeDAO.findAll());
     }
 
     private DefaultComboBoxModel initSubthemeModel() {
         return new DefaultComboBoxModel(initSubThemeVector());
-    }
-
-    // vector Theme
-    private Vector initThemeVector() {
-        Vector v = new Vector();
-        try {
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-        } catch (ClassNotFoundException ex) {
-            System.err.println("Oops:Driver:" + ex.getMessage());
-            return v;
-        }
-        Connection connexion = null;
-        try {
-            connexion = DriverManager.getConnection(
-                    "jdbc:sqlserver://localhost:1433;"
-                    + "databaseName=myLibrary;user=sa;password=sa");
-        } catch (SQLException ex) {
-            System.err.println("Oops:Connection:" + ex.getErrorCode() + ":" + ex.getMessage());
-            return v;
-        }
-
-        String query = "SELECT * FROM theme ORDER BY thename ;";
-        try {
-            Statement stmt = connexion.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
-
-            while (rs.next()) {
-
-                v.add(new Theme(rs.getInt("theId"), rs.getString("theName"), rs.getString("thedescription")));
-
-            }
-
-            rs.close();
-            stmt.close();
-
-        } catch (SQLException ex) {
-            System.err.println("Oops:SQL:" + ex.getErrorCode() + ":" + ex.getMessage());
-            return v;
-        }
-
-        try {
-            connexion.close();
-        } catch (SQLException ex) {
-            System.err.println("Oops:Close:" + ex.getErrorCode() + ":" + ex.getMessage());
-            return v;
-        }
-
-        System.out.println("Done!");
-
-        return v;
     }
 
     @SuppressWarnings("unchecked")
@@ -111,7 +59,7 @@ public class SubthemeUpdatePanel extends javax.swing.JPanel {
         jComboBox2 = new javax.swing.JComboBox();
         jLabel4 = new javax.swing.JLabel();
 
-        setPreferredSize(new java.awt.Dimension(600, 600));
+        setPreferredSize(new java.awt.Dimension(900, 600));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jComboBox1.setModel(initSubthemeModel() );
@@ -120,24 +68,31 @@ public class SubthemeUpdatePanel extends javax.swing.JPanel {
                 jComboBox1ActionPerformed(evt);
             }
         });
-        add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 70, 309, 38));
+        add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 80, 309, 38));
 
         jLabel1.setText("Sous Thème à modifier:");
-        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 60, 189, 40));
+        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 70, 189, 40));
+
+        jpEdit.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel2.setText("Nom du Sous thème");
+        jpEdit.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(47, 30, 185, 35));
 
         jtName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jtNameActionPerformed(evt);
             }
         });
+        jpEdit.add(jtName, new org.netbeans.lib.awtextra.AbsoluteConstraints(268, 30, 310, 35));
 
         jLabel3.setText("Description");
+        jpEdit.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(47, 94, 185, 35));
 
         jTDescription.setColumns(20);
         jTDescription.setRows(5);
         jScrollPane1.setViewportView(jTDescription);
+
+        jpEdit.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(268, 94, 310, 116));
 
         jButton2.setText("MODIFIER");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -145,48 +100,10 @@ public class SubthemeUpdatePanel extends javax.swing.JPanel {
                 jButton2ActionPerformed(evt);
             }
         });
+        jpEdit.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(191, 236, 170, 42));
+        jpEdit.add(jTid, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 35, 32));
 
-        javax.swing.GroupLayout jpEditLayout = new javax.swing.GroupLayout(jpEdit);
-        jpEdit.setLayout(jpEditLayout);
-        jpEditLayout.setHorizontalGroup(
-            jpEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jpEditLayout.createSequentialGroup()
-                .addGroup(jpEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jpEditLayout.createSequentialGroup()
-                        .addGroup(jpEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jpEditLayout.createSequentialGroup()
-                                .addComponent(jTid, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(36, 36, 36)
-                        .addGroup(jpEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jtName, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jpEditLayout.createSequentialGroup()
-                        .addGap(191, 191, 191)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(85, Short.MAX_VALUE))
-        );
-        jpEditLayout.setVerticalGroup(
-            jpEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jpEditLayout.createSequentialGroup()
-                .addGroup(jpEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTid, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jpEditLayout.createSequentialGroup()
-                        .addGap(30, 30, 30)
-                        .addGroup(jpEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jtName, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(29, 29, 29)
-                        .addGroup(jpEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
-
-        add(jpEdit, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 112, 663, 278));
+        add(jpEdit, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 120, 620, 278));
 
         jComboBox2.setModel(initThemeModel());
         jComboBox2.addActionListener(new java.awt.event.ActionListener() {
@@ -194,10 +111,10 @@ public class SubthemeUpdatePanel extends javax.swing.JPanel {
                 jComboBox2ActionPerformed(evt);
             }
         });
-        add(jComboBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 10, 309, 42));
+        add(jComboBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 20, 309, 42));
 
         jLabel4.setText("Thème ");
-        add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 20, 185, 35));
+        add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 30, 185, 35));
     }// </editor-fold>//GEN-END:initComponents
 
     private void jtNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtNameActionPerformed
@@ -212,18 +129,21 @@ public class SubthemeUpdatePanel extends javax.swing.JPanel {
         if (jComboBox2.getSelectedItem() != null) {
             t = (Theme) jComboBox2.getSelectedItem();
             jComboBox1.setModel(initSubthemeModel());
+            
         } else {
             jComboBox1.setSelectedIndex(-1);
         }
 
-//        subtheme=(SubTheme) jComboBox1.getSelectedItem();
+        subtheme=(SubTheme) jComboBox1.getSelectedItem();
 
     }//GEN-LAST:event_jComboBox2ActionPerformed
-    
+    SubTheme s = new SubTheme();
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
 
         JOptionPane jop1 = new JOptionPane();
-        SubTheme s = new SubTheme();
+        
+       
+        
         s.setSubName(jtName.getText());
         s.setSubDescription(jTDescription.getText());
         s.setTheId(t);
@@ -232,21 +152,33 @@ public class SubthemeUpdatePanel extends javax.swing.JPanel {
         subthemeDAO.update(s);
         jComboBox1.setModel(initSubthemeModel());
         jComboBox2.setModel(initThemeModel());
+        jtName.setText("");
+        jTDescription.setText("");
+        jTid.setText("");
         jop1.showMessageDialog(null, "Le sous thème a été modifié avec succès.", "Information", JOptionPane.INFORMATION_MESSAGE);
+        jComboBox1.setSelectedIndex(-1);
+        jComboBox2.setSelectedIndex(-1);
 
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-
+        
+        
+        
+        jpEdit.setVisible(true);
+        
+        
         if (jComboBox1.getSelectedItem() != null) {
-            jtName.setText(subtheme.getSubName());
-            jTDescription.setText(subtheme.getSubDescription());
-            jTid.setText(String.valueOf(subtheme.getSubId()));
-            jpEdit.setVisible(true);
+            
+        s = (SubTheme) jComboBox1.getSelectedItem();
+        jtName.setText(s.getSubName());
+        jTDescription.setText(s.getSubDescription());
+        jTid.setText(String.valueOf(s.getSubId()));
         }
         else{
-            
-        }
+    }
+        
+     
 
 
     }//GEN-LAST:event_jComboBox1ActionPerformed

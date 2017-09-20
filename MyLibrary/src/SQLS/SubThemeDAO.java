@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package SQLS;
 
 import ClassObjet.Book;
@@ -13,12 +9,10 @@ import static Names.SQLNames.StatusDisplayNames.CODE;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Vector;
 
-/**
- *
- * @author CDI305
- */
+
 public class SubThemeDAO extends DAO<SubTheme>{
     
         private final String TABLE = "SubTheme"; 
@@ -39,8 +33,8 @@ public class SubThemeDAO extends DAO<SubTheme>{
     @Override
     public void create(SubTheme obj) {
         SubTheme subThe = (SubTheme) obj;
-        String query = 
-                "INSERT INTO SUBTHEME(theId,subName,subDescription)"
+        String query = "IF NOT EXISTS(SELECT * FROM subTheme WHERE subName= '"+subThe.getSubName()+"')"
+                +"INSERT INTO SUBTHEME(theId,subName,subDescription)"
                 + "VALUES (?,?,?)";
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query);) {
@@ -56,6 +50,37 @@ public class SubThemeDAO extends DAO<SubTheme>{
             
         }
     }
+    
+    
+    public Boolean answer(SubTheme obj){
+        Boolean answer=true;
+        SubTheme sub = (SubTheme) obj;
+        String query = "SELECT * FROM subtheme WHERE subname= '"+sub.getSubName()+"'";
+
+        try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.isBeforeFirst()) {
+                answer=true;
+            } else {
+                answer=false;
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
+            
+
+        }
+        return answer;
+        
+        
+    }  
+    
+    
+    
+    
+    
 
     @Override
     public void update(SubTheme obj) {
@@ -182,6 +207,15 @@ public class SubThemeDAO extends DAO<SubTheme>{
         return subThemeList;
     }
 
+    
+    
+    
+  
+    
+    
+    
+    
+    
     @Override
     public Vector<SubTheme> findByColumn(String column, String term) {
         Vector<SubTheme> subThemeList = new Vector<SubTheme>();

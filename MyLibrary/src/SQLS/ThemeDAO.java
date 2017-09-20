@@ -35,7 +35,8 @@ public class ThemeDAO extends DAO {
     @Override
     public void create(Object obj) {
         Theme the = (Theme) obj;
-        String query = "INSERT INTO " + TABLE + " (" + COLUMNS_CREATE + ")"
+        String query = "IF NOT EXISTS(SELECT * FROM theme WHERE theName= '"+the.getTheName()+"')"
+                +"INSERT INTO " + TABLE + " (" + COLUMNS_CREATE + ")"
                 + "VALUES (?, ?)";
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query);) {
@@ -51,6 +52,33 @@ public class ThemeDAO extends DAO {
         }
     }
 
+    
+    
+    
+    public Boolean answer(Theme obj){
+        Boolean answer=true;
+        Theme theme = (Theme) obj;
+        String query = "SELECT * FROM theme WHERE theName= '"+theme.getTheName()+"'";
+
+        try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.isBeforeFirst()) {
+                answer=true;
+            } else {
+                answer=false;
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
+            
+
+        }
+        return answer;
+        
+        
+    }
     @Override
     public void delete(Object obj) {
         int theId = ((Theme) obj).getTheId();
@@ -91,6 +119,29 @@ public class ThemeDAO extends DAO {
         }
     }
 
+    
+     public void updateNoTheme(Object obj) {
+        Theme the = (Theme) obj;
+        StringBuffer query = new StringBuffer("UPDATE " + TABLE + " SET ");
+        query.append(ID).append(" =? ");
+
+        query.append("WHERE " + ID + " = '")
+                .append(the.getTheId())
+                .append("'");
+
+        try (PreparedStatement pstmt = connect.prepareStatement(query.toString());) {
+            pstmt.setInt(1, 0);
+            
+
+            int result = pstmt.executeUpdate();
+
+        } catch (SQLException ex) {
+            System.out.println("ERROR UPDATING Object : " + ex.getMessage());
+            
+        }
+    }
+    
+    @Override
   
     
     public Theme findByIsbn (String isbn){
@@ -140,7 +191,7 @@ public class ThemeDAO extends DAO {
         Vector<Theme> themeList = new Vector<Theme>();
         Theme theme = null;
 
-        String query = "SELECT * FROM " + TABLE;
+        String query = "SELECT * FROM " + TABLE + " ORDER BY "+NAME+"";
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query)) {
 
@@ -148,11 +199,10 @@ public class ThemeDAO extends DAO {
             if (rs.isBeforeFirst()) {
 
                 while (rs.next()) {
-                    theme = new Theme();
-                    theme.setTheId(rs.getInt(ID));
-                    theme.setTheName(rs.getString(NAME));
-                    theme.setTheDescription(rs.getString(DESCRIPTION));
-                    themeList.add(theme);
+                    
+                    
+                    themeList.add(new Theme(rs.getInt(ID), rs.getString(NAME), rs.getString(DESCRIPTION)));
+  
                 }
             } else {
                 throw new SQLException("ResultSet was empty");
@@ -196,7 +246,7 @@ public class ThemeDAO extends DAO {
 
     @Override
     public Object find(String name) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override

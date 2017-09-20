@@ -5,6 +5,8 @@
  */
 package PanelOk;
 
+import PanelAModifier.ThemeDelete;
+
 /**
  *
  * @author Chrys

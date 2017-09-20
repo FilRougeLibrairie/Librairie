@@ -52,8 +52,8 @@ public class EmployeeDAO extends DAO<Employee> {
             pstmt.setString(3, emp.getEmpLogin());
             pstmt.setString(4, emp.getEmpPassword());
             pstmt.setString(5, emp.getEmpSalt());
-            pstmt.setString(6, emp.getEmpDateStart());
-            pstmt.setString(7, emp.getEmpDateEnd());
+            pstmt.setDate(6, emp.getEmpDateStart());
+            pstmt.setDate(7, emp.getEmpDateEnd());
             pstmt.setInt(8, emp.getEmpStatus());
             pstmt.setInt(9, emp.getAccProfileCode().getAccProfileCode());
             pstmt.setString(10, emp.getEmpComment());
@@ -92,8 +92,8 @@ public class EmployeeDAO extends DAO<Employee> {
             pstmt.setString(3, emp.getEmpLogin());
             pstmt.setString(4, emp.getEmpPassword());
             pstmt.setString(5, emp.getEmpSalt());
-            pstmt.setString(6, emp.getEmpDateStart());
-            pstmt.setString(7, emp.getEmpDateEnd());
+            pstmt.setDate(6, emp.getEmpDateStart());
+            pstmt.setDate(7, emp.getEmpDateEnd());
             pstmt.setInt(8, emp.getEmpStatus());
             pstmt.setInt(9, emp.getAccProfileCode().getAccProfileCode());
             pstmt.setString(10, emp.getEmpComment());
@@ -221,10 +221,8 @@ public class EmployeeDAO extends DAO<Employee> {
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FROM " + TABLE + " WHERE ")
                 .append(column)
-                .append(" = ")
-                .append("'" + term + "'");
-
-        System.out.println();
+                .append(" LIKE ")
+                .append("'" + term + "%'");
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
 
@@ -247,6 +245,52 @@ public class EmployeeDAO extends DAO<Employee> {
                     acc.setAccProfileCode(rs.getInt(PROFILE));
                     employee.setAccProfileCode(acc);
                     employee.setEmpComment(rs.getString(COMMENT));
+                    employeeList.add(employee);
+                }
+            } else {
+                throw new SQLException("ResultSet was empty");
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
+            
+
+        }
+        return employeeList;
+    }
+    
+     public Vector<Employee> findByColumn(String column, int term) {
+         Vector<Employee> employeeList = new Vector<Employee>();
+        Employee employee = null;
+        AccessProfile acc = null;
+        StringBuffer query = new StringBuffer();
+        query.append("SELECT * FROM " + TABLE + " WHERE ")
+                .append(column)
+                .append(" = ")
+                .append(term);
+
+        try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.isBeforeFirst()) {
+
+                while (rs.next()) {
+                    employee = new Employee();
+                    employee.setEmpId(rs.getInt(ID));
+                    employee.setEmpLastName(rs.getString(LAST_NAME));
+                    employee.setEmpFirstName(rs.getString(FIRST_NAME));
+                    employee.setEmpLogin(rs.getString(LOGIN));
+                    employee.setEmpPassword(rs.getString(PASSWORD));
+                    employee.setEmpSalt(rs.getString(SALT));
+                    employee.setEmpDateStart(rs.getString(DATE_START));
+                    employee.setEmpDateEnd(rs.getString(DATE_END));
+                    employee.setEmpStatus(rs.getInt(STATUS));
+                    acc = new AccessProfile();
+                    acc.setAccProfileCode(rs.getInt(PROFILE));
+                    employee.setAccProfileCode(acc);
+                    employee.setEmpComment(rs.getString(COMMENT));
+                    employeeList.add(employee);
                 }
             } else {
                 throw new SQLException("ResultSet was empty");

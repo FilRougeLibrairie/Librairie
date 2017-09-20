@@ -13,7 +13,7 @@ import javax.swing.DefaultComboBoxModel;
  *
  * @author cdi312
  */
-public class JFEmployee extends javax.swing.JFrame implements SQLNames {
+public class JFEmployeeOld extends javax.swing.JFrame implements SQLNames {
     
     Vector<String> comboSearchModel;
     
@@ -81,7 +81,7 @@ public class JFEmployee extends javax.swing.JFrame implements SQLNames {
         } 
     }
 
-    public JFEmployee() {
+    public JFEmployeeOld() {
         initComponents();
         
         comboSearch.setModel(initComboSearchModel());
@@ -501,20 +501,21 @@ public class JFEmployee extends javax.swing.JFrame implements SQLNames {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(JFEmployee.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JFEmployeeOld.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(JFEmployee.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JFEmployeeOld.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(JFEmployee.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JFEmployeeOld.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(JFEmployee.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JFEmployeeOld.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new JFEmployee().setVisible(true);
+                new JFEmployeeOld().setVisible(true);
             }
         });
     }
@@ -555,4 +556,4 @@ public class JFEmployee extends javax.swing.JFrame implements SQLNames {
     private javax.swing.JTextField jTextField6;
     private javax.swing.JTextField jTextField8;
     // End of variables declaration//GEN-END:variables
-}
+        }

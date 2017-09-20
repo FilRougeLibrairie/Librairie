@@ -6,7 +6,9 @@
 package PanelOk;
 
 import ClassObjet.Author;
+import ClassObjet.ClassAssoc.Writing;
 import SQLS.AuthorDAO;
+import SQLS.WritingDAO;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -38,6 +40,8 @@ public class AuthorDeletePanel extends javax.swing.JPanel {
         v.add("Statut");
 
         return new javax.swing.table.DefaultTableModel(
+                
+                
                 initAutorVector(), v) {
                     boolean[] canEdit = new boolean[]{
                         false, true, true, true, true
@@ -46,6 +50,8 @@ public class AuthorDeletePanel extends javax.swing.JPanel {
                     public boolean isCellEditable(int rowIndex, int columnIndex) {
                         return false;
                     }
+                    
+                    
                 };
     }
 
@@ -158,29 +164,26 @@ public class AuthorDeletePanel extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(167, 167, 167)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 529, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(161, 161, 161)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 529, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(131, 131, 131)
-                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(131, 131, 131)
+                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(316, 316, 316)
+                        .addGap(155, 155, 155)
                         .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(210, Short.MAX_VALUE))
+                .addContainerGap(204, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(94, 94, 94)
                 .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(24, Short.MAX_VALUE))
+                .addGap(0, 255, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -224,11 +227,26 @@ public class AuthorDeletePanel extends javax.swing.JPanel {
         jTable1.setModel(initTableModel());
         Author a = new Author();
         AuthorDAO aut = new AuthorDAO();
+        
+        
+        
+        // creation de l'objet auteur dans writing
+       
+         Writing writing = new Writing();
+         writing.setAutId(Integer.valueOf(id));
+         writing.getBooIsbn13();
+         WritingDAO writ = new WritingDAO();
+         
+         writ.update(writing);
+        
+         //suppression de l'auteur
+      
         a.setAutId(Integer.valueOf(id));
         a.setAutFirstName(autF);
         a.setAutLastName(autL);
         a.setAutBiography(autA);
         a.setAutStatusCode(Integer.valueOf(autS));
+        
         aut.delete(a);
         jTable1.setModel(initTableModel());
         jop1.showMessageDialog(null, "L'auteur a été supprimé avec succès.", "Information", JOptionPane.INFORMATION_MESSAGE);

@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.util.Vector;
 
 
+
 public class BookLanguageDAO extends DAO<BookLanguage> {
 
     private final String TABLE = "BookLanguage";
@@ -29,7 +30,8 @@ public class BookLanguageDAO extends DAO<BookLanguage> {
     @Override
     public void create(BookLanguage obj) {
         BookLanguage bookLang = (BookLanguage) obj;
-        String query = "INSERT INTO BookLanguage (bookLangName) VALUES (?)";
+        String query = "IF NOT EXISTS(SELECT * FROM bookLanguage WHERE bookLangName= '"+bookLang.getBooLangName()+"')"
+                +"INSERT INTO BookLanguage (bookLangName) VALUES (?)";
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query);) {
 
@@ -42,6 +44,33 @@ public class BookLanguageDAO extends DAO<BookLanguage> {
             
         }
     }
+    
+    public Boolean answer(BookLanguage obj){
+        Boolean answer=true;
+        BookLanguage bookLang = (BookLanguage) obj;
+        String query = "SELECT * FROM bookLanguage WHERE bookLangName= '"+bookLang.getBooLangName()+"'";
+
+        try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.isBeforeFirst()) {
+                answer=true;
+            } else {
+                answer=false;
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
+            
+
+        }
+        return answer;
+        
+        
+    }   
+        
+    
 
     @Override
     public void update(BookLanguage obj) {
@@ -61,7 +90,6 @@ public class BookLanguageDAO extends DAO<BookLanguage> {
         } catch (SQLException ex) {
             System.out.println("ERROR UPDATING Object : " + ex.getMessage());
             
-
         }
     }
 
@@ -180,7 +208,38 @@ public class BookLanguageDAO extends DAO<BookLanguage> {
 
     @Override
     public BookLanguage find(String name) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        BookLanguage bookLang = null;
+        StringBuffer query = new StringBuffer();
+        query.append("SELECT * FROM " + TABLE + " WHERE ")
+                .append(NAME)
+                .append(" = ")
+                .append("'" + name + "'");
+
+        try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.isBeforeFirst()) {
+
+                while (rs.next()) {
+                    bookLang = new BookLanguage();
+                    bookLang.setBooLangCode(rs.getInt(CODE));
+                    bookLang.setBooLangName(rs.getString(NAME));
+                }
+            } else {
+                throw new SQLException("ResultSet was empty");
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
+            
+
+        }
+        return bookLang;
+        
+        
+      
+        
     }
 
 }

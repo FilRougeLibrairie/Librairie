@@ -12,7 +12,7 @@ public class ThemeAdd extends javax.swing.JPanel {
 
     Theme theme = new Theme();
     ThemeDAO themeDAO = new ThemeDAO();
-    JOptionPane jop1 = new JOptionPane();
+    JOptionPane jop1, jop2 = new JOptionPane();
     
     
     
@@ -46,12 +46,12 @@ public class ThemeAdd extends javax.swing.JPanel {
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
         jTextArea1.addAncestorListener(new javax.swing.event.AncestorListener() {
-            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
-            }
             public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
                 jTextArea1AncestorAdded(evt);
             }
             public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
             }
         });
         jScrollPane1.setViewportView(jTextArea1);
@@ -119,12 +119,23 @@ public class ThemeAdd extends javax.swing.JPanel {
         
         themeName=jTextField1.getText();
         themeDescription=jTextArea1.getText();    
+        
+        
         theme.setTheName(themeName);
         theme.setTheDescription(themeDescription);
-        themeDAO.create(theme);
-        jop1.showMessageDialog(null, "Le thème a été cré avec succès.", "Information", JOptionPane.INFORMATION_MESSAGE);
-        theId=theme.getTheId();
         
+        
+        
+        if(themeDAO.answer(theme)==false){
+        themeDAO.create(theme);
+        jop1.showMessageDialog(null, "Le thème a été ajouté avec succès.", "Information", JOptionPane.INFORMATION_MESSAGE);
+        }
+        else{
+        jop2.showMessageDialog(null,  "Insertion déjà présente dans la base ","Erreur", JOptionPane. WARNING_MESSAGE);    
+        }
+        
+        jTextField1.setText("");
+        jTextArea1.setText("");    
         
         
     }//GEN-LAST:event_jButton4ActionPerformed

@@ -5,12 +5,12 @@
  */
 package Home;
 
-import PanelOk.LanguagePanel;
+import PanelOk.BookLanguagePanel;
 import PanelOk.SubthemePanel;
 import PanelOk.ThemePanel;
 import PanelOk.AuthorPanel;
-import PanelOk.FormatsPanel;
-import PanelOk.KWPanel;
+import PanelOk.FormatPanel;
+import PanelOk.KeywordsPanel;
 import PanelOk.VatPanel;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -1201,7 +1201,7 @@ public class PannelCentralSelection extends javax.swing.JPanel {
 
         jpPrincipal.removeAll();
         jpPrincipal.validate();
-        KWPanel addKW = new KWPanel();
+        KeywordsPanel addKW = new KeywordsPanel();
         jpPrincipal.setLayout(new BorderLayout());
         jpPrincipal.add(addKW, BorderLayout.NORTH);
         jpPrincipal.setVisible(true);
@@ -1456,7 +1456,7 @@ public class PannelCentralSelection extends javax.swing.JPanel {
 
         jpPrincipal.removeAll();
         jpPrincipal.validate();
-        KWPanel addKW = new KWPanel();
+        KeywordsPanel addKW = new KeywordsPanel();
         jpPrincipal.setLayout(new BorderLayout());
         jpPrincipal.add(addKW, BorderLayout.NORTH);
         jpPrincipal.setVisible(true);
@@ -1521,7 +1521,7 @@ public class PannelCentralSelection extends javax.swing.JPanel {
 
         jpPrincipal.removeAll();
         jpPrincipal.validate();
-        FormatsPanel addKW = new FormatsPanel();
+        FormatPanel addKW = new FormatPanel();
         jpPrincipal.setLayout(new BorderLayout());
         jpPrincipal.add(addKW, BorderLayout.NORTH);
         jpPrincipal.setVisible(true);
@@ -1532,7 +1532,7 @@ public class PannelCentralSelection extends javax.swing.JPanel {
 
         jpPrincipal.removeAll();
         jpPrincipal.validate();
-        FormatsPanel addKW = new FormatsPanel();
+        FormatPanel addKW = new FormatPanel();
         jpPrincipal.setLayout(new BorderLayout());
         jpPrincipal.add(addKW, BorderLayout.NORTH);
         jpPrincipal.setVisible(true);
@@ -1584,7 +1584,7 @@ public class PannelCentralSelection extends javax.swing.JPanel {
 
         jpPrincipal.removeAll();
         jpPrincipal.validate();
-        LanguagePanel language = new LanguagePanel();
+        BookLanguagePanel language = new BookLanguagePanel();
         jpPrincipal.setLayout(new BorderLayout());
         jpPrincipal.add(language, BorderLayout.NORTH);
         jpPrincipal.setVisible(true);
@@ -1613,7 +1613,7 @@ public class PannelCentralSelection extends javax.swing.JPanel {
     
         jpPrincipal.removeAll();
         jpPrincipal.validate();
-        LanguagePanel language = new LanguagePanel();
+        BookLanguagePanel language = new BookLanguagePanel();
         jpPrincipal.setLayout(new BorderLayout());
         jpPrincipal.add(language, BorderLayout.NORTH);
         jpPrincipal.setVisible(true);

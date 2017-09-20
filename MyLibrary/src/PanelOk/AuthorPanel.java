@@ -5,6 +5,7 @@
  */
 package PanelOk;
 
+import PanelOk.AuthorAddPanel;
 import java.awt.BorderLayout;
 
 /**

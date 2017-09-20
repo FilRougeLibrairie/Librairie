@@ -166,6 +166,20 @@ public interface SQLNames {
         public static final String NAME = "staName";
     }
 
+    public static class OrderStatusAttrNames {
+
+        public static final String SUSPENDED = "Suspendu";
+        public static final String ORDERED = "Payé";
+        public static final String PAYED = "Expédié";
+        public static final String SHIPPED = "Envoyé";
+        public static final String RECEIVED = "Livré";
+        public static final String RETURN = "Retour en cours";
+        public static final String RETURN_ACCEPTED = "Retour Accepté";
+        public static final String RETURN_REFUSED = "Retour refusé";
+        public static final String REFUNDED = "Remboursé";
+
+    }
+
     public static class PaymentNames {
 
         public static final String ID = "payId";
@@ -199,8 +213,6 @@ public interface SQLNames {
         public static final String IP = "revIP";
         public static final String STATUS = "revStatus";
     }
-
-    
 
     public static class ShippingCostNames {
 

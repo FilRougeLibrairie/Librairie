@@ -18,7 +18,6 @@ import exceptions.MissingInformationException;
 import exceptions.NoCurrentCustomerException;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
 import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
@@ -28,7 +27,6 @@ import java.util.Properties;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.scene.Cursor;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -158,7 +156,7 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
         }
     }
 
-// Constructor
+    // Constructor
     public JFCustomer() {
         initComponents();
 
@@ -432,10 +430,9 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
     private void loadingOrderTable(Customer cus) {
         PurchaseDAO purchaseDAO = new PurchaseDAO();
         Vector<Purchase> orderList = new Vector<Purchase>();
-
         orderList = purchaseDAO.findByCustomerId(cus.getCusID());
-
         orderTableList = new Vector();
+        
         for (Purchase pur : orderList) {
             // Retrieving OrderStatusList
             try {
@@ -1471,7 +1468,7 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
                             .addGroup(jPanel10Layout.createSequentialGroup()
                                 .addComponent(panelSearchByReviewStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jPanel14, javax.swing.GroupLayout.DEFAULT_SIZE, 0, Short.MAX_VALUE))
+                                .addComponent(jPanel14, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                             .addGroup(jPanel10Layout.createSequentialGroup()
                                 .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel6)

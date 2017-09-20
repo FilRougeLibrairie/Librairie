@@ -138,9 +138,7 @@ public class CustomerDAO extends DAO {
         query.append("SELECT * FROM " + TABLE + " WHERE ")
                 .append(ID)
                 .append(" = ")
-                .append("'" + id + "'");
-
-        System.out.println(query);
+                .append(id);
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
 

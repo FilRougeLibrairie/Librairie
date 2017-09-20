@@ -74,7 +74,7 @@ public class PurchaseDAO extends DAO {
         query.append("DELETE FROM " + TABLE + " WHERE ")
                 .append(ID)
                 .append(" = ")
-                .append("'" + purId + "'");
+                .append(purId);
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
             pstmt.executeQuery();
@@ -95,9 +95,8 @@ public class PurchaseDAO extends DAO {
         query.append(SHIPPING_DATE).append(" = ?, ");
         query.append(SHIPPING_NUMBER).append(" = ? ");
 
-        query.append("WHERE " + ID + " = '")
-                .append(pur.getPurIP())
-                .append("'");
+        query.append("WHERE " + ID + " = ")
+                .append(pur.getPurIP());
 
         try (PreparedStatement pstmt = connect.prepareStatement(query.toString());) {
 
@@ -117,7 +116,7 @@ public class PurchaseDAO extends DAO {
     }
 
     @Override
-    public Vector findAll() {
+    public Vector<Purchase> findAll() {
         purList = new Vector<Purchase>();
         pur = null;
         cus = null;
@@ -141,6 +140,7 @@ public class PurchaseDAO extends DAO {
 
                     pur.setPurId(rs.getInt(ID));
                     cus.setCusID(rs.getInt(CUSTOMER_ID));
+                    pur.setCusId(cus);
                     shipCost.setShipId(rs.getInt(SHIPPING_COST));
                     pur.setShippingCostId(shipCost);
                     addrDelivery.setAddId(rs.getInt(ADDRESS_DELIVERY));
@@ -150,7 +150,6 @@ public class PurchaseDAO extends DAO {
                     pur.setPurIP(rs.getString(IP));
                     pur.setShippingDate(rs.getString(SHIPPING_DATE));
                     pur.setShippingNumber(rs.getInt(SHIPPING_NUMBER));
-
                     purList.add(pur);
                 }
             } else {
@@ -174,7 +173,7 @@ public class PurchaseDAO extends DAO {
         query.append("SELECT * FROM " + TABLE + " WHERE ")
                 .append(ID)
                 .append(" = ")
-                .append("'" + id + "'");
+                .append(id);
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
 
@@ -229,8 +228,6 @@ public class PurchaseDAO extends DAO {
                 .append(column)
                 .append(" = ")
                 .append("'" + term + "'");
-
-        System.out.println();
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
 

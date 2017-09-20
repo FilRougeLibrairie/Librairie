@@ -21,7 +21,8 @@ public class KeywordsDAO extends DAO {
         Keywords kw = (Keywords) obj;
         
         
-        String query ="INSERT INTO KEYWORDS VALUES ('"+kw.getKeyName()+"')";
+        String query ="IF NOT EXISTS(SELECT * FROM keywords WHERE keyName= '"+kw.getKeyName()+"')"
+                +"INSERT INTO KEYWORDS VALUES ('"+kw.getKeyName()+"')";
 
      
         try (PreparedStatement pstmt = this.connect.prepareStatement(query);) {
@@ -50,6 +51,35 @@ public class KeywordsDAO extends DAO {
            
         }
     }
+    
+        public Boolean answer(Keywords obj){
+        Boolean answer=true;
+        Keywords kw = (Keywords) obj;
+        String query = "SELECT * FROM keywords WHERE keyName= '"+kw.getKeyName()+"'";
+
+        try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.isBeforeFirst()) {
+                answer=true;
+            } else {
+                answer=false;
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
+            
+
+        }
+        return answer;
+        
+        
+    }  
+    
+    
+    
+    
 
     @Override
     public void update(Object obj) {

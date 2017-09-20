@@ -3,13 +3,11 @@ package SQLS;
 
 
 import ClassObjet.Author;
-import ClassObjet.Book;
 import Names.SQLNames.AuthorNames;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
-import static org.eclipse.persistence.sessions.remote.corba.sun.TransporterHelper.id;
 
 
 
@@ -75,6 +73,32 @@ public class AuthorDAO extends DAO{
             
         }
     }
+    
+       public Boolean answer(Author obj){
+        Boolean answer=true;
+        Author a = (Author) obj;
+        String query = "SELECT * FROM author WHERE autLastName= '"+a.getAutLastName()+"' AND autFirstName ='"+a.getAutFirstName()+"'";
+
+        try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.isBeforeFirst()) {
+                answer=true;
+            } else {
+                answer=false;
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
+            
+
+        }
+        return answer;
+        
+        
+    }  
+       
 
     @Override
     public void update(Object obj) {

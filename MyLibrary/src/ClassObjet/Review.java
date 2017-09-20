@@ -15,9 +15,9 @@ import java.text.SimpleDateFormat;
 public class Review {
 
     private int revId;
-    private Customer cusId;
+    private Customer customer;
     private String booIsbn13;
-    private OrderLine ordLineId;
+    private OrderLine orderLine;
     private Float revNote;
     private String revComment;
     private java.sql.Date revDate;
@@ -32,7 +32,7 @@ public class Review {
     }
 
     public void setCusId(Customer cusId) {
-        this.cusId = cusId;
+        this.customer = cusId;
     }
 
     public void setBooIsbn13(String booIsbn13) {
@@ -40,7 +40,7 @@ public class Review {
     }
 
     public void setOrdLineId(OrderLine ordLineId) {
-        this.ordLineId = ordLineId;
+        this.orderLine = ordLineId;
     }
 
     public void setRevNote(Float revNote) {
@@ -78,7 +78,7 @@ public class Review {
     }
 
     public Customer getCusId() {
-        return cusId;
+        return customer;
     }
 
     public String getBooIsbn13() {
@@ -86,7 +86,7 @@ public class Review {
     }
 
     public OrderLine getOrdLineId() {
-        return ordLineId;
+        return orderLine;
     }
 
     public Float getRevNote() {
@@ -120,9 +120,9 @@ public class Review {
     @Override
     public String toString() {
         return "Review : " + revId + "\n"
-                + "Customer Id : " + cusId + "\n"
+                + "Customer Id : " + customer + "\n"
                 + "ISBN13 : " + booIsbn13 + "\n"
-                + "Orderline Id : " + ordLineId + "\n"
+                + "Orderline Id : " + orderLine + "\n"
                 + "Score : " + revNote + "\n"
                 + "Comment : " + revComment + "\n"
                 + "Date : " + revDate + "\n"
