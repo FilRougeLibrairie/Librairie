@@ -15,11 +15,12 @@ import java.util.Vector;
  * @author cdi312
  */
 public class EmployeeTableItem {
-    
+
     Employee employee;
     StatusDisplay statusDisplayNom;
     String lastName;
     String firstName;
+    String login;
     int status;
     String profile;
     java.sql.Date startDate;
@@ -28,25 +29,23 @@ public class EmployeeTableItem {
     public EmployeeTableItem(Employee employee) {
         this.employee = employee;
         this.lastName = this.employee.getEmpLastName();
-        this.firstName = this.employee.getEmpFirstName(); 
+        this.firstName = this.employee.getEmpFirstName();
+        this.login = this.employee.getEmpLogin();
         this.status = this.employee.getEmpStatus();
-        this.profile = this.employee.getAccProfileCode().getAccProfileName(); 
+        this.profile = this.employee.getAccProfileCode().getAccProfileName();
         this.startDate = this.employee.getEmpDateStart();
-//        System.out.println("oui");
-//        if (this.employee.getEmpDateEnd() != null) {
-//           this.endDate = this.employee.getEmpDateEnd();  
-//        } else {          
-//        }     
+        this.endDate = this.employee.getEmpDateEnd();
     }
-    
+
     public Vector getVector() {
         Vector v = new Vector();
         v.add(this);
         v.add(firstName);
+        v.add(login);
         v.add(status);
-        v.add(profile); 
+        v.add(profile);
         v.add(startDate);
-//        v.add(endDate);
+        v.add(endDate);
         return v;
     }
 
@@ -66,7 +65,6 @@ public class EmployeeTableItem {
         return statusDisplayNom;
     }
 
-
     public int getStatus() {
         return status;
     }
@@ -82,8 +80,6 @@ public class EmployeeTableItem {
     public Date getEndDate() {
         return endDate;
     }
-
-
 
     public void setEmployee(Employee employee) {
         this.employee = employee;
@@ -117,9 +113,8 @@ public class EmployeeTableItem {
         this.endDate = endDate;
     }
 
-
     @Override
- public String toString() {
-     return lastName; 
+    public String toString() {
+        return lastName;
     }
 }

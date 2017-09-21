@@ -35,6 +35,9 @@ public class Offer {
         this.offDiscount = offDiscount;
         this.offPicture = offPicture;
     }
+
+   
+    
     
     
     
@@ -115,8 +118,14 @@ public class Offer {
 
     @Override
     public String toString() {
-        return "Offer{" + "offId=" + offId + ", offName=" + offName + ", offText=" + offText + ", offDateStart=" + offDateStart + ", offDateEnd=" + offDateEnd + ", offDiscount=" + offDiscount + ", offPicture=" + offPicture + ", booksList=" + booksList + '}';
+        return "\n"
+                +  offName 
+                
+                ;
     }
+    
+    
+   
     
     
 

@@ -1,9 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package PanelEnCoursChrys;
+
+package PanelOk;
 
 import ClassObjet.Offer;
 import SQLS.OfferDAO;
@@ -18,10 +14,7 @@ import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
 import utils.DateLabelFormatter;
 
-/**
- *
- * @author Chrys
- */
+
 public class OfferAddPanel extends javax.swing.JPanel {
 
     JDatePickerImpl datePicker,datePicker2;
@@ -77,27 +70,20 @@ public class OfferAddPanel extends javax.swing.JPanel {
     }
 
     private void datePickerActionPerformed(java.awt.event.ActionEvent evt) {
-
         Date selectedDate = (Date) datePicker.getModel().getValue();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        date = df.format(selectedDate);
-
-        
+        date = df.format(selectedDate);  
     }
     
     
     private void datePicker2ActionPerformed(java.awt.event.ActionEvent evt) {
-
-        
         Date selectedDate2 = (Date) datePicker2.getModel().getValue();
         SimpleDateFormat df2 = new SimpleDateFormat("yyyy-MM-dd");
         dateEnd = df2.format(selectedDate2);
-
     }
     
     
-    
-    
+  
     
     
     
@@ -123,6 +109,7 @@ public class OfferAddPanel extends javax.swing.JPanel {
         panelDate1 = new javax.swing.JPanel();
 
         setPreferredSize(new java.awt.Dimension(600, 600));
+        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setMinimumSize(new java.awt.Dimension(900, 500));
 
@@ -206,7 +193,7 @@ public class OfferAddPanel extends javax.swing.JPanel {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(29, 29, 29)
                         .addComponent(jTLink, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -267,18 +254,7 @@ public class OfferAddPanel extends javax.swing.JPanel {
                 .addContainerGap(172, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 43, Short.MAX_VALUE))
-        );
+        add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 927, -1));
     }// </editor-fold>//GEN-END:initComponents
 
     private void jTLinkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTLinkActionPerformed
@@ -287,22 +263,18 @@ public class OfferAddPanel extends javax.swing.JPanel {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
-             Offer offer = new Offer();
+        Offer offer = new Offer();
         offer.setOffName(jTName.getText());
         offer.setOffText(jTComment.getText());
         offer.setOffPicture(jTLink.getText());
         offer.setOffDateStart(date);
-       offer.setOffDateEnd(dateEnd);
-//        2017-09-18
+        offer.setOffDateEnd(dateEnd);
         offer.setOffDiscount(Float.valueOf(jTDiscount.getText()));
         
-        System.out.println(date);
-            OfferDAO offerDAO = new OfferDAO();
         
-            // creation
-        
-            offerDAO.create(offer);
-            jop1.showMessageDialog(null, "L'offre a été ajoutée avec succès.", "Information", JOptionPane.INFORMATION_MESSAGE);
+        OfferDAO offerDAO = new OfferDAO();
+        offerDAO.create(offer);
+        jop1.showMessageDialog(null, "L'offre a été ajoutée avec succès.", "Information", JOptionPane.INFORMATION_MESSAGE);
         
             
             

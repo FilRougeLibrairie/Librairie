@@ -32,9 +32,6 @@ public class Home extends javax.swing.JFrame {
 
     public Home() throws IOException {
         initComponents();
-        
-        
-        
         panel1 = new Header();
         panel2 = new PannelCentralSelection();
         
@@ -177,7 +174,7 @@ public class Home extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setIconImage(getIconImage());
-        setMinimumSize(new java.awt.Dimension(1000, 800));
+        setMinimumSize(new java.awt.Dimension(1100, 900));
         setSize(new java.awt.Dimension(0, 0));
         getContentPane().setLayout(new java.awt.GridBagLayout());
 

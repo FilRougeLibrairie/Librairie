@@ -1,3 +1,4 @@
+
 package ui.jfCustomer;
 
 import ClassObjet.Address;
@@ -30,19 +31,15 @@ import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import utils.Crypto;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
-import ui.jfPurchase.JFPurchase;
 import utils.Awt1;
+import utils.Crypto;
 import utils.DateLabelFormatter;
 
-/**
- *
- * @author code : ggarvanese
- */
-public class JFCustomer extends javax.swing.JFrame implements SQLNames {
+
+public class CustomerPanel extends javax.swing.JPanel implements SQLNames {
 
     Vector<Customer> customerList;
     Vector customerTableList;
@@ -158,7 +155,7 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
     }
 
     // Constructor
-    public JFCustomer() {
+    public CustomerPanel() {
         initComponents();
 
         tableCustomers.setCellSelectionEnabled(true);
@@ -433,7 +430,7 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
         Vector<Purchase> orderList = new Vector<Purchase>();
         orderList = purchaseDAO.findByCustomerId(cus.getCusID());
         orderTableList = new Vector();
-
+        
         for (Purchase pur : orderList) {
             // Retrieving OrderStatusList
             try {
@@ -455,11 +452,11 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
         ReviewTableItem reviewTableItem;
         StatusDisplay statusDisplay;
 
-        reviewList = reviewDAO.findByColumn(ReviewNames.CUSTOMER_ID, currentCustomer.getCusID());
+        reviewList = reviewDAO.findByColumn(SQLNames.ReviewNames.CUSTOMER_ID, currentCustomer.getCusID());
         reviewTableList = new Vector();
 
         for (Review rev : reviewList) {
-            Vector<Book> v = bookDAO.findByColumn(BookNames.ISBN_13, rev.getBooIsbn13());
+            Vector<Book> v = bookDAO.findByColumn(SQLNames.BookNames.ISBN_13, rev.getBooIsbn13());
             for (Book book : v) {
                 rev.setBook(book);
             }
@@ -617,28 +614,28 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
             if (criteria.equalsIgnoreCase(SearchCriteria.TOUS_LES_CLIENTS.getDatabaseName())) {
                 customerList = customerDAO.findAll();
             } else if (criteria.equalsIgnoreCase(SearchCriteria.STATUS.getDatabaseName())) {
-                criteria = CustomerNames.STATUS;
+                criteria = SQLNames.CustomerNames.STATUS;
                 statusIndex = comboStatus.getSelectedIndex();
                 customerList = customerDAO.findByColumn(criteria, statusIndex);
             } else if (criteria.equalsIgnoreCase(SearchCriteria.GENDER.getDatabaseName())) {
-                criteria = CustomerNames.GENDER;
+                criteria = SQLNames.CustomerNames.GENDER;
                 term = comboGender.getSelectedItem().toString().substring(0, 1).trim();
                 customerList = customerDAO.findByColumn(criteria, term);
             } else if (term != null && !term.isEmpty()) {
                 if (criteria.equalsIgnoreCase(SearchCriteria.NOM.getDatabaseName())) {
-                    criteria = CustomerNames.LAST_NAME;
+                    criteria = SQLNames.CustomerNames.LAST_NAME;
                 } else if (criteria.equalsIgnoreCase(SearchCriteria.PRENOM.getDatabaseName())) {
-                    criteria = CustomerNames.FIRST_NAME;
+                    criteria = SQLNames.CustomerNames.FIRST_NAME;
                 } else if (criteria.equalsIgnoreCase(SearchCriteria.SOCIETE.getDatabaseName())) {
-                    criteria = CustomerNames.COMPANY;
+                    criteria = SQLNames.CustomerNames.COMPANY;
                 } else if (criteria.equalsIgnoreCase(SearchCriteria.EMAIL.getDatabaseName())) {
-                    criteria = CustomerNames.EMAIL;
+                    criteria = SQLNames.CustomerNames.EMAIL;
                 } else if (criteria.equalsIgnoreCase(SearchCriteria.TELEPHONE.getDatabaseName())) {
-                    criteria = CustomerNames.PHONE;
+                    criteria = SQLNames.CustomerNames.PHONE;
                 } else if (criteria.equalsIgnoreCase(SearchCriteria.IP.getDatabaseName())) {
-                    criteria = CustomerNames.IP;
+                    criteria = SQLNames.CustomerNames.IP;
                 } else if (criteria.equalsIgnoreCase(SearchCriteria.STATUS.getDatabaseName())) {
-                    criteria = CustomerNames.STATUS;
+                    criteria = SQLNames.CustomerNames.STATUS;
                 }
                 customerList = customerDAO.findByColumn(criteria, term);
             }
@@ -697,32 +694,47 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
     }
 
     private void manageInputError(Boolean ErrorState, String component, String btnToDisable, String errorMessage) {
-        Component btn = Awt1.getComponentByName(this, btnToDisable);
-        Component tf = Awt1.getComponentByName(this, component);
-
-        if (ErrorState) {
-            labelErrorMessage.setText(errorMessage);
-            labelErrorMessage.setVisible(true);
-            btn.setVisible(false);
-            tf.setBackground(new Color(255, 0, 0, 15));
-        } else {
-            labelErrorMessage.setText("");
-            labelErrorMessage.setVisible(false);
-            btn.setVisible(true);
-            tf.setBackground(Color.WHITE);
-        }
+//        Component btn = Awt1.getComponentByName(this, btnToDisable);
+//        Component tf = Awt1.getComponentByName(this, component);
+//
+//        if (ErrorState) {
+//            labelErrorMessage.setText(errorMessage);
+//            labelErrorMessage.setVisible(true);
+//            btn.setVisible(false);
+//            tf.setBackground(new Color(255, 0, 0, 15));
+//        } else {
+//            labelErrorMessage.setText("");
+//            labelErrorMessage.setVisible(false);
+//            btn.setVisible(true);
+//            tf.setBackground(Color.WHITE);
+//        }
+        
+        System.out.println("auboulot******************************************************************");
     }
-
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        buttonGroup1 = new javax.swing.ButtonGroup();
         jPanel9 = new javax.swing.JPanel();
         tfLastName = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
@@ -780,7 +792,7 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
         jScrollPane2 = new javax.swing.JScrollPane();
         tableOrders = new javax.swing.JTable();
         jPanel11 = new javax.swing.JPanel();
-        btnViewPurchase = new javax.swing.JLabel();
+        btnView = new javax.swing.JLabel();
         jPanel10 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableReview = new javax.swing.JTable();
@@ -843,8 +855,7 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
         panBtnDeleteCustomer = new javax.swing.JPanel();
         btnDeleteCustomer = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setBackground(new java.awt.Color(255, 255, 255));
+        setPreferredSize(new java.awt.Dimension(900, 700));
 
         jPanel9.setBackground(new java.awt.Color(255, 255, 255));
         jPanel9.setPreferredSize(new java.awt.Dimension(900, 630));
@@ -1166,12 +1177,8 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
                     .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(panBtnDeleteAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(55, Short.MAX_VALUE))
+                .addContainerGap(68, Short.MAX_VALUE))
         );
-
-        jPanel5Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {tfDeliverCompany, tfDeliverFirstName, tfDeliverLabel, tfDeliverLastName});
-
-        jPanel5Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {tfDeliverCity, tfDeliverPhoneNumber, tfDeliverSecurityCode, tfDeliverStreetComplement, tfDeliverStreetName, tfDeliverZipCode});
 
         jTabbedPane1.addTab("Adresses", jPanel5);
 
@@ -1216,30 +1223,20 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
         jPanel11.setPreferredSize(new java.awt.Dimension(200, 45));
         jPanel11.setRequestFocusEnabled(false);
 
-        btnViewPurchase.setForeground(new java.awt.Color(255, 255, 255));
-        btnViewPurchase.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        btnViewPurchase.setText("Visualiser");
-        btnViewPurchase.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnViewPurchase.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                btnViewPurchaseMouseReleased(evt);
-            }
-        });
-        btnViewPurchase.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                btnViewPurchaseKeyReleased(evt);
-            }
-        });
+        btnView.setForeground(new java.awt.Color(255, 255, 255));
+        btnView.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btnView.setText("Visualiser");
+        btnView.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
         javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
         jPanel11.setLayout(jPanel11Layout);
         jPanel11Layout.setHorizontalGroup(
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(btnViewPurchase, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE)
+            .addComponent(btnView, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE)
         );
         jPanel11Layout.setVerticalGroup(
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(btnViewPurchase, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
+            .addComponent(btnView, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
@@ -1248,7 +1245,7 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 864, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 830, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -1343,7 +1340,6 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
         jPanel14.setBackground(new java.awt.Color(255, 255, 255));
         jPanel14.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        buttonGroup1.add(rbtnValidated);
         rbtnValidated.setText("Validé");
         rbtnValidated.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1354,7 +1350,6 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("Status");
 
-        buttonGroup1.add(rbtnRejected);
         rbtnRejected.setText("Rejeté");
 
         javax.swing.GroupLayout jPanel14Layout = new javax.swing.GroupLayout(jPanel14);
@@ -1461,7 +1456,7 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
                                 .addComponent(labelBookISBN, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGap(6, 6, 6))
                             .addComponent(labelBookTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 318, Short.MAX_VALUE))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 272, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(panelSearchByReviewStatus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -1490,7 +1485,7 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
                                     .addComponent(labelBookTitle))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 14, Short.MAX_VALUE)))
+                        .addGap(0, 17, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel12, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(32, 32, 32))
@@ -1600,7 +1595,7 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
                     .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addComponent(tfInvoiceLabel)
                     .addComponent(jPanel15, javax.swing.GroupLayout.DEFAULT_SIZE, 158, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel15)
                     .addComponent(jLabel16)
@@ -1630,12 +1625,12 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(tfInvoiceLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 111, Short.MAX_VALUE)
+                        .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jPanel15, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(53, Short.MAX_VALUE))
+                        .addContainerGap(60, Short.MAX_VALUE))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(tfInvoiceLastName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1656,7 +1651,7 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(tfInvoiceStreetName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel18))
-                        .addContainerGap(100, Short.MAX_VALUE))))
+                        .addContainerGap(132, Short.MAX_VALUE))))
         );
 
         jTabbedPane1.addTab("Moyens de paiement", jPanel4);
@@ -1783,14 +1778,14 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
                 .addContainerGap()
                 .addGroup(jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(tfSearch)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)
                     .addComponent(comboSearch, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jInternalFrame1Layout.createSequentialGroup()
                         .addGap(23, 23, 23)
                         .addComponent(jLabel5)
-                        .addGap(0, 30, Short.MAX_VALUE)))
+                        .addGap(0, 33, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jInternalFrame1Layout.setVerticalGroup(
@@ -1857,7 +1852,7 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel9Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTabbedPane1)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 859, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(jPanel9Layout.createSequentialGroup()
                 .addComponent(jInternalFrame1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1968,30 +1963,200 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, 888, Short.MAX_VALUE)
+                .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, 883, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, 675, Short.MAX_VALUE)
+                .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, 675, Short.MAX_VALUE)
                 .addGap(112, 112, 112))
         );
-
-        setSize(new java.awt.Dimension(916, 668));
-        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void tfLastNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfLastNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tfLastNameActionPerformed
+
+    private void tfLastNameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfLastNameKeyReleased
+        if (tfLastName.getText().isEmpty()) {
+            tfLastName.setBackground(new Color(255, 0, 0, 15));
+            manageInputError(true, "tfLastname", "btnSaveCustomer", ErrorMessages.IS_EMPTY);
+        } else {
+            tfLastName.setBackground(Color.WHITE);
+            manageInputError(false, "tfLastname", "btnSaveCustomer", "");
+        }
+    }//GEN-LAST:event_tfLastNameKeyReleased
+
+    private void btnSaveCustomerMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSaveCustomerMouseReleased
+        try {
+            customerFactory();
+            //  manageInputError(false, "btnSaveCustomer", ErrorMessages.CRYPTO);
+        } catch (NoSuchAlgorithmException ex) {
+            //   manageInputError(true, "btnSaveCustomer", ErrorMessages.CRYPTO);
+        } catch (CryptoException ex) {
+            //   manageInputError(true, "btnSaveCustomer", ErrorMessages.CRYPTO);
+        } catch (MissingInformationException ex) {
+            //  manageInputError(true, "btnSaveCustomer", ErrorMessages.EMPTY_PASSWORD);
+        }
+    }//GEN-LAST:event_btnSaveCustomerMouseReleased
+
+    private void tableDeliverAdressesMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableDeliverAdressesMouseReleased
+        for (int ligne = 0; ligne < tableDeliverAdresses.getRowCount(); ligne++) {
+            if (tableDeliverAdresses.isRowSelected(ligne)) {
+                AddressTableItem addressTable = (AddressTableItem) tableDeliverAdresses.getValueAt(ligne, 0);
+                currentAddress = addressTable.getAddress();
+                fillAddressFields(currentAddress);
+            }
+        }
+
+        if (currentAddress != null) {
+            panBtnDeleteAddress.setVisible(true);
+        }
+    }//GEN-LAST:event_tableDeliverAdressesMouseReleased
+
+    private void btnNewAdressMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnNewAdressMouseReleased
+        clearAddressFields();
+        currentAddress = null;
+        panBtnDeleteAddress.setVisible(false);
+    }//GEN-LAST:event_btnNewAdressMouseReleased
+
+    private void btnSaveDeliverMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSaveDeliverMouseReleased
+        addressFactory();
+    }//GEN-LAST:event_btnSaveDeliverMouseReleased
+
+    private void btnDeleteAddressMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDeleteAddressMouseReleased
+        if (currentCustomer != null && currentAddress != null) {
+            try {
+                deleteAddress();
+            } catch (Exception ex) {
+                Logger.getLogger(JFCustomer.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_btnDeleteAddressMouseReleased
+
+    private void tableReviewMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableReviewMouseReleased
+        for (int ligne = 0; ligne < tableReview.getRowCount(); ligne++) {
+            if (tableReview.isRowSelected(ligne)) {
+                ReviewTableItem reviewTable = (ReviewTableItem) tableReview.getValueAt(ligne, 0);
+                currentReview = reviewTable.getReview();
+                String reviewText = reviewTable.getComment();
+                tfReview.setText(reviewText);
+                labelBookISBN.setText(currentReview.getBooIsbn13());
+                labelBookTitle.setText(currentReview.getBook().getBooTitle());
+            }
+        }
+    }//GEN-LAST:event_tableReviewMouseReleased
+
+    private void jScrollPane1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jScrollPane1MouseReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jScrollPane1MouseReleased
+
+    private void btnSaveReviewMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSaveReviewMouseReleased
+        if (currentReview != null) {
+            reviewFactory();
+        }
+    }//GEN-LAST:event_btnSaveReviewMouseReleased
+
+    private void rbtnValidatedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbtnValidatedActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbtnValidatedActionPerformed
+
+    private void comboRevStatusMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_comboRevStatusMouseReleased
+
+        //        for (int ligne = 0; ligne < tableReview.getRowCount(); ligne++) {
+            //            if (tableCustomers.isRowSelected(ligne)) {
+                //                CustomerTableItem cusTable = (CustomerTableItem) tableCustomers.getValueAt(ligne, 0);
+                //                currentCustomer = cusTable.getCustomer();
+                //                fillCustomerFields(currentCustomer);
+                //                loadingAdressTable(currentCustomer);
+                //                loadingReviewTable(currentCustomer);
+                //                loadingOrderTable(currentCustomer);
+                //            }
+            //        }
+    }//GEN-LAST:event_comboRevStatusMouseReleased
+
+    private void comboRevStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboRevStatusActionPerformed
+        Vector tabToClear = new Vector();
+        //tabToClear.add(tableReview);
+        // clearTableModels(tabToClear);
+        // clearFields();
+        //        if (tableReview != null && tableReview.getRowCount() > 0) {
+            //            for (int i = 0; i < tableReview.getRowCount(); i++) {
+                //                System.out.println(tableReview.getValueAt(i, 0).toString());
+                //            }
+            //        }
+        //  String criteria = comboRevStatus.getSelectedItem().toString();
+
+        // System.out.println(  tableReview.getModel().getValueAt(0, 1)     );
+        String criteria = comboRevStatus.getSelectedItem().toString();
+
+        //
+        //        if(tableReview != null){
+            //            for (int i = 0; i < tableReview.getRowCount(); i++) {
+                //              System.out.println(tableReview.getValueAt(i, 1).toString());
+                //           }
+            //        }
+        //        if ( != null) {
+            //            for (Object rev : reviewTableList) {
+                //                for (Object r : ((ReviewTableItem) rev).getVector()) {
+                    //                    System.out.println(r.getClass());
+                    //                }
+                //            }
+            //        }
+        //   setTableReviewModel();
+        //for(Object rev : reviewTableList){
+            //    System.out.println(reviewTableList);
+            //  }
+    }//GEN-LAST:event_comboRevStatusActionPerformed
+
+    private void tabletfInvoiceAdressesMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabletfInvoiceAdressesMouseReleased
+
+    }//GEN-LAST:event_tabletfInvoiceAdressesMouseReleased
+
+    private void tfPasswordKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfPasswordKeyReleased
+
+    }//GEN-LAST:event_tfPasswordKeyReleased
+
+    private void comboGenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboGenderActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_comboGenderActionPerformed
 
     private void btnSearchMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSearchMouseReleased
         searchForCustomer();
     }//GEN-LAST:event_btnSearchMouseReleased
+
+    private void bntCreateNewMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bntCreateNewMouseReleased
+        Vector tabToClear = new Vector();
+        tabToClear.add(tableDeliverAdresses);
+        tabToClear.add(tableOrders);
+        tabToClear.add(tableReview);
+        clearTableModels(tabToClear);
+        clearFields();
+
+        clearCustomerFields();
+        clearAddressFields();
+
+        currentCustomer = null;
+        panBtnDeleteCustomer.setVisible(false);
+    }//GEN-LAST:event_bntCreateNewMouseReleased
+
+    private void comboSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboSearchActionPerformed
+
+    }//GEN-LAST:event_comboSearchActionPerformed
+
+    private void tfSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfSearchKeyReleased
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            searchForCustomer();
+        }
+    }//GEN-LAST:event_tfSearchKeyReleased
 
     private void tableCustomersMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableCustomersMouseReleased
         Vector tabToClear = new Vector();
@@ -2017,157 +2182,6 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
         }
     }//GEN-LAST:event_tableCustomersMouseReleased
 
-    private void bntCreateNewMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bntCreateNewMouseReleased
-        Vector tabToClear = new Vector();
-        tabToClear.add(tableDeliverAdresses);
-        tabToClear.add(tableOrders);
-        tabToClear.add(tableReview);
-        clearTableModels(tabToClear);
-        clearFields();
-
-        clearCustomerFields();
-        clearAddressFields();
-
-        currentCustomer = null;
-        panBtnDeleteCustomer.setVisible(false);
-    }//GEN-LAST:event_bntCreateNewMouseReleased
-
-    private void comboGenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboGenderActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_comboGenderActionPerformed
-
-    private void tabletfInvoiceAdressesMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabletfInvoiceAdressesMouseReleased
-
-    }//GEN-LAST:event_tabletfInvoiceAdressesMouseReleased
-
-    private void tableDeliverAdressesMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableDeliverAdressesMouseReleased
-        for (int ligne = 0; ligne < tableDeliverAdresses.getRowCount(); ligne++) {
-            if (tableDeliverAdresses.isRowSelected(ligne)) {
-                AddressTableItem addressTable = (AddressTableItem) tableDeliverAdresses.getValueAt(ligne, 0);
-                currentAddress = addressTable.getAddress();
-                fillAddressFields(currentAddress);
-            }
-        }
-
-        if (currentAddress != null) {
-            panBtnDeleteAddress.setVisible(true);
-        }
-    }//GEN-LAST:event_tableDeliverAdressesMouseReleased
-
-    private void btnSaveCustomerMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSaveCustomerMouseReleased
-        try {
-            customerFactory();
-            //  manageInputError(false, "btnSaveCustomer", ErrorMessages.CRYPTO);
-        } catch (NoSuchAlgorithmException ex) {
-            //   manageInputError(true, "btnSaveCustomer", ErrorMessages.CRYPTO);
-        } catch (CryptoException ex) {
-            //   manageInputError(true, "btnSaveCustomer", ErrorMessages.CRYPTO);
-        } catch (MissingInformationException ex) {
-            //  manageInputError(true, "btnSaveCustomer", ErrorMessages.EMPTY_PASSWORD);
-        }
-    }//GEN-LAST:event_btnSaveCustomerMouseReleased
-
-    private void comboSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboSearchActionPerformed
-
-    }//GEN-LAST:event_comboSearchActionPerformed
-
-    private void btnNewAdressMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnNewAdressMouseReleased
-        clearAddressFields();
-        currentAddress = null;
-        panBtnDeleteAddress.setVisible(false);
-    }//GEN-LAST:event_btnNewAdressMouseReleased
-
-    private void btnSaveDeliverMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSaveDeliverMouseReleased
-        addressFactory();
-    }//GEN-LAST:event_btnSaveDeliverMouseReleased
-
-    private void tfSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfSearchKeyReleased
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            searchForCustomer();
-        }
-    }//GEN-LAST:event_tfSearchKeyReleased
-
-    private void tableReviewMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableReviewMouseReleased
-        for (int ligne = 0; ligne < tableReview.getRowCount(); ligne++) {
-            if (tableReview.isRowSelected(ligne)) {
-                ReviewTableItem reviewTable = (ReviewTableItem) tableReview.getValueAt(ligne, 0);
-                currentReview = reviewTable.getReview();
-                String reviewText = reviewTable.getComment();
-                tfReview.setText(reviewText);
-                labelBookISBN.setText(currentReview.getBooIsbn13());
-                labelBookTitle.setText(currentReview.getBook().getBooTitle());
-            }
-        }
-    }//GEN-LAST:event_tableReviewMouseReleased
-
-    private void jScrollPane1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jScrollPane1MouseReleased
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jScrollPane1MouseReleased
-
-    private void btnSaveReviewMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSaveReviewMouseReleased
-        if (currentReview != null) {
-            reviewFactory();
-        }
-
-    }//GEN-LAST:event_btnSaveReviewMouseReleased
-
-    private void rbtnValidatedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbtnValidatedActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rbtnValidatedActionPerformed
-
-    private void tfLastNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfLastNameActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tfLastNameActionPerformed
-
-    private void comboRevStatusMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_comboRevStatusMouseReleased
-
-//        for (int ligne = 0; ligne < tableReview.getRowCount(); ligne++) {
-//            if (tableCustomers.isRowSelected(ligne)) {
-//                CustomerTableItem cusTable = (CustomerTableItem) tableCustomers.getValueAt(ligne, 0);
-//                currentCustomer = cusTable.getCustomer();
-//                fillCustomerFields(currentCustomer);
-//                loadingAdressTable(currentCustomer);
-//                loadingReviewTable(currentCustomer);
-//                loadingOrderTable(currentCustomer);
-//            }
-//        }
-    }//GEN-LAST:event_comboRevStatusMouseReleased
-
-    private void comboRevStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboRevStatusActionPerformed
-        Vector tabToClear = new Vector();
-        //tabToClear.add(tableReview);
-        // clearTableModels(tabToClear);
-        // clearFields();
-//        if (tableReview != null && tableReview.getRowCount() > 0) {
-//            for (int i = 0; i < tableReview.getRowCount(); i++) {
-//                System.out.println(tableReview.getValueAt(i, 0).toString());
-//            }
-//        }
-        //  String criteria = comboRevStatus.getSelectedItem().toString();
-
-        // System.out.println(  tableReview.getModel().getValueAt(0, 1)     );
-        String criteria = comboRevStatus.getSelectedItem().toString();
-
-//        
-//        if(tableReview != null){
-//            for (int i = 0; i < tableReview.getRowCount(); i++) {
-//              System.out.println(tableReview.getValueAt(i, 1).toString());
-//           }
-//        }
-//        if ( != null) {
-//            for (Object rev : reviewTableList) {
-//                for (Object r : ((ReviewTableItem) rev).getVector()) {
-//                    System.out.println(r.getClass());
-//                }
-//            }
-//        }
-        //   setTableReviewModel();
-        //for(Object rev : reviewTableList){
-        //    System.out.println(reviewTableList);
-        //  }
-
-    }//GEN-LAST:event_comboRevStatusActionPerformed
-
     private void btnDeleteCustomerMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDeleteCustomerMouseReleased
         if (currentCustomer != null) {
             try {
@@ -2180,80 +2194,6 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
         }
     }//GEN-LAST:event_btnDeleteCustomerMouseReleased
 
-    private void tfLastNameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfLastNameKeyReleased
-        if (tfLastName.getText().isEmpty()) {
-            tfLastName.setBackground(new Color(255, 0, 0, 15));
-            manageInputError(true, "tfLastname", "btnSaveCustomer", ErrorMessages.IS_EMPTY);
-        } else {
-            tfLastName.setBackground(Color.WHITE);
-            manageInputError(false, "tfLastname", "btnSaveCustomer", "");
-        }
-    }//GEN-LAST:event_tfLastNameKeyReleased
-
-    private void tfPasswordKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfPasswordKeyReleased
-
-    }//GEN-LAST:event_tfPasswordKeyReleased
-
-    private void btnDeleteAddressMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDeleteAddressMouseReleased
-        if (currentCustomer != null && currentAddress != null) {
-            try {
-                deleteAddress();
-            } catch (Exception ex) {
-                Logger.getLogger(JFCustomer.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-    }//GEN-LAST:event_btnDeleteAddressMouseReleased
-
-    private void btnViewPurchaseKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnViewPurchaseKeyReleased
-
-    }//GEN-LAST:event_btnViewPurchaseKeyReleased
-
-    private void btnViewPurchaseMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnViewPurchaseMouseReleased
-        
-        JFPurchase jfPur = new JFPurchase();
-        jfPur.setVisible(true);
-    }//GEN-LAST:event_btnViewPurchaseMouseReleased
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(JFCustomer.class
-                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(JFCustomer.class
-                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(JFCustomer.class
-                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(JFCustomer.class
-                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new JFCustomer().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel bntCreateNew;
@@ -2266,8 +2206,7 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
     private javax.swing.JLabel btnSaveInvoiceAdress;
     private javax.swing.JLabel btnSaveReview;
     private javax.swing.JLabel btnSearch;
-    private javax.swing.JLabel btnViewPurchase;
-    private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JLabel btnView;
     private javax.swing.JComboBox comboDeliverStreetType;
     private javax.swing.JComboBox comboGender;
     private javax.swing.JComboBox comboRevStatus;
