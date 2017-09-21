@@ -40,6 +40,10 @@ public class AccessProfile {
     public String toString() {
         return "Access Profile Code : " + accProfileCode + " / Access Profile Name : " + accProfileName;
     }
+
+    public Object getAccProfileName(String profil) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
     
 

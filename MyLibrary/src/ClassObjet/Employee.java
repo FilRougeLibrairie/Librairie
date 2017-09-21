@@ -122,7 +122,11 @@ public class Employee {
     }
 
     public java.sql.Date getEmpDateEnd() {
-        return new java.sql.Date(empDateEnd.getTime());
+        if (empDateEnd== null) {
+            return null;
+        } else {
+            return new java.sql.Date(empDateEnd.getTime());
+        }
     }
 
     public int getEmpStatus() {
