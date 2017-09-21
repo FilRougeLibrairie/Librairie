@@ -100,6 +100,7 @@ public class AuthorDAO extends DAO{
         
     }  
        
+    
 
     @Override
     public void update(Object obj) {
@@ -170,6 +171,30 @@ public class AuthorDAO extends DAO{
         }
         return author;
     }
+//    
+//    public Author addAuthorIsbn (Object obj){
+//        Author aut = (Author) obj;
+//        
+//        String query =
+//                 "INSERT INTO " + Writing + " (" + COLUMNS_CREATE + ")"
+//                + "VALUES (?, ?)";
+//
+//        try (PreparedStatement pstmt = this.connect.prepareStatement(query);) {
+//
+//            pstmt.setString(1, aut.getAutLastName());
+//            pstmt.setString(2, aut.getAutFirstName());
+//            pstmt.setString(3, aut.getAutBiography());
+//            pstmt.setInt(4, aut.getAutStatusCode());
+//            
+//
+//            int result = pstmt.executeUpdate();
+//
+//        } catch (SQLException ex) {
+//            System.err.println("ERROR SAVING Object : " + ex.getErrorCode() + " / " + ex.getMessage());
+//            
+//        }
+//        return aut;
+//    }
 
     public Vector<Author> findAuthorByBook (String isbn) {
         Vector <Author> vecAuthorList = new Vector <Author>();

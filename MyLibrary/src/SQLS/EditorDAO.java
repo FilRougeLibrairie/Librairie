@@ -46,7 +46,7 @@ public class EditorDAO extends DAO {
             int result = pstmt.executeUpdate();
 
         } catch (SQLException ex) {
-            System.err.println("ERROR SAVING Object : " + ex.getErrorCode() + " / " + ex.getMessage());
+            System.err.println("ERROR Create Editor Object : " + ex.getErrorCode() + " / " + ex.getMessage());
             
         }
     }
