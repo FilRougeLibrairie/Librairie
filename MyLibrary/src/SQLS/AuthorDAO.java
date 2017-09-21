@@ -3,6 +3,7 @@ package SQLS;
 
 
 import ClassObjet.Author;
+import ClassObjet.Book;
 import Names.SQLNames.AuthorNames;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
