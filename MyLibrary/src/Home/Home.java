@@ -32,9 +32,6 @@ public class Home extends javax.swing.JFrame {
 
     public Home() throws IOException {
         initComponents();
-        
-        
-        
         panel1 = new Header();
         panel2 = new PannelCentralSelection();
         

@@ -16,17 +16,19 @@ import PanelOk.KeywordsPanel;
 import PanelOk.VatPanel;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import ui.jfCustomer.CustomerPanel;
+
+import ui.jfCustomer.JFCustomer;
 
 /**
  *
  * @author Chrys
  */
 public class PannelCentralSelection extends javax.swing.JPanel {
-
-    /**
-     * Creates new form Panel2
-     */
+CustomerPanel cus = new CustomerPanel();
+    
     public PannelCentralSelection() {
         initComponents();
 
@@ -34,7 +36,17 @@ public class PannelCentralSelection extends javax.swing.JPanel {
         menuProduct.setVisible(false);
         menuPurchase.setVisible(false);
         jpPrincipal.setVisible(false);
+        
+        
+        
     }
+
+  
+    
+    
+    
+    
+    
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -46,10 +58,6 @@ public class PannelCentralSelection extends javax.swing.JPanel {
         bPurchase = new javax.swing.JLabel();
         jPanel8 = new javax.swing.JPanel();
         bClient = new javax.swing.JLabel();
-        jPanel9 = new javax.swing.JPanel();
-        bShipping = new javax.swing.JLabel();
-        jPanel10 = new javax.swing.JPanel();
-        bAddress = new javax.swing.JLabel();
         menuProduct = new javax.swing.JPanel();
         jPanel11 = new javax.swing.JPanel();
         bBook = new javax.swing.JLabel();
@@ -74,8 +82,6 @@ public class PannelCentralSelection extends javax.swing.JPanel {
         menuAdmin = new javax.swing.JPanel();
         jPanel19 = new javax.swing.JPanel();
         bAddEmployee = new javax.swing.JLabel();
-        jPanel20 = new javax.swing.JPanel();
-        bSearchEmployee = new javax.swing.JLabel();
         jPanel21 = new javax.swing.JPanel();
         bAccess = new javax.swing.JLabel();
         jPanel22 = new javax.swing.JPanel();
@@ -86,6 +92,7 @@ public class PannelCentralSelection extends javax.swing.JPanel {
         jBAdmin = new javax.swing.JButton();
         jBStat = new javax.swing.JButton();
         jpPrincipal = new javax.swing.JPanel();
+        jInternalFrame1 = new javax.swing.JInternalFrame();
 
         setBackground(new java.awt.Color(51, 153, 0));
         setAutoscrolls(true);
@@ -149,6 +156,11 @@ public class PannelCentralSelection extends javax.swing.JPanel {
                 jPanel8MouseMoved(evt);
             }
         });
+        jPanel8.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel8MouseClicked(evt);
+            }
+        });
 
         bClient.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         bClient.setText("Fiche Client");
@@ -168,75 +180,11 @@ public class PannelCentralSelection extends javax.swing.JPanel {
         jPanel8.setLayout(jPanel8Layout);
         jPanel8Layout.setHorizontalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(bClient, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(bClient, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(bClient, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
-        );
-
-        jPanel9.setMinimumSize(new java.awt.Dimension(80, 40));
-        jPanel9.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
-            public void mouseMoved(java.awt.event.MouseEvent evt) {
-                jPanel9MouseMoved(evt);
-            }
-        });
-
-        bShipping.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        bShipping.setText("Livraison");
-        bShipping.setAlignmentX(0.5F);
-        bShipping.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
-            public void mouseMoved(java.awt.event.MouseEvent evt) {
-                bShippingMouseMoved(evt);
-            }
-        });
-        bShipping.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                bShippingMouseClicked(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
-        jPanel9.setLayout(jPanel9Layout);
-        jPanel9Layout.setHorizontalGroup(
-            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(bShipping, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        jPanel9Layout.setVerticalGroup(
-            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(bShipping, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
-        );
-
-        jPanel10.setMinimumSize(new java.awt.Dimension(80, 40));
-        jPanel10.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
-            public void mouseMoved(java.awt.event.MouseEvent evt) {
-                jPanel10MouseMoved(evt);
-            }
-        });
-
-        bAddress.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        bAddress.setText("Fiche Adresse");
-        bAddress.setAlignmentX(0.5F);
-        bAddress.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
-            public void mouseMoved(java.awt.event.MouseEvent evt) {
-                bAddressMouseMoved(evt);
-            }
-        });
-        bAddress.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                bAddressMouseClicked(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
-        jPanel10.setLayout(jPanel10Layout);
-        jPanel10Layout.setHorizontalGroup(
-            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(bAddress, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
-        );
-        jPanel10Layout.setVerticalGroup(
-            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(bAddress, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout menuPurchaseLayout = new javax.swing.GroupLayout(menuPurchase);
@@ -245,21 +193,15 @@ public class PannelCentralSelection extends javax.swing.JPanel {
             menuPurchaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
             .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel9, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         menuPurchaseLayout.setVerticalGroup(
             menuPurchaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(menuPurchaseLayout.createSequentialGroup()
-                .addGap(141, 141, 141)
+                .addGap(238, 238, 238)
                 .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(481, Short.MAX_VALUE))
+                .addContainerGap(476, Short.MAX_VALUE))
         );
 
         jpMenu.add(menuPurchase);
@@ -697,7 +639,7 @@ public class PannelCentralSelection extends javax.swing.JPanel {
         });
 
         bAddEmployee.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        bAddEmployee.setText("Ajouter un employé");
+        bAddEmployee.setText("Employe");
         bAddEmployee.setAlignmentX(0.5F);
         bAddEmployee.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseDragged(java.awt.event.MouseEvent evt) {
@@ -727,43 +669,6 @@ public class PannelCentralSelection extends javax.swing.JPanel {
             .addComponent(bAddEmployee, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
         );
 
-        jPanel20.setMinimumSize(new java.awt.Dimension(80, 40));
-        jPanel20.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
-            public void mouseMoved(java.awt.event.MouseEvent evt) {
-                jPanel20MouseMoved(evt);
-            }
-        });
-        jPanel20.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jPanel20MouseClicked(evt);
-            }
-        });
-
-        bSearchEmployee.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        bSearchEmployee.setText("Afficher Employé");
-        bSearchEmployee.setAlignmentX(0.5F);
-        bSearchEmployee.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
-            public void mouseMoved(java.awt.event.MouseEvent evt) {
-                bSearchEmployeeMouseMoved(evt);
-            }
-        });
-        bSearchEmployee.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                bSearchEmployeeMouseClicked(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel20Layout = new javax.swing.GroupLayout(jPanel20);
-        jPanel20.setLayout(jPanel20Layout);
-        jPanel20Layout.setHorizontalGroup(
-            jPanel20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(bSearchEmployee, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
-        );
-        jPanel20Layout.setVerticalGroup(
-            jPanel20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(bSearchEmployee, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
-        );
-
         jPanel21.setMinimumSize(new java.awt.Dimension(80, 40));
         jPanel21.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseMoved(java.awt.event.MouseEvent evt) {
@@ -789,7 +694,7 @@ public class PannelCentralSelection extends javax.swing.JPanel {
         jPanel21.setLayout(jPanel21Layout);
         jPanel21Layout.setHorizontalGroup(
             jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(bAccess, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(bAccess, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
         );
         jPanel21Layout.setVerticalGroup(
             jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -833,7 +738,6 @@ public class PannelCentralSelection extends javax.swing.JPanel {
         menuAdminLayout.setHorizontalGroup(
             menuAdminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel19, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
-            .addComponent(jPanel20, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jPanel21, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jPanel22, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
@@ -842,13 +746,11 @@ public class PannelCentralSelection extends javax.swing.JPanel {
             .addGroup(menuAdminLayout.createSequentialGroup()
                 .addGap(141, 141, 141)
                 .addComponent(jPanel19, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel20, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel21, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel22, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(481, Short.MAX_VALUE))
+                .addContainerGap(515, Short.MAX_VALUE))
         );
 
         jpMenu.add(menuAdmin);
@@ -922,74 +824,64 @@ public class PannelCentralSelection extends javax.swing.JPanel {
 
         jpPrincipal.setBackground(new java.awt.Color(0, 0, 0));
         jpPrincipal.setLayout(null);
+
+        jInternalFrame1.setVisible(true);
+
+        javax.swing.GroupLayout jInternalFrame1Layout = new javax.swing.GroupLayout(jInternalFrame1.getContentPane());
+        jInternalFrame1.getContentPane().setLayout(jInternalFrame1Layout);
+        jInternalFrame1Layout.setHorizontalGroup(
+            jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jInternalFrame1Layout.setVerticalGroup(
+            jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        jpPrincipal.add(jInternalFrame1);
+        jInternalFrame1.setBounds(0, 10, 870, 760);
+
         add(jpPrincipal, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jPanel10MouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel10MouseMoved
-
-        resetColor(jPanel7);
-        resetColor(jPanel8);
-        resetColor(jPanel9);
-        setColor(jPanel10);
-    }//GEN-LAST:event_jPanel10MouseMoved
-
-    private void bAddressMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bAddressMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_bAddressMouseClicked
-
-    private void bAddressMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bAddressMouseMoved
-        resetColor(jPanel7);
-        resetColor(jPanel8);
-        resetColor(jPanel9);
-        setColor(jPanel10);
-    }//GEN-LAST:event_bAddressMouseMoved
-
-    private void jPanel9MouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel9MouseMoved
-
-        resetColor(jPanel7);
-        resetColor(jPanel8);
-        setColor(jPanel9);
-        resetColor(jPanel10);
-    }//GEN-LAST:event_jPanel9MouseMoved
-
-    private void bShippingMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bShippingMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_bShippingMouseClicked
-
-    private void bShippingMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bShippingMouseMoved
-        // TODO add your han
-        resetColor(jPanel7);
-        resetColor(jPanel8);
-        setColor(jPanel9);
-        resetColor(jPanel10);
-    }//GEN-LAST:event_bShippingMouseMoved
 
     private void jPanel8MouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel8MouseMoved
 
         resetColor(jPanel7);
         setColor(jPanel8);
-        resetColor(jPanel9);
-        resetColor(jPanel10);
+        
     }//GEN-LAST:event_jPanel8MouseMoved
 
     private void bClientMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bClientMouseClicked
-        // TODO add your handling code here:
+
+      
+             
+        
+       jpPrincipal.removeAll();
+       jpPrincipal.validate();
+       jpPrincipal.add(jInternalFrame1);
+       JFCustomer cus = new JFCustomer();
+        jInternalFrame1.setContentPane(cus.getContentPane());
+        jInternalFrame1.setVisible(true);
+       jpPrincipal.setVisible(true);
+       jpPrincipal.revalidate();
+        
+        
+
+     
     }//GEN-LAST:event_bClientMouseClicked
 
     private void bClientMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bClientMouseMoved
 
         resetColor(jPanel7);
         setColor(jPanel8);
-        resetColor(jPanel9);
-        resetColor(jPanel10);
+        
     }//GEN-LAST:event_bClientMouseMoved
 
     private void jPanel7MouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel7MouseMoved
 
         setColor(jPanel7);
         resetColor(jPanel8);
-        resetColor(jPanel9);
-        resetColor(jPanel10);
+       
 
     }//GEN-LAST:event_jPanel7MouseMoved
 
@@ -1001,8 +893,7 @@ public class PannelCentralSelection extends javax.swing.JPanel {
 
         setColor(jPanel7);
         resetColor(jPanel8);
-        resetColor(jPanel9);
-        resetColor(jPanel10);
+        
     }//GEN-LAST:event_bPurchaseMouseMoved
 
     private void bPurchaseMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bPurchaseMouseDragged
@@ -1265,9 +1156,8 @@ public class PannelCentralSelection extends javax.swing.JPanel {
         jpPrincipal.add(theme, BorderLayout.NORTH);
         jpPrincipal.setVisible(true);
         jpPrincipal.revalidate();
-        
-        
-        
+
+
     }//GEN-LAST:event_bThemeMouseClicked
 
     private void bSubThemeMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bSubThemeMouseMoved
@@ -1285,7 +1175,6 @@ public class PannelCentralSelection extends javax.swing.JPanel {
 
     private void bSubThemeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bSubThemeMouseClicked
 
-        
         jpPrincipal.removeAll();
         jpPrincipal.validate();
         SubthemePanel subtheme = new SubthemePanel();
@@ -1295,8 +1184,6 @@ public class PannelCentralSelection extends javax.swing.JPanel {
         jpPrincipal.revalidate();
 
 
-
-        
     }//GEN-LAST:event_bSubThemeMouseClicked
 
     private void bEventMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bEventMouseMoved
@@ -1314,8 +1201,6 @@ public class PannelCentralSelection extends javax.swing.JPanel {
 
     private void bEventMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bEventMouseClicked
 
-        
-        
         jpPrincipal.removeAll();
         jpPrincipal.validate();
         OfferPanel offer = new OfferPanel();
@@ -1333,7 +1218,7 @@ public class PannelCentralSelection extends javax.swing.JPanel {
     private void bAddEmployeeMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bAddEmployeeMouseMoved
 
         setColor(jPanel19);
-        resetColor(jPanel20);
+        
         resetColor(jPanel21);
         resetColor(jPanel22);
     }//GEN-LAST:event_bAddEmployeeMouseMoved
@@ -1353,36 +1238,15 @@ public class PannelCentralSelection extends javax.swing.JPanel {
 
     private void jPanel19MouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel19MouseMoved
         setColor(jPanel19);
-        resetColor(jPanel20);
         resetColor(jPanel21);
         resetColor(jPanel22);
 
     }//GEN-LAST:event_jPanel19MouseMoved
 
-    private void bSearchEmployeeMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bSearchEmployeeMouseMoved
-
-        resetColor(jPanel19);
-        setColor(jPanel20);
-        resetColor(jPanel21);
-        resetColor(jPanel22);
-    }//GEN-LAST:event_bSearchEmployeeMouseMoved
-
-    private void bSearchEmployeeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bSearchEmployeeMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_bSearchEmployeeMouseClicked
-
-    private void jPanel20MouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel20MouseMoved
-        resetColor(jPanel19);
-        setColor(jPanel20);
-        resetColor(jPanel21);
-        resetColor(jPanel22);
-    }//GEN-LAST:event_jPanel20MouseMoved
-
     private void bAccessMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bAccessMouseMoved
         // TODO add your handling code here:
 
         resetColor(jPanel19);
-        resetColor(jPanel20);
         setColor(jPanel21);
         resetColor(jPanel22);
     }//GEN-LAST:event_bAccessMouseMoved
@@ -1393,14 +1257,12 @@ public class PannelCentralSelection extends javax.swing.JPanel {
 
     private void jPanel21MouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel21MouseMoved
         resetColor(jPanel19);
-        resetColor(jPanel20);
         setColor(jPanel21);
         resetColor(jPanel22);
     }//GEN-LAST:event_jPanel21MouseMoved
 
     private void jPanel22MouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel22MouseMoved
         resetColor(jPanel19);
-        resetColor(jPanel20);
         resetColor(jPanel21);
         setColor(jPanel22);
     }//GEN-LAST:event_jPanel22MouseMoved
@@ -1412,7 +1274,6 @@ public class PannelCentralSelection extends javax.swing.JPanel {
     private void bModerateMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bModerateMouseMoved
 
         resetColor(jPanel19);
-        resetColor(jPanel20);
         resetColor(jPanel21);
         setColor(jPanel22);// TODO add your handling code here:
     }//GEN-LAST:event_bModerateMouseMoved
@@ -1480,11 +1341,6 @@ public class PannelCentralSelection extends javax.swing.JPanel {
 
 
     }//GEN-LAST:event_jPanel15MouseClicked
-
-    private void jPanel20MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel20MouseClicked
-        jpPrincipal.setBackground(Color.black);
-// TODO add your handling code here:
-    }//GEN-LAST:event_jPanel20MouseClicked
 
     private void jPanel19MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel19MouseClicked
 
@@ -1575,7 +1431,7 @@ public class PannelCentralSelection extends javax.swing.JPanel {
         jpPrincipal.add(theme, BorderLayout.NORTH);
         jpPrincipal.setVisible(true);
         jpPrincipal.revalidate();
-        
+
 
     }//GEN-LAST:event_jPanel16MouseClicked
 
@@ -1626,7 +1482,7 @@ public class PannelCentralSelection extends javax.swing.JPanel {
     }//GEN-LAST:event_bFormats1MouseMoved
 
     private void bFormats1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bFormats1MouseClicked
-    
+
         jpPrincipal.removeAll();
         jpPrincipal.validate();
         BookLanguagePanel language = new BookLanguagePanel();
@@ -1638,8 +1494,6 @@ public class PannelCentralSelection extends javax.swing.JPanel {
 
     private void jPanel18MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel18MouseClicked
 
-        
-
         jpPrincipal.removeAll();
         jpPrincipal.validate();
         OfferPanel offer = new OfferPanel();
@@ -1648,14 +1502,23 @@ public class PannelCentralSelection extends javax.swing.JPanel {
         jpPrincipal.setVisible(true);
         jpPrincipal.revalidate();
 
-
-
-
-
-
-
 // TODO add your handling code here:
     }//GEN-LAST:event_jPanel18MouseClicked
+
+    private void jPanel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel8MouseClicked
+        
+       
+            
+       jpPrincipal.removeAll();
+       jpPrincipal.validate();
+       jpPrincipal.add(jInternalFrame1);
+       JFCustomer cus = new JFCustomer();
+        jInternalFrame1.setContentPane(cus.getContentPane());
+        jInternalFrame1.setVisible(true);
+       jpPrincipal.setVisible(true);
+       jpPrincipal.revalidate();
+        
+    }//GEN-LAST:event_jPanel8MouseClicked
 
     void setColor(JPanel panel) {
         panel.setBackground(new Color(102, 102, 102));
@@ -1667,7 +1530,6 @@ public class PannelCentralSelection extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel bAccess;
     private javax.swing.JLabel bAddEmployee;
-    private javax.swing.JLabel bAddress;
     private javax.swing.JLabel bAutor;
     private javax.swing.JLabel bBook;
     private javax.swing.JLabel bClient;
@@ -1679,16 +1541,14 @@ public class PannelCentralSelection extends javax.swing.JPanel {
     private javax.swing.JLabel bModerate;
     private javax.swing.JLabel bPrice;
     private javax.swing.JLabel bPurchase;
-    private javax.swing.JLabel bSearchEmployee;
-    private javax.swing.JLabel bShipping;
     private javax.swing.JLabel bSubTheme;
     private javax.swing.JLabel bTheme;
     private javax.swing.JButton jBAdmin;
     private javax.swing.JButton jBClient;
     private javax.swing.JButton jBProduct;
     private javax.swing.JButton jBStat;
+    private javax.swing.JInternalFrame jInternalFrame1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel13;
@@ -1698,14 +1558,12 @@ public class PannelCentralSelection extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel17;
     private javax.swing.JPanel jPanel18;
     private javax.swing.JPanel jPanel19;
-    private javax.swing.JPanel jPanel20;
     private javax.swing.JPanel jPanel21;
     private javax.swing.JPanel jPanel22;
     private javax.swing.JPanel jPanel23;
     private javax.swing.JPanel jPanel24;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
-    private javax.swing.JPanel jPanel9;
     private javax.swing.JPanel jpMenu;
     private javax.swing.JPanel jpPrincipal;
     private javax.swing.JPanel menuAdmin;

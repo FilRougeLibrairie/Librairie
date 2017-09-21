@@ -1,7 +1,6 @@
 
 package PanelOk;
 
-import PanelEnCoursChrys.OfferAddPanel;
 import PanelEnCoursChrys.OfferUpdatePanel;
 import java.awt.BorderLayout;
 
