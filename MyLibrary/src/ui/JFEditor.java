@@ -81,7 +81,7 @@ public class JFEditor extends javax.swing.JFrame {
         panelPrincipal.setToolTipText("");
         panelPrincipal.setMinimumSize(new java.awt.Dimension(630, 900));
         panelPrincipal.setPreferredSize(new java.awt.Dimension(630, 900));
-        panelPrincipal.setLayout(null);
+        panelPrincipal.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         panelRechercher.setBackground(new java.awt.Color(51, 102, 255));
 
@@ -108,8 +108,7 @@ public class JFEditor extends javax.swing.JFrame {
                 .addComponent(labelRechercherOnPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        panelPrincipal.add(panelRechercher);
-        panelRechercher.setBounds(730, 80, 144, 35);
+        panelPrincipal.add(panelRechercher, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 80, -1, -1));
 
         panelCréer.setBackground(new java.awt.Color(51, 102, 255));
 
@@ -132,41 +131,31 @@ public class JFEditor extends javax.swing.JFrame {
             .addComponent(labelCréer, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
         );
 
-        panelPrincipal.add(panelCréer);
-        panelCréer.setBounds(30, 20, 144, 35);
-        panelPrincipal.add(jSeparator1);
-        jSeparator1.setBounds(40, 130, 820, 10);
+        panelPrincipal.add(panelCréer, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, -1, -1));
+        panelPrincipal.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 130, 820, 10));
 
         labelRechercher.setText("Rechercher :");
-        panelPrincipal.add(labelRechercher);
-        labelRechercher.setBounds(550, 30, 80, 20);
-        panelPrincipal.add(tfRechercher);
-        tfRechercher.setBounds(710, 30, 160, 20);
+        panelPrincipal.add(labelRechercher, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 30, 80, 20));
+        panelPrincipal.add(tfRechercher, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 30, 160, 30));
 
         labelNom.setText("Nom :");
-        panelPrincipal.add(labelNom);
-        labelNom.setBounds(80, 140, 90, 30);
-        panelPrincipal.add(tfNom);
-        tfNom.setBounds(170, 150, 300, 19);
+        panelPrincipal.add(labelNom, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 140, 90, 30));
+        panelPrincipal.add(tfNom, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 139, 300, 30));
 
         comboStatut.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Choix", "Actif", "Inactif" }));
-        panelPrincipal.add(comboStatut);
-        comboStatut.setBounds(770, 160, 90, 24);
+        panelPrincipal.add(comboStatut, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 160, 90, -1));
 
         labelStatut.setText("Statut :");
-        panelPrincipal.add(labelStatut);
-        labelStatut.setBounds(710, 160, 40, 20);
+        panelPrincipal.add(labelStatut, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 160, 40, 20));
 
         taPresentation.setColumns(20);
         taPresentation.setRows(5);
         jScrollPane1.setViewportView(taPresentation);
 
-        panelPrincipal.add(jScrollPane1);
-        jScrollPane1.setBounds(170, 200, 300, 150);
+        panelPrincipal.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 200, 300, 150));
 
         labelPresentation.setText("Presentation :");
-        panelPrincipal.add(labelPresentation);
-        labelPresentation.setBounds(40, 200, 130, 20);
+        panelPrincipal.add(labelPresentation, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 200, 130, 20));
 
         panelSauver.setBackground(new java.awt.Color(51, 102, 255));
 
@@ -193,8 +182,7 @@ public class JFEditor extends javax.swing.JFrame {
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
-        panelPrincipal.add(panelSauver);
-        panelSauver.setBounds(730, 300, 144, 35);
+        panelPrincipal.add(panelSauver, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 300, -1, -1));
 
         comboTypeRecherche.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Choix", "Tous", "Nom", "Id", "Statut" }));
         comboTypeRecherche.addItemListener(new java.awt.event.ItemListener() {
@@ -202,18 +190,15 @@ public class JFEditor extends javax.swing.JFrame {
                 comboTypeRechercheItemStateChanged(evt);
             }
         });
-        panelPrincipal.add(comboTypeRecherche);
-        comboTypeRecherche.setBounds(638, 30, 70, 24);
-        panelPrincipal.add(jSeparator2);
-        jSeparator2.setBounds(40, 360, 820, 10);
+        panelPrincipal.add(comboTypeRecherche, new org.netbeans.lib.awtextra.AbsoluteConstraints(638, 30, 70, 30));
+        panelPrincipal.add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 360, 820, 10));
 
         taResultatsRecherche.setColumns(20);
         taResultatsRecherche.setEditable(false);
         taResultatsRecherche.setRows(5);
         jScrollPane2.setViewportView(taResultatsRecherche);
 
-        panelPrincipal.add(jScrollPane2);
-        jScrollPane2.setBounds(40, 370, 620, 240);
+        panelPrincipal.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 370, 620, 240));
 
         panelSupp.setBackground(new java.awt.Color(153, 153, 153));
 
@@ -240,10 +225,8 @@ public class JFEditor extends javax.swing.JFrame {
                 .addComponent(labelSupprimer, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        panelPrincipal.add(panelSupp);
-        panelSupp.setBounds(730, 580, 144, 35);
-        panelPrincipal.add(tfStatut);
-        tfStatut.setBounds(770, 210, 100, 20);
+        panelPrincipal.add(panelSupp, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 580, -1, -1));
+        panelPrincipal.add(tfStatut, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 200, 100, 30));
 
         panelModif.setBackground(new java.awt.Color(153, 153, 153));
 
@@ -270,8 +253,7 @@ public class JFEditor extends javax.swing.JFrame {
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
-        panelPrincipal.add(panelModif);
-        panelModif.setBounds(730, 250, 144, 35);
+        panelPrincipal.add(panelModif, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 250, -1, -1));
 
         getContentPane().add(panelPrincipal);
         panelPrincipal.setBounds(0, 0, 900, 630);

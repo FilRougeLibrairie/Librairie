@@ -124,7 +124,6 @@ public class EditorDAO extends DAO {
         return editorList;
     }
 
-    @Override
     public Object findById(int id) {
         Editor editor = null;
         StringBuffer query = new StringBuffer();
@@ -155,12 +154,10 @@ public class EditorDAO extends DAO {
         return editor;
     }
 
-    @Override
     public Object findByName(String name) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    @Override
     public Vector<Editor> findByCriteria(String column, String term) {
 
         Vector<Editor> editorList = new Vector<Editor>();
@@ -231,5 +228,20 @@ public class EditorDAO extends DAO {
             ex.printStackTrace();
         }
         return editorList;
+    }
+
+    @Override
+    public Object find(int id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Object find(String name) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Vector findByColumn(String column, String term) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
