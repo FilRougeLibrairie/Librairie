@@ -228,7 +228,7 @@ public class AuthorDAO extends DAO{
         Vector<Author> authorList = new Vector<Author>();
         Author author = null;
 
-        String query = "SELECT * FROM " + TABLE;
+        String query = "SELECT * FROM " + TABLE+" ORDER BY "+LAST_NAME;
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query)) {
 

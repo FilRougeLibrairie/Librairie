@@ -1,4 +1,3 @@
-
 package SQLS;
 
 import ClassObjet.Book;
@@ -12,29 +11,26 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Vector;
 
+public class SubThemeDAO extends DAO<SubTheme> {
 
-public class SubThemeDAO extends DAO<SubTheme>{
-    
-        private final String TABLE = "SubTheme"; 
-        private final String ID = SubThemeNames.ID;
-        private final String THEME_ID = SubThemeNames.THEME_ID;
-        private final String NAME = SubThemeNames.NAME;
-        private final String DESCRIPTION = SubThemeNames.DESCRIPTION;
+    private final String TABLE = "SubTheme";
+    private final String ID = SubThemeNames.ID;
+    private final String THEME_ID = SubThemeNames.THEME_ID;
+    private final String NAME = SubThemeNames.NAME;
+    private final String DESCRIPTION = SubThemeNames.DESCRIPTION;
 
-    private String COLUMNS_CREATE = ID + ", " + THEME_ID + "' " + NAME + "' " + DESCRIPTION ;
+    private String COLUMNS_CREATE = ID + ", " + THEME_ID + "' " + NAME + "' " + DESCRIPTION;
 
     //Constructor
-
     public SubThemeDAO() {
         super();
     }
-    
 
     @Override
     public void create(SubTheme obj) {
         SubTheme subThe = (SubTheme) obj;
-        String query = "IF NOT EXISTS(SELECT * FROM subTheme WHERE subName= '"+subThe.getSubName()+"')"
-                +"INSERT INTO SUBTHEME(theId,subName,subDescription)"
+        String query = "IF NOT EXISTS(SELECT * FROM subTheme WHERE subName= '" + subThe.getSubName() + "')"
+                + "INSERT INTO SUBTHEME(theId,subName,subDescription)"
                 + "VALUES (?,?,?)";
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query);) {
@@ -47,40 +43,32 @@ public class SubThemeDAO extends DAO<SubTheme>{
 
         } catch (SQLException ex) {
             System.err.println("ERROR SAVING Object : " + ex.getErrorCode() + " / " + ex.getMessage());
-            
+
         }
     }
-    
-    
-    public Boolean answer(SubTheme obj){
-        Boolean answer=true;
+
+    public Boolean answer(SubTheme obj) {
+        Boolean answer = true;
         SubTheme sub = (SubTheme) obj;
-        String query = "SELECT * FROM subtheme WHERE subname= '"+sub.getSubName()+"'";
+        String query = "SELECT * FROM subtheme WHERE subname= '" + sub.getSubName() + "'";
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
 
             ResultSet rs = pstmt.executeQuery();
 
             if (rs.isBeforeFirst()) {
-                answer=true;
+                answer = true;
             } else {
-                answer=false;
+                answer = false;
             }
 
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            
 
         }
         return answer;
-        
-        
-    }  
-    
-    
-    
-    
-    
+
+    }
 
     @Override
     public void update(SubTheme obj) {
@@ -99,12 +87,11 @@ public class SubThemeDAO extends DAO<SubTheme>{
             pstmt.setInt(1, subThe.getTheId().getTheId());
             pstmt.setString(2, subThe.getSubName());
             pstmt.setString(3, subThe.getSubDescription());
-            
+
             int result = pstmt.executeUpdate();
 
         } catch (SQLException ex) {
             System.out.println("ERROR UPDATING Object : " + ex.getMessage());
-            
 
         }
     }
@@ -122,12 +109,12 @@ public class SubThemeDAO extends DAO<SubTheme>{
             pstmt.executeQuery();
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            
+
         }
     }
-    
-     public Vector <SubTheme> findSubThemeByBook (String isbn){
-         Vector <SubTheme> vecSubThemeList = new Vector <SubTheme>();
+
+    public Vector<SubTheme> findSubThemeByBook(String isbn) {
+        Vector<SubTheme> vecSubThemeList = new Vector<SubTheme>();
         Book boo = null;
         SubTheme sub = null;
         Theme the = null;
@@ -143,7 +130,7 @@ public class SubThemeDAO extends DAO<SubTheme>{
                 .append("WHERE boo.booIsbn13 ")
                 .append(" = ")
                 .append("'" + isbn + "'");
-        
+
         try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
 
             ResultSet rs = pstmt.executeQuery();
@@ -158,8 +145,7 @@ public class SubThemeDAO extends DAO<SubTheme>{
                     the.setTheId(rs.getInt(SubThemeNames.THEME_ID));
                     sub.setTheId(the);
                     vecSubThemeList.add(sub);
-                    
-                    
+
                 }
             } else {
                 throw new SQLException("ResultSet Sub was empty");
@@ -167,11 +153,10 @@ public class SubThemeDAO extends DAO<SubTheme>{
 
         } catch (SQLException ex) {
             System.out.println("ERROR sub Retrieving Object : " + ex.getMessage());
-            
 
         }
         return vecSubThemeList;
-        
+
     }
 
     @Override
@@ -201,21 +186,11 @@ public class SubThemeDAO extends DAO<SubTheme>{
 
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            
 
         }
         return subThemeList;
     }
 
-    
-    
-    
-  
-    
-    
-    
-    
-    
     @Override
     public Vector<SubTheme> findByColumn(String column, String term) {
         Vector<SubTheme> subThemeList = new Vector<SubTheme>();
@@ -226,7 +201,6 @@ public class SubThemeDAO extends DAO<SubTheme>{
                 .append(column)
                 .append(" = ")
                 .append("'" + term + "'");
-
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
 
@@ -248,7 +222,6 @@ public class SubThemeDAO extends DAO<SubTheme>{
 
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            
 
         }
         return subThemeList;
@@ -284,7 +257,6 @@ public class SubThemeDAO extends DAO<SubTheme>{
 
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            
 
         }
         return subThe;
@@ -295,7 +267,28 @@ public class SubThemeDAO extends DAO<SubTheme>{
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    
-    
-    
+    // SEARCH by theme
+    public void updateByTheme(SubTheme obj) {
+
+        SubTheme sub = (SubTheme) obj;
+        StringBuilder query = new StringBuilder("UPDATE " + TABLE + " SET ");
+        query.append(ID).append(" = ?, ");
+        query.append(THEME_ID).append(" = ? ");
+
+        query.append("WHERE " + THEME_ID + " = '")
+                .append(sub.getTheId())
+                .append("'");
+
+        try (PreparedStatement pstmt = connect.prepareStatement(query.toString());) {
+
+            pstmt.setString(1, "0");
+            pstmt.setString(2, "38");
+
+            int result = pstmt.executeUpdate();
+
+        } catch (SQLException ex) {
+            System.out.println("ERROR UPDATING Object : " + ex.getMessage());
+
+        }
+    }
 }

@@ -125,9 +125,9 @@ public class ThemeDAO extends DAO {
         StringBuffer query = new StringBuffer("UPDATE " + TABLE + " SET ");
         query.append(ID).append(" =? ");
 
-        query.append("WHERE " + ID + " = '")
+        query.append("WHERE " + ID + " = ")
                 .append(the.getTheId())
-                .append("'");
+                .append("");
 
         try (PreparedStatement pstmt = connect.prepareStatement(query.toString());) {
             pstmt.setInt(1, 0);

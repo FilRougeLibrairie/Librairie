@@ -39,16 +39,16 @@ public class OfferDAO extends DAO {
         Offer off = (Offer) obj;
         String query = "IF NOT EXISTS (SELECT * FROM " + TABLE + " WHERE " + ID + " = '" + off.getOffId() + "')"
                 + "INSERT INTO " + TABLE + " (" + COLUMNS_CREATE + ")"
-                + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+                + "VALUES (?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query);) {
-            pstmt.setInt(1, off.getOffId());
-            pstmt.setString(2, off.getOffName());
-            pstmt.setString(3, off.getOffText());
-            pstmt.setString(4, off.getOffDateStart());
-            pstmt.setString(5, off.getOffDateEnd());
-            pstmt.setFloat(6, off.getOffDiscount());
-            pstmt.setString(7, off.getOffPicture());
+            
+            pstmt.setString(1, off.getOffName());
+            pstmt.setString(2, off.getOffText());
+            pstmt.setString(3, off.getOffDateStart());
+            pstmt.setString(4, off.getOffDateEnd());
+            pstmt.setFloat(5, off.getOffDiscount());
+            pstmt.setString(6, off.getOffPicture());
 
             int result = pstmt.executeUpdate();
 
