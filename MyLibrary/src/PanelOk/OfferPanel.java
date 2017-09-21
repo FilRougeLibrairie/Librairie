@@ -26,7 +26,6 @@ public class OfferPanel extends javax.swing.JPanel {
         jLabel6 = new javax.swing.JLabel();
         jRUpdate = new javax.swing.JRadioButton();
         jRAdd = new javax.swing.JRadioButton();
-        jRDelete = new javax.swing.JRadioButton();
 
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -56,7 +55,7 @@ public class OfferPanel extends javax.swing.JPanel {
                 jRUpdateActionPerformed(evt);
             }
         });
-        jPanel2.add(jRUpdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 90, 103, -1));
+        jPanel2.add(jRUpdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 90, 103, -1));
 
         buttonGroup1.add(jRAdd);
         jRAdd.setText("Ajouter");
@@ -66,15 +65,6 @@ public class OfferPanel extends javax.swing.JPanel {
             }
         });
         jPanel2.add(jRAdd, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 90, 103, -1));
-
-        buttonGroup1.add(jRDelete);
-        jRDelete.setText("Supprimer");
-        jRDelete.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRDeleteActionPerformed(evt);
-            }
-        });
-        jPanel2.add(jRDelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 90, -1, -1));
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
@@ -103,20 +93,6 @@ public class OfferPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_jRAddActionPerformed
 
-    private void jRDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRDeleteActionPerformed
-
-        if (jRDelete.isSelected() == true) {
-            jpPrinc.removeAll();
-            jpPrinc.validate();
-            jpPrinc.add(new OfferUpdatePanel(),BorderLayout.CENTER);
-            jpPrinc.revalidate();
-            jpPrinc.setVisible(true);
-        }
-
-
-// TODO add your handling code here:
-    }//GEN-LAST:event_jRDeleteActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
@@ -125,7 +101,6 @@ public class OfferPanel extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JRadioButton jRAdd;
-    private javax.swing.JRadioButton jRDelete;
     private javax.swing.JRadioButton jRUpdate;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JPanel jpPrinc;

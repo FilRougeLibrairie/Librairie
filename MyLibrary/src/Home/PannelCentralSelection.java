@@ -13,10 +13,10 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 
 import javax.swing.JPanel;
-import ui.JFAccess;
+import PanelEnCoursChrys.JFAccess;
 //import ui.JFBook2;
-import ui.JFEditor;
-import ui.JFReview;
+import ui.jfEditor.JFEditor;
+import PanelEnCoursChrys.JFReview;
 import ui.jfCustomer.CustomerPanel;
 
 import ui.jfCustomer.JFCustomer;

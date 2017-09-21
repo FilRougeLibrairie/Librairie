@@ -1,5 +1,5 @@
 
-package ui;
+package ui.jfEditor;
 
 import ClassObjet.Editor;
 import SQLS.EditorDAO;
@@ -73,7 +73,6 @@ public class JFEditor extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
-        setPreferredSize(new java.awt.Dimension(630, 900));
         getContentPane().setLayout(null);
 
         panelPrincipal.setBackground(new java.awt.Color(255, 255, 255));
