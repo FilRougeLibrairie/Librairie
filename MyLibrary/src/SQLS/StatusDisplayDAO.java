@@ -114,6 +114,7 @@ public class StatusDisplayDAO extends DAO<StatusDisplay> {
                    stadi = new StatusDisplay();
                    stadi.setStaCode(rs.getInt(STATUS_CODE));
                    stadi.setStaName(rs.getString(STATUS_NAME));
+                   StatusDisplayList.add(stadi);
                 }
             } else {
                 throw new SQLException("ResultSet was empty");

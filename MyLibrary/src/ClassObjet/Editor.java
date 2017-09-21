@@ -3,35 +3,33 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package ClassObjet;
-
+import Names.SQLNames;
 import java.util.Vector;
-
 /**
  *
  * @author Tofi
  */
-public class Editor {
+public class Editor implements SQLNames{
 
     private int ediId;
     private String ediName;
     private String ediPresentation;
     private int ediStatusCode;
     private Vector<Book> bookList;
-
-    //Constructor
-
-    public Editor(int ediId, String ediName, String ediPresentation, int ediStatusCode) {
+    
+    
+       public Editor(int ediId, String ediName, String ediPresentation, int ediStatusCode) {
         this.ediId = ediId;
         this.ediName = ediName;
         this.ediPresentation = ediPresentation;
         this.ediStatusCode = ediStatusCode;
     }
-
+    
+    //Constructor
     public Editor() {
     }
-    
-    
 
     //Setters
     
@@ -51,24 +49,6 @@ public class Editor {
         this.ediStatusCode = ediStatusCode;
     }
 
-    //Getters
-    
-    public int getEdiId() {
-        return ediId;
-    }
-
-    public String getEdiName() {
-        return ediName;
-    }
-
-    public String getEdiPresentation() {
-        return ediPresentation;
-    }
-
-    public int getEdiStatusCode() {
-        return ediStatusCode;
-    }
-    
      public Vector<Book> getBookList() {
         return bookList;
     }
@@ -84,10 +64,42 @@ public class Editor {
         return v;
     }
     
-    @Override
-    public String toString() {
-        return ediName ;
+    //Getters
+    
+    public int getEdiId() {
+        return ediId;
+    }
+
+    public String getEdiName() {
+        return ediName;
     }
 
     
+    public String getEdiPresentation() {
+        return ediPresentation;
+    }
+
+    public int getEdiStatusCode() {
+        return ediStatusCode;
+    }
+    
+    public String EdiStatusCode() {
+        String Statut=null;
+        if(ediStatusCode == 1){
+            Statut = "Actif";
+        }else if(ediStatusCode == 2){
+            Statut = "Inactif";
+        }
+        return Statut;
+    }
+    
+    //To String
+    
+    public String toString() {
+        return "N° = " + ediId + "\n Nom = " + ediName + "\n Presentation = " + ediPresentation + "\n Statut = " + EdiStatusCode() ;
+    }
+
+    
+
+
 }

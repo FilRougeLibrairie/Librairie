@@ -5,6 +5,9 @@
  */
 package SQLS;
 
+import ClassObjet.Author;
+import ClassObjet.Book;
+import ClassObjet.SubTheme;
 import ClassObjet.Theme;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -122,9 +125,9 @@ public class ThemeDAO extends DAO {
         StringBuffer query = new StringBuffer("UPDATE " + TABLE + " SET ");
         query.append(ID).append(" =? ");
 
-        query.append("WHERE " + ID + " = '")
+        query.append("WHERE " + ID + " = ")
                 .append(the.getTheId())
-                .append("'");
+                .append("");
 
         try (PreparedStatement pstmt = connect.prepareStatement(query.toString());) {
             pstmt.setInt(1, 0);
@@ -138,7 +141,49 @@ public class ThemeDAO extends DAO {
         }
     }
     
-    @Override
+    public Theme findByIsbn (String isbn){
+        //Vector <Theme> vecThemeList = new Vector <Theme>();
+        Theme theme = null;
+        StringBuffer query = new StringBuffer();
+        query.append("SELECT the.theID, theName, theDescription ")
+                .append("FROM Theme the ")
+                .append("JOIN SubTheme sub ")
+                .append("ON the.theId = sub.theId ")
+                .append("JOIN Association ass ")
+                .append("ON sub.subId = ass.subId ")
+                .append("WHERE ass.booIsbn13 ")
+                .append(" = ")
+                .append("'" + isbn + "'");
+                
+
+        try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.isBeforeFirst()) {
+
+                while (rs.next()) {
+                    theme= new Theme();
+                    theme.setTheId(rs.getInt(ThemeNames.ID));
+                    theme.setTheName(rs.getString(ThemeNames.NAME));
+                    theme.setTheDescription(rs.getString(ThemeNames.DESCRIPTION));
+                    //vecThemeList.add(theme);
+                    System.out.println(theme);
+                }
+            } else {
+                throw new SQLException("ERROR SQL Theme Object");
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("ERROR Retrieving Theme Object : " + ex.getMessage());
+            
+
+        }
+        return theme;
+        
+        
+    }
+      @Override
     public Vector findAll() {
         Vector<Theme> themeList = new Vector<Theme>();
         Theme theme = null;

@@ -47,7 +47,7 @@ public class EditorDAO extends DAO {
 
         } catch (SQLException ex) {
             System.err.println("ERROR SAVING Object : " + ex.getErrorCode() + " / " + ex.getMessage());
-            
+            ex.getStackTrace();
         }
     }
 
@@ -63,8 +63,8 @@ public class EditorDAO extends DAO {
         try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
             pstmt.executeQuery();
         } catch (SQLException ex) {
-            System.out.println("ERROR Deleting Object : " + ex.getMessage());
-            
+            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
+            ex.printStackTrace();
         }
     }
 
@@ -89,7 +89,7 @@ public class EditorDAO extends DAO {
 
         } catch (SQLException ex) {
             System.out.println("ERROR UPDATING Object : " + ex.getMessage());
-            
+            ex.printStackTrace();
         }
     }
 
@@ -119,13 +119,12 @@ public class EditorDAO extends DAO {
 
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            
+            ex.printStackTrace();
         }
         return editorList;
     }
 
-    @Override
-    public Object find(int id) {
+    public Object findById(int id) {
         Editor editor = null;
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FORM " + TABLE + " WHERE ")
@@ -150,18 +149,16 @@ public class EditorDAO extends DAO {
             }
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            
+            ex.printStackTrace();
         }
         return editor;
     }
 
-    @Override
-    public Object find(String name) {
+    public Object findByName(String name) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    @Override
-    public Vector<Editor> findByColumn(String column, String term) {
+    public Vector<Editor> findByCriteria(String column, String term) {
 
         Vector<Editor> editorList = new Vector<Editor>();
         Editor editor = null;
@@ -169,8 +166,8 @@ public class EditorDAO extends DAO {
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FROM " + TABLE + "WHERE ")
                 .append(column)
-                .append(" = ")
-                .append("'" + term + "'");
+                .append(" LIKE ")
+                .append("'" + term + "%'");
 
         System.out.println();
 
@@ -186,14 +183,65 @@ public class EditorDAO extends DAO {
                     editor.setEdiName(rs.getString(NAME));
                     editor.setEdiPresentation(rs.getString(PRESENTATION));
                     editor.setEdiStatusCode(rs.getInt(STATUS));
+                    editorList.add(editor);
                 }
             } else {
                 throw new SQLException("ResultSet was empty");
             }
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            
+            ex.printStackTrace();
         }
         return editorList;
+    }
+    
+    
+     public Vector findByStatut(int statut) {
+        Vector<Editor> editorList = new Vector<Editor>();
+        Editor editor = null;
+
+        StringBuffer query = new StringBuffer();
+        query.append("SELECT * FROM " + TABLE + "WHERE ")
+                .append(STATUS)
+                .append(" = ")
+                .append("'" + statut + "'");
+
+        try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
+
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.isBeforeFirst()) {
+
+                while (rs.next()) {
+                    editor = new Editor();
+                    editor.setEdiId(rs.getInt(ID));
+                    editor.setEdiName(rs.getString(NAME));
+                    editor.setEdiPresentation(rs.getString(PRESENTATION));
+                    editor.setEdiStatusCode(rs.getInt(STATUS));
+                }
+
+            } else {
+                throw new SQLException("ResultSet was empty");
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
+            ex.printStackTrace();
+        }
+        return editorList;
+    }
+
+    @Override
+    public Object find(int id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Object find(String name) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Vector findByColumn(String column, String term) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

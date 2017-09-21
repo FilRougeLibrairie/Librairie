@@ -125,6 +125,7 @@ public class BookLanguageDAO extends DAO<BookLanguage> {
                     bookLang = new BookLanguage();
                     bookLang.setBooLangCode(rs.getInt(CODE));
                     bookLang.setBooLangName(rs.getString(NAME));
+                    bookLangList.add(bookLang);
                 }
             } else {
                 throw new SQLException("ResultSet was empty");
@@ -190,11 +191,11 @@ public class BookLanguageDAO extends DAO<BookLanguage> {
 
                 while (rs.next()) {
                     bookLang = new BookLanguage();
-                    bookLang.setBooLangCode(rs.getInt(CODE));
-                    bookLang.setBooLangName(rs.getString(NAME));
+                    bookLang.setBooLangCode(rs.getInt(BookLanguageNames.CODE));
+                    bookLang.setBooLangName(rs.getString(BookLanguageNames.NAME));
                 }
             } else {
-                throw new SQLException("ResultSet was empty");
+                throw new SQLException("ResultSet book lang was empty");
             }
 
         } catch (SQLException ex) {
