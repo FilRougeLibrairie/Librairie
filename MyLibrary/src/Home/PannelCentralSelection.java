@@ -1,12 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Home;
 
 import PanelOk.OfferPanel;
-import PanelEnCoursChrys.OfferPanelDelete;
 import PanelOk.BookLanguagePanel;
 import PanelOk.SubthemePanel;
 import PanelOk.ThemePanel;
@@ -18,17 +13,17 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 
 import javax.swing.JPanel;
+import ui.JFAccess;
 //import ui.JFBook2;
 import ui.JFEditor;
+import ui.JFReview;
 import ui.jfCustomer.CustomerPanel;
 
 import ui.jfCustomer.JFCustomer;
+//import ui.jfEmployee.JFEmployee;
 import ui.jfPurchase.JFPurchase;
 
-/**
- *
- * @author Chrys
- */
+
 public class PannelCentralSelection extends javax.swing.JPanel {
 CustomerPanel cus = new CustomerPanel();
     
@@ -40,28 +35,8 @@ CustomerPanel cus = new CustomerPanel();
         menuPurchase.setVisible(false);
         jpPrincipal.setVisible(false);
         
-        
-        
-        
-        
-    
-        
-        
-        
-        
-        
-        
-        
-        
-        
     }
 
-  
-    
-    
-    
-    
-    
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -705,6 +680,11 @@ CustomerPanel cus = new CustomerPanel();
                 jPanel21MouseMoved(evt);
             }
         });
+        jPanel21.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel21MouseClicked(evt);
+            }
+        });
 
         bAccess.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         bAccess.setText("Gestion des Accès");
@@ -735,6 +715,11 @@ CustomerPanel cus = new CustomerPanel();
         jPanel22.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseMoved(java.awt.event.MouseEvent evt) {
                 jPanel22MouseMoved(evt);
+            }
+        });
+        jPanel22.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel22MouseClicked(evt);
             }
         });
 
@@ -1286,14 +1271,15 @@ CustomerPanel cus = new CustomerPanel();
 
     private void bAddEmployeeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bAddEmployeeMouseClicked
 
-//
+        
 //        jpPrincipal.removeAll();
-//        jpPrincipal.validate();
-//        AddEmployee addEmployee=new AddEmployee();
-//        jpPrincipal.setLayout(new BorderLayout());
-//        jpPrincipal.add(addEmployee,BorderLayout.NORTH);
-//        jpPrincipal.setVisible(true);
-//        jpPrincipal.revalidate();
+//       jpPrincipal.validate();
+//       jpPrincipal.add(jInternalFrame1);
+//       JFEmployee emp = new JFEmployee();
+//        jInternalFrame1.setContentPane(emp.getContentPane());
+//        jInternalFrame1.setVisible(true);
+//       jpPrincipal.setVisible(true);
+//       jpPrincipal.revalidate();
 
     }//GEN-LAST:event_bAddEmployeeMouseClicked
 
@@ -1313,7 +1299,16 @@ CustomerPanel cus = new CustomerPanel();
     }//GEN-LAST:event_bAccessMouseMoved
 
     private void bAccessMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bAccessMouseClicked
-        // TODO add your handling code here:
+        
+        
+        jpPrincipal.removeAll();
+       jpPrincipal.validate();
+       jpPrincipal.add(jInternalFrame1);
+       JFAccess acc = new JFAccess();
+        jInternalFrame1.setContentPane(acc.getContentPane());
+        jInternalFrame1.setVisible(true);
+       jpPrincipal.setVisible(true);
+       jpPrincipal.revalidate();
     }//GEN-LAST:event_bAccessMouseClicked
 
     private void jPanel21MouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel21MouseMoved
@@ -1340,7 +1335,17 @@ CustomerPanel cus = new CustomerPanel();
     }//GEN-LAST:event_bModerateMouseMoved
 
     private void bModerateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bModerateMouseClicked
-        // TODO add your handling code here:
+        
+       jpPrincipal.removeAll();
+       jpPrincipal.validate();
+       jpPrincipal.add(jInternalFrame1);
+       JFReview rev = new JFReview();
+        jInternalFrame1.setContentPane(rev.getContentPane());
+        jInternalFrame1.setVisible(true);
+       jpPrincipal.setVisible(true);
+       jpPrincipal.revalidate();
+       
+       
     }//GEN-LAST:event_bModerateMouseClicked
 
     private void jBProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBProductActionPerformed
@@ -1405,6 +1410,14 @@ CustomerPanel cus = new CustomerPanel();
 
     private void jPanel19MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel19MouseClicked
 
+//        jpPrincipal.removeAll();
+//       jpPrincipal.validate();
+//       jpPrincipal.add(jInternalFrame1);
+//       JFEmployee emp = new JFEmployee();
+//        jInternalFrame1.setContentPane(emp.getContentPane());
+//        jInternalFrame1.setVisible(true);
+//       jpPrincipal.setVisible(true);
+//       jpPrincipal.revalidate();
    
 
     }//GEN-LAST:event_jPanel19MouseClicked
@@ -1615,6 +1628,37 @@ CustomerPanel cus = new CustomerPanel();
        jpPrincipal.setVisible(true);
        jpPrincipal.revalidate();
     }//GEN-LAST:event_jPanel7MouseClicked
+
+    private void jPanel21MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel21MouseClicked
+
+        jpPrincipal.removeAll();
+       jpPrincipal.validate();
+       jpPrincipal.add(jInternalFrame1);
+       JFAccess acc = new JFAccess();
+        jInternalFrame1.setContentPane(acc.getContentPane());
+        jInternalFrame1.setVisible(true);
+       jpPrincipal.setVisible(true);
+       jpPrincipal.revalidate();
+
+
+    }//GEN-LAST:event_jPanel21MouseClicked
+
+    private void jPanel22MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel22MouseClicked
+        
+        
+        jpPrincipal.removeAll();
+       jpPrincipal.validate();
+       jpPrincipal.add(jInternalFrame1);
+       JFReview rev = new JFReview();
+        jInternalFrame1.setContentPane(rev.getContentPane());
+        jInternalFrame1.setVisible(true);
+       jpPrincipal.setVisible(true);
+       jpPrincipal.revalidate();
+        
+        
+        
+        
+    }//GEN-LAST:event_jPanel22MouseClicked
 
     void setColor(JPanel panel) {
         panel.setBackground(new Color(102, 102, 102));
