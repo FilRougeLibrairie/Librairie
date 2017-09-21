@@ -34,6 +34,7 @@ import utils.Crypto;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
+import ui.jfPurchase.JFPurchase;
 import utils.Awt1;
 import utils.DateLabelFormatter;
 
@@ -432,7 +433,7 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
         Vector<Purchase> orderList = new Vector<Purchase>();
         orderList = purchaseDAO.findByCustomerId(cus.getCusID());
         orderTableList = new Vector();
-        
+
         for (Purchase pur : orderList) {
             // Retrieving OrderStatusList
             try {
@@ -779,7 +780,7 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
         jScrollPane2 = new javax.swing.JScrollPane();
         tableOrders = new javax.swing.JTable();
         jPanel11 = new javax.swing.JPanel();
-        btnView = new javax.swing.JLabel();
+        btnViewPurchase = new javax.swing.JLabel();
         jPanel10 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableReview = new javax.swing.JTable();
@@ -1215,20 +1216,30 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
         jPanel11.setPreferredSize(new java.awt.Dimension(200, 45));
         jPanel11.setRequestFocusEnabled(false);
 
-        btnView.setForeground(new java.awt.Color(255, 255, 255));
-        btnView.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        btnView.setText("Visualiser");
-        btnView.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnViewPurchase.setForeground(new java.awt.Color(255, 255, 255));
+        btnViewPurchase.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btnViewPurchase.setText("Visualiser");
+        btnViewPurchase.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnViewPurchase.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                btnViewPurchaseMouseReleased(evt);
+            }
+        });
+        btnViewPurchase.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                btnViewPurchaseKeyReleased(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
         jPanel11.setLayout(jPanel11Layout);
         jPanel11Layout.setHorizontalGroup(
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(btnView, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE)
+            .addComponent(btnViewPurchase, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE)
         );
         jPanel11Layout.setVerticalGroup(
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(btnView, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
+            .addComponent(btnViewPurchase, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
@@ -2193,6 +2204,16 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
         }
     }//GEN-LAST:event_btnDeleteAddressMouseReleased
 
+    private void btnViewPurchaseKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnViewPurchaseKeyReleased
+
+    }//GEN-LAST:event_btnViewPurchaseKeyReleased
+
+    private void btnViewPurchaseMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnViewPurchaseMouseReleased
+        
+        JFPurchase jfPur = new JFPurchase();
+        jfPur.setVisible(true);
+    }//GEN-LAST:event_btnViewPurchaseMouseReleased
+
     /**
      * @param args the command line arguments
      */
@@ -2245,7 +2266,7 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
     private javax.swing.JLabel btnSaveInvoiceAdress;
     private javax.swing.JLabel btnSaveReview;
     private javax.swing.JLabel btnSearch;
-    private javax.swing.JLabel btnView;
+    private javax.swing.JLabel btnViewPurchase;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JComboBox comboDeliverStreetType;
     private javax.swing.JComboBox comboGender;
