@@ -1,21 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package SQLS;
 
 import ClassObjet.AccessProfile;
-import ClassObjet.Employee;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
 
-/**
- *
- * @author cdi305
- */
+
 public class AccessProfileDAO extends DAO<AccessProfile> {
     
     private final String TABLE = "AccessProfile";
@@ -38,8 +30,8 @@ public class AccessProfileDAO extends DAO<AccessProfile> {
     @Override
     public void create(AccessProfile obj) {
            AccessProfile acc = (AccessProfile) obj;
-        String query = "IF NOT EXISTS (SELECT * FROM " + TABLE + " WHERE " + PROFILE_CODE + " = '" + acc.getAccProfileCode() + "')"
-                + "INSERT INTO " + TABLE + " (" + COLUMNS_CREATE + ")"
+        String query = "IF NOT EXISTS (SELECT * FROM " + TABLE + " WHERE " + PROFILE_NAME + " = '" + acc.getAccProfileName()+ "')"
+                + "INSERT INTO " + TABLE + " (" + PROFILE_NAME + ")"
                 + "VALUES (?)";
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query);) {
@@ -56,8 +48,7 @@ public class AccessProfileDAO extends DAO<AccessProfile> {
     @Override
     public void update(AccessProfile obj) {
         AccessProfile acc = (AccessProfile) obj;
-        StringBuilder query = new StringBuilder("UPDATE " + TABLE + " SET ");
-        query.append(PROFILE_CODE).append(" = ?, ");
+        StringBuilder query = new StringBuilder("UPDATE " + TABLE + " SET ");  
         query.append(PROFILE_NAME).append(" = ? ");
         
 
@@ -67,8 +58,10 @@ public class AccessProfileDAO extends DAO<AccessProfile> {
 
         try (PreparedStatement pstmt = connect.prepareStatement(query.toString());) {
 
+            
             pstmt.setString(1, acc.getAccProfileName());
-
+            
+            
             int result = pstmt.executeUpdate();
 
         } catch (SQLException ex) {

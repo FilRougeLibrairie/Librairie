@@ -1,14 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package ClassObjet;
 
-/**
- *
- * @author Tofi
- */
+import java.util.Vector;
+
+
 public class AccessProfile {
 
     private int accProfileCode;
@@ -17,6 +12,13 @@ public class AccessProfile {
     //Constructor
     public AccessProfile() {
     }
+
+    public AccessProfile(int accProfileCode, String accProfileName) {
+        this.accProfileCode = accProfileCode;
+        this.accProfileName = accProfileName;
+    }
+    
+    
 
     //Setters
     public void setAccProfileCode(int accProfileCode) {
@@ -42,9 +44,16 @@ public class AccessProfile {
     }
 
     public Object getAccProfileName(String profil) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet."); 
     }
     
-    
+     public Vector getVector() {
+        Vector v= new Vector();
+       
+        v.add(this.getAccProfileCode());
+        v.add(this.getAccProfileName());
+      
+        return v;
+    }
 
 }

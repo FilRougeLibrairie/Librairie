@@ -2,14 +2,7 @@ package PanelOk;
 
 import ClassObjet.Forma;
 import SQLS.FormatsDAO;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.Vector;
 import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
 
 public class FormatPanelAdd extends javax.swing.JPanel {
 
@@ -20,71 +13,7 @@ public class FormatPanelAdd extends javax.swing.JPanel {
         initComponents();
     }
 
-    public DefaultTableModel initTableModel() {
-        Vector v = new Vector();
-        v.add("Numéro");
-        v.add("Format");
 
-        return new javax.swing.table.DefaultTableModel(
-                initFormatVector(), v) {
-                    boolean[] canEdit = new boolean[]{
-                        false, false, true
-                    };
-
-                    public boolean isCellEditable(int rowIndex, int columnIndex) {
-                        return canEdit[columnIndex];
-                    }
-                };
-    }
-
-    private Vector initFormatVector() {
-        Vector v = new Vector();
-
-        try {
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-        } catch (ClassNotFoundException ex) {
-            System.err.println("Oops:Driver:" + ex.getMessage());
-            return v;
-        }
-        Connection connexion = null;
-        try {
-            connexion = DriverManager.getConnection(
-                    "jdbc:sqlserver://localhost:1433;"
-                    + "databaseName=myLibrary;user=sa;password=sa");
-        } catch (SQLException ex) {
-            System.err.println("Oops:Connection:" + ex.getErrorCode() + ":" + ex.getMessage());
-            return v;
-        }
-
-        String query = "SELECT * FROM FORMATS;";
-        try {
-            Statement stmt = connexion.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
-
-            while (rs.next()) {
-                Forma p = new Forma(rs.getInt("forId"), rs.getString("forName"));
-                v.add(p.getVector());
-
-            }
-
-            rs.close();
-            stmt.close();
-        } catch (SQLException ex) {
-            System.err.println("Oops:SQL:" + ex.getErrorCode() + ":" + ex.getMessage());
-            return v;
-        }
-
-        try {
-            connexion.close();
-        } catch (SQLException ex) {
-            System.err.println("Oops:Close:" + ex.getErrorCode() + ":" + ex.getMessage());
-            return v;
-        }
-
-        System.out.println("Done!");
-
-        return v;
-    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents

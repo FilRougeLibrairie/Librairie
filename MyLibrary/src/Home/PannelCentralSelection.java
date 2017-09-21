@@ -1,6 +1,8 @@
 
 package Home;
 
+import PanelOk.AccessPanel;
+
 import PanelOk.OfferPanel;
 import PanelOk.BookLanguagePanel;
 import PanelOk.SubthemePanel;
@@ -13,7 +15,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 
 import javax.swing.JPanel;
-import PanelEnCoursChrys.JFAccess;
 //import ui.JFBook2;
 import ui.jfEditor.JFEditor;
 import PanelEnCoursChrys.JFReview;
@@ -1301,15 +1302,15 @@ CustomerPanel cus = new CustomerPanel();
 
     private void bAccessMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bAccessMouseClicked
         
-        
         jpPrincipal.removeAll();
-       jpPrincipal.validate();
-       jpPrincipal.add(jInternalFrame1);
-       JFAccess acc = new JFAccess();
-        jInternalFrame1.setContentPane(acc.getContentPane());
-        jInternalFrame1.setVisible(true);
-       jpPrincipal.setVisible(true);
-       jpPrincipal.revalidate();
+        jpPrincipal.validate();
+        AccessPanel acc = new AccessPanel();
+        jpPrincipal.setLayout(new BorderLayout());
+        jpPrincipal.add(acc, BorderLayout.NORTH);
+        jpPrincipal.setVisible(true);
+        jpPrincipal.revalidate();
+        
+       
     }//GEN-LAST:event_bAccessMouseClicked
 
     private void jPanel21MouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel21MouseMoved
@@ -1633,13 +1634,13 @@ CustomerPanel cus = new CustomerPanel();
     private void jPanel21MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel21MouseClicked
 
         jpPrincipal.removeAll();
-       jpPrincipal.validate();
-       jpPrincipal.add(jInternalFrame1);
-       JFAccess acc = new JFAccess();
-        jInternalFrame1.setContentPane(acc.getContentPane());
-        jInternalFrame1.setVisible(true);
-       jpPrincipal.setVisible(true);
-       jpPrincipal.revalidate();
+        jpPrincipal.validate();
+        AccessPanel acc = new AccessPanel();
+        jpPrincipal.setLayout(new BorderLayout());
+        jpPrincipal.add(acc, BorderLayout.NORTH);
+        jpPrincipal.setVisible(true);
+        jpPrincipal.revalidate();
+        
 
 
     }//GEN-LAST:event_jPanel21MouseClicked
