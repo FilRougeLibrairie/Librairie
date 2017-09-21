@@ -34,7 +34,10 @@ public class AuthorAddPanel extends javax.swing.JPanel {
         jTAuto = new javax.swing.JTextArea();
         jButton1 = new javax.swing.JButton();
 
+        setBackground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(900, 600));
+
+        jpField.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel1.setText("Prénom");
 
@@ -59,6 +62,7 @@ public class AuthorAddPanel extends javax.swing.JPanel {
         jTAuto.setRows(5);
         jScrollPane1.setViewportView(jTAuto);
 
+        jButton1.setBackground(new java.awt.Color(0, 51, 255));
         jButton1.setText("AJOUTER");
         jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {

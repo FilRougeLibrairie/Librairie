@@ -109,7 +109,10 @@ public class FormatPanelUpdate extends javax.swing.JPanel {
         jLabel7 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
 
+        setBackground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(900, 600));
+
+        jpField.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel5.setText("Nouveau Format");
 
@@ -137,6 +140,8 @@ public class FormatPanelUpdate extends javax.swing.JPanel {
                     .addComponent(jTFormatName, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(41, Short.MAX_VALUE))
         );
+
+        jpTable.setBackground(new java.awt.Color(255, 255, 255));
 
         jTable1.setModel(initTableModel());
         jTable1.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -179,6 +184,7 @@ public class FormatPanelUpdate extends javax.swing.JPanel {
         jLabel7.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         jLabel7.setAlignmentX(0.5F);
 
+        jButton2.setBackground(new java.awt.Color(0, 51, 255));
         jButton2.setText("MODIFIER");
         jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {

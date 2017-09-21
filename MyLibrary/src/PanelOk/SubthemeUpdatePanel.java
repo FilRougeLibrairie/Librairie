@@ -59,6 +59,7 @@ public class SubthemeUpdatePanel extends javax.swing.JPanel {
         jComboBox2 = new javax.swing.JComboBox();
         jLabel4 = new javax.swing.JLabel();
 
+        setBackground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(900, 600));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -73,6 +74,7 @@ public class SubthemeUpdatePanel extends javax.swing.JPanel {
         jLabel1.setText("Sous Thème à modifier:");
         add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 70, 189, 40));
 
+        jpEdit.setBackground(new java.awt.Color(255, 255, 255));
         jpEdit.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel2.setText("Nom du Sous thème");
@@ -94,6 +96,7 @@ public class SubthemeUpdatePanel extends javax.swing.JPanel {
 
         jpEdit.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(268, 94, 310, 116));
 
+        jButton2.setBackground(new java.awt.Color(0, 51, 255));
         jButton2.setText("MODIFIER");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

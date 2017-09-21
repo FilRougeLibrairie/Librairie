@@ -117,6 +117,7 @@ public class AuthorDeletePanel extends javax.swing.JPanel {
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
 
+        setBackground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(900, 600));
 
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -124,6 +125,7 @@ public class AuthorDeletePanel extends javax.swing.JPanel {
         jLabel7.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         jLabel7.setAlignmentX(0.5F);
 
+        jButton3.setBackground(new java.awt.Color(51, 51, 255));
         jButton3.setText("SUPPRIMER");
         jButton3.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {

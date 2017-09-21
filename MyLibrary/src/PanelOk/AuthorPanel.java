@@ -36,25 +36,21 @@ public class AuthorPanel extends javax.swing.JPanel {
         buttonGroup1 = new javax.swing.ButtonGroup();
         jpPrinc = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
-        jLabel4 = new javax.swing.JLabel();
-        jSeparator1 = new javax.swing.JSeparator();
         jLabel6 = new javax.swing.JLabel();
         jRDelete = new javax.swing.JRadioButton();
         jRUpdate = new javax.swing.JRadioButton();
         jRAdd = new javax.swing.JRadioButton();
 
+        setBackground(new java.awt.Color(255, 255, 255));
         setMinimumSize(new java.awt.Dimension(0, 800));
         setPreferredSize(new java.awt.Dimension(900, 800));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jpPrinc.setBackground(new java.awt.Color(255, 255, 255));
         add(jpPrinc, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 124, 900, 676));
 
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel4.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
-        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setText("AUTEUR");
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(288, 0, 276, 38));
-        jPanel1.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, 900, -1));
 
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel6.setText("Veuillez choisir une option");
@@ -133,13 +129,11 @@ public class AuthorPanel extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JRadioButton jRAdd;
     private javax.swing.JRadioButton jRDelete;
     private javax.swing.JRadioButton jRUpdate;
-    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JPanel jpPrinc;
     // End of variables declaration//GEN-END:variables
 }

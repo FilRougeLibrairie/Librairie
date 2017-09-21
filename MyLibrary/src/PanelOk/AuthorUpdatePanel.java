@@ -153,7 +153,10 @@ public class AuthorUpdatePanel extends javax.swing.JPanel  {
         jLabel7 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
 
+        setBackground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(900, 600));
+
+        jpField.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel1.setText("Prénom");
 
@@ -224,6 +227,8 @@ public class AuthorUpdatePanel extends javax.swing.JPanel  {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        jpTable.setBackground(new java.awt.Color(255, 255, 255));
+
         jTable1.setModel(initTableModel());
         jTable1.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -265,6 +270,7 @@ public class AuthorUpdatePanel extends javax.swing.JPanel  {
         jLabel7.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         jLabel7.setAlignmentX(0.5F);
 
+        jButton2.setBackground(new java.awt.Color(51, 51, 255));
         jButton2.setText("MODIFIER");
         jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {

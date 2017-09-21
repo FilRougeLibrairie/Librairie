@@ -46,6 +46,8 @@ public class SubthemeAddPanel extends javax.swing.JPanel {
 
         setPreferredSize(new java.awt.Dimension(900, 600));
 
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+
         jLabel1.setText("Nom du Sous - thème");
 
         jtName.addActionListener(new java.awt.event.ActionListener() {
@@ -69,6 +71,7 @@ public class SubthemeAddPanel extends javax.swing.JPanel {
 
         jLabel3.setText("Thème associé");
 
+        jButton2.setBackground(new java.awt.Color(0, 51, 255));
         jButton2.setText("VALIDER");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

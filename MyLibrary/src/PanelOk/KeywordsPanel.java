@@ -16,49 +16,47 @@ public class KeywordsPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
         jpPrinc = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
-        jLabel4 = new javax.swing.JLabel();
-        jSeparator1 = new javax.swing.JSeparator();
         jLabel6 = new javax.swing.JLabel();
         jRUpdate = new javax.swing.JRadioButton();
         jRAdd = new javax.swing.JRadioButton();
 
-        setPreferredSize(new java.awt.Dimension(900, 600));
+        setBackground(new java.awt.Color(255, 255, 255));
+        setPreferredSize(new java.awt.Dimension(900, 800));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jpPrinc.setBackground(new java.awt.Color(255, 255, 255));
         jpPrinc.setLayout(new java.awt.BorderLayout());
-        add(jpPrinc, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 130, 870, 460));
+        add(jpPrinc, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 80, 870, 510));
 
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel4.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
-        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setText("MOTS CLES");
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 0, 276, 38));
-        jPanel1.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 40, 900, -1));
 
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel6.setText("Veuillez choisir une option");
         jLabel6.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         jLabel6.setAlignmentX(0.5F);
-        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 60, 780, 25));
+        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 10, 780, 25));
 
+        buttonGroup1.add(jRUpdate);
         jRUpdate.setText("Modifier");
         jRUpdate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jRUpdateActionPerformed(evt);
             }
         });
-        jPanel1.add(jRUpdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 90, 103, -1));
+        jPanel1.add(jRUpdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 40, 103, -1));
 
+        buttonGroup1.add(jRAdd);
         jRAdd.setText("Ajouter");
         jRAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jRAddActionPerformed(evt);
             }
         });
-        jPanel1.add(jRAdd, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 90, 103, -1));
+        jPanel1.add(jRAdd, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 40, 103, -1));
 
         add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
     }// </editor-fold>//GEN-END:initComponents
@@ -87,12 +85,11 @@ public class KeywordsPanel extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel4;
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JRadioButton jRAdd;
     private javax.swing.JRadioButton jRUpdate;
-    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JPanel jpPrinc;
     // End of variables declaration//GEN-END:variables
 }

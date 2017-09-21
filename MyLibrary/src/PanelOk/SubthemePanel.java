@@ -32,8 +32,6 @@ public class SubthemePanel extends javax.swing.JPanel {
         jEditorPane1 = new javax.swing.JEditorPane();
         jpPrinc = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
-        jLabel4 = new javax.swing.JLabel();
-        jSeparator1 = new javax.swing.JSeparator();
         jLabel6 = new javax.swing.JLabel();
         jRDelete = new javax.swing.JRadioButton();
         jRUpdate = new javax.swing.JRadioButton();
@@ -41,12 +39,14 @@ public class SubthemePanel extends javax.swing.JPanel {
 
         jScrollPane1.setViewportView(jEditorPane1);
 
+        setBackground(new java.awt.Color(255, 255, 255));
+        setPreferredSize(new java.awt.Dimension(900, 800));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        add(jpPrinc, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 143, 740, 470));
 
-        jLabel4.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
-        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setText("SOUS THEME");
+        jpPrinc.setBackground(new java.awt.Color(255, 255, 255));
+        add(jpPrinc, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 83, 740, 530));
+
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel6.setText("Veuillez choisir une option");
@@ -81,14 +81,7 @@ public class SubthemePanel extends javax.swing.JPanel {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(223, 223, 223)
-                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 737, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 3, Short.MAX_VALUE))
+            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 737, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jRAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -96,26 +89,45 @@ public class SubthemePanel extends javax.swing.JPanel {
                 .addComponent(jRUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(jRDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(204, 204, 204))
+                .addGap(201, 201, 201))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(16, 16, 16)
+                .addContainerGap()
                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jRAdd)
                     .addComponent(jRUpdate)
                     .addComponent(jRDelete))
-                .addGap(0, 19, Short.MAX_VALUE))
+                .addContainerGap(75, Short.MAX_VALUE))
         );
 
         add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 740, -1));
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jRAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRAddActionPerformed
+
+        if (jRAdd.isSelected() == true) {
+            jpPrinc.removeAll();
+
+            jpPrinc.add(new SubthemeAddPanel());
+            jpPrinc.revalidate();
+            jpPrinc.setVisible(true);
+        }
+    }//GEN-LAST:event_jRAddActionPerformed
+
+    private void jRUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRUpdateActionPerformed
+
+        if (jRUpdate.isSelected() == true) {
+            jpPrinc.removeAll();
+            jpPrinc.validate();
+            jpPrinc.add(new SubthemeUpdatePanel());
+            jpPrinc.revalidate();
+            jpPrinc.setVisible(true);
+        }
+    }//GEN-LAST:event_jRUpdateActionPerformed
 
     private void jRDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRDeleteActionPerformed
 
@@ -129,40 +141,16 @@ public class SubthemePanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_jRDeleteActionPerformed
 
-    private void jRUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRUpdateActionPerformed
-
-        if (jRUpdate.isSelected() == true) {
-            jpPrinc.removeAll();
-            jpPrinc.validate();
-            jpPrinc.add(new SubthemeUpdatePanel());
-            jpPrinc.revalidate();
-            jpPrinc.setVisible(true);
-        }
-    }//GEN-LAST:event_jRUpdateActionPerformed
-
-    private void jRAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRAddActionPerformed
-
-        if (jRAdd.isSelected() == true) {
-            jpPrinc.removeAll();
-
-            jpPrinc.add(new SubthemeAddPanel());
-            jpPrinc.revalidate();
-            jpPrinc.setVisible(true);
-        }
-    }//GEN-LAST:event_jRAddActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JEditorPane jEditorPane1;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JRadioButton jRAdd;
     private javax.swing.JRadioButton jRDelete;
     private javax.swing.JRadioButton jRUpdate;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JPanel jpPrinc;
     // End of variables declaration//GEN-END:variables
 }

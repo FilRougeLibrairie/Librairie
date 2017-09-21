@@ -84,7 +84,7 @@ CustomerPanel cus = new CustomerPanel();
         jpPrincipal = new javax.swing.JPanel();
         jInternalFrame1 = new javax.swing.JInternalFrame();
 
-        setBackground(new java.awt.Color(51, 153, 0));
+        setBackground(new java.awt.Color(255, 255, 255));
         setAutoscrolls(true);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setMaximumSize(new java.awt.Dimension(2147483647, 600));
@@ -837,10 +837,11 @@ CustomerPanel cus = new CustomerPanel();
 
         add(jPanel1, java.awt.BorderLayout.PAGE_START);
 
-        jpPrincipal.setBackground(new java.awt.Color(0, 0, 0));
+        jpPrincipal.setBackground(new java.awt.Color(255, 255, 255));
         jpPrincipal.setPreferredSize(new java.awt.Dimension(800, 900));
         jpPrincipal.setLayout(new java.awt.BorderLayout());
 
+        jInternalFrame1.setBackground(new java.awt.Color(255, 255, 255));
         jInternalFrame1.setPreferredSize(new java.awt.Dimension(1000, 700));
         jInternalFrame1.setVisible(true);
 
@@ -848,7 +849,7 @@ CustomerPanel cus = new CustomerPanel();
         jInternalFrame1.getContentPane().setLayout(jInternalFrame1Layout);
         jInternalFrame1Layout.setHorizontalGroup(
             jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 838, Short.MAX_VALUE)
         );
         jInternalFrame1Layout.setVerticalGroup(
             jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

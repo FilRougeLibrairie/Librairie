@@ -1,7 +1,6 @@
 
 package PanelOk;
 
-import PanelEnCoursChrys.OfferUpdatePanel;
 import java.awt.BorderLayout;
 
 
@@ -21,32 +20,28 @@ public class OfferPanel extends javax.swing.JPanel {
         jPanel1 = new javax.swing.JPanel();
         jpPrinc = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
-        jLabel4 = new javax.swing.JLabel();
-        jSeparator1 = new javax.swing.JSeparator();
         jLabel6 = new javax.swing.JLabel();
         jRUpdate = new javax.swing.JRadioButton();
         jRAdd = new javax.swing.JRadioButton();
 
+        setPreferredSize(new java.awt.Dimension(900, 800));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jpPrinc.setBackground(new java.awt.Color(255, 255, 255));
         jpPrinc.setLayout(new java.awt.BorderLayout());
         jPanel1.add(jpPrinc, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 140, 900, 540));
 
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel4.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
-        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setText("OFFRE");
-        jPanel2.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 0, 276, 38));
-        jPanel2.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 40, 900, -1));
 
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel6.setText("Veuillez choisir une option");
         jLabel6.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         jLabel6.setAlignmentX(0.5F);
-        jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 60, 780, 25));
+        jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 20, 780, 25));
 
         buttonGroup1.add(jRUpdate);
         jRUpdate.setText("Modifier");
@@ -55,7 +50,7 @@ public class OfferPanel extends javax.swing.JPanel {
                 jRUpdateActionPerformed(evt);
             }
         });
-        jPanel2.add(jRUpdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 90, 103, -1));
+        jPanel2.add(jRUpdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 50, 103, -1));
 
         buttonGroup1.add(jRAdd);
         jRAdd.setText("Ajouter");
@@ -64,7 +59,7 @@ public class OfferPanel extends javax.swing.JPanel {
                 jRAddActionPerformed(evt);
             }
         });
-        jPanel2.add(jRAdd, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 90, 103, -1));
+        jPanel2.add(jRAdd, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 50, 103, -1));
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
@@ -96,13 +91,11 @@ public class OfferPanel extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JRadioButton jRAdd;
     private javax.swing.JRadioButton jRUpdate;
-    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JPanel jpPrinc;
     // End of variables declaration//GEN-END:variables
 }

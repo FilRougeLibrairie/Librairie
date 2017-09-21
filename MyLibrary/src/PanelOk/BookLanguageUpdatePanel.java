@@ -107,8 +107,11 @@ public class BookLanguageUpdatePanel extends javax.swing.JPanel {
         jLabel7 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
 
+        setBackground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(900, 500));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jpField.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel5.setText("Nouveau Language");
 
@@ -138,6 +141,8 @@ public class BookLanguageUpdatePanel extends javax.swing.JPanel {
         );
 
         add(jpField, new org.netbeans.lib.awtextra.AbsoluteConstraints(156, 155, -1, -1));
+
+        jpTable.setBackground(new java.awt.Color(255, 255, 255));
 
         jTable1.setModel(initTableModel());
         jTable1.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -183,6 +188,7 @@ public class BookLanguageUpdatePanel extends javax.swing.JPanel {
         jLabel7.setAlignmentX(0.5F);
         add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(284, 12, 214, 25));
 
+        jButton2.setBackground(new java.awt.Color(0, 51, 255));
         jButton2.setText("MODIFIER");
         jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
