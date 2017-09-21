@@ -46,7 +46,51 @@ public class JFReview extends javax.swing.JFrame implements SQLNames {
         }
     }
     
-    
+    private void searchForCustomer() {
+        if (comboSearch.getSelectedItem() != null) {
+            String criteria = comboSearch.getSelectedItem().toString();
+            String term = tfSearch.getText().trim();
+            int statusIndex;
+            customerList = new Vector<Customer>();
+            CustomerDAO customerDAO = new CustomerDAO();
+
+            if (criteria.equalsIgnoreCase(SearchCriteria.TOUS_LES_CLIENTS.getDatabaseName())) {
+                customerList = customerDAO.findAll();
+            } else if (criteria.equalsIgnoreCase(SearchCriteria.STATUS.getDatabaseName())) {
+                criteria = CustomerNames.STATUS;
+                statusIndex = comboStatus.getSelectedIndex();
+                customerList = customerDAO.findByColumn(criteria, statusIndex);
+            } else if (criteria.equalsIgnoreCase(SearchCriteria.GENDER.getDatabaseName())) {
+                criteria = CustomerNames.GENDER;
+                term = comboGender.getSelectedItem().toString().substring(0, 1).trim();
+                customerList = customerDAO.findByColumn(criteria, term);
+            } else if (term != null && !term.isEmpty()) {
+                if (criteria.equalsIgnoreCase(SearchCriteria.NOM.getDatabaseName())) {
+                    criteria = CustomerNames.LAST_NAME;
+                } else if (criteria.equalsIgnoreCase(SearchCriteria.PRENOM.getDatabaseName())) {
+                    criteria = CustomerNames.FIRST_NAME;
+                } else if (criteria.equalsIgnoreCase(SearchCriteria.SOCIETE.getDatabaseName())) {
+                    criteria = CustomerNames.COMPANY;
+                } else if (criteria.equalsIgnoreCase(SearchCriteria.EMAIL.getDatabaseName())) {
+                    criteria = CustomerNames.EMAIL;
+                } else if (criteria.equalsIgnoreCase(SearchCriteria.TELEPHONE.getDatabaseName())) {
+                    criteria = CustomerNames.PHONE;
+                } else if (criteria.equalsIgnoreCase(SearchCriteria.IP.getDatabaseName())) {
+                    criteria = CustomerNames.IP;
+                } else if (criteria.equalsIgnoreCase(SearchCriteria.STATUS.getDatabaseName())) {
+                    criteria = CustomerNames.STATUS;
+                }
+                customerList = customerDAO.findByColumn(criteria, term);
+            }
+
+            customerTableList = new Vector();
+            for (Customer cus : customerList) {
+                CustomerTableItem customerTable = new CustomerTableItem(cus);
+                customerTableList.add(customerTable.getVector());
+            }
+            setTableCustomerModel();
+        }
+    }
    
     
     @SuppressWarnings("unchecked")
@@ -342,6 +386,7 @@ public class JFReview extends javax.swing.JFrame implements SQLNames {
     }//GEN-LAST:event_tableSearchOReviewMouseReleased
 
     private void btnSearchOrderMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSearchOrderMouseReleased
+searchForCustomer();
 //        searchForOrder();
     }//GEN-LAST:event_btnSearchOrderMouseReleased
 
