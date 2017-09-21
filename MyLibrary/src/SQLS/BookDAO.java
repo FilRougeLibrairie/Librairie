@@ -110,14 +110,14 @@ public class BookDAO extends DAO {
         query.append(EDITOR_ID).append(" = ?, ");
         query.append(TITLE).append(" = ?, ");
         query.append(SUBTITLE).append(" = ?, ");
-        query.append(PUBLICATION_YEAR).append(" = ? ");
-        query.append(PRICE_HT).append(" = ? ");
-        query.append(RESUME).append(" = ? ");
-        query.append(QUANTITY).append(" = ? ");
-        query.append(STATUS).append(" = ? ");
-        query.append(FRONT_COVER).append(" = ? ");
-        query.append(PAGE_NUMBER).append(" = ? ");
-        query.append(LANGUAGE_ID).append(" = ? ");
+        query.append(PUBLICATION_YEAR).append(" = ?, ");
+        query.append(PRICE_HT).append(" = ?, ");
+        query.append(RESUME).append(" = ?, ");
+        query.append(QUANTITY).append(" = ?, ");
+        query.append(STATUS).append(" = ?, ");
+        query.append(FRONT_COVER).append(" = ?, ");
+        query.append(PAGE_NUMBER).append(" = ?, ");
+        query.append(LANGUAGE_ID).append(" = ?, ");
         query.append(FORMAT_ID).append(" = ? ");
 
         query.append("WHERE " + ISBN_13 + " = '")

@@ -2,6 +2,7 @@
 package SQLS;
 
 import ClassObjet.ClassAssoc.Association;
+import ClassObjet.ClassAssoc.Writing;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Vector;
@@ -26,8 +27,21 @@ public class AssociationDAO extends DAO<Association>{
     
     @Override
     public void create(Association obj) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+        Association asso = (Association) obj;
+        StringBuilder query = new StringBuilder("INSERT INTO " + TABLE + " (" + COLUMNS_CREATE + ")"
+                + "VALUES (?, ?)");
+
+        try (PreparedStatement pstmt = connect.prepareStatement(query.toString());) {
+
+            pstmt.setString(1, asso.getBooIsbn13());
+            pstmt.setInt(2, asso.getSubId());
+
+            int result = pstmt.executeUpdate();
+
+        } catch (SQLException ex) {
+            System.out.println("ERROR Create Association Object : " + ex.getMessage());
+
+        } }
 
     @Override
     public void delete(Association obj) {

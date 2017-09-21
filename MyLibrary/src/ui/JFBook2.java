@@ -3,25 +3,33 @@ package ui;
 import ClassObjet.Author;
 import ClassObjet.Book;
 import ClassObjet.BookLanguage;
+import ClassObjet.ClassAssoc.Association;
+import ClassObjet.ClassAssoc.Writing;
 import ClassObjet.Editor;
 import ClassObjet.Forma;
+import ClassObjet.Review;
 import ClassObjet.StatusDisplay;
 import ClassObjet.SubTheme;
 import ClassObjet.Theme;
 import ClassObjet.Vat;
 import Names.SQLNames;
+import SQLS.AssociationDAO;
 import SQLS.AuthorDAO;
 import SQLS.BookDAO;
 import SQLS.BookLanguageDAO;
 import SQLS.EditorDAO;
 import SQLS.FormatsDAO;
+import SQLS.ReviewDAO;
 import SQLS.StatusDisplayDAO;
 import SQLS.SubThemeDAO;
 import SQLS.ThemeDAO;
 import SQLS.VatDAO;
+import SQLS.WritingDAO;
 import java.util.Vector;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import utils.PriceCalculation;
 
 /**
  *
@@ -41,6 +49,7 @@ public class JFBook2 extends javax.swing.JFrame {
     Vector vLanguage = new Vector();
     Vector vFormat = new Vector();
     Vector<String> comboAuthorModel;
+    private JFileChooser jfc = new JFileChooser();
 
     public JFBook2() {
 
@@ -77,6 +86,7 @@ public class JFBook2 extends javax.swing.JFrame {
         jComboBoxLanguage.setSelectedIndex(-1);
         jComboBoxFormat.setSelectedIndex(-1);
         tfSearch.setText("");
+        tfShowFiles.setText("");
     }
 
     private DefaultComboBoxModel initAuthorModel() {
@@ -89,7 +99,7 @@ public class JFBook2 extends javax.swing.JFrame {
     }
 
     private DefaultComboBoxModel initAuthorModel2() {
-        return new DefaultComboBoxModel(initAuthorVector());
+        return new DefaultComboBoxModel(initAuthorVector2());
     }
 
     private Vector initAuthorVector2() {
@@ -176,6 +186,7 @@ public class JFBook2 extends javax.swing.JFrame {
 
     @SuppressWarnings("unchecked")
 
+
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -211,7 +222,7 @@ public class JFBook2 extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         taResume = new javax.swing.JTextArea();
         jPanel6 = new javax.swing.JPanel();
-        labelSave = new javax.swing.JLabel();
+        jlSave = new javax.swing.JLabel();
         jPanel7 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
@@ -239,6 +250,8 @@ public class JFBook2 extends javax.swing.JFrame {
         jLabel24 = new javax.swing.JLabel();
         jLabel25 = new javax.swing.JLabel();
         jComboBoxAuthor2 = new javax.swing.JComboBox();
+        jLabel1 = new javax.swing.JLabel();
+        tfShowFiles = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(900, 630));
@@ -275,6 +288,11 @@ public class JFBook2 extends javax.swing.JFrame {
         jLabel4.setText("Thème :");
 
         jComboBoxTheme.setModel(initThemeModel());
+        jComboBoxTheme.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxThemeActionPerformed(evt);
+            }
+        });
 
         jLabel18.setText("Sous-thème :");
 
@@ -285,6 +303,12 @@ public class JFBook2 extends javax.swing.JFrame {
         jComboBoxLanguage.setModel(initLanguageModel());
 
         jComboBoxFormat.setModel(initFormatModel());
+
+        jTabbedPane1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                jTabbedPane1MouseReleased(evt);
+            }
+        });
 
         jPanel5.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -297,8 +321,16 @@ public class JFBook2 extends javax.swing.JFrame {
         jPanel6.setBackground(new java.awt.Color(51, 102, 255));
         jPanel6.setPreferredSize(new java.awt.Dimension(200, 45));
 
-        labelSave.setForeground(new java.awt.Color(255, 255, 255));
-        labelSave.setText("Enregistrer");
+        jlSave.setForeground(new java.awt.Color(255, 255, 255));
+        jlSave.setText("Enregistrer");
+        jlSave.setMaximumSize(new java.awt.Dimension(43, 16));
+        jlSave.setMinimumSize(new java.awt.Dimension(43, 16));
+        jlSave.setPreferredSize(new java.awt.Dimension(43, 16));
+        jlSave.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jlSaveMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -306,14 +338,14 @@ public class JFBook2 extends javax.swing.JFrame {
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGap(31, 31, 31)
-                .addComponent(labelSave)
-                .addContainerGap(33, Short.MAX_VALUE))
+                .addComponent(jlSave, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(13, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(labelSave, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)
+                .addComponent(jlSave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -324,7 +356,7 @@ public class JFBook2 extends javax.swing.JFrame {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGap(0, 725, Short.MAX_VALUE)
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addContainerGap()
@@ -416,6 +448,11 @@ public class JFBook2 extends javax.swing.JFrame {
         jLabel14.setText("Couverture :");
 
         jButtonAddPicture.setText("Joindre image...");
+        jButtonAddPicture.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonAddPictureActionPerformed(evt);
+            }
+        });
 
         jInternalFrame1.setPreferredSize(new java.awt.Dimension(200, 400));
         jInternalFrame1.setVisible(true);
@@ -468,7 +505,7 @@ public class JFBook2 extends javax.swing.JFrame {
             .addComponent(jLCreateNew, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
         );
 
-        jComboBoxSearch.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "ISBN", "Titre" }));
+        jComboBoxSearch.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "ISBN", "Titre", "Auteur" }));
 
         jTableResultatRecherche.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -554,15 +591,17 @@ public class JFBook2 extends javax.swing.JFrame {
             }
         });
 
+        jLabel1.setText("Fichier :");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jInternalFrame1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(30, 30, 30)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -582,21 +621,23 @@ public class JFBook2 extends javax.swing.JFrame {
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel21)
                                     .addComponent(jLabel11)
-                                    .addComponent(jLabel18))
+                                    .addComponent(jLabel18)
+                                    .addComponent(jLabel22))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jComboBoxSubTheme2, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                         .addComponent(jComboBoxTheme, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(jComboBoxSubTheme, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jComboBoxEditor, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                        .addComponent(jComboBoxEditor, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addComponent(tfQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addComponent(jLabel4)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel25)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jComboBoxAuthor2, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jButtonAddPicture, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -607,24 +648,27 @@ public class JFBook2 extends javax.swing.JFrame {
                                     .addComponent(jLabel15)
                                     .addComponent(jLabel2)
                                     .addComponent(jLabel16)
-                                    .addComponent(jLabel14))
-                                .addGap(18, 18, 18)
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jLabel14, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jComboBoxFormat, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(jComboBoxLanguage, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jComboBoxStatus, 0, 187, Short.MAX_VALUE)
-                                        .addComponent(jComboBoxVat, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(tfYearEdition)
-                                        .addComponent(tfNumberOfPages)
-                                        .addComponent(tfPriceHt, javax.swing.GroupLayout.Alignment.TRAILING))))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel22)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(tfQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(18, 18, 18)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jComboBoxFormat, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                .addComponent(jComboBoxLanguage, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(jComboBoxStatus, 0, 187, Short.MAX_VALUE)
+                                                .addComponent(jComboBoxVat, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(tfYearEdition)
+                                                .addComponent(tfNumberOfPages)
+                                                .addComponent(tfPriceHt, javax.swing.GroupLayout.Alignment.TRAILING))))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(18, 18, 18)
+                                        .addComponent(tfShowFiles, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                         .addGap(26, 26, 26))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jLabel24)
                         .addGap(157, 157, 157))))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
@@ -635,9 +679,7 @@ public class JFBook2 extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jInternalFrame1, javax.swing.GroupLayout.PREFERRED_SIZE, 344, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jInternalFrame1, javax.swing.GroupLayout.PREFERRED_SIZE, 344, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -708,19 +750,34 @@ public class JFBook2 extends javax.swing.JFrame {
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                             .addComponent(jComboBoxSubTheme, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(jLabel18))))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jComboBoxSubTheme2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel21))
-                                .addComponent(jLabel22))
-                            .addComponent(tfQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(25, 25, 25)
-                        .addComponent(jLabel24, javax.swing.GroupLayout.DEFAULT_SIZE, 21, Short.MAX_VALUE)
-                        .addGap(3, 3, 3)
-                        .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                            .addComponent(jComboBoxSubTheme2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLabel21)))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(16, 16, 16)
+                                        .addComponent(jLabel1)))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(27, 27, 27)
+                                        .addComponent(jLabel24, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel22)
+                                            .addComponent(tfQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(0, 0, Short.MAX_VALUE))))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(13, 13, 13)
+                                .addComponent(tfShowFiles, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE)))))
+                .addGap(18, 18, 18)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(9, 9, 9))
         );
 
         jPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {tfIsbn, tfSubTitle, tfTitle});
@@ -737,7 +794,7 @@ public class JFBook2 extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 648, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 666, Short.MAX_VALUE)
         );
 
         setSize(new java.awt.Dimension(922, 686));
@@ -763,6 +820,7 @@ public class JFBook2 extends javax.swing.JFrame {
                 tfSubTitle.setText(boo.getBooSubtitle());
                 tfIsbn.setText(boo.getBooIsbn13());
                 tfQuantity.setText(String.valueOf(boo.getBooQuantity()));
+                tfShowFiles.setText(boo.getBooFrontCover());
                 tfYearEdition.setText(boo.getBooPublishYear());
                 tfPriceHt.setText(String.valueOf(boo.getBooPriceHT()));
                 tfNumberOfPages.setText(String.valueOf(boo.getBooPageNumber()));
@@ -772,7 +830,7 @@ public class JFBook2 extends javax.swing.JFrame {
                 for (int i = 0; i < jComboBoxAuthor.getModel().getSize(); i++) {
                     for (int j = 0; j < vAut.size(); j++) {
                         if (jComboBoxAuthor.getItemAt(i).toString().trim().equalsIgnoreCase(vAut.get(j).getAutLastName().trim() + " " + vAut.get(j).getAutFirstName().trim())) {
-
+                            System.out.println("");
                             jComboBoxAuthor.setSelectedIndex(i);
 
                             s = j;
@@ -794,7 +852,7 @@ public class JFBook2 extends javax.swing.JFrame {
 
                     for (int j = 0; j < vSubT.size(); j++) {
                         if (jComboBoxSubTheme.getItemAt(i).toString().trim().equalsIgnoreCase(vSubT.get(j).getSubName().trim())) {
-                            jComboBoxSubTheme.setSelectedIndex(i);
+                            jComboBoxSubTheme.setSelectedIndex(i + 1);
                             r = j;
                         }
                     }
@@ -802,7 +860,7 @@ public class JFBook2 extends javax.swing.JFrame {
                 for (int i = 0; i < jComboBoxSubTheme2.getModel().getSize(); i++) {
                     for (int j = 0; j < vSubT.size(); j++) {
                         if (j != r && jComboBoxSubTheme.getItemAt(i).toString().trim().equalsIgnoreCase(vSubT.get(j).getSubName().trim())) {
-                            jComboBoxSubTheme2.setSelectedIndex(i);
+                            jComboBoxSubTheme2.setSelectedIndex(i + 1);
                         }
                     }
                 }
@@ -856,125 +914,328 @@ public class JFBook2 extends javax.swing.JFrame {
                         jComboBoxFormat.setSelectedIndex(i - 1);
                     }
                 }
-            }else{
+            } else {
                 JOptionPane.showMessageDialog(null, "Livre inexistant", "Gestion des livres", JOptionPane.PLAIN_MESSAGE);
             }
 
         } else if (jComboBoxSearch.getSelectedIndex() == 1) {
-            
+
             BookDAO booDao = new BookDAO();
             AuthorDAO autDao = new AuthorDAO();
             SubThemeDAO subDao = new SubThemeDAO();
             ThemeDAO theDao = new ThemeDAO();
             Vector<Book> v = new Vector<Book>();
             v = booDao.findByColumn(SQLNames.BookNames.TITLE, tfSearch.getText());
+
             for (Book boo : v) {
-                tfTitle.setText(boo.getBooTitle());
-                tfSubTitle.setText(boo.getBooSubtitle());
-                tfIsbn.setText(boo.getBooIsbn13());
-                tfQuantity.setText(String.valueOf(boo.getBooQuantity()));
-                tfYearEdition.setText(boo.getBooPublishYear());
-                tfPriceHt.setText(String.valueOf(boo.getBooPriceHT()));
-                tfNumberOfPages.setText(String.valueOf(boo.getBooPageNumber()));
-                taResume.setText(boo.getBooResume());
-                Vector<Author> vAut = autDao.findAuthorByBook(tfIsbn.getText());
-                int s = 0;
-                for (int i = 0; i < jComboBoxAuthor.getModel().getSize(); i++) {
-                    for (int j = 0; j < vAut.size(); j++) {
-                        if (jComboBoxAuthor.getItemAt(i).toString().trim().equalsIgnoreCase(vAut.get(j).getAutLastName().trim() + " " + vAut.get(j).getAutFirstName().trim())) {
+                if (v != null) {
+                    tfTitle.setText(boo.getBooTitle());
+                    tfSubTitle.setText(boo.getBooSubtitle());
+                    tfIsbn.setText(boo.getBooIsbn13());
+                    tfQuantity.setText(String.valueOf(boo.getBooQuantity()));
+                    tfYearEdition.setText(boo.getBooPublishYear());
+                    tfPriceHt.setText(String.valueOf(boo.getBooPriceHT()));
+                    tfNumberOfPages.setText(String.valueOf(boo.getBooPageNumber()));
+                    taResume.setText(boo.getBooResume());
+                    tfShowFiles.setText(boo.getBooFrontCover());
+                    Vector<Author> vAut = autDao.findAuthorByBook(tfIsbn.getText());
+                    int s = 0;
+                    for (int i = 0; i < jComboBoxAuthor.getModel().getSize(); i++) {
+                        for (int j = 0; j < vAut.size(); j++) {
+                            if (jComboBoxAuthor.getItemAt(i).toString().trim().equalsIgnoreCase(vAut.get(j).getAutLastName().trim() + " " + vAut.get(j).getAutFirstName().trim())) {
 
-                            jComboBoxAuthor.setSelectedIndex(i);
+                                jComboBoxAuthor.setSelectedIndex(i);
 
-                            s = j;
-                        }
+                                s = j;
+                            }
 
-                    }
-                }
-                for (int i = 0; i < jComboBoxAuthor2.getModel().getSize(); i++) {
-                    for (int j = 0; j < vAut.size(); j++) {
-                        if (j != s && jComboBoxAuthor2.getItemAt(i).toString().trim().equalsIgnoreCase(vAut.get(j).getAutLastName().trim() + " " + vAut.get(j).getAutFirstName().trim())) {
-                            jComboBoxAuthor2.setSelectedIndex(i);
                         }
                     }
-                }
+                    for (int i = 0; i < jComboBoxAuthor2.getModel().getSize(); i++) {
+                        for (int j = 0; j < vAut.size(); j++) {
+                            if (j != s && jComboBoxAuthor2.getItemAt(i).toString().trim().equalsIgnoreCase(vAut.get(j).getAutLastName().trim() + " " + vAut.get(j).getAutFirstName().trim())) {
+                                jComboBoxAuthor2.setSelectedIndex(i);
+                            }
+                        }
+                    }
 
-                Vector<SubTheme> vSubT = subDao.findSubThemeByBook(tfIsbn.getText());
-                int r = 0;
-                for (int i = 0; i < jComboBoxSubTheme.getModel().getSize(); i++) {
-                    for (int j = 0; j < vSubT.size(); j++) {
-                        if (jComboBoxSubTheme.getItemAt(i).toString().trim().equalsIgnoreCase(vSubT.get(j).getSubName().trim())) {
-                            jComboBoxSubTheme.setSelectedIndex(i);
-                            r = j;
+                    Vector<SubTheme> vSubT = subDao.findSubThemeByBook(tfIsbn.getText());
+                    int r = 0;
+                    for (int i = 0; i < jComboBoxSubTheme.getModel().getSize(); i++) {
+                        for (int j = 0; j < vSubT.size(); j++) {
+                            if (jComboBoxSubTheme.getItemAt(i).toString().trim().equalsIgnoreCase(vSubT.get(j).getSubName().trim())) {
+                                jComboBoxSubTheme.setSelectedIndex(i);
+                                r = j;
+                            }
+                        }
+                    }
+                    for (int i = 0; i < jComboBoxSubTheme2.getModel().getSize(); i++) {
+                        for (int j = 0; j < vSubT.size(); j++) {
+                            if (j != r && jComboBoxSubTheme.getItemAt(i).toString().trim().equalsIgnoreCase(vSubT.get(j).getSubName().trim())) {
+                                jComboBoxSubTheme2.setSelectedIndex(i);
+                            }
+                        }
+                    }
+
+                    Theme the = theDao.findByIsbn(tfIsbn.getText());
+                    jComboBoxTheme.setSelectedItem(the);
+                    for (int i = 0; i < jComboBoxTheme.getModel().getSize(); i++) {
+                        if (jComboBoxTheme.getItemAt(i).toString().trim().equalsIgnoreCase(the.getTheName().trim())) {
+                            jComboBoxTheme.setSelectedIndex(i);
+                        }
+                    }
+
+                    Editor edi = new Editor();
+                    EditorDAO ediDao = new EditorDAO();
+                    edi = ediDao.find(boo.getEdiId().getEdiId());
+                    for (int i = 0; i < jComboBoxEditor.getModel().getSize(); i++) {
+                        if (jComboBoxEditor.getItemAt(i).toString().equalsIgnoreCase(edi.getEdiName())) {
+                            jComboBoxEditor.setSelectedIndex(i);
+                        }
+                    }
+                    Vat vat = new Vat();
+                    VatDAO vatDao = new VatDAO();
+                    vat = vatDao.find(boo.getVatCode().getVatCode());
+                    for (int i = 0; i < jComboBoxVat.getModel().getSize(); i++) {
+                        if (i == (vat.getVatCode())) {
+                            jComboBoxVat.setSelectedIndex(i);
+                        }
+                    }
+                    StatusDisplay sta = new StatusDisplay();
+                    StatusDisplayDAO staDao = new StatusDisplayDAO();
+                    sta = staDao.find(boo.getBooStatus()); //jComboBoxStatus.setSelectedItem(sta.getStaCode());
+                    for (int i = 0; i <= jComboBoxStatus.getModel().getSize(); i++) {
+                        if (i == (sta.getStaCode())) {
+                            jComboBoxStatus.setSelectedIndex(i);
+                        }
+                    }
+                    BookLanguage booLan = new BookLanguage();
+                    BookLanguageDAO booLanDAO = new BookLanguageDAO();
+                    booLan = booLanDAO.find(boo.getBooLangCode().getBooLangCode());//jComboBoxLanguage.setSelectedItem(booLan.getBooLangCode());
+                    for (int i = 1; i <= jComboBoxLanguage.getModel().getSize(); i++) {
+                        if (i == (booLan.getBooLangCode())) {
+                            jComboBoxLanguage.setSelectedIndex(i);
+                        }
+                    }
+                    Forma form = new Forma();
+                    FormatsDAO formaDao = new FormatsDAO();
+                    form = formaDao.find(boo.getFormat().getForId());
+                    for (int i = 0; i < jComboBoxFormat.getModel().getSize(); i++) {
+                        if (i == (form.getForId())) {
+                            jComboBoxFormat.setSelectedIndex(i - 1);
                         }
                     }
                 }
-                for (int i = 0; i < jComboBoxSubTheme2.getModel().getSize(); i++) {
-                    for (int j = 0; j < vSubT.size(); j++) {
-                        if (j != r && jComboBoxSubTheme.getItemAt(i).toString().trim().equalsIgnoreCase(vSubT.get(j).getSubName().trim())) {
-                            jComboBoxSubTheme2.setSelectedIndex(i);
+            }
+            if (jComboBoxSearch.getSelectedIndex() == 2) {
+
+                Vector<Writing> vWri = new Vector<Writing>();
+              
+                for (Book boo2 : v) {
+                    if (v != null) {
+                        tfTitle.setText(boo2.getBooTitle());
+                        tfSubTitle.setText(boo2.getBooSubtitle());
+                        tfIsbn.setText(boo2.getBooIsbn13());
+                        tfQuantity.setText(String.valueOf(boo2.getBooQuantity()));
+                        tfYearEdition.setText(boo2.getBooPublishYear());
+                        tfPriceHt.setText(String.valueOf(boo2.getBooPriceHT()));
+                        tfNumberOfPages.setText(String.valueOf(boo2.getBooPageNumber()));
+                        taResume.setText(boo2.getBooResume());
+                        tfShowFiles.setText(boo2.getBooFrontCover());
+                        Vector<Author> vAut = autDao.findAuthorByBook(tfIsbn.getText());
+                        int s = 0;
+                        for (int i = 0; i < jComboBoxAuthor.getModel().getSize(); i++) {
+                            for (int j = 0; j < vAut.size(); j++) {
+                                if (jComboBoxAuthor.getItemAt(i).toString().trim().equalsIgnoreCase(vAut.get(j).getAutLastName().trim() + " " + vAut.get(j).getAutFirstName().trim())) {
+
+                                    jComboBoxAuthor.setSelectedIndex(i);
+
+                                    s = j;
+                                }
+
+                            }
                         }
-                    }
-                }
+                        for (int i = 0; i < jComboBoxAuthor2.getModel().getSize(); i++) {
+                            for (int j = 0; j < vAut.size(); j++) {
+                                if (j != s && jComboBoxAuthor2.getItemAt(i).toString().trim().equalsIgnoreCase(vAut.get(j).getAutLastName().trim() + " " + vAut.get(j).getAutFirstName().trim())) {
+                                    jComboBoxAuthor2.setSelectedIndex(i);
+                                }
+                            }
+                        }
 
-                Theme the = theDao.findByIsbn(tfIsbn.getText());
-                jComboBoxTheme.setSelectedItem(the);
-                for (int i = 0; i < jComboBoxTheme.getModel().getSize(); i++) {
-                    if (jComboBoxTheme.getItemAt(i).toString().trim().equalsIgnoreCase(the.getTheName().trim())) {
-                        jComboBoxTheme.setSelectedIndex(i);
-                    }
-                }
+                        Vector<SubTheme> vSubT = subDao.findSubThemeByBook(tfIsbn.getText());
+                        int r = 0;
+                        for (int i = 0; i < jComboBoxSubTheme.getModel().getSize(); i++) {
+                            for (int j = 0; j < vSubT.size(); j++) {
+                                if (jComboBoxSubTheme.getItemAt(i).toString().trim().equalsIgnoreCase(vSubT.get(j).getSubName().trim())) {
+                                    jComboBoxSubTheme.setSelectedIndex(i);
+                                    r = j;
+                                }
+                            }
+                        }
+                        for (int i = 0; i < jComboBoxSubTheme2.getModel().getSize(); i++) {
+                            for (int j = 0; j < vSubT.size(); j++) {
+                                if (j != r && jComboBoxSubTheme.getItemAt(i).toString().trim().equalsIgnoreCase(vSubT.get(j).getSubName().trim())) {
+                                    jComboBoxSubTheme2.setSelectedIndex(i);
+                                }
+                            }
+                        }
 
-                Editor edi = new Editor();
-                EditorDAO ediDao = new EditorDAO();
-                edi = ediDao.find(boo.getEdiId().getEdiId());
-                for (int i = 0; i < jComboBoxEditor.getModel().getSize(); i++) {
-                    if (jComboBoxEditor.getItemAt(i).toString().equalsIgnoreCase(edi.getEdiName())) {
-                        jComboBoxEditor.setSelectedIndex(i);
-                    }
-                }
-                Vat vat = new Vat();
-                VatDAO vatDao = new VatDAO();
-                vat = vatDao.find(boo.getVatCode().getVatCode());
-                for (int i = 0; i < jComboBoxVat.getModel().getSize(); i++) {
-                    if (i == (vat.getVatCode())) {
-                        jComboBoxVat.setSelectedIndex(i);
-                    }
-                }
-                StatusDisplay sta = new StatusDisplay();
-                StatusDisplayDAO staDao = new StatusDisplayDAO();
-                sta = staDao.find(boo.getBooStatus()); //jComboBoxStatus.setSelectedItem(sta.getStaCode());
-                for (int i = 0; i <= jComboBoxStatus.getModel().getSize(); i++) {
-                    if (i == (sta.getStaCode())) {
-                        jComboBoxStatus.setSelectedIndex(i);
-                    }
-                }
-                BookLanguage booLan = new BookLanguage();
-                BookLanguageDAO booLanDAO = new BookLanguageDAO();
-                booLan = booLanDAO.find(boo.getBooLangCode().getBooLangCode());//jComboBoxLanguage.setSelectedItem(booLan.getBooLangCode());
-                for (int i = 1; i <= jComboBoxLanguage.getModel().getSize(); i++) {
-                    if (i == (booLan.getBooLangCode())) {
-                        jComboBoxLanguage.setSelectedIndex(i);
-                    }
-                }
-                Forma form = new Forma();
-                FormatsDAO formaDao = new FormatsDAO();
-                form = formaDao.find(boo.getFormat().getForId());
-                for (int i = 0; i < jComboBoxFormat.getModel().getSize(); i++) {
-                    if (i == (form.getForId())) {
-                        jComboBoxFormat.setSelectedIndex(i - 1);
+                        Theme the = theDao.findByIsbn(tfIsbn.getText());
+                        jComboBoxTheme.setSelectedItem(the);
+                        for (int i = 0; i < jComboBoxTheme.getModel().getSize(); i++) {
+                            if (jComboBoxTheme.getItemAt(i).toString().trim().equalsIgnoreCase(the.getTheName().trim())) {
+                                jComboBoxTheme.setSelectedIndex(i);
+                            }
+                        }
+
+                        Editor edi = new Editor();
+                        EditorDAO ediDao = new EditorDAO();
+                        edi = ediDao.find(boo.getEdiId().getEdiId());
+                        for (int i = 0; i < jComboBoxEditor.getModel().getSize(); i++) {
+                            if (jComboBoxEditor.getItemAt(i).toString().equalsIgnoreCase(edi.getEdiName())) {
+                                jComboBoxEditor.setSelectedIndex(i);
+                            }
+                        }
+                        Vat vat = new Vat();
+                        VatDAO vatDao = new VatDAO();
+                        vat = vatDao.find(boo.getVatCode().getVatCode());
+                        for (int i = 0; i < jComboBoxVat.getModel().getSize(); i++) {
+                            if (i == (vat.getVatCode())) {
+                                jComboBoxVat.setSelectedIndex(i);
+                            }
+                        }
+                        StatusDisplay sta = new StatusDisplay();
+                        StatusDisplayDAO staDao = new StatusDisplayDAO();
+                        sta = staDao.find(boo.getBooStatus()); //jComboBoxStatus.setSelectedItem(sta.getStaCode());
+                        for (int i = 0; i <= jComboBoxStatus.getModel().getSize(); i++) {
+                            if (i == (sta.getStaCode())) {
+                                jComboBoxStatus.setSelectedIndex(i);
+                            }
+                        }
+                        BookLanguage booLan = new BookLanguage();
+                        BookLanguageDAO booLanDAO = new BookLanguageDAO();
+                        booLan = booLanDAO.find(boo.getBooLangCode().getBooLangCode());//jComboBoxLanguage.setSelectedItem(booLan.getBooLangCode());
+                        for (int i = 1; i <= jComboBoxLanguage.getModel().getSize(); i++) {
+                            if (i == (booLan.getBooLangCode())) {
+                                jComboBoxLanguage.setSelectedIndex(i);
+                            }
+                        }
+                        Forma form = new Forma();
+                        FormatsDAO formaDao = new FormatsDAO();
+                        form = formaDao.find(boo.getFormat().getForId());
+                        for (int i = 0; i < jComboBoxFormat.getModel().getSize(); i++) {
+                            if (i == (form.getForId())) {
+                                jComboBoxFormat.setSelectedIndex(i - 1);
+                            }
+                        }
                     }
                 }
             }
 
-        } else {
-            JOptionPane.showMessageDialog(null, "Livre inexistant", "Gestion des livres", JOptionPane.PLAIN_MESSAGE);
         }
+
 
     }//GEN-LAST:event_labelSearchBookMouseReleased
 
     private void jComboBoxAuthor2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxAuthor2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBoxAuthor2ActionPerformed
+
+    private void jButtonAddPictureActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddPictureActionPerformed
+        int returnval = jfc.showOpenDialog(jButtonAddPicture);
+        if (returnval == JFileChooser.APPROVE_OPTION) {
+            //recuperation du chemin
+            tfShowFiles.setText(jfc.getSelectedFile().getAbsolutePath());
+        }
+    }//GEN-LAST:event_jButtonAddPictureActionPerformed
+
+    private void jlSaveMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlSaveMouseClicked
+        /*----------------------------------------------------------------*/
+        /*             recuperation info pour la table BOOK               */
+        /*----------------------------------------------------------------*/
+        Book boo = new Book();
+        boo.setBooIsbn13(tfIsbn.getText());
+        boo.setBooTitle(tfTitle.getText());
+        boo.setBooSubtitle(tfSubTitle.getText());
+        boo.setBooPublishYear(tfYearEdition.getText());
+        Float price = PriceCalculation.roundedPrice(Float.valueOf(tfPriceHt.getText()));
+        boo.setBooPriceHT(price);
+        boo.setBooResume(taResume.getText());
+        boo.setBooQuantity(Integer.valueOf(tfQuantity.getText()));
+        boo.setBooFrontCover(tfShowFiles.getText());
+        boo.setBooPageNumber(Integer.valueOf(tfNumberOfPages.getText()));
+        boo.setBooStatus(jComboBoxStatus.getSelectedIndex());
+        boo.getVatCode().setVatCode(jComboBoxVat.getSelectedIndex());
+        boo.getEdiId().setEdiId(jComboBoxEditor.getSelectedIndex() + 1);
+        boo.getBooLangCode().setBooLangCode(jComboBoxLanguage.getSelectedIndex());
+        boo.getFormat().setForId(jComboBoxFormat.getSelectedIndex() + 1);
+        //creation dans table BOOK
+        BookDAO booDao = new BookDAO();
+        booDao.create(boo);
+
+        /*----------------------------------------------------------------*/
+        /*           recuperation info pour la table Writing              */
+        /*----------------------------------------------------------------*/
+        // pour la JcomboBoxAuthor
+        Writing wri = new Writing();
+        wri.setBooIsbn13(tfIsbn.getText());
+        Author a = new Author();
+        a = (Author) jComboBoxAuthor.getSelectedItem();
+        wri.setAutId(a.getAutId());
+        //creation
+        WritingDAO wriDao = new WritingDAO();
+        wriDao.create(wri);
+
+        // Pour la JcomboboxAuthor2
+        Writing wri2 = new Writing();
+        if (jComboBoxAuthor2 != jComboBoxAuthor2.getModel()) {
+            wri2.setBooIsbn13(tfIsbn.getText());
+            Author a2 = new Author();
+            a2 = (Author) jComboBoxAuthor2.getSelectedItem();
+            wri2.setAutId(a2.getAutId());
+            //creation
+            wriDao.create(wri2);
+        }
+
+
+        /*----------------------------------------------------------------*/
+        /*           recuperation info pour la table Association          */
+        /*----------------------------------------------------------------*/
+        // pour la JcomboBoxSubTheme
+        Association asso = new Association();
+        asso.setBooIsbn13(tfIsbn.getText());
+        SubTheme sb = new SubTheme();
+        sb = (SubTheme) jComboBoxSubTheme.getSelectedItem();
+        asso.setSubId(sb.getSubId());
+        //création
+        AssociationDAO assoDao = new AssociationDAO();
+        assoDao.create(asso);
+
+        //pour la JcomboBoxSubTheme2
+        Association asso2 = new Association();
+        if (jComboBoxSubTheme2 != jComboBoxSubTheme2) {
+            asso2.setBooIsbn13(tfIsbn.getText());
+            SubTheme sb2 = new SubTheme();
+            sb2 = (SubTheme) jComboBoxSubTheme.getSelectedItem();
+            asso.setSubId(sb2.getSubId());
+            //creation
+            assoDao.create(asso2);
+        }
+        JOptionPane jop1 = new JOptionPane();
+        jop1.showMessageDialog(null, "Le livre a été ajouté avec succès.", "Information", JOptionPane.INFORMATION_MESSAGE);
+        nettoyage();
+
+
+    }//GEN-LAST:event_jlSaveMouseClicked
+
+    private void jComboBoxThemeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxThemeActionPerformed
+
+    }//GEN-LAST:event_jComboBoxThemeActionPerformed
+
+    private void jTabbedPane1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTabbedPane1MouseReleased
+     
+    }//GEN-LAST:event_jTabbedPane1MouseReleased
 
     /**
      *
@@ -1053,6 +1314,7 @@ public class JFBook2 extends javax.swing.JFrame {
     private javax.swing.JComboBox jComboBoxVat;
     private javax.swing.JInternalFrame jInternalFrame1;
     private javax.swing.JLabel jLCreateNew;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -1088,7 +1350,7 @@ public class JFBook2 extends javax.swing.JFrame {
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTableResultatRecherche;
-    private javax.swing.JLabel labelSave;
+    private javax.swing.JLabel jlSave;
     private javax.swing.JLabel labelSearchBook;
     private javax.swing.JTextArea taResume;
     private javax.swing.JTextField tfIsbn;
@@ -1096,6 +1358,7 @@ public class JFBook2 extends javax.swing.JFrame {
     private javax.swing.JTextField tfPriceHt;
     private javax.swing.JTextField tfQuantity;
     private javax.swing.JTextField tfSearch;
+    private javax.swing.JTextField tfShowFiles;
     private javax.swing.JTextField tfSubTitle;
     private javax.swing.JTextField tfTitle;
     private javax.swing.JTextField tfYearEdition;

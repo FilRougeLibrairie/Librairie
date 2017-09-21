@@ -9,16 +9,25 @@ import ClassObjet.AccessProfile;
 import ClassObjet.Employee;
 import Names.SQLNames;
 import SQLS.EmployeeDAO;
+import exceptions.CryptoException;
+import exceptions.MissingInformationException;
 import java.awt.Color;
+import java.awt.Component;
+import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Properties;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JPanel;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import utils.Awt1;
+import utils.Crypto;
 import utils.DateLabelFormatter;
 
 public class JFEmployee extends javax.swing.JFrame implements SQLNames {
@@ -61,10 +70,13 @@ public class JFEmployee extends javax.swing.JFrame implements SQLNames {
 
     private enum Profile {
 
+        NO_ACCESS("Aucun Accès"),
         ADMINISTRATOR("Administrateur"),
         EDITOR("Editeur"),
+        CUSTOMER("Client"),
         MODERATOR("Moderateur"),
-        CUSTOMER("Client");
+        ACCESS_DENIED("Accès refusé");
+
         private final String databaseName;
 
         private Profile(String databaseName) {
@@ -102,6 +114,9 @@ public class JFEmployee extends javax.swing.JFrame implements SQLNames {
         comboSearch.setSelectedIndex(0);
         comboStatus.setModel(initComboStatusModel());
         comboProfil.setModel(initComboProfilModel());
+        labelErrorMessage.setVisible(false);
+        labelPreviousPassword.setVisible(false);
+        tfPreviousPassword.setVisible(false);
 
     }
 
@@ -143,15 +158,14 @@ public class JFEmployee extends javax.swing.JFrame implements SQLNames {
     private DefaultTableModel initTableEmployeeModel() {
 
         Vector v = new Vector();
+       
         v.add("Nom");
         v.add("Prénom");
+        v.add("Login");
         v.add("Statut");
         v.add("Profil");
         v.add("Date d'entrée");
-//        if (tfEndDate.getText() != null || !tfEndDate.getText().equals("")) {
-//            v.add("Date de sortie"); 
-//        } else {
-//        }
+        v.add("Date de sortie");
 
         return new javax.swing.table.DefaultTableModel(employeeTableList, v) {
         };
@@ -161,18 +175,26 @@ public class JFEmployee extends javax.swing.JFrame implements SQLNames {
         if (comboSearch.getSelectedItem() != null) {
             String criteria = comboSearch.getSelectedItem().toString();
             String term = tfSearch.getText().trim();
+            
             int statusIndex;
             employeeList = new Vector<Employee>();
             EmployeeDAO employeeDAO = new EmployeeDAO();
-
+            
             if (criteria.equalsIgnoreCase(SearchCriteria.STATUS.getDatabaseName())) {
                 employeeList = employeeDAO.findAll();
                 statusIndex = comboStatus.getSelectedIndex();
                 employeeList = employeeDAO.findByColumn(criteria, statusIndex);
-            } else if (criteria.equalsIgnoreCase((SearchCriteria.PROFIL.getDatabaseName()))) {
+                
+//                 } else if (criteria.equalsIgnoreCase((SearchCriteria.PROFIL.getDatabaseName()))) {
+//               employeeList = employeeDAO.findAll();
+//               statusIndex = comboProfil.getSelectedIndex();
+//               employeeList = employeeDAO.findByColumn(criteria, statusIndex);
+              
+                         } else if (criteria.equalsIgnoreCase((SearchCriteria.PROFIL.getDatabaseName()))) {
                 criteria = EmployeeNames.ACCESS_PROFILE;
-                term = comboProfil.getSelectedItem().toString().substring(1, 2).trim();
+                term = comboProfil.getSelectedItem().toString().trim();
                 employeeList = employeeDAO.findByColumn(criteria, term);
+         
             } else if (term != null && !term.isEmpty()) {
             }
             if (criteria.equalsIgnoreCase(SearchCriteria.LAST_NAME.getDatabaseName())) {
@@ -208,12 +230,17 @@ public class JFEmployee extends javax.swing.JFrame implements SQLNames {
         comboStatus.setSelectedIndex(index);
 
         int access = emp.getAccProfileCode().getAccProfileCode();
-        int indexProfile = Profile.CUSTOMER.ordinal();
+        int indexProfile = Profile.NO_ACCESS.ordinal();
+        Boolean isNoAccess = (access == Profile.NO_ACCESS.ordinal());
         Boolean isAdministrator = (access == Profile.ADMINISTRATOR.ordinal());
         Boolean isCustomer = (access == Profile.CUSTOMER.ordinal());
         Boolean isEditor = (access == Profile.EDITOR.ordinal());
         Boolean isModerator = (access == Profile.MODERATOR.ordinal());
+        Boolean isAccessDenied = (access == Profile.ACCESS_DENIED.ordinal());
 
+        if (isNoAccess) {
+            indexProfile = Profile.NO_ACCESS.ordinal();
+        }
         if (isAdministrator) {
             indexProfile = Profile.ADMINISTRATOR.ordinal();
         }
@@ -225,8 +252,11 @@ public class JFEmployee extends javax.swing.JFrame implements SQLNames {
         }
         if (isModerator) {
             indexProfile = Profile.MODERATOR.ordinal();
-
         }
+        if (isAccessDenied) {
+            indexProfile = Profile.ACCESS_DENIED.ordinal();
+        }
+
         comboProfil.setSelectedIndex(indexProfile);
 
         tfLastName.setText(emp.getEmpLastName());
@@ -236,18 +266,91 @@ public class JFEmployee extends javax.swing.JFrame implements SQLNames {
         tfComment.setText(emp.getEmpComment());
 
         DateFormat dfStart = new SimpleDateFormat("yyyy-MM-dd");
-        DateFormat dfEnd = new SimpleDateFormat("yyyy-MM-dd");
         java.sql.Date sqlStartD = new java.sql.Date(emp.getEmpDateStart().getTime());
-        java.sql.Date sqlEndD = new java.sql.Date(emp.getEmpDateEnd().getTime());
         String startDate = dfStart.format(sqlStartD);
-        String endDate = dfEnd.format(sqlEndD);
-
         tfStartDate.setText(startDate);
-        tfEndDate.setText(endDate);
+
+        DateFormat dfEnd = new SimpleDateFormat("yyyy-MM-dd");
+
+        if (emp.getEmpDateEnd() != null) {
+            java.sql.Date sqlEndD = new java.sql.Date(emp.getEmpDateEnd().getTime());
+            String endDate = dfEnd.format(sqlEndD);
+            tfEndDate.setText(endDate);
+        } else {
+            tfEndDate.setText("");
+        }
+
     }
 
-    private void SaveEmployee() {
+    private void SaveEmployee() throws MissingInformationException, NoSuchAlgorithmException, CryptoException {
 
+        Employee emp;
+        if (currentEmployee == null) {
+            emp = new Employee();
+        } else {
+            emp = currentEmployee;
+        }
+
+        emp.setEmpLastName(tfLastName.getText().trim());
+        emp.setEmpFirstName(tfFirstName.getText().trim());
+        emp.setEmpLogin(tfLogin.getText().trim());
+        emp.setEmpPassword(tfPassword.getText().trim());
+        emp.setEmpComment(tfComment.getText().trim());
+        emp.setEmpStatus(comboStatus.getSelectedIndex());
+        emp.getAccProfileCode().setAccProfileCode(comboProfil.getSelectedIndex());
+
+        if (tfStartDate.getText() != null) {
+            emp.setEmpDateStart(tfStartDate.getText().trim());
+        }
+        if (tfEndDate.getText() != null) {
+            emp.setEmpDateStart(tfEndDate.getText().trim());
+        }
+        if (currentEmployee == null && tfPassword.getPassword().length == 0) {
+            throw new MissingInformationException(ErrorMessages.IS_EMPTY);
+        } else if (tfPassword.getPassword().length > 0) {
+            labelPreviousPassword.setVisible(true);
+            tfPreviousPassword.setVisible(true);
+            String str = new String(tfPassword.getPassword());
+            String[] password = Crypto.createPassword(new String(tfPassword.getPassword()));
+            emp.setEmpPassword(password[0]);
+            emp.setEmpSalt(password[1]);
+        } else {
+            System.out.println("Les informations employé sont enregistrées");
+        }
+
+        if (tfPassword.getPassword().toString().isEmpty()) {
+            manageInputError(true, "tfPassword", "btnSaveEmployee", ErrorMessages.EMPTY_PASSWORD);
+        } else {
+            manageInputError(false, "tfPassword", "btnSaveEmployee", ErrorMessages.EMPTY_PASSWORD);
+        }
+
+        EmployeeDAO employeeDAO = new EmployeeDAO();
+        if (currentEmployee == null) {
+            employeeDAO.create(emp);
+        } else {
+            employeeDAO.update(emp);
+        }
+//        clearFields();
+        employeeDAO.findAll();
+        clearTableModel(employeeTableList);
+
+    }
+
+    private void manageInputError(Boolean ErrorState, String component, String btnToDisable, String errorMessage) {
+        Component btn = Awt1.getComponentByName(this, btnToDisable);
+        Component tf = Awt1.getComponentByName(this, component);
+
+        if (ErrorState) {
+            labelErrorMessage.setText(errorMessage);
+            labelErrorMessage.setVisible(true);
+            btn.setVisible(false);
+            tf.setBackground(new Color(255, 0, 0, 15));
+        } else {
+            labelErrorMessage.setText("");
+            labelErrorMessage.setVisible(false);
+            btn.setVisible(true);
+            tf.setBackground(Color.WHITE);
+        }
     }
 
     public void clearFields() {
@@ -261,20 +364,30 @@ public class JFEmployee extends javax.swing.JFrame implements SQLNames {
         int index1 = Status.ACTIVE.ordinal();
         comboStatus.setSelectedIndex(index1);
 
-        int index2 = Profile.CUSTOMER.ordinal();
+        int index2 = Profile.NO_ACCESS.ordinal();
         comboProfil.setSelectedIndex(index2);
 
         tfStartDate.setText("");
         tfEndDate.setText("");
+    }
 
+    private void clearTableModel(Vector<JTable> jtableList) {
+        DefaultTableModel tabModel;
+        for (JTable table : jtableList) {
+            tabModel = ((DefaultTableModel) table.getModel());
+            int lignes = tabModel.getRowCount();
+            for (int i = lignes - 1; i >= 0; i--) {
+                tabModel.removeRow(i);
+            }
+        }
     }
 
     void setColor(JPanel panel) {
-        panel.setBackground(new Color(0,51,153));
+        panel.setBackground(new Color(0, 51, 153));
     }
 
     void resetColor(JPanel panel) {
-        panel.setBackground(new Color(51,102,255));
+        panel.setBackground(new Color(51, 102, 255));
     }
 
     @SuppressWarnings("unchecked")
@@ -318,6 +431,9 @@ public class JFEmployee extends javax.swing.JFrame implements SQLNames {
         tfSearch = new javax.swing.JTextField();
         spEmployee = new javax.swing.JScrollPane();
         tableEmployee2 = new javax.swing.JTable();
+        labelErrorMessage = new javax.swing.JLabel();
+        labelPreviousPassword = new javax.swing.JLabel();
+        tfPreviousPassword = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -326,7 +442,7 @@ public class JFEmployee extends javax.swing.JFrame implements SQLNames {
 
         labelStatut.setText("Statut :");
 
-        comboProfil.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Administrateur", "Editeur", "Moderateur", "Commercial" }));
+        comboProfil.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Aucun Accès", "Administrateur", "Editeur", "Client", "Moderateur", "Accès refusé" }));
 
         labelLastName.setText("Nom :");
 
@@ -358,6 +474,9 @@ public class JFEmployee extends javax.swing.JFrame implements SQLNames {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnSaveEmployeeMouseClicked(evt);
             }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                btnSaveEmployeeMouseReleased(evt);
+            }
         });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -375,31 +494,31 @@ public class JFEmployee extends javax.swing.JFrame implements SQLNames {
 
         tableEmployee.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Nom", "Prénom", "Satut", "Profil", "Date d'entrée"
+                "Nom", "Prénom", "Login", "Satut", "Profil", "Date d'entrée", "date de sortie"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -425,6 +544,19 @@ public class JFEmployee extends javax.swing.JFrame implements SQLNames {
 
         btnVisualizeEmployee.setForeground(new java.awt.Color(255, 255, 255));
         btnVisualizeEmployee.setText("            Visualiser");
+        btnVisualizeEmployee.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                btnVisualizeEmployeeMouseMoved(evt);
+            }
+        });
+        btnVisualizeEmployee.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnVisualizeEmployeeMouseClicked(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                btnVisualizeEmployeeMouseReleased(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -575,59 +707,78 @@ public class JFEmployee extends javax.swing.JFrame implements SQLNames {
                 .addGap(47, 47, 47))
         );
 
+        labelErrorMessage.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
+        labelErrorMessage.setForeground(new java.awt.Color(255, 0, 0));
+        labelErrorMessage.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelErrorMessage.setText("ERROR MESSAGE");
+
+        labelPreviousPassword.setText("ancien mot de passe :");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane2)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jInternalFrame1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jInternalFrame1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
+                                .addGap(0, 0, Short.MAX_VALUE)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(labelPassword, javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(labelLogin)
-                                                .addComponent(labelFirstName))
-                                            .addGap(30, 30, 30)))
-                                    .addComponent(labelComment)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(labelLogin)
+                                            .addComponent(labelFirstName))
+                                        .addGap(84, 84, 84))
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addGap(3, 3, 3)
-                                        .addComponent(labelLastName)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(tfPassword)
-                                    .addComponent(tfLogin, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(tfFirstName, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(spComment, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(tfLastName, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(49, 49, 49)
+                                        .addComponent(labelLastName)
+                                        .addGap(54, 54, 54))))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(labelProfil)
-                                            .addComponent(labelStatut))
-                                        .addGap(75, 75, 75)
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(comboStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(comboProfil, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(labelStartDate)
-                                            .addComponent(labelEndDate))
-                                        .addGap(29, 29, 29)
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(tfEndDate)
-                                            .addComponent(tfStartDate, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))))))))
-                .addGap(42, 42, 42))
+                                    .addComponent(labelPreviousPassword)
+                                    .addComponent(labelPassword))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(tfPassword)
+                            .addComponent(tfLogin, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(tfFirstName, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(tfLastName, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                            .addComponent(tfPreviousPassword, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(labelErrorMessage, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(49, 49, 49)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(labelProfil)
+                                    .addComponent(labelStatut))
+                                .addGap(75, 75, 75)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(comboStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(comboProfil, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(labelStartDate)
+                                    .addComponent(labelEndDate)
+                                    .addComponent(labelComment))
+                                .addGap(29, 29, 29)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(tfEndDate)
+                                    .addComponent(tfStartDate, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(spComment, javax.swing.GroupLayout.Alignment.TRAILING))))
+                        .addGap(42, 42, 42))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jScrollPane2)
+                        .addContainerGap())))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(29, 29, 29))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -651,11 +802,7 @@ public class JFEmployee extends javax.swing.JFrame implements SQLNames {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(tfPassword)
-                                    .addComponent(labelPassword))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(labelComment)
-                                    .addComponent(spComment)))
+                                    .addComponent(labelPassword)))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -676,14 +823,30 @@ public class JFEmployee extends javax.swing.JFrame implements SQLNames {
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(tfEndDate)
                                     .addComponent(labelEndDate))
-                                .addGap(52, 52, 52)
-                                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addComponent(jInternalFrame1, javax.swing.GroupLayout.DEFAULT_SIZE, 233, Short.MAX_VALUE))
-                .addGap(47, 47, 47)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(8, 8, 8)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(labelPreviousPassword)
+                                    .addComponent(tfPreviousPassword))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(labelErrorMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(4, 4, 4)
+                                .addComponent(labelComment)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(spComment, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jInternalFrame1, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(51, 51, 51))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(122, 122, 122))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -742,34 +905,64 @@ public class JFEmployee extends javax.swing.JFrame implements SQLNames {
     }//GEN-LAST:event_tableEmployeeMousePressed
 
     private void btnCreateNewMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCreateNewMouseMoved
-         setColor(jPanel3);
+        setColor(jPanel3);
         resetColor(jPanel4);
         resetColor(jPanel6);
+        resetColor(jPanel5);
     }//GEN-LAST:event_btnCreateNewMouseMoved
 
     private void btnSearchMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSearchMouseMoved
-          setColor(jPanel6);
+        setColor(jPanel6);
         resetColor(jPanel3);
         resetColor(jPanel4);
+        resetColor(jPanel5);
     }//GEN-LAST:event_btnSearchMouseMoved
 
     private void btnSaveEmployeeMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSaveEmployeeMouseMoved
-           setColor(jPanel4);
+        setColor(jPanel4);
         resetColor(jPanel3);
         resetColor(jPanel6);
+        resetColor(jPanel5);
     }//GEN-LAST:event_btnSaveEmployeeMouseMoved
 
     private void btnCreateNewMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCreateNewMouseClicked
-      resetColor(jPanel3);
+        resetColor(jPanel3);
     }//GEN-LAST:event_btnCreateNewMouseClicked
 
     private void btnSearchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSearchMouseClicked
-       resetColor(jPanel6);
+        resetColor(jPanel6);
     }//GEN-LAST:event_btnSearchMouseClicked
 
     private void btnSaveEmployeeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSaveEmployeeMouseClicked
-       resetColor(jPanel4);
+        resetColor(jPanel4);
     }//GEN-LAST:event_btnSaveEmployeeMouseClicked
+
+    private void btnVisualizeEmployeeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnVisualizeEmployeeMouseClicked
+        resetColor(jPanel5);
+    }//GEN-LAST:event_btnVisualizeEmployeeMouseClicked
+
+    private void btnVisualizeEmployeeMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnVisualizeEmployeeMouseMoved
+        setColor(jPanel5);
+        resetColor(jPanel4);
+        resetColor(jPanel3);
+        resetColor(jPanel6);
+    }//GEN-LAST:event_btnVisualizeEmployeeMouseMoved
+
+    private void btnVisualizeEmployeeMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnVisualizeEmployeeMouseReleased
+
+    }//GEN-LAST:event_btnVisualizeEmployeeMouseReleased
+
+    private void btnSaveEmployeeMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSaveEmployeeMouseReleased
+        try {
+            SaveEmployee();
+        } catch (MissingInformationException ex) {
+//            Logger.getLogger(JFEmployee.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoSuchAlgorithmException ex) {
+//            Logger.getLogger(JFEmployee.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (CryptoException ex) {
+//            Logger.getLogger(JFEmployee.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnSaveEmployeeMouseReleased
 
     /**
      * @param args the command line arguments
@@ -785,16 +978,21 @@ public class JFEmployee extends javax.swing.JFrame implements SQLNames {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(JFEmployee.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JFEmployee.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(JFEmployee.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JFEmployee.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(JFEmployee.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JFEmployee.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(JFEmployee.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JFEmployee.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
@@ -825,10 +1023,12 @@ public class JFEmployee extends javax.swing.JFrame implements SQLNames {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel labelComment;
     private javax.swing.JLabel labelEndDate;
+    private javax.swing.JLabel labelErrorMessage;
     private javax.swing.JLabel labelFirstName;
     private javax.swing.JLabel labelLastName;
     private javax.swing.JLabel labelLogin;
     private javax.swing.JLabel labelPassword;
+    private javax.swing.JLabel labelPreviousPassword;
     private javax.swing.JLabel labelProfil;
     private javax.swing.JLabel labelSearch;
     private javax.swing.JLabel labelStartDate;
@@ -843,6 +1043,7 @@ public class JFEmployee extends javax.swing.JFrame implements SQLNames {
     private javax.swing.JTextField tfLastName;
     private javax.swing.JTextField tfLogin;
     private javax.swing.JPasswordField tfPassword;
+    private javax.swing.JPasswordField tfPreviousPassword;
     private javax.swing.JTextField tfSearch;
     private javax.swing.JTextField tfStartDate;
     // End of variables declaration//GEN-END:variables

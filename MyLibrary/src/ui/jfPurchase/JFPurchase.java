@@ -1783,7 +1783,7 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
                         System.out.println(tableOrderLine.getValueAt(ligne, column).toString().trim());
 
                         /////
-                        
+                        ((DefaultTableModel)tableOrderLine.getModel()).fireTableDataChanged();
                         ////
                     }
                 }

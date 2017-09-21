@@ -36,6 +36,10 @@ public class Book {
 
     //constructor
     public Book() {
+        vatCode = new Vat();
+        ediId = new Editor();
+        booLangCode = new BookLanguage ();
+        format = new Forma();
     }
 
     //Setters
