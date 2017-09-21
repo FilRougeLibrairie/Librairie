@@ -20,8 +20,8 @@ public class Crypto {
 
     private final static String HASH_ALGORITHM = "SHA-512";
 
-    public static String hashPassword(String salt, String password) throws NoSuchAlgorithmException, CryptoException {
-        String userPassword = new String(password);
+    public static String verifyPassword(String salt, String hashedPassword) throws NoSuchAlgorithmException, CryptoException {
+        String userPassword = new String(hashedPassword);
         String userSalt;
 
         if (salt == null) {
@@ -51,7 +51,7 @@ public class Crypto {
      */
     public static String[] createPassword(String password) throws NoSuchAlgorithmException, CryptoException {
         String salt = generateSalt();
-        String hash = hashPassword(salt, password);
+        String hash = verifyPassword(salt, password);
         return new String[]{hash, salt};
     }
 

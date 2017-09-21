@@ -21,6 +21,7 @@ import java.awt.Component;
 import java.awt.event.KeyEvent;
 import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Properties;
@@ -197,17 +198,30 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
 
         datePicker.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                datePickerActionPerformed(evt);
+                try {
+                    datePickerActionPerformed(evt);
+                } catch (ParseException ex) {
+                    Logger.getLogger(JFCustomer.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
 
     }
 
-    private void datePickerActionPerformed(java.awt.event.ActionEvent evt) {
+    private void datePickerActionPerformed(java.awt.event.ActionEvent evt) throws ParseException {
 
         Date selectedDate = (Date) datePicker.getModel().getValue();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         String date = df.format(selectedDate);
+
+        String mydate = "2016-05-19";
+        String[] strDateTab = mydate.split("-");
+        int[] intDatetab = new int[3];
+        for (int i = 0; i < strDateTab.length; i++) {
+            intDatetab[i] = Integer.valueOf(strDateTab[i]);
+        }
+
+        datePicker.getModel().setDate(intDatetab[0], intDatetab[1], intDatetab[2]);
 
         System.out.println(date);
 
@@ -2209,7 +2223,7 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
     }//GEN-LAST:event_btnViewPurchaseKeyReleased
 
     private void btnViewPurchaseMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnViewPurchaseMouseReleased
-        
+
         JFPurchase jfPur = new JFPurchase();
         jfPur.setVisible(true);
     }//GEN-LAST:event_btnViewPurchaseMouseReleased
