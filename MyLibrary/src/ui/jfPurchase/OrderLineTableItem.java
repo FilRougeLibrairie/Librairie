@@ -1,6 +1,8 @@
 package ui.jfPurchase;
 
+import ClassObjet.Offer;
 import ClassObjet.OrderLine;
+import SQLS.OfferDAO;
 import java.util.Vector;
 import utils.PriceCalculation;
 
@@ -8,18 +10,18 @@ import utils.PriceCalculation;
  *
  * @author ggarvanese
  */
-
-
 public class OrderLineTableItem {
-    
+
     private OrderLine orderLine;
     private String isbn;
     private String bookTitle;
     private int quantity;
+    private int stock;
     private float totalPriceHT;
     private float unitPriceHT;
+    private float discount;
     private float vat;
-    private float priceTTC;
+    private float totalPriceTTC;
     private int orderLineId;
 
     public OrderLineTableItem(OrderLine orderLine) {
@@ -28,23 +30,49 @@ public class OrderLineTableItem {
         this.isbn = orderLine.getBooIsbn13().getBooIsbn13();
         this.bookTitle = orderLine.getBooIsbn13().getBooTitle();
         this.quantity = orderLine.getOrdLineQuantity();
-        this.unitPriceHT = PriceCalculation.roundedPrice(orderLine.getOrdBookPriceHT());
-        this.totalPriceHT = this.unitPriceHT * quantity;
+        this.stock = orderLine.getBooIsbn13().getBooQuantity();
+        if (orderLine.getBooIsbn13().getCurrentOffer() != null) {
+            this.discount = orderLine.getBooIsbn13().getCurrentOffer().getOffDiscount();
+//              this.discount = 50;
+        } else {
+            this.discount = 0;
+        }
+        this.unitPriceHT = orderLine.getOrdBookPriceHT();
+        
+        Float unitPriceAfterDiscount = PriceCalculation.calculateDiscount(this.unitPriceHT, this.discount);
+        this.totalPriceHT = PriceCalculation.getRoundedPrice(unitPriceAfterDiscount * quantity);
         this.vat = orderLine.getOrdBookVAT();
-        this.priceTTC = PriceCalculation.roundedPrice(PriceCalculation.calculatePriceTTC(unitPriceHT, vat) * quantity);
+        this.totalPriceTTC = PriceCalculation.getRoundedPrice(PriceCalculation.calculatePriceTTC(unitPriceAfterDiscount, vat) * quantity);
     }
 
-    
-       public Vector getVector() {
+    public Vector getVector() {
         Vector v = new Vector();
         v.add(this);
         v.add(bookTitle);
+        v.add(stock);
         v.add(quantity);
         v.add(unitPriceHT);
+        v.add(discount);
         v.add(vat);
         v.add(totalPriceHT);
-        v.add(priceTTC);
+        v.add(totalPriceTTC);
         return v;
+    }
+
+    public int getStock() {
+        return stock;
+    }
+
+    public void setStock(int stock) {
+        this.stock = stock;
+    }
+
+    public float getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(float discount) {
+        this.discount = discount;
     }
 
     public OrderLine getOrderLine() {
@@ -54,8 +82,7 @@ public class OrderLineTableItem {
     public void setOrderLine(OrderLine orderLine) {
         this.orderLine = orderLine;
     }
-    
-    
+
     public float getTotalPriceHT() {
         return totalPriceHT;
     }
@@ -121,16 +148,16 @@ public class OrderLineTableItem {
     }
 
     public float getPriceTTC() {
-        return priceTTC;
+        return totalPriceTTC;
     }
 
     public void setPriceTTC(float priceTTC) {
-        this.priceTTC = priceTTC;
+        this.totalPriceTTC = priceTTC;
     }
 
     @Override
     public String toString() {
         return isbn;
     }
-    
+
 }

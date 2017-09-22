@@ -120,7 +120,6 @@ public class EditorDAO extends DAO {
 
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            ex.printStackTrace();
         }
         return editorList;
     }
@@ -140,6 +139,7 @@ public class EditorDAO extends DAO {
             if (rs.isBeforeFirst()) {
 
                 while (rs.next()) {
+                    editor = new Editor();
                     editor.setEdiId(rs.getInt(ID));
                     editor.setEdiName(rs.getString(NAME));
                     editor.setEdiPresentation(rs.getString(PRESENTATION));
@@ -150,7 +150,6 @@ public class EditorDAO extends DAO {
             }
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            ex.printStackTrace();
         }
         return editor;
     }
@@ -236,10 +235,10 @@ public class EditorDAO extends DAO {
     public Editor find(int id) {
        Editor editor = null;
         StringBuffer query = new StringBuffer();
-        query.append("SELECT * FROM " + TABLE + " WHERE ")
+        query.append("SELECT * FORM " + TABLE + " WHERE ")
                 .append(ID)
                 .append(" = ")
-                .append("'" + id + "'");
+                .append(id);
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
 
@@ -257,15 +256,13 @@ public class EditorDAO extends DAO {
             } else {
                 throw new SQLException("ResultSet was empty");
             }
-
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            
-
+            ex.printStackTrace();
         }
         return editor;
-    } 
-
+    }
+	
     @Override
     public Object find(String name) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

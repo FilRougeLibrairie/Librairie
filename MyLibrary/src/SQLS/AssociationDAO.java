@@ -2,7 +2,7 @@
 package SQLS;
 
 import ClassObjet.ClassAssoc.Association;
-import ClassObjet.ClassAssoc.Writing;
+import ClassObjet.ClassAssoc.Having;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Vector;
