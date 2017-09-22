@@ -547,7 +547,7 @@ public class JFBook2 extends javax.swing.JFrame {
             .addGroup(jInternalFrame1Layout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addComponent(jLabel19)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(69, Short.MAX_VALUE))
         );
         jInternalFrame1Layout.setVerticalGroup(
             jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -852,7 +852,7 @@ public class JFBook2 extends javax.swing.JFrame {
 
                     for (int j = 0; j < vSubT.size(); j++) {
                         if (jComboBoxSubTheme.getItemAt(i).toString().trim().equalsIgnoreCase(vSubT.get(j).getSubName().trim())) {
-                            jComboBoxSubTheme.setSelectedIndex(i + 1);
+                            jComboBoxSubTheme.setSelectedIndex(i);
                             r = j;
                         }
                     }
@@ -860,7 +860,7 @@ public class JFBook2 extends javax.swing.JFrame {
                 for (int i = 0; i < jComboBoxSubTheme2.getModel().getSize(); i++) {
                     for (int j = 0; j < vSubT.size(); j++) {
                         if (j != r && jComboBoxSubTheme.getItemAt(i).toString().trim().equalsIgnoreCase(vSubT.get(j).getSubName().trim())) {
-                            jComboBoxSubTheme2.setSelectedIndex(i + 1);
+                            jComboBoxSubTheme2.setSelectedIndex(i);
                         }
                     }
                 }
@@ -1188,40 +1188,36 @@ public class JFBook2 extends javax.swing.JFrame {
         wriDao.create(wri);
 
         // Pour la JcomboboxAuthor2
-        Writing wri2 = new Writing();
-        if (jComboBoxAuthor2 != jComboBoxAuthor2.getModel()) {
-            wri2.setBooIsbn13(tfIsbn.getText());
-            Author a2 = new Author();
-            a2 = (Author) jComboBoxAuthor2.getSelectedItem();
-            wri2.setAutId(a2.getAutId());
-            //creation
-            wriDao.create(wri2);
-        }
+//        Writing wri2 = new Writing();
+//        if (jComboBoxAuthor2 != jComboBoxAuthor2.getModel()) {
+//            wri2.setBooIsbn13(tfIsbn.getText());
+//            Author a2 = new Author();
+//            a2 = (Author) jComboBoxAuthor2.getSelectedItem();
+//            wri2.setAutId(a2.getAutId());
+//            //creation
+//            wriDao.create(wri2);
+//        }
 
-
+        
         /*----------------------------------------------------------------*/
         /*           recuperation info pour la table Association          */
         /*----------------------------------------------------------------*/
         // pour la JcomboBoxSubTheme
         Association asso = new Association();
         asso.setBooIsbn13(tfIsbn.getText());
-        SubTheme sb = new SubTheme();
-        sb = (SubTheme) jComboBoxSubTheme.getSelectedItem();
-        asso.setSubId(sb.getSubId());
+        System.out.println("jcombo subtheme index = " + jComboBoxSubTheme.getSelectedIndex());
+        asso.setSubId(jComboBoxSubTheme.getSelectedIndex()+1);
         //création
         AssociationDAO assoDao = new AssociationDAO();
         assoDao.create(asso);
 
         //pour la JcomboBoxSubTheme2
-        Association asso2 = new Association();
-        if (jComboBoxSubTheme2 != jComboBoxSubTheme2) {
-            asso2.setBooIsbn13(tfIsbn.getText());
-            SubTheme sb2 = new SubTheme();
-            sb2 = (SubTheme) jComboBoxSubTheme.getSelectedItem();
-            asso.setSubId(sb2.getSubId());
-            //creation
-            assoDao.create(asso2);
-        }
+//        if (jComboBoxSubTheme2 != null) {
+//            asso.setBooIsbn13(tfIsbn.getText());
+//            asso.setSubId(jComboBoxSubTheme2.getSelectedIndex());
+//            //creation
+//            assoDao.create(asso);
+//        }
         JOptionPane jop1 = new JOptionPane();
         jop1.showMessageDialog(null, "Le livre a été ajouté avec succès.", "Information", JOptionPane.INFORMATION_MESSAGE);
         nettoyage();

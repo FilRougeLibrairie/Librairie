@@ -1,98 +1,73 @@
-
 package PanelACreer;
 
 import ClassObjet.Review;
-import Names.SQLNames;
+import SQLS.ReviewDAO;
 import java.util.Vector;
-import javax.swing.DefaultComboBoxModel;
 
-public class JFReview extends javax.swing.JFrame implements SQLNames {
+public class JFReview extends javax.swing.JFrame {
 
     
-    Vector comboSearchModel;
-    Review currentReview;
+    
+    Review review = new Review();
+    ReviewDAO reviewDAO = new ReviewDAO();
+    String term = null;
+    String column = null;
+    Vector reviewTableItem ;
+    Vector<Review> reviewList;
+    
     public JFReview() {
         initComponents();
-        comboSearch.setModel(initComboSearchModel());
-    }
-
-   
-    private DefaultComboBoxModel initComboSearchModel() {
-        DefaultComboBoxModel model;
-        comboSearchModel = new Vector<String>();
-        model = new DefaultComboBoxModel(comboSearchModel);
-        for (SearchCriteria comboItem : SearchCriteria.values()) {
-            comboSearchModel.add(comboItem.getDatabaseName());
-        }
-        return model;
     }
     
     
-    private enum SearchCriteria {
-
-        CLIENT("Client"),
-        BOOK("Livre"),
-        DATE("Date");
-        
-        
-        private final String databaseName;
-
-        private SearchCriteria(String databaseName) {
-            this.databaseName = databaseName;
-        }
-
-        public String getDatabaseName() {
-            return databaseName;
-        }
-    }
     
-    private void searchForCustomer() {
+    
+    
+    private void search() {
+
         if (comboSearch.getSelectedItem() != null) {
-            String criteria = comboSearch.getSelectedItem().toString();
-            String term = tfSearch.getText().trim();
-            int statusIndex;
-            customerList = new Vector<Customer>();
-            CustomerDAO customerDAO = new CustomerDAO();
 
-            if (criteria.equalsIgnoreCase(SearchCriteria.TOUS_LES_CLIENTS.getDatabaseName())) {
-                customerList = customerDAO.findAll();
-            } else if (criteria.equalsIgnoreCase(SearchCriteria.STATUS.getDatabaseName())) {
-                criteria = CustomerNames.STATUS;
-                statusIndex = comboStatus.getSelectedIndex();
-                customerList = customerDAO.findByColumn(criteria, statusIndex);
-            } else if (criteria.equalsIgnoreCase(SearchCriteria.GENDER.getDatabaseName())) {
-                criteria = CustomerNames.GENDER;
-                term = comboGender.getSelectedItem().toString().substring(0, 1).trim();
-                customerList = customerDAO.findByColumn(criteria, term);
-            } else if (term != null && !term.isEmpty()) {
-                if (criteria.equalsIgnoreCase(SearchCriteria.NOM.getDatabaseName())) {
-                    criteria = CustomerNames.LAST_NAME;
-                } else if (criteria.equalsIgnoreCase(SearchCriteria.PRENOM.getDatabaseName())) {
-                    criteria = CustomerNames.FIRST_NAME;
-                } else if (criteria.equalsIgnoreCase(SearchCriteria.SOCIETE.getDatabaseName())) {
-                    criteria = CustomerNames.COMPANY;
-                } else if (criteria.equalsIgnoreCase(SearchCriteria.EMAIL.getDatabaseName())) {
-                    criteria = CustomerNames.EMAIL;
-                } else if (criteria.equalsIgnoreCase(SearchCriteria.TELEPHONE.getDatabaseName())) {
-                    criteria = CustomerNames.PHONE;
-                } else if (criteria.equalsIgnoreCase(SearchCriteria.IP.getDatabaseName())) {
-                    criteria = CustomerNames.IP;
-                } else if (criteria.equalsIgnoreCase(SearchCriteria.STATUS.getDatabaseName())) {
-                    criteria = CustomerNames.STATUS;
-                }
-                customerList = customerDAO.findByColumn(criteria, term);
-            }
+            
+            reviewList = new Vector<Review>();
+            int id=0;
+            String type = (String) comboSearch.getSelectedItem();
+            
+          
 
-            customerTableList = new Vector();
-            for (Customer cus : customerList) {
-                CustomerTableItem customerTable = new CustomerTableItem(cus);
-                customerTableList.add(customerTable.getVector());
+            // cas référence
+            if ("Reference".equals(type)) {
+
+                column = "revId";
+                id = Integer.valueOf(tfSearch.getText());
+                reviewList=reviewDAO.findByColumn(column, id);
             }
-            setTableCustomerModel();
+            
+            // cas client
+            if (type.equalsIgnoreCase("Client")) {
+                column = "cusId";
+                term = tfSearch.getText();
+                reviewList=reviewDAO.findByColumn(column, term);
+            }
+            
+
+            // cas book
+            if (type.equalsIgnoreCase("Livre")) {
+                column = "booIsbn13";
+                term = tfSearch.getText();
+                reviewList=reviewDAO.findByColumn(column, term);
+            
+            }
+            
+            
+            System.out.println(reviewList);
+            
+           
         }
+            
+        
+
     }
-   
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -132,7 +107,7 @@ public class JFReview extends javax.swing.JFrame implements SQLNames {
         jInternalFrame1.setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
         jInternalFrame1.setVisible(true);
 
-        comboSearch.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Reference", "Date", "Livre" }));
+        comboSearch.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Reference", "Livre", "N° de Client" }));
 
         jLabel5.setText("Recherche Note  par :");
 
@@ -382,15 +357,13 @@ public class JFReview extends javax.swing.JFrame implements SQLNames {
     }// </editor-fold>//GEN-END:initComponents
 
     private void tableSearchOReviewMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableSearchOReviewMouseReleased
-      
+
     }//GEN-LAST:event_tableSearchOReviewMouseReleased
 
     private void btnSearchOrderMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSearchOrderMouseReleased
-searchForCustomer();
-//        searchForOrder();
+        search();
     }//GEN-LAST:event_btnSearchOrderMouseReleased
 
-  
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -402,19 +375,24 @@ searchForCustomer();
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(JFReview.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JFReview.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(JFReview.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JFReview.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(JFReview.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JFReview.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(JFReview.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JFReview.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-       
+
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new JFReview().setVisible(true);

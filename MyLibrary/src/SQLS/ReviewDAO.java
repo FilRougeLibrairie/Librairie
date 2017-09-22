@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package SQLS;
 
 import ClassObjet.Customer;
@@ -13,10 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
 
-/**
- *
- * @author CDI305
- */
+
 public class ReviewDAO extends DAO<Review> {
 
     private final String TABLE = "Review";
@@ -257,6 +250,14 @@ public class ReviewDAO extends DAO<Review> {
         }
         return reviewList;
     }
+    
+    
+    
+    
+    
+    
+    
+    
 
     public Vector<Review> findByColumn(String column, int term) {
         Vector<Review> reviewList = new Vector<Review>();

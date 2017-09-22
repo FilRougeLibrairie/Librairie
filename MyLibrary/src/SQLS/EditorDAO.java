@@ -6,6 +6,7 @@
 package SQLS;
 
 import ClassObjet.Editor;
+import ClassObjet.Vat;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -111,6 +112,7 @@ public class EditorDAO extends DAO {
                     editor.setEdiName(rs.getString(NAME));
                     editor.setEdiPresentation(rs.getString(PRESENTATION));
                     editor.setEdiStatusCode(rs.getInt(STATUS));
+                    editorList.add(editor);
                 }
 
             } else {
@@ -124,7 +126,7 @@ public class EditorDAO extends DAO {
         return editorList;
     }
 
-    public Object findById(int id) {
+    public Editor findById(int id) {
         Editor editor = null;
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FORM " + TABLE + " WHERE ")
@@ -231,9 +233,38 @@ public class EditorDAO extends DAO {
     }
 
     @Override
-    public Object find(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    public Editor find(int id) {
+       Editor editor = null;
+        StringBuffer query = new StringBuffer();
+        query.append("SELECT * FROM " + TABLE + " WHERE ")
+                .append(ID)
+                .append(" = ")
+                .append("'" + id + "'");
+
+        try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.isBeforeFirst()) {
+
+                while (rs.next()) {
+                    editor = new Editor();
+                    editor.setEdiId(rs.getInt(ID));
+                    editor.setEdiName(rs.getString(NAME));
+                    editor.setEdiPresentation(rs.getString(PRESENTATION));
+                    editor.setEdiStatusCode(rs.getInt(STATUS));
+                }
+            } else {
+                throw new SQLException("ResultSet was empty");
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
+            
+
+        }
+        return editor;
+    } 
 
     @Override
     public Object find(String name) {
