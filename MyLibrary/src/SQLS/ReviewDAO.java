@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package SQLS;
 
 import ClassObjet.Customer;
@@ -13,10 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
 
-/**
- *
- * @author CDI305
- */
+
 public class ReviewDAO extends DAO<Review> {
 
     private final String TABLE = "Review";
@@ -236,14 +229,14 @@ public class ReviewDAO extends DAO<Review> {
                     cus = new Customer();
                     cus.setCusID(rs.getInt(CUSTOMER_ID));
                     review.setCusId(cus);
-                    review.setBooIsbn13(rs.getString(BOOK_ISBN_13));
+                    review.setBooIsbn13(rs.getString(BOOK_ISBN_13).trim());
                     ord = new OrderLine();
                     ord.setOrdLineId(rs.getInt(ORDERLINE_ID));
                     review.setOrdLineId(ord);
                     review.setRevNote(rs.getFloat(NOTE));
-                    review.setRevComment(rs.getString(COMMENT));
-                    review.setRevDate(rs.getString(DATE));
-                    review.setRevIP(rs.getString(IP));
+                    review.setRevComment(rs.getString(COMMENT).trim());
+                    review.setRevDate(rs.getString(DATE).trim());
+                    review.setRevIP(rs.getString(IP).trim());
                     review.setRevStatus(rs.getInt(STATUS));
                 }
             } else {
@@ -257,6 +250,113 @@ public class ReviewDAO extends DAO<Review> {
         }
         return reviewList;
     }
+    
+    
+    
+    
+    
+    
+    
+    public Vector<Review> findByIsbn(String term) {
+        Vector<Review> reviewList = new Vector<Review>();
+        Review review = null;
+        Customer cus = null;
+        OrderLine ord = null;
+        StringBuffer query = new StringBuffer();
+        query.append("SELECT * FROM " + TABLE + " WHERE ")
+                .append("booIsbn13")
+                .append(" = ")
+                .append("'" + term + "'");
+
+        try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.isBeforeFirst()) {
+
+                while (rs.next()) {
+                    review = new Review();
+                    review.setRevId(rs.getInt(ID));
+                    cus = new Customer();
+                    cus.setCusID(rs.getInt(CUSTOMER_ID));
+                    review.setCusId(cus);
+                    review.setBooIsbn13(rs.getString(BOOK_ISBN_13));
+                    ord = new OrderLine();
+                    ord.setOrdLineId(rs.getInt(ORDERLINE_ID));
+                    review.setOrdLineId(ord);
+                    review.setRevNote(rs.getFloat(NOTE));
+                    review.setRevComment(rs.getString(COMMENT));
+                    review.setRevDate(rs.getString(DATE));
+                    review.setRevIP(rs.getString(IP));
+                    review.setRevStatus(rs.getInt(STATUS));
+                    reviewList.add(review);
+                }
+            } else {
+                throw new SQLException("ResultSet was empty");
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
+            
+
+        }
+        return reviewList;
+    }
+    
+    
+        public Vector<Review> findByCustomer(String term) {
+        Vector<Review> reviewList = new Vector<Review>();
+        Review review = null;
+        Customer cus = null;
+        OrderLine ord = null;
+        StringBuffer query = new StringBuffer();
+        query.append("SELECT * FROM " + TABLE + " WHERE ")
+                .append("cusId")
+                .append(" = ")
+                .append("'" + term + "'");
+
+        try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.isBeforeFirst()) {
+
+                while (rs.next()) {
+                    review = new Review();
+                    review.setRevId(rs.getInt(ID));
+                    cus = new Customer();
+                    cus.setCusID(rs.getInt(CUSTOMER_ID));
+                    review.setCusId(cus);
+                    review.setBooIsbn13(rs.getString(BOOK_ISBN_13));
+                    ord = new OrderLine();
+                    ord.setOrdLineId(rs.getInt(ORDERLINE_ID));
+                    review.setOrdLineId(ord);
+                    review.setRevNote(rs.getFloat(NOTE));
+                    review.setRevComment(rs.getString(COMMENT));
+                    review.setRevDate(rs.getString(DATE));
+                    review.setRevIP(rs.getString(IP));
+                    review.setRevStatus(rs.getInt(STATUS));
+                    reviewList.add(review);
+                }
+            } else {
+                throw new SQLException("ResultSet was empty");
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
+            
+
+        }
+        return reviewList;
+    }
+    
+    
+    
+    
+    
+    
+    
+    
 
     public Vector<Review> findByColumn(String column, int term) {
         Vector<Review> reviewList = new Vector<Review>();

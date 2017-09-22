@@ -7,6 +7,7 @@ package ClassObjet;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Vector;
 
 /**
  *
@@ -25,6 +26,26 @@ public class Review {
     private int revStatus;
     private Book book;
 
+    
+    // constructeur
+
+    public Review(int revId) {
+        this.revId = revId;
+    }
+
+    public Review() {
+    }
+    
+     public Vector getVector() {
+        Vector v= new Vector();
+       
+        v.add(this.getRevId());
+        
+        
+      
+        return v;
+    }
+    
 
     //Setters
     public void setRevId(int revId) {
