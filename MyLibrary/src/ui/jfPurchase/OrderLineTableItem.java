@@ -20,9 +20,11 @@ public class OrderLineTableItem {
     private float unitPriceHT;
     private float vat;
     private float priceTTC;
+    private int orderLineId;
 
     public OrderLineTableItem(OrderLine orderLine) {
         this.orderLine = orderLine;
+        this.orderLineId = orderLine.getOrdLineId();
         this.isbn = orderLine.getBooIsbn13().getBooIsbn13();
         this.bookTitle = orderLine.getBooIsbn13().getBooTitle();
         this.quantity = orderLine.getOrdLineQuantity();
@@ -31,8 +33,9 @@ public class OrderLineTableItem {
         this.vat = orderLine.getOrdBookVAT();
         this.priceTTC = PriceCalculation.roundedPrice(PriceCalculation.calculatePriceTTC(unitPriceHT, vat) * quantity);
     }
+
     
-        public Vector getVector() {
+       public Vector getVector() {
         Vector v = new Vector();
         v.add(this);
         v.add(bookTitle);
@@ -50,6 +53,31 @@ public class OrderLineTableItem {
 
     public void setOrderLine(OrderLine orderLine) {
         this.orderLine = orderLine;
+    }
+    
+    
+    public float getTotalPriceHT() {
+        return totalPriceHT;
+    }
+
+    public void setTotalPriceHT(float totalPriceHT) {
+        this.totalPriceHT = totalPriceHT;
+    }
+
+    public float getUnitPriceHT() {
+        return unitPriceHT;
+    }
+
+    public void setUnitPriceHT(float unitPriceHT) {
+        this.unitPriceHT = unitPriceHT;
+    }
+
+    public int getOrderLineId() {
+        return orderLineId;
+    }
+
+    public void setOrderLineId(int orderLineId) {
+        this.orderLineId = orderLineId;
     }
 
     public String getIsbn() {

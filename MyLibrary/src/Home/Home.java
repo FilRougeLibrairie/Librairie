@@ -106,7 +106,7 @@ public class Home extends javax.swing.JFrame {
 
        
         try {
-            inputPass = Crypto.hashPassword(loggedEmp.getEmpSalt(), inputPassStr);
+            inputPass = Crypto.verifyPassword(loggedEmp.getEmpSalt(), inputPassStr);
 
         } catch (CryptoException ex) {
             Logger.getLogger(JFMain.class
