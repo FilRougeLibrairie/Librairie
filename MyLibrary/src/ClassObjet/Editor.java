@@ -96,7 +96,7 @@ public class Editor implements SQLNames{
     //To String
     
     public String toString() {
-        return "N° = " + ediId + "\n Nom = " + ediName + "\n Presentation = " + ediPresentation + "\n Statut = " + EdiStatusCode() ;
+        return ediName ;
     }
 
     
