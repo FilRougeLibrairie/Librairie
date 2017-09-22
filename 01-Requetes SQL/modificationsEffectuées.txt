@@ -1,0 +1,41 @@
+autoIncrement sur vat, language, accessProfile
+
+offer 
+  - changement du datetime en date
+  - inserion d'un status en int (offStatus)
+
+Review 
+  - insertion de données de statut
+  - changement de datetime en date
+  
+Subtheme
+  - insertion sous theme inclassable
+  - insertion d'un status en int (subStatus)
+
+Theme
+  - insertion d'un statut en int (theStatus)
+
+OrderLine
+  - creation de ordDiscount en float
+  
+Purchase
+  - creation de purInternalId en varchar(50)
+  
+OrderStatus
+  - insertion des données 0 suspendu et 8 remboursé
+  
+Employee
+  - modification des données 0 et 1
+  
+Editor
+  - insertion d'un editeur inactif
+
+Keywords
+  - insertion d'un statut en int (keyStatus)
+
+Format
+  - insertion d'un status en int (forStatus)
+  
+Language
+  - insertion d'un status en int (booLStatus)
+  
