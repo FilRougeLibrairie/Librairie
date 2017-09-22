@@ -58,7 +58,7 @@ public class EditorDAO extends DAO {
         query.append("DELETE FROM " + TABLE + " WHERE ")
                 .append(ID)
                 .append(" = ")
-                .append("'" + ediId + "'");
+                .append(ediId);
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
             pstmt.executeQuery();
@@ -76,9 +76,8 @@ public class EditorDAO extends DAO {
         query.append(PRESENTATION).append(" =?, ");
         query.append(STATUS).append(" =? ");
 
-        query.append("WHERE " + ID + " = '")
-                .append(edi.getEdiId())
-                .append("'");
+        query.append("WHERE " + ID + " = ")
+                .append(edi.getEdiId());
 
         try (PreparedStatement pstmt = connect.prepareStatement(query.toString());) {
             pstmt.setString(1, edi.getEdiName());
@@ -94,7 +93,7 @@ public class EditorDAO extends DAO {
     }
 
     @Override
-    public Vector findAll() {
+    public Vector<Editor> findAll() {
         Vector<Editor> editorList = new Vector<Editor>();
         Editor editor = null;
 
@@ -111,6 +110,7 @@ public class EditorDAO extends DAO {
                     editor.setEdiName(rs.getString(NAME));
                     editor.setEdiPresentation(rs.getString(PRESENTATION));
                     editor.setEdiStatusCode(rs.getInt(STATUS));
+                    editorList.add(editor);
                 }
 
             } else {
@@ -124,13 +124,13 @@ public class EditorDAO extends DAO {
         return editorList;
     }
 
-    public Object findById(int id) {
+    public Editor findById(int id) {
         Editor editor = null;
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FORM " + TABLE + " WHERE ")
                 .append(ID)
                 .append(" = ")
-                .append("'" + id + "'");
+                .append(id);
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
 
@@ -196,7 +196,7 @@ public class EditorDAO extends DAO {
     }
     
     
-     public Vector findByStatut(int statut) {
+     public Vector<Editor> findByStatut(int statut) {
         Vector<Editor> editorList = new Vector<Editor>();
         Editor editor = null;
 
@@ -204,7 +204,7 @@ public class EditorDAO extends DAO {
         query.append("SELECT * FROM " + TABLE + "WHERE ")
                 .append(STATUS)
                 .append(" = ")
-                .append("'" + statut + "'");
+                .append(statut);
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
 
@@ -217,6 +217,7 @@ public class EditorDAO extends DAO {
                     editor.setEdiName(rs.getString(NAME));
                     editor.setEdiPresentation(rs.getString(PRESENTATION));
                     editor.setEdiStatusCode(rs.getInt(STATUS));
+                    editorList.add(editor);
                 }
 
             } else {
