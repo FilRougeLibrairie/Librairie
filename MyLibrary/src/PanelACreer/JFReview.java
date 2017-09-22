@@ -1,98 +1,74 @@
-
 package PanelACreer;
 
-import ClassObjet.Review;
-import Names.SQLNames;
-import java.util.Vector;
-import javax.swing.DefaultComboBoxModel;
 
-public class JFReview extends javax.swing.JFrame implements SQLNames {
+import ClassObjet.Review;
+import SQLS.ReviewDAO;
+import java.util.Vector;
+import javax.swing.table.DefaultTableModel;
+
+public class JFReview extends javax.swing.JFrame {
 
     
-    Vector comboSearchModel;
-    Review currentReview;
+    
+    Review review = new Review();
+    ReviewDAO reviewDAO = new ReviewDAO();
+    String term = null;
+    String column = null;
+    Vector<Review> reviewList;
+    
     public JFReview() {
         initComponents();
-        comboSearch.setModel(initComboSearchModel());
-    }
-
-   
-    private DefaultComboBoxModel initComboSearchModel() {
-        DefaultComboBoxModel model;
-        comboSearchModel = new Vector<String>();
-        model = new DefaultComboBoxModel(comboSearchModel);
-        for (SearchCriteria comboItem : SearchCriteria.values()) {
-            comboSearchModel.add(comboItem.getDatabaseName());
-        }
-        return model;
     }
     
     
-    private enum SearchCriteria {
+     public DefaultTableModel initTableModel() {
+        Vector v = new Vector();
+        v.add("N° de la note");
 
-        CLIENT("Client"),
-        BOOK("Livre"),
-        DATE("Date");
-        
-        
-        private final String databaseName;
-
-        private SearchCriteria(String databaseName) {
-            this.databaseName = databaseName;
-        }
-
-        public String getDatabaseName() {
-            return databaseName;
-        }
+        return new javax.swing.table.DefaultTableModel(
+                initReviewVector(), v) {
+                    boolean[] canEdit = new boolean[]{
+                        false, true, true, true
+                    };
+                    public boolean isCellEditable(int rowIndex, int columnIndex) {
+                        return canEdit[columnIndex];
+                    }
+                };
     }
-    
-    private void searchForCustomer() {
-        if (comboSearch.getSelectedItem() != null) {
-            String criteria = comboSearch.getSelectedItem().toString();
-            String term = tfSearch.getText().trim();
-            int statusIndex;
-            customerList = new Vector<Customer>();
-            CustomerDAO customerDAO = new CustomerDAO();
 
-            if (criteria.equalsIgnoreCase(SearchCriteria.TOUS_LES_CLIENTS.getDatabaseName())) {
-                customerList = customerDAO.findAll();
-            } else if (criteria.equalsIgnoreCase(SearchCriteria.STATUS.getDatabaseName())) {
-                criteria = CustomerNames.STATUS;
-                statusIndex = comboStatus.getSelectedIndex();
-                customerList = customerDAO.findByColumn(criteria, statusIndex);
-            } else if (criteria.equalsIgnoreCase(SearchCriteria.GENDER.getDatabaseName())) {
-                criteria = CustomerNames.GENDER;
-                term = comboGender.getSelectedItem().toString().substring(0, 1).trim();
-                customerList = customerDAO.findByColumn(criteria, term);
-            } else if (term != null && !term.isEmpty()) {
-                if (criteria.equalsIgnoreCase(SearchCriteria.NOM.getDatabaseName())) {
-                    criteria = CustomerNames.LAST_NAME;
-                } else if (criteria.equalsIgnoreCase(SearchCriteria.PRENOM.getDatabaseName())) {
-                    criteria = CustomerNames.FIRST_NAME;
-                } else if (criteria.equalsIgnoreCase(SearchCriteria.SOCIETE.getDatabaseName())) {
-                    criteria = CustomerNames.COMPANY;
-                } else if (criteria.equalsIgnoreCase(SearchCriteria.EMAIL.getDatabaseName())) {
-                    criteria = CustomerNames.EMAIL;
-                } else if (criteria.equalsIgnoreCase(SearchCriteria.TELEPHONE.getDatabaseName())) {
-                    criteria = CustomerNames.PHONE;
-                } else if (criteria.equalsIgnoreCase(SearchCriteria.IP.getDatabaseName())) {
-                    criteria = CustomerNames.IP;
-                } else if (criteria.equalsIgnoreCase(SearchCriteria.STATUS.getDatabaseName())) {
-                    criteria = CustomerNames.STATUS;
-                }
-                customerList = customerDAO.findByColumn(criteria, term);
+    private Vector initReviewVector() {
+        Vector v = new Vector();
+        if (comboSearch.getSelectedItem() != null) {    
+            reviewList = new Vector<Review>();
+            String type = (String) comboSearch.getSelectedItem();
+            // cas book
+            if ("Livre".equals(type)) {     
+                term = tfSearch.getText().trim();
+                reviewList=reviewDAO.findByIsbn(term);
+               
+            }           
+            // cas client
+            if (type.equalsIgnoreCase("Client")) {
+                column = "cusId";
+                term = tfSearch.getText().trim();
+                reviewList=reviewDAO.findByCustomer(term);
             }
-
-            customerTableList = new Vector();
-            for (Customer cus : customerList) {
-                CustomerTableItem customerTable = new CustomerTableItem(cus);
-                customerTableList.add(customerTable.getVector());
+           for (Review rev  : reviewList) {
+              
+               Review p = new Review(rev.getRevId());
+                v.add(p.getVector());   
             }
-            setTableCustomerModel();
         }
+        return v;
     }
-   
     
+    
+    
+    
+    
+    
+    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -102,77 +78,47 @@ public class JFReview extends javax.swing.JFrame implements SQLNames {
         comboSearch = new javax.swing.JComboBox();
         jLabel5 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tableSearchOReview = new javax.swing.JTable();
+        tableSearch = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
         btnSearchOrder = new javax.swing.JLabel();
         tfSearch = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
-        tfCustomerLastName = new javax.swing.JTextField();
+        jTrevId = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
-        tfCustomerFirstName = new javax.swing.JTextField();
+        jTOrd = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
-        tfCustomerCompany = new javax.swing.JTextField();
+        jTcusId = new javax.swing.JTextField();
         jLabel14 = new javax.swing.JLabel();
-        tfCustomerBirthDay = new javax.swing.JTextField();
-        tfCustomerPhoneNumber = new javax.swing.JTextField();
+        jTbooIsbn = new javax.swing.JTextField();
+        jTStatus = new javax.swing.JTextField();
         jLabel15 = new javax.swing.JLabel();
-        tfCustomerEmail = new javax.swing.JTextField();
+        jTIp = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
-        tfCustomerIP = new javax.swing.JTextField();
+        jtNote = new javax.swing.JTextField();
         jLabel40 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        tfCustomerComment = new javax.swing.JTextPane();
+        jTComment = new javax.swing.JTextPane();
         jPanel22 = new javax.swing.JPanel();
         btnSaveCustomer = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(900, 800));
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jInternalFrame1.setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
         jInternalFrame1.setVisible(true);
 
-        comboSearch.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Reference", "Date", "Livre" }));
+        comboSearch.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Livre", "Client" }));
 
         jLabel5.setText("Recherche Note  par :");
 
-        tableSearchOReview.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null},
-                {null},
-                {null},
-                {null},
-                {null},
-                {null},
-                {null},
-                {null},
-                {null},
-                {null},
-                {null},
-                {null},
-                {null},
-                {null},
-                {null},
-                {null}
-            },
-            new String [] {
-                "Résultat"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        tableSearchOReview.addMouseListener(new java.awt.event.MouseAdapter() {
+        tableSearch.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
-                tableSearchOReviewMouseReleased(evt);
+                tableSearchMouseReleased(evt);
             }
         });
-        jScrollPane1.setViewportView(tableSearchOReview);
+        jScrollPane1.setViewportView(tableSearch);
 
         jPanel2.setBackground(new java.awt.Color(51, 102, 255));
         jPanel2.setPreferredSize(new java.awt.Dimension(200, 45));
@@ -239,7 +185,7 @@ public class JFReview extends javax.swing.JFrame implements SQLNames {
 
         jLabel10.setText("N° de client");
 
-        jLabel14.setText("IBAN");
+        jLabel14.setText("Isbn");
 
         jLabel15.setText("IP");
 
@@ -247,7 +193,7 @@ public class JFReview extends javax.swing.JFrame implements SQLNames {
 
         jLabel40.setText("Commentaire :");
 
-        jScrollPane3.setViewportView(tfCustomerComment);
+        jScrollPane3.setViewportView(jTComment);
 
         jPanel22.setBackground(new java.awt.Color(51, 102, 255));
         jPanel22.setPreferredSize(new java.awt.Dimension(200, 45));
@@ -280,14 +226,14 @@ public class JFReview extends javax.swing.JFrame implements SQLNames {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(tfCustomerFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(tfCustomerCompany, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(tfCustomerBirthDay, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(tfCustomerLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTOrd, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTcusId, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTbooIsbn, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTrevId, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel13)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 68, Short.MAX_VALUE)
-                                .addComponent(tfCustomerPhoneNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(jTStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(59, 59, 59)
@@ -300,7 +246,7 @@ public class JFReview extends javax.swing.JFrame implements SQLNames {
                                 .addComponent(jLabel40)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(tfCustomerIP, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jtNote, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jPanel22, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(55, Short.MAX_VALUE))
@@ -311,7 +257,7 @@ public class JFReview extends javax.swing.JFrame implements SQLNames {
                         .addGroup(jPanel1Layout.createSequentialGroup()
                             .addComponent(jLabel8)
                             .addGap(403, 403, 403)
-                            .addComponent(tfCustomerEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jTIp, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addComponent(jLabel9)
                         .addComponent(jLabel10)
                         .addComponent(jLabel14))
@@ -321,26 +267,26 @@ public class JFReview extends javax.swing.JFrame implements SQLNames {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jInternalFrame1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 91, Short.MAX_VALUE))
+                .addGap(0, 97, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(9, 9, 9)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel15)
-                    .addComponent(tfCustomerLastName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTrevId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tfCustomerFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTOrd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel12)
-                    .addComponent(tfCustomerIP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jtNote, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(tfCustomerCompany, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jTcusId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(tfCustomerBirthDay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jTbooIsbn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(tfCustomerPhoneNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel13)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(25, 25, 25)
@@ -352,9 +298,9 @@ public class JFReview extends javax.swing.JFrame implements SQLNames {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addGap(6, 6, Short.MAX_VALUE)
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(tfCustomerEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jTIp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(jPanel1Layout.createSequentialGroup()
                             .addGap(6, 6, 6)
                             .addComponent(jLabel8)))
@@ -367,30 +313,36 @@ public class JFReview extends javax.swing.JFrame implements SQLNames {
                     .addGap(0, 492, Short.MAX_VALUE)))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void tableSearchOReviewMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableSearchOReviewMouseReleased
-      
-    }//GEN-LAST:event_tableSearchOReviewMouseReleased
+    private void tableSearchMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableSearchMouseReleased
+
+        int revId =Integer.valueOf(tableSearch.getValueAt(tableSearch.getSelectedRow(), 0).toString());
+        
+        jTrevId.setText(String.valueOf(reviewDAO.find(revId).getRevId()));
+        
+        
+        jTOrd.setText(String.valueOf(reviewDAO.find(revId).getOrdLineId().getOrdLineId()));
+        
+        jTcusId.setText(String.valueOf(reviewDAO.find(revId).getCusId().getCusID()));
+        
+        
+        
+        jTbooIsbn.setText(String.valueOf(reviewDAO.find(revId).getBooIsbn13()));
+        jTStatus.setText(String.valueOf(reviewDAO.find(revId).getRevStatus()));
+        jTIp.setText(String.valueOf(reviewDAO.find(revId).getRevIP()));
+        jtNote.setText(String.valueOf(reviewDAO.find(revId).getRevIP()));
+        jTComment.setText(String.valueOf(reviewDAO.find(revId).getRevComment()));
+        
+    }//GEN-LAST:event_tableSearchMouseReleased
 
     private void btnSearchOrderMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSearchOrderMouseReleased
-searchForCustomer();
-//        searchForOrder();
+     tableSearch.setModel(initTableModel()); 
     }//GEN-LAST:event_btnSearchOrderMouseReleased
 
-  
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -402,19 +354,24 @@ searchForCustomer();
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(JFReview.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JFReview.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(JFReview.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JFReview.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(JFReview.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JFReview.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(JFReview.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JFReview.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-       
+
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new JFReview().setVisible(true);
@@ -441,15 +398,15 @@ searchForCustomer();
     private javax.swing.JPanel jPanel22;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTable tableSearchOReview;
-    private javax.swing.JTextField tfCustomerBirthDay;
-    private javax.swing.JTextPane tfCustomerComment;
-    private javax.swing.JTextField tfCustomerCompany;
-    private javax.swing.JTextField tfCustomerEmail;
-    private javax.swing.JTextField tfCustomerFirstName;
-    private javax.swing.JTextField tfCustomerIP;
-    private javax.swing.JTextField tfCustomerLastName;
-    private javax.swing.JTextField tfCustomerPhoneNumber;
+    private javax.swing.JTextPane jTComment;
+    private javax.swing.JTextField jTIp;
+    private javax.swing.JTextField jTOrd;
+    private javax.swing.JTextField jTStatus;
+    private javax.swing.JTextField jTbooIsbn;
+    private javax.swing.JTextField jTcusId;
+    private javax.swing.JTextField jTrevId;
+    private javax.swing.JTextField jtNote;
+    private javax.swing.JTable tableSearch;
     private javax.swing.JTextField tfSearch;
     // End of variables declaration//GEN-END:variables
 }

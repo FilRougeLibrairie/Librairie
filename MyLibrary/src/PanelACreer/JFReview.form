@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+<Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -23,20 +23,16 @@
     <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
   </AuxValues>
 
-  <Layout>
-    <DimensionLayout dim="0">
-      <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="jPanel1" alignment="0" max="32767" attributes="0"/>
-      </Group>
-    </DimensionLayout>
-    <DimensionLayout dim="1">
-      <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="jPanel1" alignment="0" max="32767" attributes="0"/>
-      </Group>
-    </DimensionLayout>
+  <Layout class="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout">
+    <Property name="useNullLayout" type="boolean" value="false"/>
   </Layout>
   <SubComponents>
     <Container class="javax.swing.JPanel" name="jPanel1">
+      <Constraints>
+        <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
+          <AbsoluteConstraints x="0" y="0" width="-1" height="-1"/>
+        </Constraint>
+      </Constraints>
 
       <Layout>
         <DimensionLayout dim="0">
@@ -48,14 +44,14 @@
                   <Group type="103" groupAlignment="1" attributes="0">
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="1" attributes="0">
-                              <Component id="tfCustomerFirstName" min="-2" pref="179" max="-2" attributes="0"/>
-                              <Component id="tfCustomerCompany" min="-2" pref="179" max="-2" attributes="0"/>
-                              <Component id="tfCustomerBirthDay" min="-2" pref="179" max="-2" attributes="0"/>
-                              <Component id="tfCustomerLastName" min="-2" pref="179" max="-2" attributes="0"/>
+                              <Component id="jTOrd" min="-2" pref="179" max="-2" attributes="0"/>
+                              <Component id="jTcusId" min="-2" pref="179" max="-2" attributes="0"/>
+                              <Component id="jTbooIsbn" min="-2" pref="179" max="-2" attributes="0"/>
+                              <Component id="jTrevId" min="-2" pref="179" max="-2" attributes="0"/>
                               <Group type="102" alignment="1" attributes="0">
                                   <Component id="jLabel13" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace pref="68" max="32767" attributes="0"/>
-                                  <Component id="tfCustomerPhoneNumber" min="-2" pref="179" max="-2" attributes="0"/>
+                                  <Component id="jTStatus" min="-2" pref="179" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <Group type="103" groupAlignment="0" attributes="0">
@@ -74,7 +70,7 @@
                               </Group>
                           </Group>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="tfCustomerIP" min="-2" pref="179" max="-2" attributes="0"/>
+                              <Component id="jtNote" min="-2" pref="179" max="-2" attributes="0"/>
                               <Component id="jScrollPane3" min="-2" pref="179" max="-2" attributes="0"/>
                           </Group>
                       </Group>
@@ -89,7 +85,7 @@
                           <Group type="102" attributes="0">
                               <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="403" max="-2" attributes="0"/>
-                              <Component id="tfCustomerEmail" min="-2" pref="179" max="-2" attributes="0"/>
+                              <Component id="jTIp" min="-2" pref="179" max="-2" attributes="0"/>
                           </Group>
                           <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel10" min="-2" max="-2" attributes="0"/>
@@ -104,29 +100,29 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <Component id="jInternalFrame1" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="0" pref="91" max="32767" attributes="0"/>
+                  <EmptySpace min="0" pref="97" max="32767" attributes="0"/>
               </Group>
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel15" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="tfCustomerLastName" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jTrevId" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="tfCustomerFirstName" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jTOrd" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabel12" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="tfCustomerIP" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jtNote" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="tfCustomerCompany" min="-2" max="-2" attributes="0"/>
+                          <Component id="jTcusId" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="tfCustomerBirthDay" min="-2" max="-2" attributes="0"/>
+                          <Component id="jTbooIsbn" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="tfCustomerPhoneNumber" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jTStatus" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabel13" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
@@ -144,9 +140,9 @@
               </Group>
               <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <EmptySpace min="6" pref="6" max="32767" attributes="0"/>
+                      <EmptySpace min="6" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="tfCustomerEmail" min="-2" max="-2" attributes="0"/>
+                          <Component id="jTIp" min="-2" max="-2" attributes="0"/>
                           <Group type="102" attributes="0">
                               <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
                               <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
@@ -217,10 +213,9 @@
             <Component class="javax.swing.JComboBox" name="comboSearch">
               <Properties>
                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                  <StringArray count="3">
-                    <StringItem index="0" value="Reference"/>
-                    <StringItem index="1" value="Date"/>
-                    <StringItem index="2" value="Livre"/>
+                  <StringArray count="2">
+                    <StringItem index="0" value="Livre"/>
+                    <StringItem index="1" value="Client"/>
                   </StringArray>
                 </Property>
               </Properties>
@@ -237,19 +232,14 @@
 
               <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
               <SubComponents>
-                <Component class="javax.swing.JTable" name="tableSearchOReview">
+                <Component class="javax.swing.JTable" name="tableSearch">
                   <Properties>
-                    <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                      <Table columnCount="1" rowCount="16">
-                        <Column editable="false" title="R&#xe9;sultat" type="java.lang.Object"/>
-                      </Table>
-                    </Property>
                     <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
                       <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
                     </Property>
                   </Properties>
                   <Events>
-                    <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tableSearchOReviewMouseReleased"/>
+                    <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tableSearchMouseReleased"/>
                   </Events>
                 </Component>
               </SubComponents>
@@ -301,44 +291,44 @@
             <Property name="text" type="java.lang.String" value="N&#xb0; de la note:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="tfCustomerLastName">
+        <Component class="javax.swing.JTextField" name="jTrevId">
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel9">
           <Properties>
             <Property name="text" type="java.lang.String" value="N&#xb0; de Ligne de commande"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="tfCustomerFirstName">
+        <Component class="javax.swing.JTextField" name="jTOrd">
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel10">
           <Properties>
             <Property name="text" type="java.lang.String" value="N&#xb0; de client"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="tfCustomerCompany">
+        <Component class="javax.swing.JTextField" name="jTcusId">
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel14">
           <Properties>
-            <Property name="text" type="java.lang.String" value="IBAN"/>
+            <Property name="text" type="java.lang.String" value="Isbn"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="tfCustomerBirthDay">
+        <Component class="javax.swing.JTextField" name="jTbooIsbn">
         </Component>
-        <Component class="javax.swing.JTextField" name="tfCustomerPhoneNumber">
+        <Component class="javax.swing.JTextField" name="jTStatus">
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel15">
           <Properties>
             <Property name="text" type="java.lang.String" value="IP"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="tfCustomerEmail">
+        <Component class="javax.swing.JTextField" name="jTIp">
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel12">
           <Properties>
             <Property name="text" type="java.lang.String" value="Note"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="tfCustomerIP">
+        <Component class="javax.swing.JTextField" name="jtNote">
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel40">
           <Properties>
@@ -352,7 +342,7 @@
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
           <SubComponents>
-            <Component class="javax.swing.JTextPane" name="tfCustomerComment">
+            <Component class="javax.swing.JTextPane" name="jTComment">
             </Component>
           </SubComponents>
         </Container>
