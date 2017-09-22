@@ -6,7 +6,7 @@
 package PanelOk;
 
 import ClassObjet.Author;
-import ClassObjet.ClassAssoc.Writing;
+import ClassObjet.ClassAssoc.Having;
 import SQLS.AuthorDAO;
 import SQLS.WritingDAO;
 import java.sql.Connection;
@@ -234,7 +234,7 @@ public class AuthorDeletePanel extends javax.swing.JPanel {
         
         // creation de l'objet auteur dans writing
        
-         Writing writing = new Writing();
+         Having writing = new Having();
          writing.setAutId(Integer.valueOf(id));
          writing.getBooIsbn13();
          WritingDAO writ = new WritingDAO();

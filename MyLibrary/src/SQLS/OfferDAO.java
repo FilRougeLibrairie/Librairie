@@ -42,7 +42,7 @@ public class OfferDAO extends DAO {
                 + "VALUES (?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query);) {
-            
+
             pstmt.setString(1, off.getOffName());
             pstmt.setString(2, off.getOffText());
             pstmt.setString(3, off.getOffDateStart());
@@ -54,7 +54,7 @@ public class OfferDAO extends DAO {
 
         } catch (SQLException ex) {
             System.err.println("ERROR SAVING Object : " + ex.getErrorCode() + " / " + ex.getMessage());
-            
+
         }
     }
 
@@ -71,7 +71,7 @@ public class OfferDAO extends DAO {
             pstmt.executeQuery();
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            
+
         }
     }
 
@@ -102,7 +102,7 @@ public class OfferDAO extends DAO {
 
         } catch (SQLException ex) {
             System.out.println("ERROR UPDATING Object : " + ex.getMessage());
-            
+
         }
     }
 
@@ -132,7 +132,7 @@ public class OfferDAO extends DAO {
             }
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            
+
         }
         return offerList;
     }
@@ -166,7 +166,7 @@ public class OfferDAO extends DAO {
             }
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            
+
         }
         return offer;
     }
@@ -188,8 +188,6 @@ public class OfferDAO extends DAO {
                 .append(" = ")
                 .append("'" + term + "'");
 
-        System.out.println();
-
         try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
 
             ResultSet rs = pstmt.executeQuery();
@@ -210,8 +208,48 @@ public class OfferDAO extends DAO {
             }
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            
         }
-        return offerList;  
+        return offerList;
+    }
+
+    public Offer findCurrentOfferByBook(String isbn13) {
+        Offer currentOffer = null;
+        StringBuilder query = new StringBuilder();
+        query.append("DECLARE ")
+                .append("@currentTime DATETIME = GETDATE(), ")
+                .append("@book_Isbn varchar(13) = '" + isbn13 + "' ")
+                .append("SELECT * ")
+                .append("FROM Offer offe ")
+                .append("JOIN Have hav ")
+                .append("ON offe.offId = Hav.offId ")
+                .append("JOIN Book book ")
+                .append("ON hav.booIsbn13 = book.booIsbn13 ")
+                .append("WHERE book.booIsbn13 = @book_Isbn ")
+                .append("AND offe.offDateStart < @currentTime ")
+                .append("AND offe.offDateEnd > @currentTime ")
+                .append("ORDER BY offDateEnd DESC ");
+        
+        System.out.println(isbn13);
+        
+         try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.isBeforeFirst()) {
+                while (rs.next()) {
+                    currentOffer = new Offer();
+                    currentOffer.setOffId(rs.getInt(ID));
+                    currentOffer.setOffName(rs.getString(NAME));
+                    currentOffer.setOffText(rs.getString(TEXT));
+                    currentOffer.setOffDateStart(rs.getString(START));
+                    currentOffer.setOffDateEnd(rs.getString(END));
+                    currentOffer.setOffDiscount(rs.getFloat(DISCOUNT));
+                    currentOffer.setOffPicture(rs.getString(PICTURE));
+                }
+            } else {
+                throw new SQLException("ResultSet was empty");
+            }
+        } catch (SQLException ex) {
+            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
+        }
+        return currentOffer;
     }
 }

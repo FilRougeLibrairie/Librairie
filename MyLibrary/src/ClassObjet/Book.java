@@ -5,6 +5,7 @@
  */
 package ClassObjet;
 
+import SQLS.OfferDAO;
 import java.util.Vector;
 
 /**
@@ -24,6 +25,7 @@ public class Book {
     private int booStatus;
     private String booFrontCover;
     private int booPageNumber;
+    private Offer currentOffer;
 
     private Vector<Author> authorList;
     private Vector<SubTheme> subThemeList;
@@ -38,8 +40,14 @@ public class Book {
     public Book() {
         vatCode = new Vat();
         ediId = new Editor();
-        booLangCode = new BookLanguage ();
+        booLangCode = new BookLanguage();
         format = new Forma();
+    }
+
+    public Offer findCurrentOffer() {
+        OfferDAO offerDAO = new OfferDAO();
+        Offer currentOffer = offerDAO.findCurrentOfferByBook(this.booIsbn13);
+        return currentOffer;
     }
 
     //Setters
@@ -97,6 +105,10 @@ public class Book {
 
     public void setFormat(Forma format) {
         this.format = format;
+    }
+
+    public void setCurrentOffer(Offer currentOffer) {
+        this.currentOffer = currentOffer;
     }
 
     //Getters
@@ -220,16 +232,20 @@ public class Book {
         offerList.remove(offer);
     }
 
+    public Offer getCurrentOffer() {
+        return findCurrentOffer();
+    }
+
     @Override
     public String toString() {
         return "Book{" + "booIsbn13=" + booIsbn13 + ", booTitle=" + booTitle + ", booSubtitle=" + booSubtitle + ", booPublishYear=" + booPublishYear + ", booPriceHT=" + booPriceHT + ", booResume=" + booResume + ", booQuantity=" + booQuantity + ", booStatus=" + booStatus + ", booFrontCover=" + booFrontCover + ", booPageNumber=" + booPageNumber + ", authorList=" + authorList + ", subThemeList=" + subThemeList + ", offerList=" + offerList + ", keyWordsList=" + keyWordsList + ", vatCode=" + vatCode + ", ediId=" + ediId + ", booLangCode=" + booLangCode + '}';
     }
 
     public Vector getVector() {
-        Vector vBook= new Vector();
-       
+        Vector vBook = new Vector();
+
         vBook.add(this.booIsbn13);
-      
+
         return vBook;
     }
 }

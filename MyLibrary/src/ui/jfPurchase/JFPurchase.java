@@ -14,6 +14,7 @@ import SQLS.OrderLineDAO;
 import SQLS.PurchaseDAO;
 import SQLS.ShippingCostDAO;
 import java.awt.Color;
+import java.awt.event.MouseEvent;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Properties;
@@ -148,6 +149,13 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
         Vector v = new Vector();
         v.add("Résultats");
         return new javax.swing.table.DefaultTableModel(purchaseTableList, v) {
+            boolean[] canEdit = new boolean[]{
+                false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit[columnIndex];
+            }
         };
     }
 
@@ -170,6 +178,13 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
         Vector v = new Vector();
         v.add("Adresse");
         return new javax.swing.table.DefaultTableModel(addressTableList, v) {
+            boolean[] canEdit = new boolean[]{
+                false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit[columnIndex];
+            }
         };
     }
 
@@ -414,23 +429,34 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
         Float totalHT = 0f;
         Float totalVAT = 0f;
         Float totalLinesTTC = 0f;
-        Float shippingCost;
-        Float totalOrderTTC;
+        Float shippingCost = 0f;
+        Float totalOrderTTC = 0f;
 
         shipCostObject = shippingCostDAO.find(currentPurchase.getShippingCostId().getShipId());
         currentPurchase.setShippingCostId(shipCostObject);
         shippingCost = currentPurchase.getShippingCostId().getShipCost();
 
-        for (int ligne = 0; ligne < tableOrderLine.getRowCount(); ligne++) {
-            OrderLineTableItem ordLineTable = (OrderLineTableItem) tableOrderLine.getValueAt(ligne, 0);
-            Float totalHTLine = ordLineTable.getPriceHT();
-            Float priceTTCLine = ordLineTable.getPriceTTC();
-            totalHT += totalHTLine;
-            totalLinesTTC += priceTTCLine;
+        if (tableOrderLine.getRowCount() == 0) {
+            System.out.println("Aucun article dans le panier");
+        } else {
+            for (int ligne = 0; ligne < tableOrderLine.getRowCount(); ligne++) {
+                OrderLineTableItem ordLineTableItem = (OrderLineTableItem) tableOrderLine.getValueAt(ligne, 0);
+                Float priceHT = ordLineTableItem.getPriceHT();
+                Float discountRate = ordLineTableItem.getDiscount();
+                Float priceHTAfterDiscount = PriceCalculation.calculateDiscount(priceHT, discountRate);
+                ordLineTableItem.setPriceHT(priceHTAfterDiscount);
+               
+                // Total of current Line
+                Float totalHTLine = PriceCalculation.roundedPrice(priceHTAfterDiscount);
+                Float priceTTCLine = PriceCalculation.roundedPrice(ordLineTableItem.getPriceTTC());
+                
+                // Total Calculation
+                totalHT += totalHTLine;
+                totalLinesTTC += priceTTCLine;
+                totalVAT = PriceCalculation.roundedPrice(totalLinesTTC - totalHT);
+                totalOrderTTC = PriceCalculation.roundedPrice(totalLinesTTC + shippingCost);
+            }
         }
-
-        totalVAT = PriceCalculation.roundedPrice(totalLinesTTC - totalHT);
-        totalOrderTTC = PriceCalculation.roundedPrice(totalLinesTTC + shippingCost);
 
         labelPriceHT.setText(String.valueOf(totalHT));
         labelTotalVAT.setText(String.valueOf(totalVAT));
@@ -447,15 +473,23 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
         Vector v = new Vector();
         v.add("ISBN");
         v.add("Titre");
+        v.add("Stock");
         v.add("Quantité");
         v.add("Prix unit. HT");
-        v.add("Total HT");
+        v.add("Remise");
         v.add("TVA");
+        v.add("Total HT");
         v.add("Prix TTC");
 
         tableOrderLine.setAutoCreateRowSorter(true);
         return new javax.swing.table.DefaultTableModel(orderStatusTableList, v) {
+            boolean[] canEdit = new boolean[]{
+                false, false, false, true, false, false, false, false, false
+            };
 
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit[columnIndex];
+            }
         };
     }
 
@@ -472,10 +506,11 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
         tfCustomerEmail.setText(currentCustomer.getCusEmail());
     }
 
-    private void clearTableModels(Vector<JTable> jtableList) {
+    private void refreshTableModels(Vector<JTable> jtableList) {
         DefaultTableModel tabModel;
         for (JTable table : jtableList) {
             tabModel = ((DefaultTableModel) table.getModel());
+            tabModel.fireTableDataChanged();
             int lignes = tabModel.getRowCount();
             for (int i = lignes - 1; i >= 0; i--) {
                 tabModel.removeRow(i);
@@ -528,7 +563,7 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
         labelTotalOrderTTC = new javax.swing.JLabel();
         jLabel30 = new javax.swing.JLabel();
         comboPurchaseStatus = new javax.swing.JComboBox();
-        jPanel18 = new javax.swing.JPanel();
+        panelBtnDeleteOrderLine = new javax.swing.JPanel();
         btnDeleteOrderLine = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jLabel17 = new javax.swing.JLabel();
@@ -795,26 +830,26 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
 
         tableOrderLine.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "ISBN", "Titre", "Quantité", "Prix unitaire HT", "T.V.A", "Prix H.T", "Prix T.T.C"
+                "ISBN", "Titre", "Stock", "Quantité", "Prix unitaire HT", "Remise", "T.V.A", "Prix H.T", "Prix T.T.C"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.String.class, java.lang.Integer.class, java.lang.Float.class, java.lang.Float.class, java.lang.Float.class, java.lang.Float.class
+                java.lang.Object.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Float.class, java.lang.Float.class, java.lang.Float.class, java.lang.Float.class, java.lang.Float.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, true, false, false, false, false
+                false, false, false, true, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -904,22 +939,27 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
 
         comboPurchaseStatus.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        jPanel18.setBackground(new java.awt.Color(51, 102, 255));
-        jPanel18.setPreferredSize(new java.awt.Dimension(200, 45));
+        panelBtnDeleteOrderLine.setBackground(new java.awt.Color(51, 102, 255));
+        panelBtnDeleteOrderLine.setPreferredSize(new java.awt.Dimension(200, 45));
 
         btnDeleteOrderLine.setForeground(new java.awt.Color(255, 255, 255));
         btnDeleteOrderLine.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        btnDeleteOrderLine.setText("Retirer une ligne");
+        btnDeleteOrderLine.setText("Supprimer la ligne");
         btnDeleteOrderLine.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnDeleteOrderLine.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                btnDeleteOrderLineMouseReleased(evt);
+            }
+        });
 
-        javax.swing.GroupLayout jPanel18Layout = new javax.swing.GroupLayout(jPanel18);
-        jPanel18.setLayout(jPanel18Layout);
-        jPanel18Layout.setHorizontalGroup(
-            jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(btnDeleteOrderLine, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE)
+        javax.swing.GroupLayout panelBtnDeleteOrderLineLayout = new javax.swing.GroupLayout(panelBtnDeleteOrderLine);
+        panelBtnDeleteOrderLine.setLayout(panelBtnDeleteOrderLineLayout);
+        panelBtnDeleteOrderLineLayout.setHorizontalGroup(
+            panelBtnDeleteOrderLineLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(btnDeleteOrderLine, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE)
         );
-        jPanel18Layout.setVerticalGroup(
-            jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        panelBtnDeleteOrderLineLayout.setVerticalGroup(
+            panelBtnDeleteOrderLineLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(btnDeleteOrderLine, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
         );
 
@@ -978,7 +1018,7 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addComponent(jLabel30, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jPanel18, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(panelBtnDeleteOrderLine, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(23, 23, 23)))
                         .addComponent(comboPurchaseStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
@@ -1015,7 +1055,7 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
                             .addComponent(labelShippingCost)
                             .addComponent(jLabel28)))
                     .addComponent(jPanel16, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel18, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(panelBtnDeleteOrderLine, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel35)
@@ -2003,7 +2043,7 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
         tabToClear.add(tableInvoiceAdresses);
         tabToClear.add(tableShipAddresses);
         tabToClear.add(tableOrderLine);
-        clearTableModels(tabToClear);
+        refreshTableModels(tabToClear);
 
         for (int ligne = 0; ligne < tableSearchOrder.getRowCount(); ligne++) {
             if (tableSearchOrder.isRowSelected(ligne)) {
@@ -2040,9 +2080,15 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
                                 OrderLineTableItem selectedOrderLineTableItem = (OrderLineTableItem) selectedLine.get(0);
                                 OrderLine selectedOrderLine = selectedOrderLineTableItem.getOrderLine();
                                 int orderLineIdToFind = selectedOrderLine.getOrdLineId();
-                                
-                                if (orderLine.getOrdLineId() == orderLineIdToFind) {
-                                    orderLine.setOrdLineQuantity(newQuantity);
+
+                                if (orderLine.getOrdLineId() == orderLineIdToFind && newQuantity != selectedOrderLine.getOrdLineQuantity()) {
+                                    if (newQuantity > selectedOrderLine.getBooIsbn13().getBooQuantity()) {
+                                        System.out.println("pas assez de stock");
+                                        btnRefreshMouseReleased(new MouseEvent(tableOrderLine, 0, 0, 0, 100, 100, 1, false));
+                                    } else {
+                                        orderLine.setOrdLineQuantity(newQuantity);
+                                        btnRefreshMouseReleased(new MouseEvent(tableOrderLine, 0, 0, 0, 100, 100, 1, false));
+                                    }
                                 }
                             }
                         } catch (Exception ex) {
@@ -2059,7 +2105,6 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
             if (tableShipAddresses.isRowSelected(ligne)) {
                 AddressTableItem addressTable = (AddressTableItem) tableShipAddresses.getValueAt(ligne, 0);
                 currentShipAddress = addressTable.getAddress();
-                System.out.println(currentShipAddress);
                 fillDeliveryAddressFields(currentShipAddress);
             }
         }
@@ -2070,7 +2115,6 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
             if (tableInvoiceAdresses.isRowSelected(ligne)) {
                 AddressTableItem addressTable = (AddressTableItem) tableInvoiceAdresses.getValueAt(ligne, 0);
                 currentInvoiceAddress = addressTable.getAddress();
-                System.out.println(currentInvoiceAddress);
                 fillInvoiceAddressFields(currentInvoiceAddress);
             }
         }
@@ -2079,13 +2123,26 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
     private void btnRefreshMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRefreshMouseReleased
         Vector tablesToClear = new Vector();
         tablesToClear.add(tableOrderLine);
-        clearTableModels(tablesToClear);
+        refreshTableModels(tablesToClear);
         updateOrderLineTable();
-        
-        for(OrderLine ord : currentOrderLineList){
-            System.out.println(ord);
-        }
     }//GEN-LAST:event_btnRefreshMouseReleased
+
+    private void btnDeleteOrderLineMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDeleteOrderLineMouseReleased
+        for (int ligne = 0; ligne < tableOrderLine.getRowCount(); ligne++) {
+            if (tableOrderLine.isRowSelected(ligne)) {
+                for (OrderLine orderLine : currentOrderLineList) {
+                    Vector selectedLine = (Vector) orderStatusTableList.elementAt(ligne);
+                    OrderLineTableItem selectedOrderLineTableItem = (OrderLineTableItem) selectedLine.get(0);
+                    OrderLine selectedOrderLine = selectedOrderLineTableItem.getOrderLine();
+                    int orderLineIdToFind = selectedOrderLine.getOrdLineId();
+                    if (orderLine.getOrdLineId() == orderLineIdToFind) {
+                        currentOrderLineList.remove(orderLine);
+                        btnRefreshMouseReleased(new MouseEvent(tableOrderLine, 0, 0, 0, 100, 100, 1, false));
+                    }
+                }
+            }
+        }
+    }//GEN-LAST:event_btnDeleteOrderLineMouseReleased
 
     /**
      * @param args the command line arguments
@@ -2205,7 +2262,6 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
     private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel16;
     private javax.swing.JPanel jPanel17;
-    private javax.swing.JPanel jPanel18;
     private javax.swing.JPanel jPanel19;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel20;
@@ -2233,6 +2289,7 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
     private javax.swing.JLabel labelShippingCost;
     private javax.swing.JLabel labelTotalOrderTTC;
     private javax.swing.JLabel labelTotalVAT;
+    private javax.swing.JPanel panelBtnDeleteOrderLine;
     private javax.swing.JPanel panelPayExpirationDate;
     private javax.swing.JPanel panelPayment;
     private javax.swing.JTable tableBooks;

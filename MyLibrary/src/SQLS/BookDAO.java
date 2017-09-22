@@ -263,51 +263,7 @@ public class BookDAO extends DAO {
         return book;
     }
 
-//    public SubTheme findSubThemeByBook (String isbn){
-//        Book boo = null;
-//        SubTheme sub = null;
-//        Theme the = null;
-//        StringBuffer query = new StringBuffer();
-//        query.append("SELECT sub.subId,  subName, sub.theId ")
-//                .append("FROM Book boo ")
-//                .append("JOIN Association ass ")
-//                .append("ON boo.booIsbn13 = ass.booIsbn13 ")
-//                .append("JOIN SubTheme sub ")
-//                .append("ON ass.subId = sub.subId ")
-//                .append("JOIN Theme the ")
-//                .append("ON sub.theId = the.theId ")
-//                .append("WHERE boo.booIsbn13 ")
-//                .append(" = ")
-//                .append("'" + isbn + "'");
-//        
-//        try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
-//
-//            ResultSet rs = pstmt.executeQuery();
-//
-//            if (rs.isBeforeFirst()) {
-//
-//                while (rs.next()) {
-//                    sub = new SubTheme();
-//                    sub.setSubId(rs.getInt(SubThemeNames.ID));
-//                    sub.setSubName(rs.getString(SubThemeNames.NAME));
-//                    the = new Theme();
-//                    the.setTheId(rs.getInt(SubThemeNames.THEME_ID));
-//                    sub.setTheId(the);
-//                    System.out.println("subtheme "+sub.getSubId()+sub.getSubName()+sub.getTheId()+sub.getSubDescription());
-//                    
-//                }
-//            } else {
-//                throw new SQLException("ResultSet Sub was empty");
-//            }
-//
-//        } catch (SQLException ex) {
-//            System.out.println("ERROR sub Retrieving Object : " + ex.getMessage());
-//            
-//
-//        }
-//        return sub;
-//        
-//    }
+
         
     
     

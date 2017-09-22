@@ -8,13 +8,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
 
-public class WritingDAO extends DAO<Having> {
+public class HavingDAO extends DAO<Having> {
 
-    private final String TABLE = "Writing";
-    private final String ID = "booIsbn13";
-    private final String AUT = "autId";
+    private final String TABLE = "Having";
+    private final String BOOK_ISBN = "booIsbn13";
+    private final String OFFER_ID = "offId";
 
-    private String COLUMNS_CREATE = ID + ", " + AUT;
+    private String COLUMNS_CREATE = BOOK_ISBN + ", " + OFFER_ID;
 
     @Override
     public void create(Having obj) {
@@ -45,9 +45,9 @@ public class WritingDAO extends DAO<Having> {
 
         Having writing = (Having) obj;
         StringBuilder query = new StringBuilder("UPDATE " + TABLE + " SET ");
-        query.append(AUT).append(" = ? ");
+        query.append(OFFER_ID).append(" = ? ");
 
-        query.append("WHERE " + AUT + " = '")
+        query.append("WHERE " + OFFER_ID + " = '")
                 .append(writing.getAutId())
                 .append("'");
 

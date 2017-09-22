@@ -2,17 +2,17 @@
 package ClassObjet.ClassAssoc;
 
 
-public class Writing {
+public class Having {
     
     private String booIsbn13;
     private int autId;
     
     //Constructor
 
-    public Writing() {
+    public Having() {
     }
 
-    public Writing(String booIsbn13, int autId) {
+    public Having(String booIsbn13, int autId) {
         this.booIsbn13 = booIsbn13;
         this.autId = autId;
     }

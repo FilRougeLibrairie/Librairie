@@ -4,7 +4,7 @@ import ClassObjet.Author;
 import ClassObjet.Book;
 import ClassObjet.BookLanguage;
 import ClassObjet.ClassAssoc.Association;
-import ClassObjet.ClassAssoc.Writing;
+import ClassObjet.ClassAssoc.Having;
 import ClassObjet.Editor;
 import ClassObjet.Forma;
 import ClassObjet.Review;
@@ -1029,7 +1029,7 @@ public class JFBook2 extends javax.swing.JFrame {
             }
             if (jComboBoxSearch.getSelectedIndex() == 2) {
 
-                Vector<Writing> vWri = new Vector<Writing>();
+                Vector<Having> vWri = new Vector<Having>();
               
                 for (Book boo2 : v) {
                     if (v != null) {
@@ -1175,10 +1175,10 @@ public class JFBook2 extends javax.swing.JFrame {
         booDao.create(boo);
 
         /*----------------------------------------------------------------*/
-        /*           recuperation info pour la table Writing              */
+        /*           recuperation info pour la table Having              */
         /*----------------------------------------------------------------*/
         // pour la JcomboBoxAuthor
-        Writing wri = new Writing();
+        Having wri = new Having();
         wri.setBooIsbn13(tfIsbn.getText());
         Author a = new Author();
         a = (Author) jComboBoxAuthor.getSelectedItem();
@@ -1198,7 +1198,7 @@ public class JFBook2 extends javax.swing.JFrame {
 //            wriDao.create(wri2);
 //        }
 
-        
+       
         /*----------------------------------------------------------------*/
         /*           recuperation info pour la table Association          */
         /*----------------------------------------------------------------*/

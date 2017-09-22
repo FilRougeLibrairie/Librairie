@@ -290,6 +290,13 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
         Vector v = new Vector();
         v.add("Résultats");
         return new javax.swing.table.DefaultTableModel(customerTableList, v) {
+            boolean[] canEdit = new boolean[]{
+                false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit[columnIndex];
+            }
         };
     }
 
@@ -301,6 +308,13 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
         Vector v = new Vector();
         v.add("Nom Label");
         return new javax.swing.table.DefaultTableModel(addressTableList, v) {
+            boolean[] canEdit = new boolean[]{
+                false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit[columnIndex];
+            }
         };
     }
 
@@ -315,6 +329,13 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
         v.add("Status");
 
         return new javax.swing.table.DefaultTableModel(orderTableList, v) {
+            boolean[] canEdit = new boolean[]{
+                false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit[columnIndex];
+            }
         };
     }
 
@@ -328,6 +349,13 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
         v.add("Status");
         v.add("Note");
         return new javax.swing.table.DefaultTableModel(reviewTableList, v) {
+            boolean[] canEdit = new boolean[]{
+                false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit[columnIndex];
+            }
         };
     }
 
