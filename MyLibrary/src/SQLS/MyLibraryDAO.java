@@ -200,6 +200,8 @@ public class MyLibraryDAO extends DAO<MyLibrary>{
                     myLibrary.setMyLibAddComplement(rs.getString(COMPLEMENT));
                     myLibrary.setMyLibAddZipCode(rs.getString(ZIP_CODE));
                     myLibrary.setMyLibAddCity(rs.getString(CITY));
+                    myLibraryList.add(myLibrary);
+                    
                 }
             } else {
                 throw new SQLException("ResultSet was empty");

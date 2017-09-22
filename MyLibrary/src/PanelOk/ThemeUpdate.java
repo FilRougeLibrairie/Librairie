@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package PanelOk;
 
 import ClassObjet.Theme;
@@ -11,10 +7,7 @@ import SQLS.ThemeDAO;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author Chrys
- */
+
 public class ThemeUpdate extends javax.swing.JPanel {
 
     ThemeDAO themeDAO = new ThemeDAO();

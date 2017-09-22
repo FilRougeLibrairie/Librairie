@@ -1,6 +1,7 @@
 
 package Home;
 
+import PanelOk.LibraryPanel;
 import PanelOk.JFReview;
 import PanelOk.AccessPanel;
 
@@ -78,6 +79,8 @@ CustomerPanel cus = new CustomerPanel();
         bAccess = new javax.swing.JLabel();
         jPanel22 = new javax.swing.JPanel();
         bModerate = new javax.swing.JLabel();
+        jPanel25 = new javax.swing.JPanel();
+        bModerate1 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jBClient = new javax.swing.JButton();
         jBProduct = new javax.swing.JButton();
@@ -743,11 +746,48 @@ CustomerPanel cus = new CustomerPanel();
         jPanel22.setLayout(jPanel22Layout);
         jPanel22Layout.setHorizontalGroup(
             jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(bModerate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(bModerate, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel22Layout.setVerticalGroup(
             jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(bModerate, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
+        );
+
+        jPanel25.setMinimumSize(new java.awt.Dimension(80, 40));
+        jPanel25.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                jPanel25MouseMoved(evt);
+            }
+        });
+        jPanel25.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel25MouseClicked(evt);
+            }
+        });
+
+        bModerate1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        bModerate1.setText("Librairie");
+        bModerate1.setAlignmentX(0.5F);
+        bModerate1.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                bModerate1MouseMoved(evt);
+            }
+        });
+        bModerate1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                bModerate1MouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel25Layout = new javax.swing.GroupLayout(jPanel25);
+        jPanel25.setLayout(jPanel25Layout);
+        jPanel25Layout.setHorizontalGroup(
+            jPanel25Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(bModerate1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel25Layout.setVerticalGroup(
+            jPanel25Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(bModerate1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout menuAdminLayout = new javax.swing.GroupLayout(menuAdmin);
@@ -757,6 +797,7 @@ CustomerPanel cus = new CustomerPanel();
             .addComponent(jPanel19, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
             .addComponent(jPanel21, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jPanel22, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel25, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         menuAdminLayout.setVerticalGroup(
             menuAdminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -767,7 +808,9 @@ CustomerPanel cus = new CustomerPanel();
                 .addComponent(jPanel21, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel22, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(515, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel25, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(463, Short.MAX_VALUE))
         );
 
         jpMenu.add(menuAdmin);
@@ -1267,9 +1310,9 @@ CustomerPanel cus = new CustomerPanel();
     private void bAddEmployeeMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bAddEmployeeMouseMoved
 
         setColor(jPanel19);
-        
         resetColor(jPanel21);
         resetColor(jPanel22);
+        resetColor(jPanel25);
     }//GEN-LAST:event_bAddEmployeeMouseMoved
 
     private void bAddEmployeeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bAddEmployeeMouseClicked
@@ -1290,6 +1333,7 @@ CustomerPanel cus = new CustomerPanel();
         setColor(jPanel19);
         resetColor(jPanel21);
         resetColor(jPanel22);
+        resetColor(jPanel25);
 
     }//GEN-LAST:event_jPanel19MouseMoved
 
@@ -1299,6 +1343,7 @@ CustomerPanel cus = new CustomerPanel();
         resetColor(jPanel19);
         setColor(jPanel21);
         resetColor(jPanel22);
+        resetColor(jPanel25);
     }//GEN-LAST:event_bAccessMouseMoved
 
     private void bAccessMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bAccessMouseClicked
@@ -1318,12 +1363,14 @@ CustomerPanel cus = new CustomerPanel();
         resetColor(jPanel19);
         setColor(jPanel21);
         resetColor(jPanel22);
+        resetColor(jPanel25);
     }//GEN-LAST:event_jPanel21MouseMoved
 
     private void jPanel22MouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel22MouseMoved
         resetColor(jPanel19);
         resetColor(jPanel21);
         setColor(jPanel22);
+        resetColor(jPanel25);
     }//GEN-LAST:event_jPanel22MouseMoved
 
     private void bAddEmployeeMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bAddEmployeeMouseReleased
@@ -1335,6 +1382,7 @@ CustomerPanel cus = new CustomerPanel();
         resetColor(jPanel19);
         resetColor(jPanel21);
         setColor(jPanel22);
+        resetColor(jPanel25);
     }//GEN-LAST:event_bModerateMouseMoved
 
     private void bModerateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bModerateMouseClicked
@@ -1663,6 +1711,46 @@ CustomerPanel cus = new CustomerPanel();
         
     }//GEN-LAST:event_jPanel22MouseClicked
 
+    private void jPanel25MouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel25MouseMoved
+
+        resetColor(jPanel19);
+        resetColor(jPanel21);
+        resetColor(jPanel22);
+        setColor(jPanel25);
+    }//GEN-LAST:event_jPanel25MouseMoved
+
+    private void jPanel25MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel25MouseClicked
+
+        jpPrincipal.removeAll();
+        jpPrincipal.validate();
+        LibraryPanel lib = new LibraryPanel();
+        jpPrincipal.setLayout(new BorderLayout());
+        jpPrincipal.add(lib, BorderLayout.NORTH);
+        jpPrincipal.setVisible(true);
+        jpPrincipal.revalidate();
+
+    }//GEN-LAST:event_jPanel25MouseClicked
+
+    private void bModerate1MouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bModerate1MouseMoved
+
+        resetColor(jPanel19);
+        resetColor(jPanel21);
+        resetColor(jPanel22);
+        setColor(jPanel25);
+    }//GEN-LAST:event_bModerate1MouseMoved
+
+    private void bModerate1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bModerate1MouseClicked
+
+        jpPrincipal.removeAll();
+        jpPrincipal.validate();
+        LibraryPanel lib = new LibraryPanel();
+        jpPrincipal.setLayout(new BorderLayout());
+        jpPrincipal.add(lib, BorderLayout.NORTH);
+        jpPrincipal.setVisible(true);
+        jpPrincipal.revalidate();
+        
+    }//GEN-LAST:event_bModerate1MouseClicked
+
     void setColor(JPanel panel) {
         panel.setBackground(new Color(102, 102, 102));
     }
@@ -1682,6 +1770,7 @@ CustomerPanel cus = new CustomerPanel();
     private javax.swing.JLabel bFormats1;
     private javax.swing.JLabel bKeyWord;
     private javax.swing.JLabel bModerate;
+    private javax.swing.JLabel bModerate1;
     private javax.swing.JLabel bPrice;
     private javax.swing.JLabel bPurchase;
     private javax.swing.JLabel bSubTheme;
@@ -1705,6 +1794,7 @@ CustomerPanel cus = new CustomerPanel();
     private javax.swing.JPanel jPanel22;
     private javax.swing.JPanel jPanel23;
     private javax.swing.JPanel jPanel24;
+    private javax.swing.JPanel jPanel25;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jpMenu;

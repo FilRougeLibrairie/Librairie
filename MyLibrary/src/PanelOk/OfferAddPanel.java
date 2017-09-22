@@ -19,7 +19,8 @@ public class OfferAddPanel extends javax.swing.JPanel {
 
     JDatePickerImpl datePicker,datePicker2;
     private JFileChooser jfc = new JFileChooser();
-    private String date,dateEnd;JOptionPane jop1, jop2 = new JOptionPane();
+    private String date,dateEnd;
+    JOptionPane jop1, jop2 = new JOptionPane();
     
     public OfferAddPanel() {
         initComponents();

@@ -19,6 +19,7 @@ public class attention {
                           System.out.println("gerer les trucs lié dans les tables");
                           System.out.println("mettre des infos dans les statut de note");
                           System.out.println("mettre date review en date");
+                          System.out.println("supprmer adresse de merise");
     }
 }
 

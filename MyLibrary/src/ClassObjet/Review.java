@@ -41,11 +41,6 @@ public class Review {
        
         v.add(this.getRevId());
      
-        
-        
-        
-        
-      
         return v;
     }
     

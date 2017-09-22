@@ -5,6 +5,8 @@
  */
 package ClassObjet;
 
+import java.util.Vector;
+
 /**
  *
  * @author Tofi
@@ -28,6 +30,47 @@ public class MyLibrary {
 
     public MyLibrary() {
     }
+
+    public MyLibrary(int myLibId, String myLibName, String myLibLogo, String myLibEmail, String myLibPhone, String myLibSiret, String myLibCGU, String myLibAddNumber, String myLibAddStreetName, String myLibAddComplement, String myLibAddZipCode, String myLibAddCity) {
+        this.myLibId = myLibId;
+        this.myLibName = myLibName;
+        this.myLibLogo = myLibLogo;
+        this.myLibEmail = myLibEmail;
+        this.myLibPhone = myLibPhone;
+        this.myLibSiret = myLibSiret;
+        this.myLibCGU = myLibCGU;
+        this.myLibAddNumber = myLibAddNumber;
+        this.myLibAddStreetName = myLibAddStreetName;
+        this.myLibAddComplement = myLibAddComplement;
+        this.myLibAddZipCode = myLibAddZipCode;
+        this.myLibAddCity = myLibAddCity;
+    }
+    
+    
+    
+    
+    
+     public Vector getVector() {
+        Vector v= new Vector();
+       
+        v.add(this.getMyLibAddCity());
+        v.add(this.getMyLibAddComplement());
+        v.add(this.getMyLibAddNumber());
+        v.add(this.getMyLibAddStreetName());
+        v.add(this.getMyLibAddZipCode());
+        v.add(this.getMyLibCGU());
+        v.add(this.getMyLibEmail());
+        v.add(this.getMyLibId());
+        v.add(this.getMyLibLogo());
+        v.add(this.getMyLibName());
+        v.add(this.getMyLibPhone());
+        v.add(this.getMyLibSiret());
+      
+        return v;
+    }
+    
+    
+    
     
     
    //Setters
