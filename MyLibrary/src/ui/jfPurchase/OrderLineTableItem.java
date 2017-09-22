@@ -32,17 +32,17 @@ public class OrderLineTableItem {
         this.quantity = orderLine.getOrdLineQuantity();
         this.stock = orderLine.getBooIsbn13().getBooQuantity();
         if (orderLine.getBooIsbn13().getCurrentOffer() != null) {
-//            this.discount = orderLine.getBooIsbn13().getCurrentOffer().getOffDiscount();
-              this.discount = 50;
+            this.discount = orderLine.getBooIsbn13().getCurrentOffer().getOffDiscount();
+//              this.discount = 50;
         } else {
             this.discount = 0;
         }
         this.unitPriceHT = orderLine.getOrdBookPriceHT();
         
         Float unitPriceAfterDiscount = PriceCalculation.calculateDiscount(this.unitPriceHT, this.discount);
-        this.totalPriceHT = unitPriceAfterDiscount * quantity;
+        this.totalPriceHT = PriceCalculation.getRoundedPrice(unitPriceAfterDiscount * quantity);
         this.vat = orderLine.getOrdBookVAT();
-        this.totalPriceTTC = PriceCalculation.roundedPrice(PriceCalculation.calculatePriceTTC(unitPriceAfterDiscount, vat) * quantity);
+        this.totalPriceTTC = PriceCalculation.getRoundedPrice(PriceCalculation.calculatePriceTTC(unitPriceAfterDiscount, vat) * quantity);
     }
 
     public Vector getVector() {

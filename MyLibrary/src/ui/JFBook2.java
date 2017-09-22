@@ -1159,7 +1159,7 @@ public class JFBook2 extends javax.swing.JFrame {
         boo.setBooTitle(tfTitle.getText());
         boo.setBooSubtitle(tfSubTitle.getText());
         boo.setBooPublishYear(tfYearEdition.getText());
-        Float price = PriceCalculation.roundedPrice(Float.valueOf(tfPriceHt.getText()));
+        Float price = PriceCalculation.getRoundedPrice(Float.valueOf(tfPriceHt.getText()));
         boo.setBooPriceHT(price);
         boo.setBooResume(taResume.getText());
         boo.setBooQuantity(Integer.valueOf(tfQuantity.getText()));

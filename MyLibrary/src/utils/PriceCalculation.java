@@ -10,7 +10,7 @@ public class PriceCalculation {
         return priceHT * (1 + (vat / 100));
     }
 
-    public static float roundedPrice(Float price) {
+    public static float getRoundedPrice(Float price) {
         return ((int) (price * 100) / 100.00f);
     }
 
