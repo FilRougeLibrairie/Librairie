@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package PanelEnCoursChrys;
+package PanelACreer;
 
 /**
  *
@@ -17,7 +17,9 @@ public class attention {
                           System.out.println("auteur selection actif/inactif");
                           System.out.println("sous theme modifier");
                           System.out.println("gerer les trucs lié dans les tables");
-}
+                          System.out.println("mettre des infos dans les statut de note");
+                          System.out.println("mettre date review en date");
+    }
 }
 
 
