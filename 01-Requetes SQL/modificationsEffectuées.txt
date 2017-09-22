@@ -1,4 +1,4 @@
-autoIncrement sur vat, language, accessProfile
+﻿autoIncrement sur vat, language, accessProfile
 
 offer 
   - changement du datetime en date
@@ -29,6 +29,10 @@ Employee
   
 Editor
   - insertion d'un editeur inactif
+  - modification des données de statut
+
+Author
+  - modification des données de statut
 
 Keywords
   - insertion d'un statut en int (keyStatus)
