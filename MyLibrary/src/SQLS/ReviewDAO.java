@@ -75,7 +75,7 @@ public class ReviewDAO extends DAO<Review> {
         query.append("WHERE " + ID + " = ")
                 .append(rev.getRevId());
 
-        System.out.println(query);
+        
         
         try (PreparedStatement pstmt = connect.prepareStatement(query.toString());) {
 
@@ -187,6 +187,7 @@ public class ReviewDAO extends DAO<Review> {
                     review.setRevDate(rs.getString(DATE));
                     review.setRevIP(rs.getString(IP));
                     review.setRevStatus(rs.getInt(STATUS));
+                    reviewList.add(review);
                 }
             } else {
                 throw new SQLException("ResultSet was empty");

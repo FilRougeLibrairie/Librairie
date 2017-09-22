@@ -1,8 +1,11 @@
-package PanelACreer;
+package PanelOk;
 
+import ClassObjet.Customer;
+import ClassObjet.OrderLine;
 import ClassObjet.Review;
 import SQLS.ReviewDAO;
 import java.util.Vector;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class JFReview extends javax.swing.JFrame {
@@ -12,10 +15,19 @@ public class JFReview extends javax.swing.JFrame {
     String term = null;
     String column = null;
     Vector<Review> reviewList;
+    JOptionPane jop1, jop2= new JOptionPane();
 
     public JFReview() {
         initComponents();
         comboSearch.setSelectedIndex(-1);
+        jComboStatut.setEnabled(false);
+        jTrevId.setEnabled(false);
+        jTOrd.setEnabled(false);
+        jTcusId.setEnabled(false);
+        jTDate.setEnabled(false);
+        jTbooIsbn.setEnabled(false);
+        jTIp.setEnabled(false);
+
     }
 
     public DefaultTableModel initTableModel() {
@@ -25,9 +37,8 @@ public class JFReview extends javax.swing.JFrame {
         return new javax.swing.table.DefaultTableModel(
                 initReviewVector(), v) {
                     boolean[] canEdit = new boolean[]{
-                        false, true, true, true
+                        false
                     };
-
                     public boolean isCellEditable(int rowIndex, int columnIndex) {
                         return canEdit[columnIndex];
                     }
@@ -37,34 +48,39 @@ public class JFReview extends javax.swing.JFrame {
     private Vector initReviewVector() {
         Vector v = new Vector();
         int termInt = 0;
-
         if (comboSearch.getSelectedItem() != null) {
             reviewList = new Vector<Review>();
             String type = (String) comboSearch.getSelectedItem();
             // cas book
             if ("Livre".equals(type)) {
                 term = tfSearch.getText().trim();
-                reviewList = reviewDAO.findByIsbn(term);
-
+                if (term == null || term.isEmpty() || term.equalsIgnoreCase("Entrer le n° ISBN du livre")) {
+                    reviewList = reviewDAO.findAll();
+                } else {
+                    reviewList = reviewDAO.findByIsbn(term);
+                }
             }
+
             // cas client
             if (type.equalsIgnoreCase("Client")) {
                 column = "cusId";
                 term = tfSearch.getText().trim();
-                reviewList = reviewDAO.findByCustomer(term);
+                if (term == null || term.isEmpty() || term.equalsIgnoreCase("Entrer le n° de client")) {
+                    reviewList = reviewDAO.findAll();
+                } else {
+                    reviewList = reviewDAO.findByCustomer(term);
+                }
             }
             for (Review rev : reviewList) {
-
                 Review p = new Review(rev.getRevId());
                 v.add(p.getVector());
             }
 
-           // cas Statut en attente
+            // cas Statut en attente
             if (type.equalsIgnoreCase("Statut en attente")) {
                 column = "revStatus";
                 termInt = 2;
                 reviewList = reviewDAO.findByColumn(column, termInt);
-
                 for (Review rev : reviewList) {
 
                     Review p = new Review(rev.getRevId());
@@ -72,13 +88,11 @@ public class JFReview extends javax.swing.JFrame {
                 }
             }
 
-           // cas Statut valide
+            // cas Statut valide
             if (type.equalsIgnoreCase("Statut validé")) {
-
-                column = "revStatus";
+               column = "revStatus";
                 termInt = 3;
                 reviewList = reviewDAO.findByColumn(column, termInt);
-
                 for (Review rev : reviewList) {
 
                     Review p = new Review(rev.getRevId());
@@ -86,19 +100,16 @@ public class JFReview extends javax.swing.JFrame {
                 }
             }
 
-           // cas Statut rejete
+            // cas Statut rejete
             if (type.equalsIgnoreCase("Statut rejeté")) {
                 column = "revStatus";
                 termInt = 4;
                 reviewList = reviewDAO.findByColumn(column, termInt);
-
                 for (Review rev : reviewList) {
-
-                    Review p = new Review(rev.getRevId());
+                   Review p = new Review(rev.getRevId());
                     v.add(p.getVector());
                 }
             }
-
         }
         return v;
     }
@@ -141,9 +152,11 @@ public class JFReview extends javax.swing.JFrame {
         jComboStatut = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(900, 800));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+
+        jInternalFrame1.setBackground(new java.awt.Color(255, 255, 255));
         jInternalFrame1.setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
         jInternalFrame1.setVisible(true);
 
@@ -276,6 +289,11 @@ public class JFReview extends javax.swing.JFrame {
         btnNo.setForeground(new java.awt.Color(255, 255, 255));
         btnNo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         btnNo.setText("REJETER");
+        btnNo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnNoMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel23Layout = new javax.swing.GroupLayout(jPanel23);
         jPanel23.setLayout(jPanel23Layout);
@@ -395,38 +413,26 @@ public class JFReview extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+int revId =0;
     private void tableSearchMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableSearchMouseReleased
 
-        int revId = Integer.valueOf(tableSearch.getValueAt(tableSearch.getSelectedRow(), 0).toString());
-
+        revId = Integer.valueOf(tableSearch.getValueAt(tableSearch.getSelectedRow(), 0).toString());
         jTrevId.setText(String.valueOf(reviewDAO.find(revId).getRevId()));
-
         jTOrd.setText(String.valueOf(reviewDAO.find(revId).getOrdLineId().getOrdLineId()));
-
         jTcusId.setText(String.valueOf(reviewDAO.find(revId).getCusId().getCusID()));
-
         jTDate.setText(String.valueOf(reviewDAO.find(revId).getRevDate()));
         jTbooIsbn.setText(String.valueOf(reviewDAO.find(revId).getBooIsbn13()));
-
-        
-        if(reviewDAO.find(revId).getRevStatus()==2){
-            
+        if (reviewDAO.find(revId).getRevStatus() == 2) {
             jComboStatut.setSelectedIndex(0);
         }
-        if(reviewDAO.find(revId).getRevStatus()==3){
-            
+        if (reviewDAO.find(revId).getRevStatus() == 3) {
             jComboStatut.setSelectedIndex(1);
         }
-        if(reviewDAO.find(revId).getRevStatus()==4){
-            
+        if (reviewDAO.find(revId).getRevStatus() == 4) {
             jComboStatut.setSelectedIndex(2);
         }
-        
-        
-        
         jTIp.setText(String.valueOf(reviewDAO.find(revId).getRevIP()));
-        jtNote.setText(String.valueOf(reviewDAO.find(revId).getRevIP()));
+        jtNote.setText(String.valueOf(reviewDAO.find(revId).getRevNote()));
         jTComment.setText(String.valueOf(reviewDAO.find(revId).getRevComment()));
 
     }//GEN-LAST:event_tableSearchMouseReleased
@@ -443,28 +449,81 @@ public class JFReview extends javax.swing.JFrame {
     private void comboSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboSearchActionPerformed
 
         if (comboSearch.getSelectedItem() != null) {
-
+            if (comboSearch.getSelectedItem().equals("Client")) {
+                tfSearch.setText("Entrer le n° de client");
+            }
+            if (comboSearch.getSelectedItem().equals("Livre")) {
+                tfSearch.setText("Entrer le n° ISBN du livre");
+            }
             if (comboSearch.getSelectedItem().equals("Statut en attente") || comboSearch.getSelectedItem().equals("Statut validé") || comboSearch.getSelectedItem().equals("Statut rejeté")) {
-
+                tfSearch.setText(null);
                 tfSearch.setEnabled(false);
                 jComboStatut.setEnabled(false);
             } else {
                 tfSearch.setEnabled(true);
             }
-
         }
 
 
     }//GEN-LAST:event_comboSearchActionPerformed
 
     private void btnSaveMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSaveMouseClicked
-        
-       
-            
-        
+
+    
+    review= new Review();
+    
+    review.setBooIsbn13(jTbooIsbn.getText());
+    Customer cus= new Customer();
+    cus.setCusID(Integer.valueOf(jTcusId.getText()));
+    review.setCusId(cus);
+    OrderLine ord = new OrderLine();
+    ord.setOrdLineId(Integer.valueOf(jTOrd.getText()));
+    review.setOrdLineId(ord);
+    
+    review.setRevComment(jTComment.getText());
+    review.setRevDate(String.valueOf(reviewDAO.find(revId).getRevDate()));
+    review.setRevIP(jTIp.getText());
+    review.setRevId(Integer.valueOf(jTrevId.getText()));
+    review.setRevNote(Float.valueOf(jtNote.getText()));
+    review.setRevStatus(3);
+  
+        reviewDAO.update(review);
+        jop1.showMessageDialog(null, "Commentaire validé", "Information", JOptionPane.INFORMATION_MESSAGE);
+        tableSearch.setModel(initTableModel());
         
         
     }//GEN-LAST:event_btnSaveMouseClicked
+
+    private void btnNoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnNoMouseClicked
+
+        
+review= new Review();
+    
+    review.setBooIsbn13(jTbooIsbn.getText());
+    Customer cus= new Customer();
+    cus.setCusID(Integer.valueOf(jTcusId.getText()));
+    review.setCusId(cus);
+    OrderLine ord = new OrderLine();
+    ord.setOrdLineId(Integer.valueOf(jTOrd.getText()));
+    review.setOrdLineId(ord);
+    
+    review.setRevComment(jTComment.getText());
+    review.setRevDate(String.valueOf(reviewDAO.find(revId).getRevDate()));
+    review.setRevIP(jTIp.getText());
+    review.setRevId(Integer.valueOf(jTrevId.getText()));
+    review.setRevNote(Float.valueOf(jtNote.getText()));
+    review.setRevStatus(4);
+  
+        reviewDAO.update(review);
+        jop1.showMessageDialog(null, "Commentaire refusé", "Information", JOptionPane.INFORMATION_MESSAGE);
+        tableSearch.setModel(initTableModel());
+
+
+
+
+
+// TODO add your handling code here:
+    }//GEN-LAST:event_btnNoMouseClicked
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */

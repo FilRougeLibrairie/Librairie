@@ -1,6 +1,7 @@
 
 package Home;
 
+import PanelOk.JFReview;
 import PanelOk.AccessPanel;
 
 import PanelOk.OfferPanel;
@@ -1338,14 +1339,14 @@ CustomerPanel cus = new CustomerPanel();
 
     private void bModerateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bModerateMouseClicked
         
-//       jpPrincipal.removeAll();
-//       jpPrincipal.validate();
-//       jpPrincipal.add(jInternalFrame1);
-//       JFReview rev = new JFReview();
-//        jInternalFrame1.setContentPane(rev.getContentPane());
-//        jInternalFrame1.setVisible(true);
-//       jpPrincipal.setVisible(true);
-//       jpPrincipal.revalidate();
+       jpPrincipal.removeAll();
+       jpPrincipal.validate();
+       jpPrincipal.add(jInternalFrame1);
+       JFReview rev = new JFReview();
+        jInternalFrame1.setContentPane(rev.getContentPane());
+        jInternalFrame1.setVisible(true);
+       jpPrincipal.setVisible(true);
+       jpPrincipal.revalidate();
        
        
     }//GEN-LAST:event_bModerateMouseClicked
@@ -1648,14 +1649,14 @@ CustomerPanel cus = new CustomerPanel();
     private void jPanel22MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel22MouseClicked
         
         
-//        jpPrincipal.removeAll();
-//       jpPrincipal.validate();
-//       jpPrincipal.add(jInternalFrame1);
-//       JFReview rev = new JFReview();
-//        jInternalFrame1.setContentPane(rev.getContentPane());
-//        jInternalFrame1.setVisible(true);
-//       jpPrincipal.setVisible(true);
-//       jpPrincipal.revalidate();
+        jpPrincipal.removeAll();
+       jpPrincipal.validate();
+       jpPrincipal.add(jInternalFrame1);
+       JFReview rev = new JFReview();
+        jInternalFrame1.setContentPane(rev.getContentPane());
+        jInternalFrame1.setVisible(true);
+       jpPrincipal.setVisible(true);
+       jpPrincipal.revalidate();
         
         
         
