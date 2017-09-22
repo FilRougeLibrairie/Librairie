@@ -124,7 +124,7 @@ public class PurchaseDAO extends DAO {
         addrDelivery = null;
         addrInvoice = null;
 
-        String query = "SELECT * FROM " + TABLE;
+        String query = "SELECT * FROM " + TABLE + " ORDER BY " + PurchaseNames.SHIPPING_DATE;
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query)) {
 

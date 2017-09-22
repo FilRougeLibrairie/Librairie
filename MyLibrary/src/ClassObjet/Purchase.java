@@ -5,6 +5,7 @@
  */
 package ClassObjet;
 
+import java.util.UUID;
 import java.util.Vector;
 
 /**
@@ -14,6 +15,7 @@ import java.util.Vector;
 public class Purchase {
 
     private int purId;
+    private UUID internId;
     private Customer customer;
     private ShippingCost shippingCostId;
     private Address addDelivery;
@@ -60,6 +62,12 @@ public class Purchase {
     public void setShippingNumber(int shippingNumber) {
         this.shippingNumber = shippingNumber;
     }
+
+    public void setUuid(UUID uuid) {
+        this.internId = uuid;
+    }
+    
+    
 
     //Getters
     public int getPurId() {
@@ -110,6 +118,10 @@ public class Purchase {
         orderstatusList.remove(orderStatus);
     }
 
+    public UUID getUuid() {
+        return internId;
+    }
+   
     @Override
     public String toString() {
         return "Purchase Id :" + purId + "\n"

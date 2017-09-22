@@ -229,8 +229,6 @@ public class OfferDAO extends DAO {
                 .append("AND offe.offDateEnd > @currentTime ")
                 .append("ORDER BY offDateEnd DESC ");
         
-        System.out.println(isbn13);
-        
          try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
             ResultSet rs = pstmt.executeQuery();
             if (rs.isBeforeFirst()) {
