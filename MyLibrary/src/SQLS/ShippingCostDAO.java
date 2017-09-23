@@ -96,7 +96,7 @@ public class ShippingCostDAO extends DAO<ShippingCost> {
     public Vector<ShippingCost> findAll() {
         Vector<ShippingCost> ShippingCostList = new Vector<ShippingCost>();
         ShippingCost shipcost = null;
-        String query = "SELECT * FROM " + TABLE;
+        String query = "SELECT * FROM " + TABLE + " ORDER BY " + ShippingCostNames.NAME;
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query)) {
 
@@ -108,6 +108,7 @@ public class ShippingCostDAO extends DAO<ShippingCost> {
                     shipcost.setShipId(rs.getInt(ID));
                     shipcost.setShipName(rs.getString(NAME));
                     shipcost.setShipCost(rs.getFloat(COST));
+                    ShippingCostList.add(shipcost);
                 }
             } else {
                 throw new SQLException("ResultSet was empty");

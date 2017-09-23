@@ -418,7 +418,6 @@ public class BookDAO extends DAO {
                 .append(" = ")
                 .append("'" + term + "'");
 
-        System.out.println();
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
 

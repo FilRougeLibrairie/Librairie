@@ -28,7 +28,10 @@ public class Purchase {
 
     //Constructor
     public Purchase() {
+        internId = generateInternalId();
     }
+    
+    
 
     //Setters
     public void setPurId(int purId) {
@@ -65,6 +68,10 @@ public class Purchase {
 
     public void setUuid(UUID uuid) {
         this.internId = uuid;
+    }
+    
+    private UUID generateInternalId(){
+        return UUID.randomUUID();
     }
     
     

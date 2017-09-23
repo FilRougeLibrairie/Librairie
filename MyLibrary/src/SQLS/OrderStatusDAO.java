@@ -168,8 +168,6 @@ public class OrderStatusDAO extends DAO {
                 .append(" = ")
                 .append("'" + term + "'");
 
-        System.out.println();
-
         try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
 
             ResultSet rs = pstmt.executeQuery();
@@ -194,6 +192,50 @@ public class OrderStatusDAO extends DAO {
     }
 
     public Vector<OrderStatus> findOrderStatusByPurchaseId(int purchaseId) {
+        Vector<OrderStatus> orderStatusList = new Vector<OrderStatus>();
+        OrderStatus orderStatus;
+        Purchase pur;
+        StringBuffer query = new StringBuffer();
+        query.append("DECLARE @purchaseId int ")
+                .append("SET @purchaseId = ? ")
+                .append("SELECT * ")
+                .append("FROM OrderStatus os ")
+                .append("JOIN Determinate det ")
+                .append("ON os.staCode = det.staCode ")
+                .append("JOIN Purchase pur ")
+                .append("ON det.purId = pur.purId ")
+                .append("WHERE pur.purId = @purchaseId ")
+                .append("ORDER BY det.detTime DESC");
+        
+        try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
+
+            pstmt.setInt(1, purchaseId);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.isBeforeFirst()) {
+
+                while (rs.next()) {
+                    orderStatus = new OrderStatus();
+                    pur = new Purchase();
+                    orderStatus.setStaCode(rs.getInt(CODE));
+                    orderStatus.setStaName(rs.getString(NAME));
+                    pur.setPurId((rs.getInt("purId")));
+                    orderStatus.setPurchase(pur);
+                    orderStatus.setStatusDate(rs.getString("detTime"));
+                    orderStatusList.add(orderStatus);
+                }
+            } else {
+                throw new SQLException("ResultSet was empty");
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
+        }
+        return orderStatusList;
+    }
+    
+    public Vector<OrderStatus> findCurrentOrderStatusByPurchaseId(int purchaseId) {
         Vector<OrderStatus> orderStatusList = new Vector<OrderStatus>();
         OrderStatus orderStatus;
         Purchase pur;

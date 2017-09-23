@@ -33,7 +33,6 @@ public class OrderLineTableItem {
         this.stock = orderLine.getBooIsbn13().getBooQuantity();
         if (orderLine.getBooIsbn13().getCurrentOffer() != null) {
             this.discount = orderLine.getBooIsbn13().getCurrentOffer().getOffDiscount();
-//              this.discount = 50;
         } else {
             this.discount = 0;
         }
