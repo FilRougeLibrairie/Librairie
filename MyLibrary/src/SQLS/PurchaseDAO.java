@@ -288,6 +288,7 @@ public class PurchaseDAO extends DAO {
 
                     pur.setPurId(rs.getInt(ID));
                     cus.setCusID(rs.getInt(CUSTOMER_ID));
+                    pur.setCusId(cus);
                     shipCost.setShipId(rs.getInt(SHIPPING_COST));
                     pur.setShippingCostId(shipCost);
                     addrDelivery.setAddId(rs.getInt(ADDRESS_DELIVERY));
@@ -307,6 +308,65 @@ public class PurchaseDAO extends DAO {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
         }
         return purList;
+    }
+
+    
+    // Find All Orders matching a specific status code
+    public Vector<Purchase> findByOrderStatus(int statusCode) {
+        Vector<Purchase> purchaseList = new Vector<Purchase>();
+        Purchase pur;
+        StringBuffer query = new StringBuffer();
+        query.append("DECLARE @statusCode int ")
+                .append("SET @statusCode = ")
+                .append("? ")
+                .append("SELECT * ")
+                .append("FROM OrderStatus os ")
+                .append("JOIN Determinate det ")
+                .append("ON os.staCode = det.staCode ")
+                .append("JOIN Purchase pur ")
+                .append("ON det.purId = pur.purId ")
+                .append("WHERE os.staCode = @statusCode ")
+                .append("ORDER BY det.detTime DESC");
+
+        try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
+
+            pstmt.setInt(1, statusCode);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.isBeforeFirst()) {
+
+                while (rs.next()) {
+                    pur = new Purchase();
+                    cus = new Customer();
+                    shipCost = new ShippingCost();
+                    addrDelivery = new Address();
+                    addrInvoice = new Address();
+
+                    pur.setPurId(rs.getInt(ID));
+                    cus.setCusID(rs.getInt(CUSTOMER_ID));
+                    pur.setCusId(cus);
+                    shipCost.setShipId(rs.getInt(SHIPPING_COST));
+                    pur.setShippingCostId(shipCost);
+                    addrDelivery.setAddId(rs.getInt(ADDRESS_DELIVERY));
+                    pur.setAddDeliveryId(addrDelivery);
+                    addrInvoice.setAddId(rs.getInt(ADDRESS_INVOICE));
+                    pur.setAddInvoiceId(addrInvoice);
+                    pur.setPurIP(rs.getString(IP));
+                    pur.setShippingDate(rs.getString(SHIPPING_DATE));
+                    pur.setShippingNumber(rs.getInt(SHIPPING_NUMBER));
+                    
+                    purchaseList.add(pur);
+                }
+            } else {
+                throw new SQLException("ResultSet was empty");
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
+        }
+        return purchaseList;
+
     }
 
     public Vector<OrderStatus> findAllOrderStatus(int purchaseId) {
