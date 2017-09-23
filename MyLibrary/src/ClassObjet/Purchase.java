@@ -132,6 +132,7 @@ public class Purchase {
     @Override
     public String toString() {
         return "Purchase Id :" + purId + "\n"
+                + "Internal Id : " + internId + "\n"
                 + "customer : " + customer + "\n"
                 + "Shipping Cost : " + shippingCostId + "\n"
                 + "Delivery Address Id : " + addDelivery + "\n"

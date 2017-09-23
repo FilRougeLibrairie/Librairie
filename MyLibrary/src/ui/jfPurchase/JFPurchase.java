@@ -341,9 +341,6 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
                     int indexOrderStatus = Integer.valueOf(termToFind);
                     OrderStatusDAO orderStatusDAO = new OrderStatusDAO();
                     Vector<OrderStatus> oderStatusList = orderStatusDAO.findCurrentOrderStatusByPurchaseId(currentPurchase.getPurId());
-                    for (OrderStatus ord : oderStatusList) {
-                        System.out.println(ord);
-                    }
                 } else {
                     if (criteria.equalsIgnoreCase(SearchCriteria.DATE.getDatabaseName())) {
                         criteria = PurchaseNames.SHIPPING_DATE;
@@ -363,6 +360,7 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
                     PurchaseTableItem purchaseTable = new PurchaseTableItem(pur);
                     purchaseTableList.add(purchaseTable.getVector());
                 }
+                
                 setTablePurchaseModel();
             } catch (Exception ex) {
                 ex.getMessage();
@@ -675,7 +673,7 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
         OrderStatusDAO orderStatusDAO = new OrderStatusDAO();
         Vector<OrderStatus> orderStatusList = orderStatusDAO.findOrderStatusByPurchaseId(currentPurchase.getPurId());
         tfReference.setText(String.valueOf(currentPurchase.getPurId()));
-        tfOrderDate.setText(currentPurchase.getShippingDate().toString());
+        tfOrderDate.setText(currentPurchase.getShippingDate());
         try {
             int indexLastOrderStatus = orderStatusList.firstElement().getStaCode();
             System.out.println(indexLastOrderStatus);
@@ -695,11 +693,12 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
         } catch (Exception ex) {
             JOptionPane.showConfirmDialog(null, JOptionPane.YES_NO_CANCEL_OPTION, "Informations manquantes", JOptionPane.WARNING_MESSAGE);
         }
-            System.out.println(currentPurchase.getUuid());
-        DateFormat dateFormat = new SimpleDateFormat("YYYY-MM-dd");
-        Date date = new Date();
-        currentPurchase.setShippingDate(date.toString());
-        System.out.println(currentPurchase);
+        System.out.println(currentPurchase.getUuid());
+        java.util.Date date = new Date();
+        Object purchaseDate = new java.sql.Timestamp(date.getTime());
+        currentPurchase.setShippingDate(purchaseDate.toString());
+        
+        // Save Order to DB and retrieve it to get its ID
         PurchaseDAO purchaseDAO = new PurchaseDAO();
         purchaseDAO.create(currentPurchase);
 
@@ -708,7 +707,18 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
         payment.setPayValidate(true);
         payment.setPurId(currentPurchase);
         payment.setPayDate(date.toString());
-
+        
+        // Save Order to DB and retrieve it to get its ID
+        Vector<Purchase> purList = purchaseDAO.findByColumn(PurchaseNames.INTERNAL_UUID, currentPurchase.getUuid());
+        //currentPurchase = purList.firstElement();
+        
+        // Save Order Lines with the sql id of currentPurchase
+        OrderLineDAO orderLineDAO = new OrderLineDAO();
+        for(OrderLine orderLine : currentOrderLineList){
+            orderLineDAO.create(orderLine);
+        }
+        
+        
     }
 
     private void clearTableModels(Vector<JTable> jtableList) {

@@ -70,7 +70,6 @@ public class Customer {
         } catch (ParseException ex) {
             System.out.println("Error formating DATE" + ex.getMessage());
         }
-
     }
 
     public void setCusPassword(String cusPassword) {

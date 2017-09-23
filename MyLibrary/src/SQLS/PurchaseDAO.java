@@ -47,8 +47,7 @@ public class PurchaseDAO extends DAO {
     @Override
     public void create(Object obj) {
         Purchase pur = (Purchase) obj;
-        String query = "IF NOT EXISTS (SELECT * FROM " + TABLE + " WHERE " + ID + " = '" + pur.getPurId() + "')"
-                + "INSERT INTO " + TABLE + " (" + COLUMNS_CREATE + ")"
+        String query = "INSERT INTO " + TABLE + " (" + COLUMNS_CREATE + ")"
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query);) {
@@ -63,6 +62,8 @@ public class PurchaseDAO extends DAO {
             pstmt.setString(8, pur.getUuid());
 
             int result = pstmt.executeUpdate();
+            
+            System.out.println("Create result : " + result);
 
         } catch (SQLException ex) {
             System.err.println("ERROR SAVING Object : " + ex.getErrorCode() + " / " + ex.getMessage());
@@ -192,7 +193,6 @@ public class PurchaseDAO extends DAO {
                     shipCost = new ShippingCost();
                     addrDelivery = new Address();
                     addrInvoice = new Address();
-                    
                     cus.setCusID(rs.getInt(CUSTOMER_ID));
                     shipCost.setShipId(rs.getInt(SHIPPING_COST));
                     pur.setShippingCostId(shipCost);
@@ -234,6 +234,8 @@ public class PurchaseDAO extends DAO {
                 .append(column)
                 .append(" = ")
                 .append("'" + term + "'");
+        
+        System.out.println(query);
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
 
