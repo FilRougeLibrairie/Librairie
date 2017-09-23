@@ -15,7 +15,7 @@ import java.util.Vector;
 public class Purchase {
 
     private int purId;
-    private UUID internId;
+    private String internId;
     private Customer customer;
     private ShippingCost shippingCostId;
     private Address addDelivery;
@@ -66,12 +66,12 @@ public class Purchase {
         this.shippingNumber = shippingNumber;
     }
 
-    public void setUuid(UUID uuid) {
+    public void setUuid(String uuid) {
         this.internId = uuid;
     }
     
-    private UUID generateInternalId(){
-        return UUID.randomUUID();
+    private String generateInternalId(){
+        return UUID.randomUUID().toString();
     }
     
     
@@ -125,7 +125,7 @@ public class Purchase {
         orderstatusList.remove(orderStatus);
     }
 
-    public UUID getUuid() {
+    public String getUuid() {
         return internId;
     }
    

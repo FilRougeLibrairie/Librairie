@@ -10,6 +10,7 @@ import Names.SQLNames;
 import SQLS.AddressDAO;
 import SQLS.BookDAO;
 import SQLS.CustomerDAO;
+import SQLS.OrderStatusDAO;
 import SQLS.PurchaseDAO;
 import SQLS.ReviewDAO;
 import SQLS.StatusDisplayDAO;
@@ -490,6 +491,7 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
 
     private void loadingOrderTable(Customer cus) {
         PurchaseDAO purchaseDAO = new PurchaseDAO();
+        OrderStatusDAO orderStatusDAO = new OrderStatusDAO();
         Vector<Purchase> orderList = new Vector<Purchase>();
         orderList = purchaseDAO.findByCustomerId(cus.getCusID());
         orderTableList = new Vector();
@@ -497,7 +499,7 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
         for (Purchase pur : orderList) {
             // Retrieving OrderStatusList
             try {
-                pur.setOrderstatusList(purchaseDAO.findAllOrderStatus(pur.getPurId()));
+                pur.setOrderstatusList(orderStatusDAO.findAllOrderStatus(pur.getPurId()));
                 OrderTableItem orderTable = new OrderTableItem(pur);
                 orderTableList.add(orderTable.getVector());
             } catch (Exception ex) {

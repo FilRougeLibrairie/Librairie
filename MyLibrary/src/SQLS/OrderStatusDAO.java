@@ -278,5 +278,49 @@ public class OrderStatusDAO extends DAO {
         }
         return orderStatusList;
     }
+    
+        public Vector<OrderStatus> findAllOrderStatus(int purchaseId) {
+        Vector<OrderStatus> osList = new Vector<OrderStatus>();
+        OrderStatus os;
+        Purchase pur;
+        StringBuffer query = new StringBuffer();
+        query.append("SELECT pur.purId, ord.staCode, ord.staName, det.detTime ")
+                .append("FROM OrderStatus ord ")
+                .append("JOIN Determinate det ")
+                .append("ON ord.staCode = det.staCode ")
+                .append("JOIN Purchase pur ")
+                .append("ON det.purId = pur.purId ")
+                .append("WHERE ")
+                .append("pur." + PurchaseNames.ID)
+                .append(" = ")
+                .append("?");
+
+        try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
+
+            pstmt.setInt(1, purchaseId);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.isBeforeFirst()) {
+
+                while (rs.next()) {
+                    os = new OrderStatus();
+                    pur = new Purchase();
+                    os.setPurchase(pur);
+                    os.setStaCode(rs.getInt(OrderStatusNames.CODE));
+                    os.setStaName(rs.getString(OrderStatusNames.NAME));
+                    os.setStatusDate(rs.getString(DeterminateNames.DATE_TIME));
+                    osList.add(os);
+                }
+            } else {
+                throw new SQLException("ResultSet was empty");
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
+        }
+        return osList;
+
+    }
 
 }

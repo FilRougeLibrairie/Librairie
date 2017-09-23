@@ -27,10 +27,11 @@ public class PurchaseDAO extends DAO {
     private final String IP = PurchaseNames.IP;
     private final String SHIPPING_DATE = PurchaseNames.SHIPPING_DATE;
     private final String SHIPPING_NUMBER = PurchaseNames.SHIPPING_NUMBER;
+    private final String INTERNAL_UUID = PurchaseNames.INTERNAL_UUID;
 
     private String COLUMNS_CREATE = CUSTOMER_ID + ", " + SHIPPING_COST + ", "
             + ADDRESS_DELIVERY + ", " + ADDRESS_INVOICE + ", " + IP + ", " + SHIPPING_DATE + ", "
-            + SHIPPING_NUMBER;
+            + SHIPPING_NUMBER + ", " + INTERNAL_UUID;
 
     Vector<Purchase> purList;
     Purchase pur;
@@ -48,7 +49,7 @@ public class PurchaseDAO extends DAO {
         Purchase pur = (Purchase) obj;
         String query = "IF NOT EXISTS (SELECT * FROM " + TABLE + " WHERE " + ID + " = '" + pur.getPurId() + "')"
                 + "INSERT INTO " + TABLE + " (" + COLUMNS_CREATE + ")"
-                + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query);) {
 
@@ -59,6 +60,7 @@ public class PurchaseDAO extends DAO {
             pstmt.setString(5, pur.getPurIP());
             pstmt.setString(6, pur.getShippingDate());
             pstmt.setInt(7, pur.getShippingNumber());
+            pstmt.setString(8, pur.getUuid());
 
             int result = pstmt.executeUpdate();
 
@@ -93,7 +95,8 @@ public class PurchaseDAO extends DAO {
         query.append(ADDRESS_INVOICE).append(" = ?, ");
         query.append(IP).append(" = ?, ");
         query.append(SHIPPING_DATE).append(" = ?, ");
-        query.append(SHIPPING_NUMBER).append(" = ? ");
+        query.append(SHIPPING_NUMBER).append(" = ?, ");
+        query.append(INTERNAL_UUID).append(" = ? ");
 
         query.append("WHERE " + ID + " = ")
                 .append(pur.getPurIP());
@@ -107,6 +110,7 @@ public class PurchaseDAO extends DAO {
             pstmt.setString(5, pur.getPurIP());
             pstmt.setString(6, pur.getShippingDate());
             pstmt.setInt(7, pur.getShippingNumber());
+            pstmt.setString(8, pur.getUuid());
 
             int result = pstmt.executeUpdate();
 
@@ -150,6 +154,7 @@ public class PurchaseDAO extends DAO {
                     pur.setPurIP(rs.getString(IP));
                     pur.setShippingDate(rs.getString(SHIPPING_DATE));
                     pur.setShippingNumber(rs.getInt(SHIPPING_NUMBER));
+                    pur.setUuid(rs.getString(INTERNAL_UUID));
                     purList.add(pur);
                 }
             } else {
@@ -187,7 +192,7 @@ public class PurchaseDAO extends DAO {
                     shipCost = new ShippingCost();
                     addrDelivery = new Address();
                     addrInvoice = new Address();
-
+                    
                     cus.setCusID(rs.getInt(CUSTOMER_ID));
                     shipCost.setShipId(rs.getInt(SHIPPING_COST));
                     pur.setShippingCostId(shipCost);
@@ -198,6 +203,7 @@ public class PurchaseDAO extends DAO {
                     pur.setPurIP(rs.getString(IP));
                     pur.setShippingDate(rs.getString(SHIPPING_DATE));
                     pur.setShippingNumber(rs.getInt(SHIPPING_NUMBER));
+                    pur.setUuid(rs.getString(INTERNAL_UUID));
                 }
             } else {
                 throw new SQLException("ResultSet was empty");
@@ -252,6 +258,7 @@ public class PurchaseDAO extends DAO {
                     pur.setPurIP(rs.getString(IP));
                     pur.setShippingDate(rs.getString(SHIPPING_DATE));
                     pur.setShippingNumber(rs.getInt(SHIPPING_NUMBER));
+                    pur.setUuid(rs.getString(INTERNAL_UUID));
                 }
             } else {
                 throw new SQLException("ResultSet was empty");
@@ -298,6 +305,7 @@ public class PurchaseDAO extends DAO {
                     pur.setPurIP(rs.getString(IP));
                     pur.setShippingDate(rs.getString(SHIPPING_DATE));
                     pur.setShippingNumber(rs.getInt(SHIPPING_NUMBER));
+                    pur.setUuid(rs.getString(INTERNAL_UUID));
                     purList.add(pur);
                 }
             } else {
@@ -355,7 +363,7 @@ public class PurchaseDAO extends DAO {
                     pur.setPurIP(rs.getString(IP));
                     pur.setShippingDate(rs.getString(SHIPPING_DATE));
                     pur.setShippingNumber(rs.getInt(SHIPPING_NUMBER));
-                    
+                    pur.setUuid(rs.getString(INTERNAL_UUID));                    
                     purchaseList.add(pur);
                 }
             } else {
@@ -366,48 +374,6 @@ public class PurchaseDAO extends DAO {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
         }
         return purchaseList;
-
-    }
-
-    public Vector<OrderStatus> findAllOrderStatus(int purchaseId) {
-        Vector<OrderStatus> osList = new Vector<OrderStatus>();
-        OrderStatus os;
-        StringBuffer query = new StringBuffer();
-        query.append("SELECT pur.purId, ord.staCode, ord.staName, det.detTime ")
-                .append("FROM OrderStatus ord ")
-                .append("JOIN Determinate det ")
-                .append("ON ord.staCode = det.staCode ")
-                .append("JOIN Purchase pur ")
-                .append("ON det.purId = pur.purId ")
-                .append("WHERE ")
-                .append("pur." + ID)
-                .append(" = ")
-                .append("?");
-
-        try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
-
-            pstmt.setInt(1, purchaseId);
-
-            ResultSet rs = pstmt.executeQuery();
-
-            if (rs.isBeforeFirst()) {
-
-                while (rs.next()) {
-                    os = new OrderStatus();
-                    os.setPurchase(pur);
-                    os.setStaCode(rs.getInt(OrderStatusNames.CODE));
-                    os.setStaName(rs.getString(OrderStatusNames.NAME));
-                    os.setStatusDate(rs.getString(DeterminateNames.DATE_TIME));
-                    osList.add(os);
-                }
-            } else {
-                throw new SQLException("ResultSet was empty");
-            }
-
-        } catch (SQLException ex) {
-            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-        }
-        return osList;
 
     }
 
