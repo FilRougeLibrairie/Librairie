@@ -754,6 +754,11 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
             tf.setBackground(Color.WHITE);
         }
     }
+    
+    // Pass purchaseId to JDialog in order to display Status History
+    public int getCustomerId(){
+        return currentCustomer.getCusID();
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -2251,8 +2256,7 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
     }//GEN-LAST:event_btnViewPurchaseKeyReleased
 
     private void btnViewPurchaseMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnViewPurchaseMouseReleased
-
-        JFPurchase jfPur = new JFPurchase();
+        JFPurchase jfPur = new JFPurchase(this);
         jfPur.setVisible(true);
     }//GEN-LAST:event_btnViewPurchaseMouseReleased
 

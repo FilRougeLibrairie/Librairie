@@ -24,13 +24,13 @@ import java.util.Date;
 import java.util.Properties;
 import java.util.Vector;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JDialog;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
 import ui.jfCustomer.AddressTableItem;
+import ui.jfCustomer.JFCustomer;
 import utils.DateLabelFormatter;
 import utils.PriceCalculation;
 
@@ -120,10 +120,32 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
         }
     }
 
+    public JFPurchase(JFCustomer parent) {
+        JFCustomer jfCustomer = (JFCustomer) parent;
+        if (jfCustomer == null) {
+            return;
+        }
+        if (!(jfCustomer instanceof JFCustomer)) {
+            return;
+        }
+        if (jfCustomer instanceof JFCustomer) {
+            init();
+            searchForOrderFromJFCustomer(jfCustomer.getCustomerId());
+        }
+    }
+
     // Constructor
     public JFPurchase() {
+        init();
+
+    }
+
+    private void init() {
         initComponents();
 
+//        JFCustomer jfCustomer = new JFCustomer();
+//        jfCustomer.setVisible(true);
+        // On récupère le parent (JF08)
         comboSearch.setModel(initComboSearchModel());
         comboSearch.setSelectedIndex(0);
         comboInvoiceStreetType.setModel(initAddressComboBoxModel());
@@ -156,7 +178,6 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
                 datePickerActionPerformed(evt);
             }
         });
-
     }
 
     private void datePickerActionPerformed(java.awt.event.ActionEvent evt) {
@@ -204,7 +225,7 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
         OrderStatusDAO odsDAO = new OrderStatusDAO();
         Vector<OrderStatus> orderStatusList = odsDAO.findAll();
         for (OrderStatus os : orderStatusList) {
-           comboPurchaseStatusModel.add(os.getStaName());
+            comboPurchaseStatusModel.add(os.getStaName());
         }
         return model;
     }
@@ -275,6 +296,20 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
         comboSearchBookModel.add(TITLE);
         comboSearchBookModel.add(AUTHOR);
         return model;
+    }
+
+    private void searchForOrderFromJFCustomer(int customerId) {
+        CustomerDAO customerDAO = new CustomerDAO();
+        PurchaseDAO purchaseDAO = new PurchaseDAO();
+        purchaseTableList = new Vector();
+        currentCustomer = customerDAO.find(customerId);
+        
+        purchaseList = purchaseDAO.findByCustomerId(customerId);
+        for (Purchase pur : purchaseList) {
+            PurchaseTableItem purchaseTable = new PurchaseTableItem(pur);
+            purchaseTableList.add(purchaseTable.getVector());
+        }
+        setTablePurchaseModel();
     }
 
     private void searchForOrder() {
@@ -609,9 +644,9 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
         }
 
     }
-    
+
     // Pass purchaseId to JDialog in order to display Status History
-    public int getPurchaseId(){
+    public int getPurchaseId() {
         return currentPurchase.getPurId();
     }
 

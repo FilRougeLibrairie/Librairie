@@ -216,7 +216,7 @@ public class BookDAO extends DAO {
         query.append("SELECT * FROM " + TABLE + " WHERE ")
                 .append(ISBN_13)
                 .append(" = ")
-                .append("'" + id + "'");
+                .append(id);
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
 
@@ -263,10 +263,6 @@ public class BookDAO extends DAO {
         return book;
     }
 
-
-        
-    
-    
     public Author findAuthorByBook (String isbn) {
         Author author = null;
         Book boo = null;
