@@ -673,7 +673,7 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
         OrderStatusDAO orderStatusDAO = new OrderStatusDAO();
         Vector<OrderStatus> orderStatusList = orderStatusDAO.findOrderStatusByPurchaseId(currentPurchase.getPurId());
         tfReference.setText(String.valueOf(currentPurchase.getPurId()));
-        tfOrderDate.setText(currentPurchase.getShippingDate());
+        tfOrderDate.setText(currentPurchase.getShippingDate().toString());
         try {
             int indexLastOrderStatus = orderStatusList.firstElement().getStaCode();
             System.out.println(indexLastOrderStatus);
@@ -710,15 +710,20 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
         
         // Save Order to DB and retrieve it to get its ID
         Vector<Purchase> purList = purchaseDAO.findByColumn(PurchaseNames.INTERNAL_UUID, currentPurchase.getUuid());
-        //currentPurchase = purList.firstElement();
+        Purchase purchaseToLink = null;
+        for(Purchase pur : purList){
+            purchaseToLink = pur;
+        }
         
         // Save Order Lines with the sql id of currentPurchase
         OrderLineDAO orderLineDAO = new OrderLineDAO();
         for(OrderLine orderLine : currentOrderLineList){
+            orderLine.setPurId(purchaseToLink);
             orderLineDAO.create(orderLine);
         }
         
-        
+        OrderStatusDAO orderStatusDAO = new OrderStatusDAO();
+        orderStatusDAO.createNewPurchaseStatus(purchaseToLink, 1, purchaseDate.toString());
     }
 
     private void clearTableModels(Vector<JTable> jtableList) {

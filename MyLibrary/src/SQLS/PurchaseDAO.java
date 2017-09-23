@@ -221,7 +221,7 @@ public class PurchaseDAO extends DAO {
     }
 
     @Override
-    public Vector findByColumn(String column, String term) {
+    public Vector<Purchase> findByColumn(String column, String term) {
         purList = new Vector<Purchase>();
         pur = null;
         cus = null;
@@ -249,7 +249,8 @@ public class PurchaseDAO extends DAO {
                     shipCost = new ShippingCost();
                     addrDelivery = new Address();
                     addrInvoice = new Address();
-
+                    
+                    pur.setPurId(rs.getInt(ID));
                     cus.setCusID(rs.getInt(CUSTOMER_ID));
                     shipCost.setShipId(rs.getInt(SHIPPING_COST));
                     pur.setShippingCostId(shipCost);
@@ -261,6 +262,7 @@ public class PurchaseDAO extends DAO {
                     pur.setShippingDate(rs.getString(SHIPPING_DATE));
                     pur.setShippingNumber(rs.getInt(SHIPPING_NUMBER));
                     pur.setUuid(rs.getString(INTERNAL_UUID));
+                    purList.add(pur);
                 }
             } else {
                 throw new SQLException("ResultSet was empty");

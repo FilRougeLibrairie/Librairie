@@ -32,14 +32,32 @@ public class OrderStatusDAO extends DAO {
     @Override
     public void create(Object obj) {
         OrderStatus ord = (OrderStatus) obj;
-        String query = "IF NOT EXISTS (SELECT * FROM " + TABLE + " WHERE " + CODE + " = '" + ord.getStaCode() + "')"
-                + "INSERT INTO " + TABLE + " (" + COLUMNS_CREATE + ")"
+        String query = "INSERT INTO " + TABLE + " (" + COLUMNS_CREATE + ")"
                 + "VALUES (?, ?)";
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query);) {
 
             pstmt.setInt(1, ord.getStaCode());
             pstmt.setString(2, ord.getStaName());
+
+            int result = pstmt.executeUpdate();
+
+        } catch (SQLException ex) {
+            System.err.println("ERROR SAVING Object : " + ex.getErrorCode() + " / " + ex.getMessage());
+
+        }
+    }
+    
+    
+     public void createNewPurchaseStatus(Purchase purchase, int orderStatusCode, String dateTime) {
+        String query = "INSERT INTO Determinate (purId, staCode, detTime) "
+                + "VALUES (?, ?, ?)";
+
+        try (PreparedStatement pstmt = this.connect.prepareStatement(query);) {
+
+            pstmt.setInt(1, purchase.getPurId());
+            pstmt.setInt(2, orderStatusCode);
+            pstmt.setString(3, dateTime);
 
             int result = pstmt.executeUpdate();
 
