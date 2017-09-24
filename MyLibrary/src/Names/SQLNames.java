@@ -248,6 +248,7 @@ public interface SQLNames {
         public static final String CODE = "vatCode";
         public static final String RATE = "vatRate";
         public static final String NAME = "vatName";
+        public static final String STATUS = "vatStatus";
     }
 
 }

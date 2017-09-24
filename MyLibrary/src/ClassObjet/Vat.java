@@ -16,15 +16,17 @@ public class Vat {
     private int vatCode;
     private Float vatRate;
     private String vatName;
+    private int vatStatus;
 
     //Constructor
     public Vat() {
     }
 
-    public Vat(int vatCode, Float vatRate, String vatName) {
+    public Vat(int vatCode, Float vatRate, String vatName, int vatStatus) {
         this.vatCode = vatCode;
         this.vatRate = vatRate;
         this.vatName = vatName;
+        this.vatStatus = vatStatus;
     }
     
     
@@ -42,6 +44,14 @@ public class Vat {
         this.vatName = vatName;
     }
 
+    public void setVatStatus(int vatStatus) {
+        this.vatStatus = vatStatus;
+    }
+
+    
+
+    
+    
     //Getters
     public int getVatCode() {
         return vatCode;
@@ -55,6 +65,10 @@ public class Vat {
         return vatName;
     }
     
+    public int getVatStatus() {
+        return vatStatus;
+    }
+    
     //vector
     
     public Vector getVector() {
@@ -63,6 +77,8 @@ public class Vat {
         v.add(this.getVatCode());
         v.add(this.getVatRate());
         v.add(this.getVatName());
+        v.add(this.getVatStatus());
+        
         
       
         return v;

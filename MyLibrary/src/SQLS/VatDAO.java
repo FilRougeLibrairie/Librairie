@@ -22,6 +22,7 @@ public class VatDAO extends DAO<Vat> {
     private final String CODE = VATNames.CODE;
     private final String RATE = VATNames.RATE;
     private final String NAME = VATNames.NAME;
+    private final String STATUS = VATNames.STATUS;
 
     private String COLUMNS_CREATE =  RATE + ", " + NAME;
 
@@ -122,7 +123,7 @@ public class VatDAO extends DAO<Vat> {
     public Vector<Vat> findAll() {
         Vector<Vat> vatList = new Vector<Vat>();
         Vat vat = null;
-        String query = "SELECT * FROM " + TABLE;
+        String query = "SELECT * FROM Vat";
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query)) {
 
@@ -134,6 +135,7 @@ public class VatDAO extends DAO<Vat> {
                     vat.setVatCode(rs.getInt(CODE));
                     vat.setVatRate(rs.getFloat(RATE));
                     vat.setVatName(rs.getString(NAME));
+                    vat.setVatStatus(rs.getInt(STATUS));
                     vatList.add(vat);
                 }
             } else {
@@ -171,6 +173,7 @@ public class VatDAO extends DAO<Vat> {
                     vat.setVatCode(rs.getInt(CODE));
                     vat.setVatRate(rs.getFloat(RATE));
                     vat.setVatName(rs.getString(NAME));
+                    vat.setVatStatus(rs.getInt(STATUS));
                 }
             } else {
                 throw new SQLException("ResultSet Vat was empty");
@@ -204,6 +207,7 @@ public class VatDAO extends DAO<Vat> {
                     vat.setVatCode(rs.getInt(CODE));
                     vat.setVatRate(rs.getFloat(RATE));
                     vat.setVatName(rs.getString(NAME));
+                    vat.setVatStatus(rs.getInt(STATUS));
                 }
             } else {
                 throw new SQLException("ResultSet was empty");
