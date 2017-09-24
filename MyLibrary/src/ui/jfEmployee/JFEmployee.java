@@ -333,12 +333,10 @@ public class JFEmployee extends javax.swing.JFrame implements SQLNames {
         emp.setEmpComment(tfComment.getText().trim());
         emp.setEmpStatus(comboStatus.getSelectedIndex());
         System.out.println("result combo accprofile = "+comboProfil.getSelectedIndex());
+        emp.getAccProfileCode().getAccProfileCode(comboProfil.getSelectedIndex());
 //        emp.getAccProfileCode().setAccProfileCode(comboProfil.getSelectedIndex());
         
-        AccessProfile acc = (AccessProfile)comboProfil.getSelectedItem();
-        
-        emp.setAccProfileCode(acc.getAccProfileCode());
-        
+//        AccessProfile acc = (AccessProfile)comboProfil.getSelectedItem();  
 //        AccessProfile ap = new AccessProfile();
 //        ap = emp.getAccProfileCode();
         //emp.setAccProfileCode(ap);
