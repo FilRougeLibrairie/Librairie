@@ -1,7 +1,8 @@
 package ui.jfPurchase;
 
-import ui.jfCustomer.*;
 import ClassObjet.Purchase;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Vector;
 
 /**
@@ -49,7 +50,7 @@ public class PurchaseTableItem {
     }
 
     public void setDate(String date) {
-        this.date = date;
+      this.date = date;
     }
 
     public String getStatus() {

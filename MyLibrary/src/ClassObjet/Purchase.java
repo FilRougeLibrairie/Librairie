@@ -5,6 +5,7 @@
  */
 package ClassObjet;
 
+import java.util.UUID;
 import java.util.Vector;
 
 /**
@@ -14,6 +15,7 @@ import java.util.Vector;
 public class Purchase {
 
     private int purId;
+    private String internId;
     private Customer customer;
     private ShippingCost shippingCostId;
     private Address addDelivery;
@@ -26,7 +28,10 @@ public class Purchase {
 
     //Constructor
     public Purchase() {
+        internId = generateInternalId();
     }
+    
+    
 
     //Setters
     public void setPurId(int purId) {
@@ -60,6 +65,16 @@ public class Purchase {
     public void setShippingNumber(int shippingNumber) {
         this.shippingNumber = shippingNumber;
     }
+
+    public void setUuid(String uuid) {
+        this.internId = uuid;
+    }
+    
+    private String generateInternalId(){
+        return UUID.randomUUID().toString();
+    }
+    
+    
 
     //Getters
     public int getPurId() {
@@ -110,9 +125,14 @@ public class Purchase {
         orderstatusList.remove(orderStatus);
     }
 
+    public String getUuid() {
+        return internId;
+    }
+   
     @Override
     public String toString() {
         return "Purchase Id :" + purId + "\n"
+                + "Internal Id : " + internId + "\n"
                 + "customer : " + customer + "\n"
                 + "Shipping Cost : " + shippingCostId + "\n"
                 + "Delivery Address Id : " + addDelivery + "\n"

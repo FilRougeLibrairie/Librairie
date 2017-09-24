@@ -5,6 +5,7 @@
  */
 package ClassObjet;
 
+import java.sql.Date;
 import java.util.Vector;
 
 /**
@@ -22,6 +23,14 @@ public class OrderStatus {
     //Constructor
     public OrderStatus() {
     }
+    
+    
+    public Vector getVector(){
+     Vector v = new Vector();
+        v.add(this.StatusDate);
+        v.add(this.staName);
+        return v;
+}
 
     //Setters
     public void setStaCode(int staCode) {
@@ -48,12 +57,12 @@ public class OrderStatus {
     public void setPurchaseList(Vector<Purchase> purchaseList) {
         this.purchaseList = purchaseList;
     }
-    
-    public void addPurchase(Purchase purchase){
+
+    public void addPurchase(Purchase purchase) {
         purchaseList.add(purchase);
     }
 
-    public void removePurchase(Purchase purchase){
+    public void removePurchase(Purchase purchase) {
         purchaseList.remove(purchase);
     }
 
@@ -71,6 +80,11 @@ public class OrderStatus {
 
     public void setPurchase(Purchase purchase) {
         this.purchase = purchase;
+    }
+
+    @Override
+    public String toString() {
+        return "OrderStatus{" + "staCode=" + staCode + ", staName=" + staName + ", purchaseList=" + purchaseList + ", purchase=" + purchase + ", StatusDate=" + StatusDate + '}';
     }
 
 }

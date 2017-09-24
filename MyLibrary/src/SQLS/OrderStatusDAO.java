@@ -6,6 +6,7 @@
 package SQLS;
 
 import ClassObjet.OrderStatus;
+import ClassObjet.Purchase;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -31,8 +32,7 @@ public class OrderStatusDAO extends DAO {
     @Override
     public void create(Object obj) {
         OrderStatus ord = (OrderStatus) obj;
-        String query = "IF NOT EXISTS (SELECT * FROM " + TABLE + " WHERE " + CODE + " = '" + ord.getStaCode() + "')"
-                + "INSERT INTO " + TABLE + " (" + COLUMNS_CREATE + ")"
+        String query = "INSERT INTO " + TABLE + " (" + COLUMNS_CREATE + ")"
                 + "VALUES (?, ?)";
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query);) {
@@ -44,7 +44,26 @@ public class OrderStatusDAO extends DAO {
 
         } catch (SQLException ex) {
             System.err.println("ERROR SAVING Object : " + ex.getErrorCode() + " / " + ex.getMessage());
-            
+
+        }
+    }
+    
+    
+     public void createNewPurchaseStatus(Purchase purchase, int orderStatusCode, String dateTime) {
+        String query = "INSERT INTO Determinate (purId, staCode, detTime) "
+                + "VALUES (?, ?, ?)";
+
+        try (PreparedStatement pstmt = this.connect.prepareStatement(query);) {
+
+            pstmt.setInt(1, purchase.getPurId());
+            pstmt.setInt(2, orderStatusCode);
+            pstmt.setString(3, dateTime);
+
+            int result = pstmt.executeUpdate();
+
+        } catch (SQLException ex) {
+            System.err.println("ERROR SAVING Object : " + ex.getErrorCode() + " / " + ex.getMessage());
+
         }
     }
 
@@ -61,7 +80,7 @@ public class OrderStatusDAO extends DAO {
             pstmt.executeQuery();
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            
+
         }
     }
 
@@ -83,7 +102,6 @@ public class OrderStatusDAO extends DAO {
 
         } catch (SQLException ex) {
             System.out.println("ERROR UPDATING Object : " + ex.getMessage());
-            
 
         }
     }
@@ -93,7 +111,7 @@ public class OrderStatusDAO extends DAO {
         Vector<OrderStatus> ordList = new Vector<OrderStatus>();
         OrderStatus ord = null;
 
-        String query = "SELECT * FROM " + TABLE;
+        String query = "SELECT * FROM " + TABLE + " ORDER BY " + StatusDisplayNames.CODE;
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query)) {
 
@@ -105,7 +123,6 @@ public class OrderStatusDAO extends DAO {
 
                     ord.setStaCode(rs.getInt(CODE));
                     ord.setStaName(rs.getString(NAME));
-
                     ordList.add(ord);
                 }
             } else {
@@ -114,7 +131,6 @@ public class OrderStatusDAO extends DAO {
 
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            
 
         }
         return ordList;
@@ -149,7 +165,6 @@ public class OrderStatusDAO extends DAO {
 
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            
 
         }
         return ord;
@@ -171,8 +186,6 @@ public class OrderStatusDAO extends DAO {
                 .append(" = ")
                 .append("'" + term + "'");
 
-        System.out.println();
-
         try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
 
             ResultSet rs = pstmt.executeQuery();
@@ -191,10 +204,141 @@ public class OrderStatusDAO extends DAO {
 
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
-            
 
         }
         return ordList;
+    }
+
+    public Vector<OrderStatus> findOrderStatusByPurchaseId(int purchaseId) {
+        Vector<OrderStatus> orderStatusList = new Vector<OrderStatus>();
+        OrderStatus orderStatus;
+        Purchase pur;
+        StringBuffer query = new StringBuffer();
+        query.append("DECLARE @purchaseId int ")
+                .append("SET @purchaseId = ? ")
+                .append("SELECT * ")
+                .append("FROM OrderStatus os ")
+                .append("JOIN Determinate det ")
+                .append("ON os.staCode = det.staCode ")
+                .append("JOIN Purchase pur ")
+                .append("ON det.purId = pur.purId ")
+                .append("WHERE pur.purId = @purchaseId ")
+                .append("ORDER BY det.detTime DESC");
+        
+        try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
+
+            pstmt.setInt(1, purchaseId);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.isBeforeFirst()) {
+
+                while (rs.next()) {
+                    orderStatus = new OrderStatus();
+                    pur = new Purchase();
+                    orderStatus.setStaCode(rs.getInt(CODE));
+                    orderStatus.setStaName(rs.getString(NAME));
+                    pur.setPurId((rs.getInt("purId")));
+                    orderStatus.setPurchase(pur);
+                    orderStatus.setStatusDate(rs.getString("detTime"));
+                    orderStatusList.add(orderStatus);
+                }
+            } else {
+                throw new SQLException("ResultSet was empty");
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
+        }
+        return orderStatusList;
+    }
+    
+    public Vector<OrderStatus> findCurrentOrderStatusByPurchaseId(int purchaseId) {
+        Vector<OrderStatus> orderStatusList = new Vector<OrderStatus>();
+        OrderStatus orderStatus;
+        Purchase pur;
+        StringBuffer query = new StringBuffer();
+        query.append("DECLARE @purchaseId int ")
+                .append("SET @purchaseId = ? ")
+                .append("SELECT * ")
+                .append("FROM OrderStatus os ")
+                .append("JOIN Determinate det ")
+                .append("ON os.staCode = det.staCode ")
+                .append("JOIN Purchase pur ")
+                .append("ON det.purId = pur.purId ")
+                .append("WHERE pur.purId = @purchaseId ")
+                .append("ORDER BY det.detTime DESC");
+        
+        try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
+
+            pstmt.setInt(1, purchaseId);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.isBeforeFirst()) {
+
+                while (rs.next()) {
+                    orderStatus = new OrderStatus();
+                    pur = new Purchase();
+                    orderStatus.setStaCode(rs.getInt(CODE));
+                    orderStatus.setStaName(rs.getString(NAME));
+                    pur.setPurId((rs.getInt("purId")));
+                    orderStatus.setPurchase(pur);
+                    orderStatus.setStatusDate(rs.getString("detTime"));
+                    orderStatusList.add(orderStatus);
+                }
+            } else {
+                throw new SQLException("ResultSet was empty");
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
+        }
+        return orderStatusList;
+    }
+    
+        public Vector<OrderStatus> findAllOrderStatus(int purchaseId) {
+        Vector<OrderStatus> osList = new Vector<OrderStatus>();
+        OrderStatus os;
+        Purchase pur;
+        StringBuffer query = new StringBuffer();
+        query.append("SELECT pur.purId, ord.staCode, ord.staName, det.detTime ")
+                .append("FROM OrderStatus ord ")
+                .append("JOIN Determinate det ")
+                .append("ON ord.staCode = det.staCode ")
+                .append("JOIN Purchase pur ")
+                .append("ON det.purId = pur.purId ")
+                .append("WHERE ")
+                .append("pur." + PurchaseNames.ID)
+                .append(" = ")
+                .append("?");
+
+        try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
+
+            pstmt.setInt(1, purchaseId);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.isBeforeFirst()) {
+
+                while (rs.next()) {
+                    os = new OrderStatus();
+                    pur = new Purchase();
+                    os.setPurchase(pur);
+                    os.setStaCode(rs.getInt(OrderStatusNames.CODE));
+                    os.setStaName(rs.getString(OrderStatusNames.NAME));
+                    os.setStatusDate(rs.getString(DeterminateNames.DATE_TIME));
+                    osList.add(os);
+                }
+            } else {
+                throw new SQLException("ResultSet was empty");
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
+        }
+        return osList;
+
     }
 
 }

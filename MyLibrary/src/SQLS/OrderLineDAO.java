@@ -38,12 +38,11 @@ public class OrderLineDAO extends DAO {
     @Override
     public void create(Object obj) {
         ordLine = (OrderLine) obj;
-        String query = "IF NOT EXISTS (SELECT * FROM " + TABLE + " WHERE " + ID + " = '" + pur.getPurId() + "')"
-                + "INSERT INTO " + TABLE + " (" + COLUMNS_CREATE + ")"
+        String query = "INSERT INTO " + TABLE + " (" + COLUMNS_CREATE + ")"
                 + "VALUES (?, ?, ?, ?, ?)";
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query);) {
-
+            
             pstmt.setInt(1, ordLine.getPurId().getPurId());
             pstmt.setString(2, ordLine.getBooIsbn13().getBooIsbn13());
             pstmt.setInt(3, ordLine.getOrdLineQuantity());

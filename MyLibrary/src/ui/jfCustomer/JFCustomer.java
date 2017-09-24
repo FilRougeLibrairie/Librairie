@@ -10,6 +10,7 @@ import Names.SQLNames;
 import SQLS.AddressDAO;
 import SQLS.BookDAO;
 import SQLS.CustomerDAO;
+import SQLS.OrderStatusDAO;
 import SQLS.PurchaseDAO;
 import SQLS.ReviewDAO;
 import SQLS.StatusDisplayDAO;
@@ -45,20 +46,21 @@ import utils.DateLabelFormatter;
  */
 public class JFCustomer extends javax.swing.JFrame implements SQLNames {
 
-    Vector<Customer> customerList;
-    Vector customerTableList;
-    Vector addressTableList;
-    Vector orderTableList;
-    Vector reviewTableList;
-    Vector<String> comboAdressModel;
-    Vector<String> comboSearchModel;
-    Vector<String> comboStatusModel;
-    Vector<String> comboGenderModel;
-    Vector<String> comboRevStatusModel;
-    Customer currentCustomer;
-    Address currentAddress;
-    Review currentReview;
-    JDatePickerImpl datePicker;
+    private Vector<Customer> customerList;
+    private Vector customerTableList;
+    private Vector addressTableList;
+    private Vector orderTableList;
+    private Vector reviewTableList;
+    private Vector<String> comboAdressModel;
+    private Vector<String> comboSearchModel;
+    private Vector<String> comboStatusModel;
+    private Vector<String> comboGenderModel;
+    private Vector<String> comboRevStatusModel;
+    private Customer currentCustomer;
+    private Address currentAddress;
+    private Review currentReview;
+    private JDatePickerImpl datePicker;
+    private JFPurchase jfPurchase;
 
     private final String DELETED_MENTION = "SUPPRIME";
     private final String DELETED_NAME_MASK = "***";
@@ -158,8 +160,25 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
         }
     }
 
+    public JFCustomer(JFPurchase parent) {
+        jfPurchase = (JFPurchase) parent;
+        if (jfPurchase == null) {
+            return;
+        }
+        if (!(jfPurchase instanceof JFPurchase)) {
+            return;
+        }
+        if (jfPurchase instanceof JFPurchase) {
+            init();
+        }
+    }
+
     // Constructor
     public JFCustomer() {
+        init();
+    }
+
+    private void init() {
         initComponents();
 
         tableCustomers.setCellSelectionEnabled(true);
@@ -472,6 +491,7 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
 
     private void loadingOrderTable(Customer cus) {
         PurchaseDAO purchaseDAO = new PurchaseDAO();
+        OrderStatusDAO orderStatusDAO = new OrderStatusDAO();
         Vector<Purchase> orderList = new Vector<Purchase>();
         orderList = purchaseDAO.findByCustomerId(cus.getCusID());
         orderTableList = new Vector();
@@ -479,7 +499,7 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
         for (Purchase pur : orderList) {
             // Retrieving OrderStatusList
             try {
-                pur.setOrderstatusList(purchaseDAO.findAllOrderStatus(pur.getPurId()));
+                pur.setOrderstatusList(orderStatusDAO.findAllOrderStatus(pur.getPurId()));
                 OrderTableItem orderTable = new OrderTableItem(pur);
                 orderTableList.add(orderTable.getVector());
             } catch (Exception ex) {
@@ -755,6 +775,11 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
         }
     }
 
+    // Pass customerId to jfPurchase in order to display Status History
+    public int getCustomerId() {
+        return currentCustomer.getCusID();
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -885,7 +910,7 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
         panBtnDeleteCustomer = new javax.swing.JPanel();
         btnDeleteCustomer = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
 
         jPanel9.setBackground(new java.awt.Color(255, 255, 255));
@@ -1642,7 +1667,7 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
                     .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addComponent(tfInvoiceLabel)
                     .addComponent(jPanel15, javax.swing.GroupLayout.DEFAULT_SIZE, 158, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel15)
                     .addComponent(jLabel16)
@@ -2057,6 +2082,12 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
         if (currentCustomer != null) {
             panBtnDeleteCustomer.setVisible(true);
         }
+
+        if (jfPurchase != null) {
+            if (currentCustomer != null) {
+                jfPurchase.setCustomerFromJFCustomer(currentCustomer);
+            }
+        }
     }//GEN-LAST:event_tableCustomersMouseReleased
 
     private void bntCreateNewMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bntCreateNewMouseReleased
@@ -2251,8 +2282,7 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
     }//GEN-LAST:event_btnViewPurchaseKeyReleased
 
     private void btnViewPurchaseMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnViewPurchaseMouseReleased
-
-        JFPurchase jfPur = new JFPurchase();
+        JFPurchase jfPur = new JFPurchase(this);
         jfPur.setVisible(true);
     }//GEN-LAST:event_btnViewPurchaseMouseReleased
 

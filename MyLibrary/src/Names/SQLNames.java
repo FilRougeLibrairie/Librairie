@@ -200,6 +200,7 @@ public interface SQLNames {
         public static final String IP = "purIP";
         public static final String SHIPPING_DATE = "shippingDate";
         public static final String SHIPPING_NUMBER = "shippingNumber";
+        public static final String INTERNAL_UUID = "purInternalId";
     }
 
     public static class ReviewNames {

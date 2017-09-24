@@ -125,8 +125,6 @@ public class AccessProfileDAO extends DAO<AccessProfile> {
                 .append(" = ")
                 .append("'" + term + "'");
 
-        System.out.println();
-
         try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
 
             ResultSet rs = pstmt.executeQuery();
@@ -157,7 +155,7 @@ public class AccessProfileDAO extends DAO<AccessProfile> {
         query.append("SELECT * FROM " + TABLE + " WHERE ")
                 .append(PROFILE_CODE)
                 .append(" = ")
-                .append("'" + id + "'");
+                .append(id);
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
 

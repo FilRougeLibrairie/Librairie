@@ -191,7 +191,7 @@ public class VatDAO extends DAO<Vat> {
         query.append("SELECT * FROM " + TABLE + " WHERE ")
                 .append(CODE)
                 .append(" = ")
-                .append("'" + id + "'");
+                .append(id);
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
 
