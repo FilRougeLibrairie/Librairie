@@ -1,12 +1,22 @@
-package PanelOk;
+package PanelACreer;
 
 import ClassObjet.MyLibrary;
 import SQLS.MyLibraryDAO;
 import java.util.Vector;
+import java.util.regex.Pattern;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import utils.InputsControls;
 
-public class LibraryPanel extends javax.swing.JPanel {
+public class LibraryPanel extends javax.swing.JPanel  {
+    
+    
+    
+    
+    
+    
+    
+    
 
     Vector<MyLibrary> myLibraryList;
     private JFileChooser jfc = new JFileChooser();
@@ -225,9 +235,14 @@ public class LibraryPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSaveMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSaveMouseClicked
-
+       
+        
+        
         MyLibrary lib = new MyLibrary();
-                
+      
+        
+       
+        
         lib.setMyLibAddCity(jTCity.getText());
         lib.setMyLibAddComplement(jTComplement.getText());
         lib.setMyLibAddNumber(jTNum.getText());

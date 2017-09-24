@@ -10,13 +10,14 @@ import java.util.Vector;
 
 
 public class FormatsDAO extends DAO{
+    private final String TABLE = "Formats";
     private final String ID = FormatsNames.ID;
     private final String FORNAME = FormatsNames.NAME;
+    private final String STATUS = FormatsNames.STATUS;
+    
+    private String COLUMNS_CREATE = FORNAME + ", " + STATUS;
+    
    
-    
-    private String COLUMNS =  FORNAME ;
-    
-    
     public FormatsDAO() {
         super();
     }
@@ -26,13 +27,14 @@ public class FormatsDAO extends DAO{
        @Override
     public void create(Object obj) {
         Forma form = (Forma) obj;
-        String query = "IF NOT EXISTS (SELECT * FROM FORMATS WHERE " + FORNAME + " = '" + form.getForName()+ "')"
-                + "INSERT INTO FORMATS (" + COLUMNS + ")"
-                + "VALUES (?)";
+        String query = "IF NOT EXISTS (SELECT * FROM "+TABLE+" WHERE " + FORNAME + " = '" + form.getForName()+ "')"
+                + "INSERT INTO "+TABLE + " (" + COLUMNS_CREATE + ")"
+                + "VALUES (?, ?)";
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query);) {
 
             pstmt.setString(1, form.getForName());
+            pstmt.setInt(2, form.getForStatus());
            
             int result = pstmt.executeUpdate();
 
@@ -170,6 +172,7 @@ public class FormatsDAO extends DAO{
                     format = new Forma();
                     format.setForId(rs.getInt(ID));
                     format.setForName(rs.getString(FORNAME));
+                    format.setForStatus(rs.getInt("forStatus"));
                     formatsList.add(format);
                 }
             } else {
@@ -210,6 +213,7 @@ public class FormatsDAO extends DAO{
                     format = new Forma();
                     format.setForId(rs.getInt(ID));
                     format.setForName(rs.getString(FORNAME));
+                    format.setForStatus(rs.getInt(STATUS));
                     formatsList.add(format);
                 }
             } else {
@@ -229,7 +233,7 @@ public class FormatsDAO extends DAO{
         
         
         
-          Forma form = null;
+        Forma form = null;
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FROM FORMATS WHERE ")
                 .append(FORNAME)
@@ -244,8 +248,10 @@ public class FormatsDAO extends DAO{
 
                 while (rs.next()) {
                     form = new Forma();
+                    form.setForId(Integer.valueOf(ID));
                     form.setForName(rs.getString(FORNAME));
-
+                    form.setForStatus(rs.getInt(STATUS));
+                    
                 }
             } else {
                 throw new SQLException("ResultSet was empty");

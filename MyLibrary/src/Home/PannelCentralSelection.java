@@ -1,7 +1,9 @@
 
 package Home;
 
-import PanelOk.LibraryPanel;
+import PanelACreer.AuthorPanel;
+import PanelACreer.FormatsPanel;
+import PanelACreer.LibraryPanel;
 import PanelOk.JFReview;
 import PanelOk.AccessPanel;
 
@@ -9,21 +11,18 @@ import PanelOk.OfferPanel;
 import PanelOk.BookLanguagePanel;
 import PanelOk.SubthemePanel;
 import PanelOk.ThemePanel;
-import PanelOk.AuthorPanel;
-import PanelOk.FormatPanel;
 import PanelOk.KeywordsPanel;
 import PanelOk.VatPanel;
 import java.awt.BorderLayout;
 import java.awt.Color;
 
 import javax.swing.JPanel;
-//import ui.JFBook2;
+import ui.JFBook2;
 import ui.jfEditor.JFEditor;
-//import PanelEnCoursChrys.JFReview;
 import ui.jfCustomer.CustomerPanel;
 
 import ui.jfCustomer.JFCustomer;
-//import ui.jfEmployee.JFEmployee;
+import ui.jfEmployee.JFEmployee;
 import ui.jfPurchase.JFPurchase;
 
 
@@ -51,6 +50,7 @@ CustomerPanel cus = new CustomerPanel();
         bPurchase = new javax.swing.JLabel();
         jPanel8 = new javax.swing.JPanel();
         bClient = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
         menuProduct = new javax.swing.JPanel();
         jPanel11 = new javax.swing.JPanel();
         bBook = new javax.swing.JLabel();
@@ -187,17 +187,30 @@ CustomerPanel cus = new CustomerPanel();
             .addComponent(bClient, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
         );
 
+        jButton1.setText("jButton1");
+        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton1MouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout menuPurchaseLayout = new javax.swing.GroupLayout(menuPurchase);
         menuPurchase.setLayout(menuPurchaseLayout);
         menuPurchaseLayout.setHorizontalGroup(
             menuPurchaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
             .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(menuPurchaseLayout.createSequentialGroup()
+                .addGap(32, 32, 32)
+                .addComponent(jButton1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         menuPurchaseLayout.setVerticalGroup(
             menuPurchaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(menuPurchaseLayout.createSequentialGroup()
-                .addGap(238, 238, 238)
+                .addGap(51, 51, 51)
+                .addComponent(jButton1)
+                .addGap(162, 162, 162)
                 .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -649,7 +662,7 @@ CustomerPanel cus = new CustomerPanel();
         });
 
         bAddEmployee.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        bAddEmployee.setText("Employe");
+        bAddEmployee.setText("Employés");
         bAddEmployee.setAlignmentX(0.5F);
         bAddEmployee.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseDragged(java.awt.event.MouseEvent evt) {
@@ -1002,14 +1015,14 @@ CustomerPanel cus = new CustomerPanel();
     private void bBookMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bBookMouseClicked
 
         
-//       jpPrincipal.removeAll();
-//       jpPrincipal.validate();
-//       jpPrincipal.add(jInternalFrame1);
-//       JFBook2 boo = new JFBook2();
-//        jInternalFrame1.setContentPane(boo.getContentPane());
-//        jInternalFrame1.setVisible(true);
-//       jpPrincipal.setVisible(true);
-//       jpPrincipal.revalidate();
+       jpPrincipal.removeAll();
+       jpPrincipal.validate();
+       jpPrincipal.add(jInternalFrame1);
+       JFBook2 boo = new JFBook2();
+        jInternalFrame1.setContentPane(boo.getContentPane());
+        jInternalFrame1.setVisible(true);
+       jpPrincipal.setVisible(true);
+       jpPrincipal.revalidate();
         
         
 
@@ -1318,14 +1331,14 @@ CustomerPanel cus = new CustomerPanel();
     private void bAddEmployeeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bAddEmployeeMouseClicked
 
         
-//        jpPrincipal.removeAll();
-//       jpPrincipal.validate();
-//       jpPrincipal.add(jInternalFrame1);
-//       JFEmployee emp = new JFEmployee();
-//        jInternalFrame1.setContentPane(emp.getContentPane());
-//        jInternalFrame1.setVisible(true);
-//       jpPrincipal.setVisible(true);
-//       jpPrincipal.revalidate();
+        jpPrincipal.removeAll();
+       jpPrincipal.validate();
+       jpPrincipal.add(jInternalFrame1);
+       JFEmployee emp = new JFEmployee();
+        jInternalFrame1.setContentPane(emp.getContentPane());
+        jInternalFrame1.setVisible(true);
+       jpPrincipal.setVisible(true);
+       jpPrincipal.revalidate();
 
     }//GEN-LAST:event_bAddEmployeeMouseClicked
 
@@ -1461,14 +1474,14 @@ CustomerPanel cus = new CustomerPanel();
 
     private void jPanel19MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel19MouseClicked
 
-//        jpPrincipal.removeAll();
-//       jpPrincipal.validate();
-//       jpPrincipal.add(jInternalFrame1);
-//       JFEmployee emp = new JFEmployee();
-//        jInternalFrame1.setContentPane(emp.getContentPane());
-//        jInternalFrame1.setVisible(true);
-//       jpPrincipal.setVisible(true);
-//       jpPrincipal.revalidate();
+        jpPrincipal.removeAll();
+       jpPrincipal.validate();
+       jpPrincipal.add(jInternalFrame1);
+       JFEmployee emp = new JFEmployee();
+        jInternalFrame1.setContentPane(emp.getContentPane());
+        jInternalFrame1.setVisible(true);
+       jpPrincipal.setVisible(true);
+       jpPrincipal.revalidate();
    
 
     }//GEN-LAST:event_jPanel19MouseClicked
@@ -1510,7 +1523,7 @@ CustomerPanel cus = new CustomerPanel();
 
         jpPrincipal.removeAll();
         jpPrincipal.validate();
-        FormatPanel addKW = new FormatPanel();
+        FormatsPanel addKW = new FormatsPanel();
         jpPrincipal.setLayout(new BorderLayout());
         jpPrincipal.add(addKW, BorderLayout.NORTH);
         jpPrincipal.setVisible(true);
@@ -1521,7 +1534,7 @@ CustomerPanel cus = new CustomerPanel();
 
         jpPrincipal.removeAll();
         jpPrincipal.validate();
-        FormatPanel addKW = new FormatPanel();
+        FormatsPanel addKW = new FormatsPanel();
         jpPrincipal.setLayout(new BorderLayout());
         jpPrincipal.add(addKW, BorderLayout.NORTH);
         jpPrincipal.setVisible(true);
@@ -1657,14 +1670,14 @@ CustomerPanel cus = new CustomerPanel();
 
     private void jPanel11MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel11MouseClicked
 
-//        jpPrincipal.removeAll();
-//       jpPrincipal.validate();
-//       jpPrincipal.add(jInternalFrame1);
-//       JFBook2 boo = new JFBook2();
-//        jInternalFrame1.setContentPane(boo.getContentPane());
-//        jInternalFrame1.setVisible(true);
-//       jpPrincipal.setVisible(true);
-//       jpPrincipal.revalidate();
+        jpPrincipal.removeAll();
+       jpPrincipal.validate();
+       jpPrincipal.add(jInternalFrame1);
+       JFBook2 boo = new JFBook2();
+        jInternalFrame1.setContentPane(boo.getContentPane());
+        jInternalFrame1.setVisible(true);
+       jpPrincipal.setVisible(true);
+       jpPrincipal.revalidate();
     }//GEN-LAST:event_jPanel11MouseClicked
 
     private void jPanel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel7MouseClicked
@@ -1751,6 +1764,23 @@ CustomerPanel cus = new CustomerPanel();
         
     }//GEN-LAST:event_bModerate1MouseClicked
 
+    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
+        //test
+        
+         jpPrincipal.removeAll();
+        jpPrincipal.validate();
+        AuthorPanel lib = new AuthorPanel();
+        jpPrincipal.setLayout(new BorderLayout());
+        jpPrincipal.add(lib, BorderLayout.NORTH);
+        jpPrincipal.setVisible(true);
+        jpPrincipal.revalidate();
+        
+        
+        
+        
+        
+    }//GEN-LAST:event_jButton1MouseClicked
+
     void setColor(JPanel panel) {
         panel.setBackground(new Color(102, 102, 102));
     }
@@ -1779,6 +1809,7 @@ CustomerPanel cus = new CustomerPanel();
     private javax.swing.JButton jBClient;
     private javax.swing.JButton jBProduct;
     private javax.swing.JButton jBStat;
+    private javax.swing.JButton jButton1;
     private javax.swing.JInternalFrame jInternalFrame1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel11;

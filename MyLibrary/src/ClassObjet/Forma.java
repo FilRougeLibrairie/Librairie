@@ -1,20 +1,14 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package ClassObjet;
 
 import java.util.Vector;
 
-/**
- *
- * @author Tofi
- */
+
 public class Forma {
     
     private String forName;
     private int forId;
+    private int forStatus;
     
     //Constructor
 
@@ -30,6 +24,12 @@ public class Forma {
         this.forName = forName;
     }
 
+    public Forma(String forName, int forId, int forStatus) {
+        this.forName = forName;
+        this.forId = forId;
+        this.forStatus = forStatus;
+    }
+
     
     
    
@@ -42,6 +42,12 @@ public class Forma {
     public void setForId(int forId) {
         this.forId = forId;
     }
+
+    public void setForStatus(int forStatus) {
+        this.forStatus = forStatus;
+    }
+    
+    
     
     //Getters
 
@@ -52,21 +58,35 @@ public class Forma {
     public int getForId() {
         return forId;
     }
+
+    public int getForStatus() {
+        return forStatus;
+    }
+    
+    public Vector getVectorName() {
+        Vector v= new Vector();
+       
+        v.add(this.getForName());
+        
+        return v;
+    }
+    
+    
     
       public Vector getVector() {
         Vector v= new Vector();
        v.add(this.getForId());
         v.add(this.getForName());
-        
-      
+        v.add(this.getForStatus()); 
         return v;
     }
 
     @Override
     public String toString() {
-        return forName ;
+        return forName + forStatus +forId;
     }
     
+   
     
     
     

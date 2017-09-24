@@ -35,6 +35,10 @@ public class Author {
     public Author(int autId) {
         this.autId = autId;
     }
+
+    public Author(String autLastName) {
+        this.autLastName = autLastName;
+    }
     
     
 
@@ -108,6 +112,21 @@ public class Author {
       
         return v;
     }
+    
+    
+    public Vector getVectorName() {
+        Vector v= new Vector();
+       
+        
+        v.add(this.getAutLastName());
+        
+        
+      
+        return v;
+    }
+    
+    
+    
 
     @Override
     public String toString() {
