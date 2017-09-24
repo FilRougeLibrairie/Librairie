@@ -1,4 +1,4 @@
-package PanelACreer;
+package PanelModifié;
 
 import ClassObjet.Author;
 import ClassObjet.Review;
@@ -15,7 +15,7 @@ public class AuthorPanel extends javax.swing.JPanel {
     String term = null;
     String column = null;
     Vector<Author> authorList;
-    String title=null;
+    String title = null;
 
     public AuthorPanel() {
         initComponents();
@@ -25,7 +25,7 @@ public class AuthorPanel extends javax.swing.JPanel {
         jbUpdate.setVisible(false);
         jbAdd.setVisible(true);
         jComboBoxSearch.setSelectedIndex(-1);
-        
+
     }
 
     public DefaultTableModel initTableModel() {
@@ -53,7 +53,7 @@ public class AuthorPanel extends javax.swing.JPanel {
 
             // cas auteur
             if ("Nom d'Auteur".equals(type)) {
-                title="Nom de l'auteur";
+                title = "Nom de l'auteur";
                 term = tfSearch.getText().trim();
                 if (term == null || term.isEmpty() || term.equalsIgnoreCase("Entrer le nom de l'auteur")) {
                     authorList = authorDAO.findAll();
@@ -69,7 +69,7 @@ public class AuthorPanel extends javax.swing.JPanel {
             }
             // cas n° de l'auteur
             if (type.equalsIgnoreCase("N° de l'Auteur")) {
-                title="N° de l'auteur";
+                title = "N° de l'auteur";
                 column = "autId";
                 term = tfSearch.getText().trim();
                 if (term == null || term.isEmpty() || term.equalsIgnoreCase("Entrer le n° de l'auteur")) {
@@ -85,7 +85,7 @@ public class AuthorPanel extends javax.swing.JPanel {
             }
             // cas Statut actif
             if (type.equalsIgnoreCase("Statut Actif")) {
-                title="N° de l'auteur";
+                title = "N° de l'auteur";
                 column = "autStatusCode";
                 termInt = 0;
                 authorList = authorDAO.findByColumn(column, String.valueOf(termInt));
@@ -99,7 +99,7 @@ public class AuthorPanel extends javax.swing.JPanel {
             // cas Statut inactif
             if (type.equalsIgnoreCase("Statut Inactif")) {
                 column = "autStatusCode";
-                title="N° de l'auteur";
+                title = "N° de l'auteur";
                 termInt = 1;
                 authorList = authorDAO.findByColumn(column, String.valueOf(termInt));
                 for (Author aut : authorList) {
@@ -276,7 +276,7 @@ public class AuthorPanel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(30, 30, 30)
-                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 327, Short.MAX_VALUE)
                 .addGap(23, 23, 23))
         );
 
@@ -413,7 +413,7 @@ public class AuthorPanel extends javax.swing.JPanel {
         jbUpdate.setVisible(true);
         jbAdd.setVisible(false);
         if (jComboBoxSearch.getSelectedItem().equals("Nom d'Auteur")) {
-            
+
             term = jTableSearch.getValueAt(jTableSearch.getSelectedRow(), 0).toString();
 
             authorList = new Vector<Author>();
@@ -432,9 +432,9 @@ public class AuthorPanel extends javax.swing.JPanel {
                 jComboBox1.setSelectedItem("Inactif");
             }
         } else {
-           
+
             term = jTableSearch.getValueAt(jTableSearch.getSelectedRow(), 0).toString();
-            
+
             authorList = new Vector<Author>();
             authorList = authorDAO.findByColumn("autId", term);
             jTId.setText(String.valueOf(authorList.get(0).getAutId()));
@@ -455,19 +455,18 @@ public class AuthorPanel extends javax.swing.JPanel {
 
     private void jLCreateNewMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLCreateNewMouseReleased
 
-        title= "Résultat";
+        title = "Résultat";
         jComboBoxSearch.setSelectedIndex(-1);
         tfSearch.setText(null);
         jTableSearch.setModel(initTableModel());
-jComboBox1.setSelectedIndex(-1);
-        
+        jComboBox1.setSelectedIndex(-1);
         jTId.setText(null);
         jTFirstName.setText(null);
         jTLastName.setText(null);
         jTAuto.setText(null);
         jbUpdate.setVisible(false);
         jbAdd.setVisible(true);
-        
+
     }//GEN-LAST:event_jLCreateNewMouseReleased
 
     private void jbUpdateMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbUpdateMouseReleased
@@ -478,7 +477,6 @@ jComboBox1.setSelectedIndex(-1);
         String autA = null;
         int autS = 0;
         JOptionPane jop1 = new JOptionPane();
-        
 
         id = jTId.getText();
         autF = jTLastName.getText();
@@ -487,7 +485,7 @@ jComboBox1.setSelectedIndex(-1);
         if (jComboBox1.getSelectedItem().equals("Actif")) {
             autS = 0;
         }
-        if (jComboBox1.getSelectedItem().equals("Inactif"))  {
+        if (jComboBox1.getSelectedItem().equals("Inactif")) {
             autS = 1;
         }
 
@@ -500,11 +498,6 @@ jComboBox1.setSelectedIndex(-1);
         a.setAutStatusCode(autS);
         aut.update(a);
         jop1.showMessageDialog(null, "L'auteur a été modifié avec succès.", "Information", JOptionPane.INFORMATION_MESSAGE);
-
-
-
-
-
 
 // TODO add your handling code here:
     }//GEN-LAST:event_jbUpdateMouseReleased

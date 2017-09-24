@@ -1,4 +1,4 @@
-package PanelACreer;
+package PanelModifié;
 
 import ClassObjet.Forma;
 import SQLS.FormatsDAO;
@@ -18,7 +18,6 @@ public class FormatsPanel extends javax.swing.JPanel {
         initComponents();
         jpUpdate.setVisible(false);
         jpValidate.setVisible(true);
-        jpDesac.setVisible(false);
         jpId.setVisible(false);
         jComboBox1.setSelectedIndex(-1);
         tableSearch.setEnabled(false);
@@ -66,8 +65,6 @@ public class FormatsPanel extends javax.swing.JPanel {
         jPanel3 = new javax.swing.JPanel();
         btnSearchOrder = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
-        jpDesac = new javax.swing.JPanel();
-        btnDes = new javax.swing.JLabel();
         jtFormat = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
         jpUpdate = new javax.swing.JPanel();
@@ -79,6 +76,7 @@ public class FormatsPanel extends javax.swing.JPanel {
 
         setBackground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(900, 600));
+        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jInternalFrame1.setBackground(new java.awt.Color(255, 255, 255));
         jInternalFrame1.setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
@@ -164,34 +162,16 @@ public class FormatsPanel extends javax.swing.JPanel {
                 .addContainerGap(41, Short.MAX_VALUE))
         );
 
+        add(jInternalFrame1, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 0, -1, -1));
+
         jLabel14.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         jLabel14.setText("Statut");
-
-        jpDesac.setBackground(new java.awt.Color(51, 102, 255));
-        jpDesac.setPreferredSize(new java.awt.Dimension(200, 45));
-
-        btnDes.setForeground(new java.awt.Color(255, 255, 255));
-        btnDes.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        btnDes.setText("DESACTIVER");
-        btnDes.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnDesMouseClicked(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jpDesacLayout = new javax.swing.GroupLayout(jpDesac);
-        jpDesac.setLayout(jpDesacLayout);
-        jpDesacLayout.setHorizontalGroup(
-            jpDesacLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(btnDes, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE)
-        );
-        jpDesacLayout.setVerticalGroup(
-            jpDesacLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(btnDes, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
-        );
+        add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(358, 226, 106, 36));
+        add(jtFormat, new org.netbeans.lib.awtextra.AbsoluteConstraints(501, 151, 282, 31));
 
         jLabel11.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         jLabel11.setText("Nom du format");
+        add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(358, 150, 106, 31));
 
         jpUpdate.setBackground(new java.awt.Color(51, 102, 255));
         jpUpdate.setPreferredSize(new java.awt.Dimension(200, 45));
@@ -216,6 +196,8 @@ public class FormatsPanel extends javax.swing.JPanel {
             .addComponent(btnSave, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
         );
 
+        add(jpUpdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 320, 105, 35));
+
         jpValidate.setBackground(new java.awt.Color(51, 102, 255));
         jpValidate.setPreferredSize(new java.awt.Dimension(200, 45));
 
@@ -239,64 +221,11 @@ public class FormatsPanel extends javax.swing.JPanel {
             .addComponent(btnSave1, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
         );
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Activer", "Desactiver" }));
+        add(jpValidate, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 360, 105, 35));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jInternalFrame1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(136, 136, 136)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE)
-                                    .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGap(37, 37, 37)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jtFormat)
-                                    .addComponent(jComboBox1, 0, 282, Short.MAX_VALUE))
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(55, 55, 55)
-                                .addComponent(jpUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(32, 32, 32)
-                                .addComponent(jpValidate, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
-                                .addComponent(jpDesac, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(106, 106, 106))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(30, 30, 30)
-                        .addComponent(jpId, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jInternalFrame1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jpId, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(101, 101, 101)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jtFormat, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(44, 44, 44)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(109, 109, 109)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jpUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jpDesac, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jpValidate, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Activer", "Desactiver" }));
+        add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(501, 227, 282, 36));
+        add(jpId, new org.netbeans.lib.awtextra.AbsoluteConstraints(252, 12, 76, 37));
     }// </editor-fold>//GEN-END:initComponents
 
 
@@ -319,37 +248,19 @@ public class FormatsPanel extends javax.swing.JPanel {
     private void btnSearchOrderMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSearchOrderMouseReleased
 
         tableSearch.setModel(initTableModel());
-        tableSearch.setEnabled(true);
-        tableSearch.removeAll();
+        tableSearch.setEnabled(true); 
         jpUpdate.setVisible(true);
         jpValidate.setVisible(false);
-        jpDesac.setVisible(true);
         jComboBox1.setSelectedIndex(-1);
 
 
     }//GEN-LAST:event_btnSearchOrderMouseReleased
 
-    private void btnDesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDesMouseClicked
-
-        Forma form = new Forma();
-        form.setForId(Integer.valueOf(jpId.getText()));
-        form.setForName(jtFormat.getText());
-        form.setForStatus(1);
-        formatsDAO.update(form);
-        jtFormat.setText(null);
-        jpId.setText(null);
-        jop1.showMessageDialog(null, "Format désactivé avec succès", "Information", JOptionPane.INFORMATION_MESSAGE);
-        
-
-    }//GEN-LAST:event_btnDesMouseClicked
-
     private void btnSaveMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSaveMouseClicked
 
         Forma form = new Forma();
-
         form.setForId(Integer.valueOf(jpId.getText()));
         form.setForName(jtFormat.getText());
-
         if (jComboBox1.getSelectedIndex() == 0) {
             form.setForStatus(0);
         } else {
@@ -388,9 +299,12 @@ public class FormatsPanel extends javax.swing.JPanel {
 
     private void btnNewMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnNewMouseClicked
 
+        jpId.setText(null);
+        jtFormat.setText(null);
+        jComboBox1.setSelectedIndex(-1);
+        tableSearch.setModel(new DefaultTableModel());
         jpUpdate.setVisible(false);
         jpValidate.setVisible(true);
-        jpDesac.setVisible(false);
         tableSearch.setEnabled(false);
 
 
@@ -402,7 +316,6 @@ public class FormatsPanel extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel btnDes;
     private javax.swing.JLabel btnNew;
     private javax.swing.JLabel btnSave;
     private javax.swing.JLabel btnSave1;
@@ -414,7 +327,6 @@ public class FormatsPanel extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JPanel jpDesac;
     private javax.swing.JTextField jpId;
     private javax.swing.JPanel jpUpdate;
     private javax.swing.JPanel jpValidate;

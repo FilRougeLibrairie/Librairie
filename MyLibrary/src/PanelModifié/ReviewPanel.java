@@ -1,4 +1,4 @@
-package PanelOk;
+package PanelModifié;
 
 import ClassObjet.Customer;
 import ClassObjet.OrderLine;
@@ -8,7 +8,7 @@ import java.util.Vector;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-public class JFReview extends javax.swing.JFrame {
+public class ReviewPanel extends javax.swing.JFrame {
 
     Review review = new Review();
     ReviewDAO reviewDAO = new ReviewDAO();
@@ -17,7 +17,7 @@ public class JFReview extends javax.swing.JFrame {
     Vector<Review> reviewList;
     JOptionPane jop1, jop2= new JOptionPane();
 
-    public JFReview() {
+    public ReviewPanel() {
         initComponents();
         comboSearch.setSelectedIndex(-1);
         jComboStatut.setEnabled(false);
@@ -540,23 +540,24 @@ review= new Review();
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(JFReview.class
+            java.util.logging.Logger.getLogger(ReviewPanel.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(JFReview.class
+            java.util.logging.Logger.getLogger(ReviewPanel.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(JFReview.class
+            java.util.logging.Logger.getLogger(ReviewPanel.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(JFReview.class
+            java.util.logging.Logger.getLogger(ReviewPanel.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new JFReview().setVisible(true);
+                new ReviewPanel().setVisible(true);
             }
         });
     }

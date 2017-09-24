@@ -1,20 +1,14 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package ClassObjet;
 
 import java.util.Vector;
 
-/**
- *
- * @author Tofi
- */
+
 public class BookLanguage {
     
     private int booLangCode;
     private String booLangName;
+    private int booLangStatus;
     
     //Constructor
 
@@ -25,6 +19,15 @@ public class BookLanguage {
         this.booLangCode = booLangCode;
         this.booLangName = booLangName;
     }
+
+    public BookLanguage(int booLangCode, String booLangName, int booLangStatus) {
+        this.booLangCode = booLangCode;
+        this.booLangName = booLangName;
+        this.booLangStatus = booLangStatus;
+    }
+    
+    
+    
     
     //Setters
     
@@ -35,8 +38,19 @@ public class BookLanguage {
     public void setBooLangName(String booLangName) {
         this.booLangName = booLangName;
     }
+
+    
+
+    public void setBooLangStatus(int booLangStatus) {
+        this.booLangStatus = booLangStatus;
+    }
+    
     
     //Getters
+    
+    public int getBooLangStatus() {
+        return booLangStatus;
+    }
 
     public int getBooLangCode() {
         return booLangCode;
@@ -51,7 +65,17 @@ public class BookLanguage {
        
         v.add(this.getBooLangCode());
         v.add(this.getBooLangName());
-        
+        v.add(this.getBooLangStatus());
+      
+        return v;
+    }
+    
+    
+    public Vector getVectorName() {
+        Vector v= new Vector();
+       
+       
+        v.add(this.getBooLangName());
       
         return v;
     }

@@ -1,4 +1,4 @@
-package PanelACreer;
+package PanelModifié;
 
 import ClassObjet.MyLibrary;
 import SQLS.MyLibraryDAO;

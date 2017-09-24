@@ -19,8 +19,9 @@ public class BookLanguageDAO extends DAO<BookLanguage> {
     private final String TABLE = "BookLanguage";
     private final String CODE = BookLanguageNames.CODE;
     private final String NAME = BookLanguageNames.NAME;
+    private final String STATUS = BookLanguageNames.STATUS;
 
-    private String COLUMNS_CREATE =NAME;
+    private String COLUMNS_CREATE =NAME + ", " + STATUS;;
 
     //Constructor
     public BookLanguageDAO() {
@@ -30,12 +31,14 @@ public class BookLanguageDAO extends DAO<BookLanguage> {
     @Override
     public void create(BookLanguage obj) {
         BookLanguage bookLang = (BookLanguage) obj;
-        String query = "IF NOT EXISTS(SELECT * FROM bookLanguage WHERE bookLangName= '"+bookLang.getBooLangName()+"')"
-                +"INSERT INTO BookLanguage (bookLangName) VALUES (?)";
+        String query = "IF NOT EXISTS(SELECT * FROM "+ TABLE +" WHERE "+NAME+"= '"+bookLang.getBooLangName()+"')"
+                + "INSERT INTO "+TABLE + " (" + COLUMNS_CREATE + ")"
+                + "VALUES (?, ?)";
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query);) {
 
             pstmt.setString(1, bookLang.getBooLangName());
+            pstmt.setInt(2, bookLang.getBooLangStatus());
 
             int result = pstmt.executeUpdate();
 

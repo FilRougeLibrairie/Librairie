@@ -63,6 +63,7 @@ public interface SQLNames {
 
         public static final String CODE = "bookLangCode";
         public static final String NAME = "bookLangName";
+        public static final String STATUS="bookLangStatus";
     }
 
     public static class CustomerNames {

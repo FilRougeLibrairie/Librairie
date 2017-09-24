@@ -1,14 +1,14 @@
 
 package Home;
 
-import PanelACreer.AuthorPanel;
-import PanelACreer.FormatsPanel;
-import PanelACreer.LibraryPanel;
-import PanelOk.JFReview;
+import PanelModifié.AuthorPanel;
+import PanelModifié.BookLanguagePanel;
+import PanelModifié.FormatsPanel;
+import PanelModifié.LibraryPanel;
+import PanelModifié.ReviewPanel;
 import PanelOk.AccessPanel;
 
 import PanelOk.OfferPanel;
-import PanelOk.BookLanguagePanel;
 import PanelOk.SubthemePanel;
 import PanelOk.ThemePanel;
 import PanelOk.KeywordsPanel;
@@ -1403,7 +1403,7 @@ CustomerPanel cus = new CustomerPanel();
        jpPrincipal.removeAll();
        jpPrincipal.validate();
        jpPrincipal.add(jInternalFrame1);
-       JFReview rev = new JFReview();
+       ReviewPanel rev = new ReviewPanel();
         jInternalFrame1.setContentPane(rev.getContentPane());
         jInternalFrame1.setVisible(true);
        jpPrincipal.setVisible(true);
@@ -1713,7 +1713,7 @@ CustomerPanel cus = new CustomerPanel();
         jpPrincipal.removeAll();
        jpPrincipal.validate();
        jpPrincipal.add(jInternalFrame1);
-       JFReview rev = new JFReview();
+       ReviewPanel rev = new ReviewPanel();
         jInternalFrame1.setContentPane(rev.getContentPane());
         jInternalFrame1.setVisible(true);
        jpPrincipal.setVisible(true);
@@ -1769,7 +1769,7 @@ CustomerPanel cus = new CustomerPanel();
         
          jpPrincipal.removeAll();
         jpPrincipal.validate();
-        AuthorPanel lib = new AuthorPanel();
+        BookLanguagePanel lib = new BookLanguagePanel();
         jpPrincipal.setLayout(new BorderLayout());
         jpPrincipal.add(lib, BorderLayout.NORTH);
         jpPrincipal.setVisible(true);
