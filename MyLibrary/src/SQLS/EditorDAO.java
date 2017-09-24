@@ -127,7 +127,7 @@ public class EditorDAO extends DAO {
     public Editor findById(int id) {
         Editor editor = null;
         StringBuffer query = new StringBuffer();
-        query.append("SELECT * FORM " + TABLE + " WHERE ")
+        query.append("SELECT * FROM " + TABLE + " WHERE ")
                 .append(ID)
                 .append(" = ")
                 .append(id);
