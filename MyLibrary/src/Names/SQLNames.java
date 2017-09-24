@@ -116,6 +116,7 @@ public interface SQLNames {
 
         public static final String ID = "forId";
         public static final String NAME = "forName";
+        public static final String STATUS = "forStatus";
     }
 
     public static class KeywordsNames {

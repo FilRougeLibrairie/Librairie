@@ -242,7 +242,42 @@ public class AuthorDAO extends DAO{
     
     @Override
     public Object find(String name) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+         Author author = null;
+        StringBuffer query = new StringBuffer();
+        query.append("SELECT * FROM " + TABLE + " WHERE ")
+                .append(ID)
+                .append(" = ")
+                .append("'" + name + "'");
+
+        try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.isBeforeFirst()) {
+
+                while (rs.next()) {
+                    author = new Author();
+                    author.setAutId(rs.getInt(ID));
+                    author.setAutLastName(rs.getString(LAST_NAME));
+                    author.setAutFirstName(rs.getString(FIRST_NAME));
+                    author.setAutBiography(rs.getString(BIOGRAPHY));
+                    author.setAutStatusCode(rs.getInt(STATUS_CODE));
+                    
+                }
+            } else {
+                throw new SQLException("ResultSet was empty");
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
+            
+
+        }
+        return author;
+        
+        
+        
     }
 
     
