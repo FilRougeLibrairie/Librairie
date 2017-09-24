@@ -41,12 +41,20 @@ public class Customer {
         this.cusGender = cusGender;
     }
 
-    public void setCusFirstName(String cusFirstName) {
-        this.cusFirstName = cusFirstName;
+    public void setCusFirstName(String cusFirstName) throws Exception {
+        if (cusFirstName.length() < 2 || cusFirstName.isEmpty()) {
+            throw new Exception("Le nom de famille est obligatoire");
+        } else {
+            this.cusFirstName = cusFirstName.substring(0, 1).toUpperCase() + cusFirstName.substring(1, cusFirstName.length()).toLowerCase();
+        }
     }
 
-    public void setCusLastName(String cusLastName) {
-        this.cusLastName = cusLastName;
+    public void setCusLastName(String cusLastName) throws Exception {
+        if (cusLastName.length() < 2 || cusLastName.isEmpty()) {
+            throw new Exception("Le prénom est obligatoire");
+        } else {
+            this.cusLastName = cusLastName.substring(0, 1).toUpperCase() + cusLastName.substring(1, cusLastName.length());
+        }
     }
 
     public void setCusOrganisationName(String cusOrganisationName) {

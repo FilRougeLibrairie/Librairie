@@ -11,6 +11,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -168,6 +170,8 @@ public class CustomerDAO extends DAO {
 
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
+        } catch (Exception ex) {
+            Logger.getLogger(CustomerDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return customer;
     }
@@ -213,6 +217,8 @@ public class CustomerDAO extends DAO {
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
 
+        } catch (Exception ex) {
+            Logger.getLogger(CustomerDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return customerList;
     }
@@ -259,11 +265,13 @@ public class CustomerDAO extends DAO {
         } catch (SQLException ex) {
             System.out.println("ERROR Retrieving Object : " + ex.getMessage());
 
+        } catch (Exception ex) {
+            Logger.getLogger(CustomerDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return customerList;
     }
 
-    public Vector<Customer> findByColumn(String column, int term) {
+    public Vector<Customer> findByColumn(String column, int term) throws Exception {
 
         Vector<Customer> customerList = new Vector<Customer>();
         Customer customer = null;

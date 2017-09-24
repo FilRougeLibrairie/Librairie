@@ -19,7 +19,7 @@ import java.awt.Color;
 import javax.swing.JPanel;
 import ui.JFBook2;
 import ui.jfEditor.JFEditor;
-import ui.jfCustomer.CustomerPanel;
+import ui.jfCustomer.JFCustomer;
 
 import ui.jfCustomer.JFCustomer;
 import ui.jfEmployee.JFEmployee;
@@ -27,7 +27,7 @@ import ui.jfPurchase.JFPurchase;
 
 
 public class PannelCentralSelection extends javax.swing.JPanel {
-CustomerPanel cus = new CustomerPanel();
+JFCustomer cus = new JFCustomer();
     
     public PannelCentralSelection() {
         initComponents();

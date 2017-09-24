@@ -59,5 +59,7 @@ public class AccessProfile {
     public void getAccProfileCode(int selectedIndex) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+    
+    
 
 }

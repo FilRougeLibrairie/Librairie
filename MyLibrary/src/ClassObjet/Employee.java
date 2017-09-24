@@ -154,6 +154,7 @@ public class Employee {
                 + "empStatus=" + empStatus + "\n"
                 + "empProfileCode=" + accProfileCode.getAccProfileCode() + "\n"
                 + "empComment=" + empComment + "\n"
+                + "AccessProfile : " + accProfileCode + "\n"
                 + "***************";
     }
 

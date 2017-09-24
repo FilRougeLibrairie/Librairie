@@ -122,6 +122,7 @@ public class PurchaseDAO extends DAO {
 
     @Override
     public Vector<Purchase> findAll() {
+        purList = new Vector<Purchase>();
         String query = "SELECT * FROM " + TABLE + " ORDER BY " + PurchaseNames.SHIPPING_DATE;
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query)) {
@@ -150,6 +151,7 @@ public class PurchaseDAO extends DAO {
                     pur.setShippingNumber(rs.getInt(SHIPPING_NUMBER));
                     pur.setUuid(rs.getString(INTERNAL_UUID));
                     purList.add(pur);
+                    System.out.println(pur);
                 }
             } else {
                 throw new SQLException("ResultSet was empty");

@@ -158,7 +158,7 @@ public class BookDAO extends DAO {
         language = null;
         format = null;
 
-        String query = "SELECT * FROM " + TABLE;
+        String query = "SELECT * FROM " + TABLE + " ORDER BY " + BookNames.TITLE;
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query)) {
 
@@ -355,7 +355,8 @@ public class BookDAO extends DAO {
         query.append("SELECT * FROM " + TABLE + " WHERE ")
                 .append(ISBN_13)
                 .append(" = ")
-                .append("'" + name + "'");
+                .append("'" + name + "' ")
+                .append("ORDER BY " + BookNames.TITLE);
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
 
@@ -415,8 +416,8 @@ public class BookDAO extends DAO {
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FROM " + TABLE + " WHERE ")
                 .append(column)
-                .append(" = ")
-                .append("'" + term + "'");
+                .append(" LIKE ")
+                .append("'" + term + "%'");
 
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
