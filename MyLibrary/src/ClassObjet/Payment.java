@@ -16,9 +16,27 @@ public class Payment {
     private Boolean payValidate;
     private String payChoice;
     private String payDate;
+    private String payCardType;
+    private String payOwnerName;
 
     //Constructor
     public Payment() {
+    }
+
+    public String getPayCardType() {
+        return payCardType;
+    }
+
+    public void setPayCardType(String payCardType) {
+        this.payCardType = payCardType;
+    }
+
+    public String getPayOwnerName() {
+        return payOwnerName;
+    }
+
+    public void setPayOwnerName(String payOwnerName) {
+        this.payOwnerName = payOwnerName;
     }
 
     //Setters

@@ -17,6 +17,7 @@ import javax.swing.table.DefaultTableModel;
 public class JDialogStatusHistory extends javax.swing.JDialog {
 
     int purchaseId;
+    String customerName;
     OrderStatus orderStatus;
     JFPurchase jfp;
   
@@ -26,7 +27,9 @@ public class JDialogStatusHistory extends javax.swing.JDialog {
                 
         jfp = (JFPurchase) this.getParent();
         this.purchaseId = jfp.getPurchaseId();
-        this.setTitle("Commande : " + purchaseId);        
+        this.customerName = jfp.getCustomerName();
+        
+        this.setTitle("Commande : " + purchaseId + " - " + customerName);        
         tableHistory.setModel(initTableHistory());
         
     }

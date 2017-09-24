@@ -189,6 +189,8 @@ public interface SQLNames {
         public static final String VALIDATION = "payValidate";
         public static final String CHOICE = "payChoice";
         public static final String DATE = "payDate";
+        public static final String CARD_TYPE = "payCardType";
+        public static final String OWNER_NAME = "payOwnerName";
     }
 
     public static class PurchaseNames {
@@ -250,6 +252,7 @@ public interface SQLNames {
         public static final String CODE = "vatCode";
         public static final String RATE = "vatRate";
         public static final String NAME = "vatName";
+        public static final String STATUS = "vatStatus";
     }
 
 }
