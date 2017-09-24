@@ -1,5 +1,5 @@
 
-package PanelACreer;
+package PanelModifié;
 
 
 public class attention {
@@ -8,7 +8,7 @@ public class attention {
                           
                          
                          System.out.print ("modifier les nom auteur sql");
-                         
+                         System.out.print ("mettre des status dans language");
                          
     }
 }

@@ -321,6 +321,53 @@ public class AuthorDAO extends DAO{
 
     
     
+    
+    
+     public Vector findAllWithoutInactif() {
+        Vector<Author> authorList = new Vector<Author>();
+        Author author = null;
+
+        String query = "SELECT * FROM " + TABLE+ " WHERE " +STATUS_CODE+ " = 0 ORDER BY "+LAST_NAME;
+
+        try (PreparedStatement pstmt = this.connect.prepareStatement(query)) {
+
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.isBeforeFirst()) {
+
+                while (rs.next()) {
+                    author = new Author();
+                    author.setAutId(rs.getInt(ID));
+                    author.setAutLastName(rs.getString(LAST_NAME));
+                    author.setAutFirstName(rs.getString(FIRST_NAME));
+                    author.setAutBiography(rs.getString(BIOGRAPHY));
+                    author.setAutStatusCode(rs.getInt(STATUS_CODE));
+                    
+                    
+                    authorList.add(author);
+                }
+            } else {
+                throw new SQLException("ResultSet was empty");
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
+            
+
+        }
+        
+        return authorList;
+    }
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
       public Vector findAllOrderID() {
         Vector<Author> authorList = new Vector<Author>();
         Author author = null;
@@ -440,6 +487,50 @@ public class AuthorDAO extends DAO{
         return authorList;
     }
     
+    
+    public Vector<Author> findByColumnNameAndSurname(String column, String term, String column2, String term2) {
+
+        Vector<Author> authorList = new Vector<Author>();
+        Author author = null;
+
+        StringBuffer query = new StringBuffer();
+        query.append("SELECT * FROM " + TABLE + " WHERE ")
+                .append(column)
+                .append(" = ")
+                .append("'" + term + "' AND ")
+                .append(column2)
+                .append(" = ")
+                .append("'" + term2 + "'")
+                ;
+
+        System.out.println();
+
+        try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.isBeforeFirst()) {
+
+                while (rs.next()) {
+                    author = new Author();
+                    author.setAutId(rs.getInt(ID));
+                    author.setAutLastName(rs.getString(LAST_NAME));
+                    author.setAutFirstName(rs.getString(FIRST_NAME));  
+                    author.setAutBiography(rs.getString(BIOGRAPHY));
+                    author.setAutStatusCode(rs.getInt(STATUS_CODE));
+                    authorList.add(author);
+                }
+            } else {
+                throw new SQLException("ResultSet was empty");
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
+            
+
+        }
+        return authorList;
+    }
     
     
     

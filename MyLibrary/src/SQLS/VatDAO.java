@@ -174,6 +174,7 @@ public class VatDAO extends DAO<Vat> {
                     vat.setVatRate(rs.getFloat(RATE));
                     vat.setVatName(rs.getString(NAME));
                     vat.setVatStatus(rs.getInt(STATUS));
+                    vatList.add(vat);
                 }
             } else {
                 throw new SQLException("ResultSet Vat was empty");

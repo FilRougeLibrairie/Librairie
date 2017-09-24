@@ -1,16 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package ClassObjet;
 
 import java.util.Vector;
 
-/**
- *
- * @author Tofi
- */
+
 public class SubTheme {
 
     private int subId;
@@ -18,6 +11,8 @@ public class SubTheme {
     private String subName;
     private String subDescription;
     private Vector<Book> bookList;
+    private int subStatus;
+            
 
     //Constructor
     public SubTheme() {
@@ -28,6 +23,15 @@ public class SubTheme {
         this.theId = theId;
         this.subName = subName;
         this.subDescription = subDescription;
+    }
+
+    public SubTheme(int subId, Theme theId, String subName, String subDescription, Vector<Book> bookList, int subStatus) {
+        this.subId = subId;
+        this.theId = theId;
+        this.subName = subName;
+        this.subDescription = subDescription;
+        this.bookList = bookList;
+        this.subStatus = subStatus;
     }
     
     
@@ -53,6 +57,17 @@ public class SubTheme {
         this.bookList = bookList;
     }
 
+    public int getSubStatus() {
+        return subStatus;
+    }
+
+    public void setSubStatus(int subStatus) {
+        this.subStatus = subStatus;
+    }
+
+    
+    
+    
     //Getters
     public int getSubId() {
         return subId;
@@ -90,6 +105,7 @@ public class SubTheme {
         v.add(this.getTheId());
         v.add(this.getSubName());
         v.add(this.getSubDescription());
+        v.add(this.getSubStatus());
       
         return v;
     }

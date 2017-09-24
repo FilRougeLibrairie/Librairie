@@ -7,7 +7,6 @@ import ClassObjet.ClassAssoc.Association;
 import ClassObjet.ClassAssoc.Having;
 import ClassObjet.Editor;
 import ClassObjet.Forma;
-import ClassObjet.Review;
 import ClassObjet.StatusDisplay;
 import ClassObjet.SubTheme;
 import ClassObjet.Theme;
@@ -19,7 +18,6 @@ import SQLS.BookDAO;
 import SQLS.BookLanguageDAO;
 import SQLS.EditorDAO;
 import SQLS.FormatsDAO;
-import SQLS.ReviewDAO;
 import SQLS.StatusDisplayDAO;
 import SQLS.SubThemeDAO;
 import SQLS.ThemeDAO;
@@ -95,7 +93,7 @@ public class JFBook2 extends javax.swing.JFrame {
 
     private Vector initAuthorVector() {
         AuthorDAO autDao = new AuthorDAO();
-        return autDao.findAll();
+        return autDao.findAllWithoutInactif();
     }
 
     private DefaultComboBoxModel initAuthorModel2() {
@@ -104,7 +102,7 @@ public class JFBook2 extends javax.swing.JFrame {
 
     private Vector initAuthorVector2() {
         AuthorDAO autDao = new AuthorDAO();
-        return autDao.findAll();
+        return autDao.findAllWithoutInactif();
     }
 
     private DefaultComboBoxModel initEditorModel() {
@@ -114,7 +112,7 @@ public class JFBook2 extends javax.swing.JFrame {
 
     private Vector initEditorVector() {
         EditorDAO ediDao = new EditorDAO();
-        return ediDao.findAll();
+        return ediDao.findAllwithoutInactif();
     }
 
     private DefaultComboBoxModel initThemeModel() {
@@ -275,7 +273,7 @@ public class JFBook2 extends javax.swing.JFrame {
 
         jLabel15.setText("Statut :");
 
-        jComboBoxStatus.setModel(initStatusDisplayModel());
+        jComboBoxStatus.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Actif", "Inactif" }));
 
         jLabel2.setText("Format :");
 
@@ -830,7 +828,7 @@ public class JFBook2 extends javax.swing.JFrame {
                 for (int i = 0; i < jComboBoxAuthor.getModel().getSize(); i++) {
                     for (int j = 0; j < vAut.size(); j++) {
                         if (jComboBoxAuthor.getItemAt(i).toString().trim().equalsIgnoreCase(vAut.get(j).getAutLastName().trim() + " " + vAut.get(j).getAutFirstName().trim())) {
-                            System.out.println("");
+                           
                             jComboBoxAuthor.setSelectedIndex(i);
 
                             s = j;
@@ -1030,7 +1028,7 @@ public class JFBook2 extends javax.swing.JFrame {
             if (jComboBoxSearch.getSelectedIndex() == 2) {
 
                 Vector<Having> vWri = new Vector<Having>();
-              
+
                 for (Book boo2 : v) {
                     if (v != null) {
                         tfTitle.setText(boo2.getBooTitle());
@@ -1165,11 +1163,51 @@ public class JFBook2 extends javax.swing.JFrame {
         boo.setBooQuantity(Integer.valueOf(tfQuantity.getText()));
         boo.setBooFrontCover(tfShowFiles.getText());
         boo.setBooPageNumber(Integer.valueOf(tfNumberOfPages.getText()));
-        boo.setBooStatus(jComboBoxStatus.getSelectedIndex());
-        boo.getVatCode().setVatCode(jComboBoxVat.getSelectedIndex());
-        boo.getEdiId().setEdiId(jComboBoxEditor.getSelectedIndex() + 1);
-        boo.getBooLangCode().setBooLangCode(jComboBoxLanguage.getSelectedIndex());
-        boo.getFormat().setForId(jComboBoxFormat.getSelectedIndex() + 1);
+
+        //donner la valeur du statut
+        if(jComboBoxStatus.getSelectedItem().equals("Actif")){
+            boo.setBooStatus(0);
+        }
+        else{
+            boo.setBooStatus(1);
+        }
+        
+        //donner la valeur du vat
+        String vat = jComboBoxVat.getSelectedItem().toString();
+        VatDAO vatDAO = new VatDAO();
+        Vector<Vat> vatVector = new Vector<Vat>();
+        vatVector = vatDAO.findByColumn("vatRate", vat);
+        int vatValue = vatVector.get(0).getVatCode();
+        boo.getVatCode().setVatCode(vatValue);
+        
+
+        // trouvez editor
+        String editor= jComboBoxEditor.getSelectedItem().toString();
+        EditorDAO editDAO = new EditorDAO();
+        Vector<Editor> editorVector = new Vector<Editor>();
+        editorVector = editDAO.findByColumn("ediName", editor);
+        int editorValue = editorVector.get(0).getEdiId();
+        boo.getEdiId().setEdiId(editorValue);
+
+        //trouver la langue
+        
+        String language= jComboBoxLanguage.getSelectedItem().toString();
+        BookLanguageDAO languageDAO = new BookLanguageDAO();
+        Vector<BookLanguage> languageVector = new Vector<BookLanguage>();
+        languageVector = languageDAO.findByColumn("bookLangName", language);
+        int languageValue = languageVector.get(0).getBooLangCode();
+        boo.getBooLangCode().setBooLangCode(languageValue);
+
+        //trouver le format
+        
+        String format= jComboBoxFormat.getSelectedItem().toString();
+        FormatsDAO formatsDAO = new FormatsDAO();
+        Vector<Forma> formatVector = new Vector<Forma>();
+        formatVector = formatsDAO.findByColumn("forName", format);
+        int formatValue = formatVector.get(0).getForId();
+        boo.getFormat().setForId(formatValue);
+        
+        
         //creation dans table BOOK
         BookDAO booDao = new BookDAO();
         booDao.create(boo);
@@ -1177,47 +1215,83 @@ public class JFBook2 extends javax.swing.JFrame {
         /*----------------------------------------------------------------*/
         /*           recuperation info pour la table Having              */
         /*----------------------------------------------------------------*/
-        // pour la JcomboBoxAuthor
         Having wri = new Having();
+        AuthorDAO autDAO = new AuthorDAO();
+
+        // trouver l'isbn
         wri.setBooIsbn13(tfIsbn.getText());
-        Author a = new Author();
-        a = (Author) jComboBoxAuthor.getSelectedItem();
-        wri.setAutId(a.getAutId());
+
+        //trouver l'auteur N°1
+        String sentenceNameAuthor = jComboBoxAuthor.getSelectedItem().toString().trim();
+        String arr[] = sentenceNameAuthor.split(" ");
+        String firstWord = arr[0].trim();
+        String lastWord = arr[1].trim();
+        Vector<Author> k = new Vector<Author>();
+        k = autDAO.findByColumnNameAndSurname("autFirstName", lastWord, "autLastName", firstWord);
+        int aut = k.get(0).getAutId();
+        wri.setAutId(aut);
         //creation
         WritingDAO wriDao = new WritingDAO();
         wriDao.create(wri);
 
         // Pour la JcomboboxAuthor2
-//        Writing wri2 = new Writing();
-//        if (jComboBoxAuthor2 != jComboBoxAuthor2.getModel()) {
-//            wri2.setBooIsbn13(tfIsbn.getText());
-//            Author a2 = new Author();
-//            a2 = (Author) jComboBoxAuthor2.getSelectedItem();
-//            wri2.setAutId(a2.getAutId());
-//            //creation
-//            wriDao.create(wri2);
-//        }
+        Having writ2 = new Having();
+        if (jComboBoxAuthor2.getSelectedIndex()!=-1) {
+            // trouver l'isbn
+            writ2.setBooIsbn13(tfIsbn.getText());
+            //trouver l'auteur N°2
+            
+            String sentenceNameAuthor2 = jComboBoxAuthor2.getSelectedItem().toString().trim();
+            String arr2[] = sentenceNameAuthor2.split(" ");
+            String firstWord2 = arr2[0].trim();
+            String lastWord2 = arr2[1].trim();
+            Vector<Author> l = new Vector<Author>();
+            l = autDAO.findByColumnNameAndSurname("autFirstName", lastWord2, "autLastName", firstWord2);
+            int aut2 = l.get(0).getAutId();
+            writ2.setAutId(aut2);
 
-       
+            //creation
+            WritingDAO wriDao2 = new WritingDAO();
+            wriDao2.create(writ2);
+        }
+        
+        
         /*----------------------------------------------------------------*/
-        /*           recuperation info pour la table Association          */
+        /*           recuperation info pour la table Association subTheme */
         /*----------------------------------------------------------------*/
+        
         // pour la JcomboBoxSubTheme
         Association asso = new Association();
-        asso.setBooIsbn13(tfIsbn.getText());
-        System.out.println("jcombo subtheme index = " + jComboBoxSubTheme.getSelectedIndex());
-        asso.setSubId(jComboBoxSubTheme.getSelectedIndex()+1);
-        //création
+        Association asso2 = new Association();
         AssociationDAO assoDao = new AssociationDAO();
+        AssociationDAO assoDao2 = new AssociationDAO();
+       
+        //trouver l'isbn
+        asso.setBooIsbn13(tfIsbn.getText());
+        asso2.setBooIsbn13(tfIsbn.getText());
+ 
+        
+        //sous theme 1
+        if(jComboBoxSubTheme.getSelectedIndex()!=-1){
+        SubThemeDAO subthemeDAO = new SubThemeDAO();
+        String subtheme= jComboBoxSubTheme.getSelectedItem().toString().trim();
+        int subthemeValue = subthemeDAO.find(subtheme).getSubId();
+        asso.setSubId(subthemeValue);
+        //création N°1
         assoDao.create(asso);
+        }
+ 
+        //sous theme2
+        if(jComboBoxSubTheme2.getSelectedIndex()!=-1){
+        SubThemeDAO subthemeDAO2 = new SubThemeDAO();
+        String subtheme2= jComboBoxSubTheme2.getSelectedItem().toString().trim();
+        int subthemeValue2 = subthemeDAO2.find(subtheme2).getSubId();
+        asso2.setSubId(subthemeValue2);
+        //création N°1
+        assoDao2.create(asso2);
+        }
+        
 
-        //pour la JcomboBoxSubTheme2
-//        if (jComboBoxSubTheme2 != null) {
-//            asso.setBooIsbn13(tfIsbn.getText());
-//            asso.setSubId(jComboBoxSubTheme2.getSelectedIndex());
-//            //creation
-//            assoDao.create(asso);
-//        }
         JOptionPane jop1 = new JOptionPane();
         jop1.showMessageDialog(null, "Le livre a été ajouté avec succès.", "Information", JOptionPane.INFORMATION_MESSAGE);
         nettoyage();
@@ -1230,7 +1304,7 @@ public class JFBook2 extends javax.swing.JFrame {
     }//GEN-LAST:event_jComboBoxThemeActionPerformed
 
     private void jTabbedPane1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTabbedPane1MouseReleased
-     
+
     }//GEN-LAST:event_jTabbedPane1MouseReleased
 
     /**

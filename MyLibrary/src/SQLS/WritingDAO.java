@@ -1,10 +1,9 @@
 package SQLS;
 
-import ClassObjet.Author;
-import ClassObjet.Book;
+
 import ClassObjet.ClassAssoc.Having;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+
 import java.sql.SQLException;
 import java.util.Vector;
 

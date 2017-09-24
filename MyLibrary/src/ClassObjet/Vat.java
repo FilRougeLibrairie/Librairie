@@ -86,7 +86,7 @@ public class Vat {
 
     @Override
     public String toString() {
-        return vatRate + " " + vatName;
+        return vatRate.toString() ;
     }
 
     

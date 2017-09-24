@@ -238,6 +238,7 @@ public interface SQLNames {
         public static final String THEME_ID = "theId";
         public static final String NAME = "subName";
         public static final String DESCRIPTION = "subDescription";
+        public static final String STATUS ="subStatus";
     }
 
     public static class ThemeNames {
@@ -245,6 +246,7 @@ public interface SQLNames {
         public static final String ID = "theId";
         public static final String NAME = "theName";
         public static final String DESCRIPTION = "theDescription";
+        public static final String STATUS = "theStatus";
     }
 
     public static class VATNames {

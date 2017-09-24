@@ -164,6 +164,9 @@ public class BookLanguageDAO extends DAO<BookLanguage> {
                     bookLang = new BookLanguage();
                     bookLang.setBooLangCode(rs.getInt(CODE));
                     bookLang.setBooLangName(rs.getString(NAME));
+                    bookLang.setBooLangStatus(rs.getInt(STATUS));
+                    bookLangList.add(bookLang);
+                    
                 }
             } else {
                 throw new SQLException("ResultSet was empty");

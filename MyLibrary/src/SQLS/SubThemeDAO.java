@@ -1,14 +1,12 @@
 package SQLS;
 
 import ClassObjet.Book;
-import ClassObjet.BookLanguage;
 import ClassObjet.SubTheme;
 import ClassObjet.Theme;
 import static Names.SQLNames.StatusDisplayNames.CODE;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Vector;
 
 public class SubThemeDAO extends DAO<SubTheme> {
@@ -18,6 +16,7 @@ public class SubThemeDAO extends DAO<SubTheme> {
     private final String THEME_ID = SubThemeNames.THEME_ID;
     private final String NAME = SubThemeNames.NAME;
     private final String DESCRIPTION = SubThemeNames.DESCRIPTION;
+    private final String STATUS = SubThemeNames.DESCRIPTION;
 
     private String COLUMNS_CREATE = ID + ", " + THEME_ID + "' " + NAME + "' " + DESCRIPTION;
 
@@ -215,6 +214,8 @@ public class SubThemeDAO extends DAO<SubTheme> {
                     subThe.setTheId(the);
                     subThe.setSubName(rs.getString(NAME));
                     subThe.setSubDescription(rs.getString(DESCRIPTION));
+                    subThemeList.add(subThe);
+                    
                 }
             } else {
                 throw new SQLException("ResultSet was empty");
@@ -226,6 +227,74 @@ public class SubThemeDAO extends DAO<SubTheme> {
         }
         return subThemeList;
     }
+    
+    
+    
+    public Vector<SubTheme> findByColumnTheme(String column, int subtheme, String column2, int theme) {
+        Vector<SubTheme> subThemeList = new Vector<SubTheme>();
+        SubTheme subThe = null;
+        Theme the = new Theme();
+        ThemeDAO themeDAO = new ThemeDAO();
+        the=themeDAO.find(theme);
+        
+        
+        StringBuffer query = new StringBuffer();
+        query.append("SELECT * FROM " + TABLE + " WHERE ")
+                .append( column )
+                .append(" = ")
+                .append("'" + subtheme + "' AND")
+                .append( column2 )
+                .append(" = ")
+                .append("'" + theme + "'")
+                
+                ;
+
+        try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.isBeforeFirst()) {
+
+                while (rs.next()) {
+                    subThe = new SubTheme();
+                    
+                    subThe.setSubId(rs.getInt(ID));
+                    subThe.setTheId(the);
+                    subThe.setSubName(rs.getString(NAME));
+                    subThe.setSubDescription(rs.getString(DESCRIPTION));
+                    subThemeList.add(subThe);
+                    
+                }
+            } else {
+                throw new SQLException("ResultSet was empty");
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
+
+        }
+        return subThemeList;
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
     @Override
     public SubTheme find(int id) {
@@ -264,7 +333,43 @@ public class SubThemeDAO extends DAO<SubTheme> {
 
     @Override
     public SubTheme find(String name) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+
+        SubTheme subThe = null;
+        Theme the = null;
+        StringBuffer query = new StringBuffer();
+        query.append("SELECT * FROM " + TABLE + " WHERE ")
+                .append(NAME)
+                .append(" = ")
+                .append("'" + name + "'");
+
+        try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.isBeforeFirst()) {
+
+                while (rs.next()) {
+                    subThe = new SubTheme();
+                    subThe.setSubId(rs.getInt(ID));
+                    the = new Theme();
+                    the.setTheId(rs.getInt(THEME_ID));
+                    subThe.setTheId(the);
+                    subThe.setSubName(rs.getString(NAME));
+                    subThe.setSubDescription(rs.getString(DESCRIPTION));
+                    subThe.setSubStatus(rs.getInt(STATUS));
+                }
+            } else {
+                throw new SQLException("ResultSet was empty");
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
+
+        }
+        return subThe;
+        
+    
+        
     }
 
     // SEARCH by theme

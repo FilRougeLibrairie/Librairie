@@ -5,9 +5,7 @@
  */
 package SQLS;
 
-import ClassObjet.Author;
-import ClassObjet.Book;
-import ClassObjet.SubTheme;
+
 import ClassObjet.Theme;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -25,7 +23,9 @@ public class ThemeDAO extends DAO {
     public final String ID = ThemeNames.ID;
     public final String NAME = ThemeNames.NAME;
     public final String DESCRIPTION = ThemeNames.DESCRIPTION;
-
+    public final String STATUS = ThemeNames.DESCRIPTION;
+    
+    
     private String COLUMNS_CREATE = NAME + ", " + DESCRIPTION;
 
     public ThemeDAO() {
@@ -213,15 +213,18 @@ public class ThemeDAO extends DAO {
         }
         return themeList;
     }
+    
+    
+    
 
     @Override
-    public Object find(int id) {
-        Theme theme = null;
+    public Theme find(int id) {
+        Theme theme = new Theme();
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FROM " + TABLE + " WHERE ")
                 .append(ID)
                 .append(" = ")
-                .append("'" + id + "'");
+                .append("" + id + "");
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
 
@@ -233,6 +236,8 @@ public class ThemeDAO extends DAO {
                     theme.setTheId(rs.getInt(ID));
                     theme.setTheName(rs.getString(NAME));
                     theme.setTheDescription(rs.getString(DESCRIPTION));
+                    theme.setStatus(rs.getInt((STATUS)));
+                    
                 }
             } else {
                 throw new SQLException("ResultSet was empty");
@@ -244,20 +249,51 @@ public class ThemeDAO extends DAO {
         return theme;
     }
 
+    
+    
+    
+    
+    
+    
     @Override
     public Object find(String name) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+    
+       
+        Theme theme = new Theme();
 
+        String query = "SELECT * FROM " + TABLE + " WHERE " + NAME + " = '"+ name +"'" ;
+
+        try (PreparedStatement pstmt = this.connect.prepareStatement(query)) {
+
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.isBeforeFirst()) {
+
+                while (rs.next()) {
+                    theme.setTheId(rs.getInt(ID));
+                    theme.setTheName(rs.getString(NAME));
+                    theme.setTheDescription(rs.getString(DESCRIPTION));
+                }
+                
+            } else {
+                throw new SQLException("ResultSet was empty");
+            }
+        } catch (SQLException ex) {
+            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
+            
+        }
+        return theme;
+    }
+    
+    
+    
     @Override
     public Vector<Theme> findByColumn(String column, String term) {
 
         Vector<Theme> themeList = new Vector<Theme>();
-        Theme theme = null;
-
+        Theme theme;
         StringBuffer query = new StringBuffer();
-        query.append("SELECT * FROM " + TABLE + "WHERE ")
-                .append(column)
+        query.append("SELECT * FROM " + TABLE + " WHERE ")
+                .append( column )
                 .append(" = ")
                 .append("'" + term + "'");
 
@@ -274,6 +310,8 @@ public class ThemeDAO extends DAO {
                     theme.setTheId(rs.getInt(ID));
                     theme.setTheName(rs.getString(NAME));
                     theme.setTheDescription(rs.getString(DESCRIPTION));
+                    theme.setStatus(rs.getInt(STATUS));
+                    themeList.add(theme);
                 }
             } else {
                 throw new SQLException("ResultSet was empty");
@@ -284,4 +322,96 @@ public class ThemeDAO extends DAO {
         }
         return themeList;
     }
+    
+    
+    
+    
+    public Vector<Theme> findByName(String column, String term) {
+
+        Vector<Theme> themeList = new Vector<Theme>();
+        Theme theme;
+        StringBuffer query = new StringBuffer();
+        query.append("SELECT * FROM " + TABLE + " WHERE ")
+                .append( column )
+                .append(" = ")
+                .append("'" + term + "'");
+
+        System.out.println();
+
+        try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.isBeforeFirst()) {
+
+                while (rs.next()) {
+                    theme = new Theme();
+                    theme.setTheId(rs.getInt(ID));
+                    theme.setTheName(rs.getString(NAME));
+                    theme.setTheDescription(rs.getString(DESCRIPTION));
+                    themeList.add(theme);
+                }
+            } else {
+                throw new SQLException("ResultSet was empty");
+            }
+        } catch (SQLException ex) {
+            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
+            
+        }
+        return themeList;
+    }
+    
+    
+    
+    
+    
+    
+    
+    public Vector<Theme> findByColumn(String column, int term) {
+
+        Vector<Theme> themeList = new Vector<Theme>();
+        Theme theme = null;
+
+        StringBuffer query = new StringBuffer();
+        query.append("SELECT * FROM " + TABLE + "WHERE ")
+                .append( column )
+                .append(" = ")
+                .append(" "+ term +" ");
+
+        System.out.println();
+
+        try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.isBeforeFirst()) {
+
+                while (rs.next()) {
+                    theme = new Theme();
+                    theme.setTheId(rs.getInt(ID));
+                    theme.setTheName(rs.getString(NAME));
+                    theme.setTheDescription(rs.getString(DESCRIPTION));
+                    themeList.add(theme);
+                }
+            } else {
+                throw new SQLException("ResultSet was empty");
+            }
+        } catch (SQLException ex) {
+            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
+            
+        }
+        return themeList;
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }

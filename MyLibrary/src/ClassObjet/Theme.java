@@ -5,6 +5,8 @@
  */
 package ClassObjet;
 
+import java.util.Vector;
+
 /**
  *
  * @author Tofi
@@ -14,6 +16,7 @@ public class Theme {
     private int theId;
     private String theName;
     private String theDescription;
+    private int status;
 
     //Constructor
     public Theme() {
@@ -24,6 +27,17 @@ public class Theme {
         this.theName = theName;
         this.theDescription = theDescription;
     }
+
+    public Theme(int theId, String theName, String theDescription, int status) {
+        this.theId = theId;
+        this.theName = theName;
+        this.theDescription = theDescription;
+        this.status = status;
+    }
+
+   
+    
+    
 
     public Theme(String theName, String theDescription) {
         this.theName = theName;
@@ -46,6 +60,17 @@ public class Theme {
         this.theDescription = theDescription;
     }
 
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    
+    
+
     //Getters
     public int getTheId() {
         return theId;
@@ -60,8 +85,24 @@ public class Theme {
     }
     
     
-    //To string
+    //Vecteur
 
+    
+    public Vector getVector() {
+        Vector v= new Vector();
+       
+        v.add(this.getTheId());
+        v.add(this.getTheName());
+        v.add(this.getTheDescription());
+        v.add(this.getStatus());
+      
+        return v;
+    }
+    
+    
+    
+    
+    
     
      // toString
     @Override

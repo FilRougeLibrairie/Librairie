@@ -83,7 +83,7 @@ public class Forma {
 
     @Override
     public String toString() {
-        return forName + forStatus +forId;
+        return forName;
     }
     
    
