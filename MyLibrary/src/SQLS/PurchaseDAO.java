@@ -122,13 +122,6 @@ public class PurchaseDAO extends DAO {
 
     @Override
     public Vector<Purchase> findAll() {
-        purList = new Vector<Purchase>();
-        pur = null;
-        cus = null;
-        shipCost = null;
-        addrDelivery = null;
-        addrInvoice = null;
-
         String query = "SELECT * FROM " + TABLE + " ORDER BY " + PurchaseNames.SHIPPING_DATE;
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query)) {
@@ -170,11 +163,6 @@ public class PurchaseDAO extends DAO {
 
     @Override
     public Purchase find(int id) {
-        pur = null;
-        cus = null;
-        shipCost = null;
-        addrDelivery = null;
-        addrInvoice = null;
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FROM " + TABLE + " WHERE ")
                 .append(ID)
@@ -193,7 +181,9 @@ public class PurchaseDAO extends DAO {
                     shipCost = new ShippingCost();
                     addrDelivery = new Address();
                     addrInvoice = new Address();
+                    pur.setPurId(rs.getInt(ID));
                     cus.setCusID(rs.getInt(CUSTOMER_ID));
+                    pur.setCusId(cus);
                     shipCost.setShipId(rs.getInt(SHIPPING_COST));
                     pur.setShippingCostId(shipCost);
                     addrDelivery.setAddId(rs.getInt(ADDRESS_DELIVERY));
@@ -223,8 +213,6 @@ public class PurchaseDAO extends DAO {
     @Override
     public Vector<Purchase> findByColumn(String column, String term) {
         purList = new Vector<Purchase>();
-        pur = null;
-        cus = null;
         shipCost = null;
         addrDelivery = null;
         addrInvoice = null;
@@ -232,8 +220,8 @@ public class PurchaseDAO extends DAO {
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FROM " + TABLE + " WHERE ")
                 .append(column)
-                .append(" = ")
-                .append("'" + term + "'");
+                .append(" LIKE ")
+                .append("'" + term + "%'");
         
         System.out.println(query);
 
@@ -252,6 +240,7 @@ public class PurchaseDAO extends DAO {
                     
                     pur.setPurId(rs.getInt(ID));
                     cus.setCusID(rs.getInt(CUSTOMER_ID));
+                    pur.setCusId(cus);
                     shipCost.setShipId(rs.getInt(SHIPPING_COST));
                     pur.setShippingCostId(shipCost);
                     addrDelivery.setAddId(rs.getInt(ADDRESS_DELIVERY));
@@ -276,8 +265,6 @@ public class PurchaseDAO extends DAO {
 
     public Vector<Purchase> findByCustomerId(int customerId) {
         Vector<Purchase> purList = new Vector<Purchase>();
-        Customer cus = null;
-        Purchase pur = null;
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FROM " + TABLE + " WHERE ")
                 .append(CUSTOMER_ID)
@@ -331,14 +318,16 @@ public class PurchaseDAO extends DAO {
         query.append("DECLARE @statusCode int ")
                 .append("SET @statusCode = ")
                 .append("? ")
-                .append("SELECT * ")
+                .append("SELECT DISTINCT * ")
                 .append("FROM OrderStatus os ")
                 .append("JOIN Determinate det ")
                 .append("ON os.staCode = det.staCode ")
                 .append("JOIN Purchase pur ")
                 .append("ON det.purId = pur.purId ")
                 .append("WHERE os.staCode = @statusCode ")
+                .append("AND det.detTime = (SELECT max(deter.detTime) FROM Determinate deter WHERE deter.purId = pur.purId) ")
                 .append("ORDER BY det.detTime DESC");
+        
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
 

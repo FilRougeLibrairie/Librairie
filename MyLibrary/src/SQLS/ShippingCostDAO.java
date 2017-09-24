@@ -96,7 +96,7 @@ public class ShippingCostDAO extends DAO<ShippingCost> {
     public Vector<ShippingCost> findAll() {
         Vector<ShippingCost> ShippingCostList = new Vector<ShippingCost>();
         ShippingCost shipcost = null;
-        String query = "SELECT * FROM " + TABLE + " ORDER BY " + ShippingCostNames.NAME;
+        String query = "SELECT * FROM " + TABLE + " ORDER BY " + ShippingCostNames.COST;
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query)) {
 

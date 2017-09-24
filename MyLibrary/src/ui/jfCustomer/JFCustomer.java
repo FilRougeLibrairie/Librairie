@@ -675,7 +675,12 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
             int statusIndex;
             customerList = new Vector<Customer>();
             CustomerDAO customerDAO = new CustomerDAO();
-
+            
+            if(term.equalsIgnoreCase("Fripouille")){
+                //EasterFripouille easterFripouille = new EasterFripouille(null, true);
+               // easterFripouille.setVisible(true);
+            }
+            
             if (criteria.equalsIgnoreCase(SearchCriteria.TOUS_LES_CLIENTS.getDatabaseName())) {
                 customerList = customerDAO.findAll();
             } else if (criteria.equalsIgnoreCase(SearchCriteria.STATUS.getDatabaseName())) {

@@ -17,9 +17,34 @@ public class OrderLine {
     private Float ordBookVAT;
     private Purchase purchase;
     private Book book;
+    private boolean isNewToCart;
 
     //contstructor
     public OrderLine() {
+    }
+
+    public Purchase getPurchase() {
+        return purchase;
+    }
+
+    public void setPurchase(Purchase purchase) {
+        this.purchase = purchase;
+    }
+
+    public Book getBook() {
+        return book;
+    }
+
+    public void setBook(Book book) {
+        this.book = book;
+    }
+
+    public boolean isIsNewToCart() {
+        return isNewToCart;
+    }
+
+    public void setIsNewToCart(boolean isNewToCart) {
+        this.isNewToCart = isNewToCart;
     }
 
     //Setters
