@@ -188,6 +188,8 @@ public interface SQLNames {
         public static final String VALIDATION = "payValidate";
         public static final String CHOICE = "payChoice";
         public static final String DATE = "payDate";
+        public static final String CARD_TYPE = "payCardType";
+        public static final String OWNER_NAME = "payOwnerName";
     }
 
     public static class PurchaseNames {

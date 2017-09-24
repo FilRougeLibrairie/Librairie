@@ -208,8 +208,10 @@ public class OrderStatusDAO extends DAO {
         }
         return ordList;
     }
+    
+    
 
-    public Vector<OrderStatus> findOrderStatusByPurchaseId(int purchaseId) {
+  public Vector<OrderStatus> findOrderStatusByPurchaseId(int purchaseId) {
         Vector<OrderStatus> orderStatusList = new Vector<OrderStatus>();
         OrderStatus orderStatus;
         Purchase pur;
