@@ -7,7 +7,7 @@ import java.util.Vector;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-public class AuthorPanelR extends javax.swing.JPanel {
+public class AuthorPanel extends javax.swing.JPanel {
 
     JOptionPane jop1, jop2 = new JOptionPane();
     AuthorDAO authorDAO = new AuthorDAO();
@@ -17,7 +17,7 @@ public class AuthorPanelR extends javax.swing.JPanel {
     Vector<Author> authorList;
     String title=null;
 
-    public AuthorPanelR() {
+    public AuthorPanel() {
         initComponents();
         jTId.setVisible(false);
         jComboBox1.setSelectedIndex(-1);
@@ -58,7 +58,7 @@ public class AuthorPanelR extends javax.swing.JPanel {
                 if (term == null || term.isEmpty() || term.equalsIgnoreCase("Entrer le nom de l'auteur")) {
                     authorList = authorDAO.findAll();
                 } else {
-                    authorList = authorDAO.findByColumn("autLastName", term);
+                    authorList = authorDAO.findByColumnName("autLastName", term);
                 }
 
                 for (Author aut : authorList) {
@@ -73,7 +73,7 @@ public class AuthorPanelR extends javax.swing.JPanel {
                 column = "autId";
                 term = tfSearch.getText().trim();
                 if (term == null || term.isEmpty() || term.equalsIgnoreCase("Entrer le n° de l'auteur")) {
-                    authorList = authorDAO.findAll();
+                    authorList = authorDAO.findAllOrderID();
                 } else {
                     authorList = authorDAO.findByColumn(column, term);
                 }
@@ -141,8 +141,11 @@ public class AuthorPanelR extends javax.swing.JPanel {
         jComboBox1 = new javax.swing.JComboBox();
         jTId = new javax.swing.JTextField();
 
+        setBackground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(900, 600));
+        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jInternalFrame1.setBackground(new java.awt.Color(255, 255, 255));
         jInternalFrame1.setPreferredSize(new java.awt.Dimension(200, 400));
         jInternalFrame1.setVisible(true);
 
@@ -277,15 +280,24 @@ public class AuthorPanelR extends javax.swing.JPanel {
                 .addGap(23, 23, 23))
         );
 
+        add(jInternalFrame1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 604));
+
         jLabel5.setText("Statut");
+        add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(248, 55, 93, 37));
 
         jLabel1.setText("Prénom");
+        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(248, 178, 115, -1));
 
         jLabel2.setText("Biographie");
+        add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(248, 229, 132, 37));
 
         jTAuto.setColumns(20);
         jTAuto.setRows(5);
         jScrollPane1.setViewportView(jTAuto);
+
+        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(392, 229, 453, 117));
+        add(jTLastName, new org.netbeans.lib.awtextra.AbsoluteConstraints(392, 167, 453, 37));
+        add(jTFirstName, new org.netbeans.lib.awtextra.AbsoluteConstraints(392, 112, 453, 37));
 
         jbAdd.setBackground(new java.awt.Color(51, 102, 255));
         jbAdd.setText("AJOUTER");
@@ -294,6 +306,7 @@ public class AuthorPanelR extends javax.swing.JPanel {
                 jbAddMouseClicked(evt);
             }
         });
+        add(jbAdd, new org.netbeans.lib.awtextra.AbsoluteConstraints(493, 382, 176, 42));
 
         jbUpdate.setBackground(new java.awt.Color(51, 102, 255));
         jbUpdate.setText("MODIFIER");
@@ -305,67 +318,14 @@ public class AuthorPanelR extends javax.swing.JPanel {
                 jbUpdateMouseReleased(evt);
             }
         });
+        add(jbUpdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(493, 382, 176, 42));
 
         jLabel6.setText("Nom");
+        add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(248, 112, 93, 37));
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Actif", "Inactif" }));
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jInternalFrame1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTId, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 453, Short.MAX_VALUE)
-                            .addComponent(jTLastName)
-                            .addComponent(jTFirstName, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(55, 55, 55))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jbUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jbAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(231, 231, 231))))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jInternalFrame1, javax.swing.GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jTId, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(19, 19, 19)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(25, 25, 25)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(36, 36, 36)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jbUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jbAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(176, Short.MAX_VALUE))
-        );
+        add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(392, 53, 453, 40));
+        add(jTId, new org.netbeans.lib.awtextra.AbsoluteConstraints(248, 12, 63, 29));
     }// </editor-fold>//GEN-END:initComponents
 
     private void labelSearchBookMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelSearchBookMouseReleased
@@ -463,8 +423,6 @@ public class AuthorPanelR extends javax.swing.JPanel {
             jTLastName.setText(jTableSearch.getValueAt(jTableSearch.getSelectedRow(), 0).toString());
             jTAuto.setText(authorList.get(0).getAutBiography());
             jTId.setText(String.valueOf(authorList.get(0).getAutId()));
-
-            System.out.println(authorList.get(0).getAutStatusCode());
             if (authorList.get(0).getAutStatusCode() == 0) {
 
                 jComboBox1.setSelectedIndex(0);
@@ -474,17 +432,15 @@ public class AuthorPanelR extends javax.swing.JPanel {
                 jComboBox1.setSelectedItem("Inactif");
             }
         } else {
-            System.out.println("bisou");
+           
             term = jTableSearch.getValueAt(jTableSearch.getSelectedRow(), 0).toString();
-            System.out.println(term);
+            
             authorList = new Vector<Author>();
             authorList = authorDAO.findByColumn("autId", term);
             jTId.setText(String.valueOf(authorList.get(0).getAutId()));
             jTFirstName.setText(authorList.get(0).getAutFirstName());
             jTLastName.setText(jTableSearch.getValueAt(jTableSearch.getSelectedRow(), 0).toString());
             jTAuto.setText(authorList.get(0).getAutBiography());
-
-            System.out.println(authorList.get(0).getAutStatusCode());
             if (authorList.get(0).getAutStatusCode() == 0) {
 
                 jComboBox1.setSelectedIndex(0);
@@ -520,7 +476,7 @@ jComboBox1.setSelectedIndex(-1);
         String autL = null;
         String autF = null;
         String autA = null;
-        String autS = null;
+        int autS = 0;
         JOptionPane jop1 = new JOptionPane();
         
 
@@ -529,10 +485,10 @@ jComboBox1.setSelectedIndex(-1);
         autL = jTFirstName.getText();
         autA = jTAuto.getText();
         if (jComboBox1.getSelectedItem().equals("Actif")) {
-            autS = "0";
+            autS = 0;
         }
-        if (jComboBox1.getSelectedItem().equals("Incatif"))  {
-            autS = "1";
+        if (jComboBox1.getSelectedItem().equals("Inactif"))  {
+            autS = 1;
         }
 
         Author a = new Author();
@@ -541,7 +497,7 @@ jComboBox1.setSelectedIndex(-1);
         a.setAutFirstName(autF);
         a.setAutLastName(autL);
         a.setAutBiography(autA);
-        a.setAutStatusCode(Integer.valueOf(autS));
+        a.setAutStatusCode(autS);
         aut.update(a);
         jop1.showMessageDialog(null, "L'auteur a été modifié avec succès.", "Information", JOptionPane.INFORMATION_MESSAGE);
 

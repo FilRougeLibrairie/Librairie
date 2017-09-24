@@ -1,7 +1,7 @@
 
 package Home;
 
-import PanelACreer.AuthorPanelR;
+import PanelACreer.AuthorPanel;
 import PanelACreer.FormatsPanel;
 import PanelACreer.LibraryPanel;
 import PanelOk.JFReview;
@@ -11,19 +11,18 @@ import PanelOk.OfferPanel;
 import PanelOk.BookLanguagePanel;
 import PanelOk.SubthemePanel;
 import PanelOk.ThemePanel;
-import PanelOk.AuthorPanel;
 import PanelOk.KeywordsPanel;
 import PanelOk.VatPanel;
 import java.awt.BorderLayout;
 import java.awt.Color;
 
 import javax.swing.JPanel;
-//import ui.JFBook2;
+import ui.JFBook2;
 import ui.jfEditor.JFEditor;
 import ui.jfCustomer.CustomerPanel;
 
 import ui.jfCustomer.JFCustomer;
-//import ui.jfEmployee.JFEmployee;
+import ui.jfEmployee.JFEmployee;
 import ui.jfPurchase.JFPurchase;
 
 
@@ -1016,14 +1015,14 @@ CustomerPanel cus = new CustomerPanel();
     private void bBookMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bBookMouseClicked
 
         
-//       jpPrincipal.removeAll();
-//       jpPrincipal.validate();
-//       jpPrincipal.add(jInternalFrame1);
-//       JFBook2 boo = new JFBook2();
-//        jInternalFrame1.setContentPane(boo.getContentPane());
-//        jInternalFrame1.setVisible(true);
-//       jpPrincipal.setVisible(true);
-//       jpPrincipal.revalidate();
+       jpPrincipal.removeAll();
+       jpPrincipal.validate();
+       jpPrincipal.add(jInternalFrame1);
+       JFBook2 boo = new JFBook2();
+        jInternalFrame1.setContentPane(boo.getContentPane());
+        jInternalFrame1.setVisible(true);
+       jpPrincipal.setVisible(true);
+       jpPrincipal.revalidate();
         
         
 
@@ -1332,14 +1331,14 @@ CustomerPanel cus = new CustomerPanel();
     private void bAddEmployeeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bAddEmployeeMouseClicked
 
         
-//        jpPrincipal.removeAll();
-//       jpPrincipal.validate();
-//       jpPrincipal.add(jInternalFrame1);
-//       JFEmployee emp = new JFEmployee();
-//        jInternalFrame1.setContentPane(emp.getContentPane());
-//        jInternalFrame1.setVisible(true);
-//       jpPrincipal.setVisible(true);
-//       jpPrincipal.revalidate();
+        jpPrincipal.removeAll();
+       jpPrincipal.validate();
+       jpPrincipal.add(jInternalFrame1);
+       JFEmployee emp = new JFEmployee();
+        jInternalFrame1.setContentPane(emp.getContentPane());
+        jInternalFrame1.setVisible(true);
+       jpPrincipal.setVisible(true);
+       jpPrincipal.revalidate();
 
     }//GEN-LAST:event_bAddEmployeeMouseClicked
 
@@ -1475,14 +1474,14 @@ CustomerPanel cus = new CustomerPanel();
 
     private void jPanel19MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel19MouseClicked
 
-//        jpPrincipal.removeAll();
-//       jpPrincipal.validate();
-//       jpPrincipal.add(jInternalFrame1);
-//       JFEmployee emp = new JFEmployee();
-//        jInternalFrame1.setContentPane(emp.getContentPane());
-//        jInternalFrame1.setVisible(true);
-//       jpPrincipal.setVisible(true);
-//       jpPrincipal.revalidate();
+        jpPrincipal.removeAll();
+       jpPrincipal.validate();
+       jpPrincipal.add(jInternalFrame1);
+       JFEmployee emp = new JFEmployee();
+        jInternalFrame1.setContentPane(emp.getContentPane());
+        jInternalFrame1.setVisible(true);
+       jpPrincipal.setVisible(true);
+       jpPrincipal.revalidate();
    
 
     }//GEN-LAST:event_jPanel19MouseClicked
@@ -1671,14 +1670,14 @@ CustomerPanel cus = new CustomerPanel();
 
     private void jPanel11MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel11MouseClicked
 
-//        jpPrincipal.removeAll();
-//       jpPrincipal.validate();
-//       jpPrincipal.add(jInternalFrame1);
-//       JFBook2 boo = new JFBook2();
-//        jInternalFrame1.setContentPane(boo.getContentPane());
-//        jInternalFrame1.setVisible(true);
-//       jpPrincipal.setVisible(true);
-//       jpPrincipal.revalidate();
+        jpPrincipal.removeAll();
+       jpPrincipal.validate();
+       jpPrincipal.add(jInternalFrame1);
+       JFBook2 boo = new JFBook2();
+        jInternalFrame1.setContentPane(boo.getContentPane());
+        jInternalFrame1.setVisible(true);
+       jpPrincipal.setVisible(true);
+       jpPrincipal.revalidate();
     }//GEN-LAST:event_jPanel11MouseClicked
 
     private void jPanel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel7MouseClicked
@@ -1770,7 +1769,7 @@ CustomerPanel cus = new CustomerPanel();
         
          jpPrincipal.removeAll();
         jpPrincipal.validate();
-        AuthorPanelR lib = new AuthorPanelR();
+        AuthorPanel lib = new AuthorPanel();
         jpPrincipal.setLayout(new BorderLayout());
         jpPrincipal.add(lib, BorderLayout.NORTH);
         jpPrincipal.setVisible(true);
