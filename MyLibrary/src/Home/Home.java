@@ -6,6 +6,10 @@
 package Home;
 
 import ClassObjet.Employee;
+import Names.SQLNames;
+import Names.SQLNames.EmployeeNames;
+import SQLS.EmployeeDAO;
+import SQLS.ReviewDAO;
 import exceptions.CryptoException;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -14,29 +18,31 @@ import java.awt.GridBagLayout;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import ui.JFMain;
 import utils.Crypto;
 
-
 public class Home extends javax.swing.JFrame {
 
-    
     Employee loggedEmp;
+    int empAccess;
+    int empStatus;
     Header panel1;
     PannelCentralSelection panel2;
+    private JOptionPane jOptionPane;
     
+    private final int DISABLED_ACCESS = 1;
 
 //    JPCustomer jpc;
-
     public Home() throws IOException {
         initComponents();
         panel1 = new Header();
         panel2 = new PannelCentralSelection();
-        
+
         // Ajouter le jDeskPrincipal 
-        
         this.setLayout(new GridBagLayout());
         GridBagConstraints gbc1 = new GridBagConstraints();
         gbc1.gridx = 0;
@@ -47,80 +53,94 @@ public class Home extends javax.swing.JFrame {
         jDeskPrincipal.setVisible(true);
         this.add(jDeskPrincipal, gbc1);
 
- 
         // ELEMENTS INTEGRES QUI MARCHENT loGO+ PAGE principale
         jDeskPrincipal.setLayout(new BorderLayout());
-        jDeskPrincipal.add(panel1,BorderLayout.NORTH);   
-        jDeskPrincipal.add(panel2,BorderLayout.CENTER);
-        
-        
+        jDeskPrincipal.add(panel1, BorderLayout.NORTH);
+        jDeskPrincipal.add(panel2, BorderLayout.CENTER);
 
-        loggedEmp = new Employee();
-        loggedEmp.setEmpFirstName("Camille");
-        loggedEmp.setEmpLastName("Vasseur");
-        loggedEmp.setEmpLogin("1");
-        loggedEmp.setEmpSalt("k71nhc5h933kblk4oaouihdhh6");
-        loggedEmp.setEmpPassword("32D601355049CDBC0E69DA955DACBC271D1A19999043ED1FAAD09F211E433E0917195DF7EC8A09D1B6C223875036CC11A332178B0E97FDEE28AC982938DE96B3");
+//        loggedEmp = new Employee();
+//        loggedEmp.setEmpFirstName("Camille");
+//        loggedEmp.setEmpLastName("Vasseur");
+//        loggedEmp.setEmpLogin("1");
+//        loggedEmp.setEmpSalt("k71nhc5h933kblk4oaouihdhh6");
+//        loggedEmp.setEmpPassword("32D601355049CDBC0E69DA955DACBC271D1A19999043ED1FAAD09F211E433E0917195DF7EC8A09D1B6C223875036CC11A332178B0E97FDEE28AC982938DE96B3");
+        /////// BYPASS CREDENTIALS
+        ///firstRun();
+        jPanelCredentials.setVisible(true);
+        // initWorkSpace();
+        /////// BYPASS CREDENTIALS
 
-        /////// BYPASS CREDENTIALS
-      ///firstRun();
-      jPanelCredentials.setVisible(false);
-        initWorkSpace();
-        /////// BYPASS CREDENTIALS
-      
-      test();
-      
+        test();
+
     }
 
-    
-    
-    
-    private void test(){
-        
-        if (panel1.getjPanelGeneralInfos().isVisible()==false){
+    private void test() {
+
+        if (panel1.getjPanelGeneralInfos().isVisible() == false) {
             firstRun();
         }
-    
+
     }
-    
+
     private void firstRun() {
-        
-        
+
         jPanelCredentials.setVisible(true);
         panel1.setVisible(false);
         panel2.setVisible(false);
         jLabelWrongCredentials.setVisible(false);
-        
-        
+
     }
 
-    
-    
-
     private void requestEmployeeCredentials() throws NoSuchAlgorithmException, CryptoException {
-
+        Employee tempEmployee = null;
+        EmployeeDAO employeeDAO = new EmployeeDAO();
         String inputUsername = jtfUsername.getText();
         char[] inputPassChar = jPasswordField.getPassword();
         String inputPassStr = new String(inputPassChar);
         String inputPass = null;
+        String empPasswd = null;
+        String empSalt = null;
+        String empUsername = null;
+        boolean isEmployeeFound = false;
+         jLabelWrongCredentials.setVisible(false);
 
-       
-        try {
-            inputPass = Crypto.verifyPassword(loggedEmp.getEmpSalt(), inputPassStr);
-
-        } catch (CryptoException ex) {
-            Logger.getLogger(JFMain.class
-                    .getName()).log(Level.SEVERE, null, ex);
+        Vector<Employee> employeeList = employeeDAO.findByColumn(EmployeeNames.LOGIN, inputUsername);
+        for (Employee employee : employeeList) {
+            if (employee.getEmpLogin().equalsIgnoreCase(inputUsername)) {
+                empPasswd = employee.getEmpPassword();
+                empSalt = employee.getEmpSalt();
+                empUsername = employee.getEmpLogin();
+                isEmployeeFound = true;
+                tempEmployee = employee;
+            }
         }
 
-        if (!inputUsername.equalsIgnoreCase(loggedEmp.getEmpLogin()) || !inputPass.equalsIgnoreCase(loggedEmp.getEmpPassword())) {
-            jLabelWrongCredentials.setVisible(true);
+        if (!isEmployeeFound) {
+            jOptionPane.showMessageDialog(null, "Mauvais couple login / mot de passe", "Information", JOptionPane.WARNING_MESSAGE);
         } else {
-            initWorkSpace();
+            try {
+                inputPass = Crypto.verifyPassword(empSalt, inputPassStr);
+            } catch (CryptoException ex) {
+                jOptionPane.showMessageDialog(null, "Il y a un problème avec le déchiffrement du mot de passe", "Crypto Error", JOptionPane.WARNING_MESSAGE);
+            }
+
+            if (!inputUsername.equalsIgnoreCase(empUsername) || !inputPass.equalsIgnoreCase(empPasswd)) {
+                jOptionPane.showMessageDialog(null, "Mauvais couple login / mot de passe", "Information", JOptionPane.WARNING_MESSAGE);
+            } else {
+                loggedEmp = tempEmployee;
+                empAccess = loggedEmp.getAccProfileCode().getAccProfileCode();
+                if (loggedEmp.getEmpStatus() == DISABLED_ACCESS) {
+                    jOptionPane.showMessageDialog(null, "Accès désactivé", "Information", JOptionPane.WARNING_MESSAGE);
+                    loggedEmp = null;
+                } else {
+                    initWorkSpace();
+                }
+            }
         }
     }
 
     private void initWorkSpace() {
+
         clearCredentials();
         initJpanelGeneralInfos();
         initjTabbedGeneral();
@@ -134,7 +154,7 @@ public class Home extends javax.swing.JFrame {
     }
 
     private void initJpanelGeneralInfos() {
-        
+
         panel1.getJlLoggedEmpFirstName().setText(loggedEmp.getEmpFirstName());
         panel1.getJlLoggedEmpFirstName().setBackground(Color.white);
         panel1.getJlLoggedEmpLastName().setText(loggedEmp.getEmpLastName());
@@ -145,16 +165,9 @@ public class Home extends javax.swing.JFrame {
 
     private void initjTabbedGeneral() {
         panel2.setVisible(true);
-       
-        
-        
+
     }
 
-    
-    
-   
-    
-   
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -279,7 +292,7 @@ public class Home extends javax.swing.JFrame {
 
         getContentPane().add(jPanelCredentials, new java.awt.GridBagConstraints());
 
-        pack();
+        setLocation(new java.awt.Point(0, 0));
     }// </editor-fold>//GEN-END:initComponents
 
     private void jtfUsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfUsernameActionPerformed
@@ -304,7 +317,8 @@ public class Home extends javax.swing.JFrame {
                 Logger.getLogger(JFMain.class
                         .getName()).log(Level.SEVERE, null, ex);
             } catch (CryptoException ex) {
-                Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Home.class
+                        .getName()).log(Level.SEVERE, null, ex);
             }
         }
     }//GEN-LAST:event_jPasswordFieldKeyReleased
@@ -317,7 +331,8 @@ public class Home extends javax.swing.JFrame {
             Logger.getLogger(JFMain.class
                     .getName()).log(Level.SEVERE, null, ex);
         } catch (CryptoException ex) {
-            Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Home.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButtonConnexionActionPerformed
 

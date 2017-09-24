@@ -253,7 +253,33 @@ public class ReviewDAO extends DAO<Review> {
     }
     
     
-    
+    public int countReviewsByStatus(int statusCode){
+        int numberOfReviews = 0;
+        StringBuilder query = new StringBuilder();
+        query.append("SELECT " + ReviewNames.STATUS + " FROM Review WHERE " + ReviewNames.STATUS + " = ?");
+        
+         try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
+
+             pstmt.setInt(1, statusCode);
+             
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.isBeforeFirst()) {
+
+                while (rs.next()) {
+                    numberOfReviews += 1;
+                }
+            } else {
+                throw new SQLException("ResultSet was empty");
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
+            
+
+        }
+        return numberOfReviews;
+    }
     
     
     

@@ -5,7 +5,7 @@
  */
 package Home;
 
-
+import SQLS.ReviewDAO;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -13,17 +13,25 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.event.EventListenerList;
 
-
-
 public class Header extends javax.swing.JPanel {
 
-    
+    private final int REVIEWS_PENDING_STATUS = 2;
+
     public Header() throws IOException {
         initComponents();
 
-       
-      
-        
+        findPendingReviews();
+
+    }
+
+    private void findPendingReviews() {
+        int pendingReviewsTomoderate = 0;
+        ReviewDAO reviewDAO = new ReviewDAO();
+        pendingReviewsTomoderate = reviewDAO.countReviewsByStatus(REVIEWS_PENDING_STATUS);
+
+        if (pendingReviewsTomoderate > 0) {
+            JLPendingReviews.setText(pendingReviewsTomoderate + " avis en attente de modération");
+        }
     }
 
     public JLabel getJLPendingReviews() {
@@ -50,8 +58,6 @@ public class Header extends javax.swing.JPanel {
         this.jPanelGeneralInfos = jPanelGeneralInfos;
     }
 
-  
-
     public JLabel getJlGenInfoDisconnect() {
         return jlGenInfoDisconnect;
     }
@@ -75,10 +81,6 @@ public class Header extends javax.swing.JPanel {
     public void setJlLoggedEmpLastName(JLabel jlLoggedEmpLastName) {
         this.jlLoggedEmpLastName = jlLoggedEmpLastName;
     }
-    
-    
-    
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -188,8 +190,6 @@ public class Header extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_jlGenInfoDisconnectMouseReleased
 
-    
-
     public EventListenerList getListenerList() {
         return listenerList;
     }
@@ -198,22 +198,18 @@ public class Header extends javax.swing.JPanel {
         this.listenerList = listenerList;
     }
 
-    
 
-    
-    
-    
     private void JLPendingReviewsMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JLPendingReviewsMouseReleased
         //jTabbedPane6.setSelectedIndex(2);
 //        jTabbedPaneGeneral.setSelectedComponent(jpReviews);
     }//GEN-LAST:event_JLPendingReviewsMouseReleased
 
     private void disconnectFromWorkSpace() throws IOException {
-        
+
         jlLoggedEmpFirstName.setText("");
         jlLoggedEmpLastName.setText("");
         jPanelGeneralInfos.setVisible(false);
-        
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
