@@ -34,7 +34,8 @@ public class Home extends javax.swing.JFrame {
     PannelCentralSelection panel2;
     private JOptionPane jOptionPane;
     
-    private final int DISABLED_ACCESS = 1;
+    private final int DESACTIVATED_ACCOUNT = 1;
+    private final int PROFILE_NO_ACCESS = 0;
 
 //    JPCustomer jpc;
     public Home() throws IOException {
@@ -58,14 +59,9 @@ public class Home extends javax.swing.JFrame {
         jDeskPrincipal.add(panel1, BorderLayout.NORTH);
         jDeskPrincipal.add(panel2, BorderLayout.CENTER);
 
-//        loggedEmp = new Employee();
-//        loggedEmp.setEmpFirstName("Camille");
-//        loggedEmp.setEmpLastName("Vasseur");
-//        loggedEmp.setEmpLogin("1");
-//        loggedEmp.setEmpSalt("k71nhc5h933kblk4oaouihdhh6");
-//        loggedEmp.setEmpPassword("32D601355049CDBC0E69DA955DACBC271D1A19999043ED1FAAD09F211E433E0917195DF7EC8A09D1B6C223875036CC11A332178B0E97FDEE28AC982938DE96B3");
+
         /////// BYPASS CREDENTIALS
-        ///firstRun();
+        firstRun();
         jPanelCredentials.setVisible(true);
         // initWorkSpace();
         /////// BYPASS CREDENTIALS
@@ -129,7 +125,7 @@ public class Home extends javax.swing.JFrame {
             } else {
                 loggedEmp = tempEmployee;
                 empAccess = loggedEmp.getAccProfileCode().getAccProfileCode();
-                if (loggedEmp.getEmpStatus() == DISABLED_ACCESS) {
+                if (loggedEmp.getEmpStatus() == DESACTIVATED_ACCOUNT) {
                     jOptionPane.showMessageDialog(null, "Accès désactivé", "Information", JOptionPane.WARNING_MESSAGE);
                     loggedEmp = null;
                 } else {
@@ -147,12 +143,13 @@ public class Home extends javax.swing.JFrame {
     }
 
     private void clearCredentials() {
+
         jPanelCredentials.setVisible(false);
         jLabelWrongCredentials.setVisible(false);
         jtfUsername.setText("");
         jPasswordField.setText("");
     }
-
+    
     private void initJpanelGeneralInfos() {
 
         panel1.getJlLoggedEmpFirstName().setText(loggedEmp.getEmpFirstName());
@@ -166,6 +163,10 @@ public class Home extends javax.swing.JFrame {
     private void initjTabbedGeneral() {
         panel2.setVisible(true);
 
+    }
+    
+    public void getClearCredentials(){
+        clearCredentials();
     }
 
     @SuppressWarnings("unchecked")

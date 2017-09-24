@@ -1,37 +1,46 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Home;
 
 import SQLS.ReviewDAO;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 import javax.swing.event.EventListenerList;
 
 public class Header extends javax.swing.JPanel {
+
+    Timer timer;
 
     private final int REVIEWS_PENDING_STATUS = 2;
 
     public Header() throws IOException {
         initComponents();
-
         findPendingReviews();
+        timer = createTimer();
+        timer.start();
 
+    }
+
+    private Timer createTimer() {
+        ActionListener action = new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                findPendingReviews();
+            }
+        };
+        return new Timer(1000*60* 2, action);
     }
 
     private void findPendingReviews() {
         int pendingReviewsTomoderate = 0;
         ReviewDAO reviewDAO = new ReviewDAO();
         pendingReviewsTomoderate = reviewDAO.countReviewsByStatus(REVIEWS_PENDING_STATUS);
+        JLPendingReviews.setText(pendingReviewsTomoderate + " avis en attente de modération");
 
-        if (pendingReviewsTomoderate > 0) {
-            JLPendingReviews.setText(pendingReviewsTomoderate + " avis en attente de modération");
-        }
     }
 
     public JLabel getJLPendingReviews() {
@@ -131,8 +140,8 @@ public class Header extends javax.swing.JPanel {
 
         JLPendingReviews.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         JLPendingReviews.setForeground(new java.awt.Color(255, 102, 0));
-        JLPendingReviews.setText("7 pending reviews");
-        JLPendingReviews.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        JLPendingReviews.setText("Fail to retrieve infos");
+        JLPendingReviews.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         JLPendingReviews.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 JLPendingReviewsMouseReleased(evt);
@@ -150,7 +159,7 @@ public class Header extends javax.swing.JPanel {
                     .addComponent(jlLoggedEmpLastName)
                     .addGroup(jPanelGeneralInfosLayout.createSequentialGroup()
                         .addComponent(JLPendingReviews)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
                         .addComponent(jlLoggedEmpFirstName)))
                 .addGap(20, 20, 20))
         );
@@ -172,9 +181,8 @@ public class Header extends javax.swing.JPanel {
         );
 
         add(jPanelGeneralInfos);
-        jPanelGeneralInfos.setBounds(670, 20, 299, 80);
+        jPanelGeneralInfos.setBounds(670, 20, 312, 80);
 
-        jLabel1.setIcon(new javax.swing.ImageIcon("C:\\Users\\Chrys\\Documents\\NetBeansProjects\\Librairie\\MyLibrary\\src\\Home\\Library-logo.png")); // NOI18N
         jLabel1.setAlignmentX(0.5F);
         jLabel1.setMaximumSize(new java.awt.Dimension(300, 100));
         jLabel1.setMinimumSize(new java.awt.Dimension(300, 100));
