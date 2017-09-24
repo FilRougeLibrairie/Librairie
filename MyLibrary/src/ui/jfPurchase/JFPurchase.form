@@ -935,6 +935,9 @@
                   </SubComponents>
                 </Container>
                 <Component class="javax.swing.JTextField" name="tfSearchBook">
+                  <Events>
+                    <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="tfSearchBookKeyReleased"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JComboBox" name="comboSearchBook">
                   <Properties>
@@ -1012,10 +1015,7 @@
                                                   </Group>
                                                   <EmptySpace min="43" pref="43" max="-2" attributes="0"/>
                                               </Group>
-                                              <Group type="102" alignment="0" attributes="0">
-                                                  <Component id="jScrollPane5" min="-2" pref="271" max="-2" attributes="0"/>
-                                                  <EmptySpace max="32767" attributes="0"/>
-                                              </Group>
+                                              <Component id="jScrollPane5" alignment="0" min="-2" pref="271" max="-2" attributes="0"/>
                                           </Group>
                                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                                           <Group type="103" groupAlignment="0" attributes="0">
@@ -1282,10 +1282,7 @@
                                                   </Group>
                                                   <EmptySpace min="43" pref="43" max="-2" attributes="0"/>
                                               </Group>
-                                              <Group type="102" alignment="0" attributes="0">
-                                                  <Component id="jScrollPane6" min="-2" pref="271" max="-2" attributes="0"/>
-                                                  <EmptySpace max="32767" attributes="0"/>
-                                              </Group>
+                                              <Component id="jScrollPane6" alignment="0" min="-2" pref="271" max="-2" attributes="0"/>
                                           </Group>
                                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                                           <Group type="103" groupAlignment="0" attributes="0">

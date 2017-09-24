@@ -46,13 +46,8 @@ import utils.InputsControls;
 import utils.PriceCalculation;
 
 /**
- * ***************************************
- ******************************************
- *
- * GUILLAUME IS CODING * DON'T TOUCH THIS FILE PLEASE :-)
- *
- *****************************************
- ****************************************
+ * 
+ * @author ggarvanese
  */
 public class JFPurchase extends javax.swing.JFrame implements SQLNames {
 
@@ -1497,6 +1492,12 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
             .addComponent(btnSearchBook, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
+        tfSearchBook.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tfSearchBookKeyReleased(evt);
+            }
+        });
+
         comboSearchBook.setModel(initComboSearchBookModel());
         comboSearchBook.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1640,9 +1641,7 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
                                                     .addComponent(tfInvoiceCompany)
                                                     .addComponent(tfInvoiceFirstName))))
                                         .addGap(43, 43, 43))
-                                    .addGroup(jPanel4Layout.createSequentialGroup()
-                                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(0, 0, Short.MAX_VALUE)
                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel20)
@@ -1805,9 +1804,7 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
                                                     .addComponent(tfShipCompany)
                                                     .addComponent(tfShipFirstName))))
                                         .addGap(43, 43, 43))
-                                    .addGroup(jPanel5Layout.createSequentialGroup()
-                                        .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                    .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(0, 0, Short.MAX_VALUE)
                                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel56)
@@ -2558,6 +2555,12 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
     private void btnSearchBookMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSearchBookMouseReleased
         searchForBook();
     }//GEN-LAST:event_btnSearchBookMouseReleased
+
+    private void tfSearchBookKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfSearchBookKeyReleased
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            searchForBook();
+        }
+    }//GEN-LAST:event_tfSearchBookKeyReleased
 
     /**
      * @param args the command line arguments

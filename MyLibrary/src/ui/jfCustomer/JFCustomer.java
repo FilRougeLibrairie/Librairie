@@ -21,6 +21,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.KeyEvent;
 import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -30,6 +31,7 @@ import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import utils.Crypto;
@@ -39,6 +41,7 @@ import org.jdatepicker.impl.UtilDateModel;
 import ui.jfPurchase.JFPurchase;
 import utils.Awt1;
 import utils.DateLabelFormatter;
+import utils.InputsControls;
 
 /**
  *
@@ -77,6 +80,7 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
     private final String ROUTE = "Route";
     private final String IMPASSE = "Impasse";
     private final String LIEU_DIT = "Lieu-dit";
+    private JOptionPane jOptionPane;
 
     private class ErrorMessages {
 
@@ -562,88 +566,117 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
         tfDeliverZipCode.setText("");
     }
 
-    private void customerFactory() throws NoSuchAlgorithmException, CryptoException, MissingInformationException {
+    private void customerFactory() throws NoSuchAlgorithmException, CryptoException, MissingInformationException, Exception {
+        boolean isNew = false;
         Customer cus;
         if (currentCustomer == null) {
             cus = new Customer();
+            isNew = true;
         } else {
             cus = currentCustomer;
         }
 
-        cus.setCusLastName(tfLastName.getText().trim());
-        cus.setCusFirstName(tfFirstName.getText().trim());
-        cus.setCusOrganisationName(tfCompany.getText().trim());
-        cus.setCusPhoneNumber(tfPhone.getText().trim());
-        cus.setCusEmail(tfEmail.getText().trim());
-        cus.setCusIP(tfIPAdress.getText().trim());
-        cus.setCusComment(tfComment.getText().trim());
-        cus.setCusGender(comboGender.getSelectedItem().toString());
-        cus.setCusStatus(comboStatus.getSelectedIndex());
-
-        if (tfBirthday.getText() != null) {
-            cus.setCusDateOfBirth(tfBirthday.getText().trim());
-        }
-
-        if (currentCustomer == null && tfPassword.getPassword().length == 0) {
-            throw new MissingInformationException(ErrorMessages.IS_EMPTY);
-        } else if (tfPassword.getPassword().length > 0) {
+        if (!InputsControls.isMailOk(tfEmail.getText().trim())) {
+            jOptionPane.showMessageDialog(null, "L'adresse mail n'est pas correcte", "Information", JOptionPane.WARNING_MESSAGE);
+        } else if (!tfPhone.getText().isEmpty() && !InputsControls.isPhoneOk(tfPhone.getText().trim())) {
+            jOptionPane.showMessageDialog(null, "Le numéro de téléphone n'est pas correct n'est pas correcte", "Information", JOptionPane.WARNING_MESSAGE);
+        } else if (isNew && tfPassword.getPassword().length == 0) {
+            jOptionPane.showMessageDialog(null, "Le mot de passe doit être rempli", "Information", JOptionPane.WARNING_MESSAGE);
+        } else if (!isNew && tfPassword.getPassword().length > 0) {
             String str = new String(tfPassword.getPassword());
             String[] password = Crypto.createPassword(new String(tfPassword.getPassword()));
             cus.setCusPassword(password[0]);
             cus.setCusSalt(password[1]);
         } else {
-            System.out.println("OK : Je suis un client connu qui ne change pas de mot de passe");
-        }
+            cus.setCusEmail(tfEmail.getText().trim());
+            cus.setCusPhoneNumber(tfPhone.getText().trim());
+            cus.setCusLastName(tfLastName.getText().trim());
+            cus.setCusFirstName(tfFirstName.getText().trim());
+            cus.setCusOrganisationName(tfCompany.getText().trim());
+            cus.setCusIP(tfIPAdress.getText().trim());
+            cus.setCusComment(tfComment.getText().trim());
+            cus.setCusGender(comboGender.getSelectedItem().toString());
+            cus.setCusStatus(comboStatus.getSelectedIndex());
 
-        if (tfPassword.getPassword().toString().isEmpty()) {
-            manageInputError(true, "tfPassword", "btnSaveCustomer", ErrorMessages.IS_EMPTY);
-        } else {
-            manageInputError(false, "tfPassword", "btnSaveCustomer", ErrorMessages.IS_EMPTY);
-        }
+            if (!tfBirthday.getText().isEmpty()) {
+                cus.setCusDateOfBirth(tfBirthday.getText().trim());
+            }
 
-        CustomerDAO customerDAO = new CustomerDAO();
-        if (currentCustomer == null) {
-            customerDAO.create(cus);
-        } else {
-            customerDAO.update(cus);
+            try {
+                CustomerDAO customerDAO = new CustomerDAO();
+                if (isNew) {
+                    customerDAO.create(cus);
+                } else {
+                    customerDAO.update(cus);
+                }
+                customerDAO.findAll();
+                jOptionPane.showMessageDialog(null, "La fiche a correctement été enregistrée", "Information", JOptionPane.INFORMATION_MESSAGE);
+            } catch (Exception e) {
+                jOptionPane.showMessageDialog(null, "Un problème a eu lieu lors de l'enregistrement", "Information", JOptionPane.WARNING_MESSAGE);
+            }
+
+//        if (tfPassword.getPassword().toString().isEmpty()) {
+//
+//            // manageInputError(true, "tfPassword", "btnSaveCustomer", ErrorMessages.IS_EMPTY);
+//        } else {
+//            // manageInputError(false, "tfPassword", "btnSaveCustomer", ErrorMessages.IS_EMPTY);
+//        }
         }
-        clearCustomerFields();
-        customerDAO.findAll();
-        clearTableModels(customerTableList);
     }
 
     private void addressFactory() throws NoCurrentCustomerException {
         Address addr;
+        boolean isNewAddress = false;
         if (currentAddress == null) {
             addr = new Address();
+            isNewAddress = true;
         } else {
             addr = currentAddress;
         }
         addr.setCusResidId(currentCustomer);
         addr.setCusChargeId(currentCustomer);
-        addr.setAddCity(tfDeliverCity.getText().trim());
-        addr.setAddCompany(tfDeliverCompany.getText().trim());
-        addr.setAddFirstName(tfDeliverFirstName.getText().trim());
-        addr.setAddLabel(tfDeliverLabel.getText().trim());
-        addr.setAddLastName(tfDeliverLastName.getText().trim());
-        addr.setAddPhone(tfDeliverPhoneNumber.getText().trim());
-        addr.setAddSecurityCode(tfDeliverSecurityCode.getText().trim());
-        addr.setAddComplement(tfDeliverStreetComplement.getText().trim());
-        addr.setAddNumber(tfDeliverStreetNumber.getText().trim());
-        addr.setAddStreetName(tfDeliverStreetName.getText().trim());
-        addr.setAddStreetType(tfDeliverStreetNumber.getText().trim());
-        addr.setAddZipCode(tfDeliverZipCode.getText().trim());
-        addr.setAddStreetType(comboDeliverStreetType.getSelectedItem().toString().trim());
 
-        AddressDAO addressDAO = new AddressDAO();
-        if (currentCustomer == null) {
-            addressDAO.create(addr);
+        if (tfDeliverZipCode.getText().isEmpty() || !InputsControls.isZipCodeOk(tfDeliverZipCode.getText().trim())) {
+            jOptionPane = new JOptionPane();
+            jOptionPane.showMessageDialog(null, "Un petit soucis dans le code postal, non ?", "Information", JOptionPane.WARNING_MESSAGE);
+        } else if (tfDeliverCity.getText().isEmpty()) {
+            jOptionPane = new JOptionPane();
+            jOptionPane.showMessageDialog(null, "La ville doit être renseignée", "Information", JOptionPane.WARNING_MESSAGE);
+        } else if (tfDeliverZipCode.getText().isEmpty() || !InputsControls.isZipCodeOk(tfDeliverZipCode.getText().trim())) {
+            jOptionPane = new JOptionPane();
+            jOptionPane.showMessageDialog(null, "Un petit soucis dans le code postal, non ?", "Information", JOptionPane.WARNING_MESSAGE);
+        } else if (tfDeliverLabel.getText().isEmpty()) {
+            jOptionPane = new JOptionPane();
+            jOptionPane.showMessageDialog(null, "Le Label de l'adresse est vide", "Information", JOptionPane.WARNING_MESSAGE);
         } else {
-            addressDAO.update(addr);
+            addr.setAddCity(tfDeliverCity.getText().trim());
+            addr.setAddCompany(tfDeliverCompany.getText().trim());
+            addr.setAddFirstName(tfDeliverFirstName.getText().trim());
+            addr.setAddLabel(tfDeliverLabel.getText().trim());
+            addr.setAddLastName(tfDeliverLastName.getText().trim());
+            addr.setAddPhone(tfDeliverPhoneNumber.getText().trim());
+            addr.setAddSecurityCode(tfDeliverSecurityCode.getText().trim());
+            addr.setAddComplement(tfDeliverStreetComplement.getText().trim());
+            addr.setAddNumber(tfDeliverStreetNumber.getText().trim());
+            addr.setAddStreetName(tfDeliverStreetName.getText().trim());
+            addr.setAddStreetType(tfDeliverStreetNumber.getText().trim());
+            addr.setAddZipCode(tfDeliverZipCode.getText().trim());
+            addr.setAddStreetType(comboDeliverStreetType.getSelectedItem().toString().trim());
+
+            AddressDAO addressDAO = new AddressDAO();
+            try {
+                if (isNewAddress) {
+                    addressDAO.create(addr);
+                } else {
+                    addressDAO.update(addr);
+                }
+                addressDAO.findByCustomerId(currentCustomer.getCusID());
+                tableDeliverAdresses.setModel(initTableAddressModel());
+                jOptionPane.showMessageDialog(null, "La fiche a correctement été enregistrée", "Information", JOptionPane.INFORMATION_MESSAGE);
+            } catch (Exception ex) {
+                jOptionPane.showMessageDialog(null, "Un problème a eu lieu lors de l'enregistrement", "Information", JOptionPane.WARNING_MESSAGE);
+            }
         }
-        addressDAO.findByCustomerId(currentCustomer.getCusID());
-        tableDeliverAdresses.setModel(initTableAddressModel());
-        clearAddressFields();
     }
 
     private void reviewFactory() {
@@ -665,7 +698,13 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
         }
         currentReview.setRevStatus(revStatusCode);
 
-        reviewDAO.update(currentReview);
+        try {
+            reviewDAO.update(currentReview);
+            jOptionPane.showMessageDialog(null, "La fiche a correctement été enregistrée", "Information", JOptionPane.INFORMATION_MESSAGE);
+        } catch (Exception e) {
+            jOptionPane = new JOptionPane();
+            jOptionPane.showMessageDialog(null, "Un problème a eu lieu lors de l'enregistrement", "Information", JOptionPane.WARNING_MESSAGE);
+        }
     }
 
     private void searchForCustomer() {
@@ -675,12 +714,12 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
             int statusIndex;
             customerList = new Vector<Customer>();
             CustomerDAO customerDAO = new CustomerDAO();
-            
-            if(term.equalsIgnoreCase("Fripouille")){
+
+            if (term.equalsIgnoreCase("Fripouille")) {
                 //EasterFripouille easterFripouille = new EasterFripouille(null, true);
-               // easterFripouille.setVisible(true);
+                // easterFripouille.setVisible(true);
             }
-            
+
             if (criteria.equalsIgnoreCase(SearchCriteria.TOUS_LES_CLIENTS.getDatabaseName())) {
                 customerList = customerDAO.findAll();
             } else if (criteria.equalsIgnoreCase(SearchCriteria.STATUS.getDatabaseName())) {
@@ -2136,12 +2175,9 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
         try {
             customerFactory();
             //  manageInputError(false, "btnSaveCustomer", ErrorMessages.CRYPTO);
-        } catch (NoSuchAlgorithmException ex) {
-            //   manageInputError(true, "btnSaveCustomer", ErrorMessages.CRYPTO);
-        } catch (CryptoException ex) {
-            //   manageInputError(true, "btnSaveCustomer", ErrorMessages.CRYPTO);
-        } catch (MissingInformationException ex) {
-            //  manageInputError(true, "btnSaveCustomer", ErrorMessages.EMPTY_PASSWORD);
+        } catch (Exception ex) {
+            jOptionPane = new JOptionPane();
+            jOptionPane.showMessageDialog(null, ex.getMessage(), "Information", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_btnSaveCustomerMouseReleased
 
@@ -2259,13 +2295,13 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
     }//GEN-LAST:event_btnDeleteCustomerMouseReleased
 
     private void tfLastNameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfLastNameKeyReleased
-        if (tfLastName.getText().isEmpty()) {
-            tfLastName.setBackground(new Color(255, 0, 0, 15));
-            manageInputError(true, "tfLastname", "btnSaveCustomer", ErrorMessages.IS_EMPTY);
-        } else {
-            tfLastName.setBackground(Color.WHITE);
-            manageInputError(false, "tfLastname", "btnSaveCustomer", "");
-        }
+//        if (tfLastName.getText().isEmpty()) {
+//            tfLastName.setBackground(new Color(255, 0, 0, 15));
+//            manageInputError(true, "tfLastname", "btnSaveCustomer", ErrorMessages.IS_EMPTY);
+//        } else {
+//            tfLastName.setBackground(Color.WHITE);
+//            manageInputError(false, "tfLastname", "btnSaveCustomer", "");
+//        }
     }//GEN-LAST:event_tfLastNameKeyReleased
 
     private void tfPasswordKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfPasswordKeyReleased
