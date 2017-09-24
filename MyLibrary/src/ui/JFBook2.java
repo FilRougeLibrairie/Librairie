@@ -888,6 +888,7 @@ public class JFBook2 extends javax.swing.JFrame {
                 for (int i = 0; i < jComboBoxVat.getModel().getSize(); i++) {
                     if (i == (vat.getVatCode())) {
                         jComboBoxVat.setSelectedIndex(i);
+                        System.out.println(i + " - " + vat.getVatCode());
                     }
                 }
                 StatusDisplay sta = new StatusDisplay();

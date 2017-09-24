@@ -178,6 +178,7 @@ public interface SQLNames {
         public static final String RETURN_ACCEPTED = "Retour Accepté";
         public static final String RETURN_REFUSED = "Retour refusé";
         public static final String REFUNDED = "Remboursé";
+        public static final String NEW = "En cours";
 
     }
 
