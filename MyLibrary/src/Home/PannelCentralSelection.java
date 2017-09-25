@@ -50,7 +50,6 @@ JFCustomer cus = new JFCustomer();
         bPurchase = new javax.swing.JLabel();
         jPanel8 = new javax.swing.JPanel();
         bClient = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
         menuProduct = new javax.swing.JPanel();
         jPanel11 = new javax.swing.JPanel();
         bBook = new javax.swing.JLabel();
@@ -187,30 +186,17 @@ JFCustomer cus = new JFCustomer();
             .addComponent(bClient, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
         );
 
-        jButton1.setText("jButton1");
-        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton1MouseClicked(evt);
-            }
-        });
-
         javax.swing.GroupLayout menuPurchaseLayout = new javax.swing.GroupLayout(menuPurchase);
         menuPurchase.setLayout(menuPurchaseLayout);
         menuPurchaseLayout.setHorizontalGroup(
             menuPurchaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
             .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(menuPurchaseLayout.createSequentialGroup()
-                .addGap(32, 32, 32)
-                .addComponent(jButton1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         menuPurchaseLayout.setVerticalGroup(
             menuPurchaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(menuPurchaseLayout.createSequentialGroup()
-                .addGap(51, 51, 51)
-                .addComponent(jButton1)
-                .addGap(162, 162, 162)
+                .addGap(238, 238, 238)
                 .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1764,23 +1750,6 @@ JFCustomer cus = new JFCustomer();
         
     }//GEN-LAST:event_bModerate1MouseClicked
 
-    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
-        //test
-        
-         jpPrincipal.removeAll();
-        jpPrincipal.validate();
-        AccessPanel lib = new AccessPanel();
-        jpPrincipal.setLayout(new BorderLayout());
-        jpPrincipal.add(lib, BorderLayout.NORTH);
-        jpPrincipal.setVisible(true);
-        jpPrincipal.revalidate();
-        
-        
-        
-        
-        
-    }//GEN-LAST:event_jButton1MouseClicked
-
     void setColor(JPanel panel) {
         panel.setBackground(new Color(102, 102, 102));
     }
@@ -1809,7 +1778,6 @@ JFCustomer cus = new JFCustomer();
     private javax.swing.JButton jBClient;
     private javax.swing.JButton jBProduct;
     private javax.swing.JButton jBStat;
-    private javax.swing.JButton jButton1;
     private javax.swing.JInternalFrame jInternalFrame1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel11;

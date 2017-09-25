@@ -148,10 +148,9 @@ public class SubTheme {
 
     @Override
     public String toString() {
-        return "\n"
-                +  subName +
-                "\n"
-                + subId  ;
+        return "\n"+subId + " "
+                +  subName 
+                 ;
     }
     
     

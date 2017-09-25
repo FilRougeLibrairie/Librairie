@@ -1274,10 +1274,22 @@ public class JFBook2 extends javax.swing.JFrame {
  
         
         //sous theme 1
+        
+        
+       
+        
+        
+        
+        
         if(jComboBoxSubTheme.getSelectedIndex()!=-1){
-        SubThemeDAO subthemeDAO = new SubThemeDAO();
-        String subtheme= jComboBoxSubTheme.getSelectedItem().toString().trim();
-        int subthemeValue = subthemeDAO.find(subtheme).getSubId();
+        String sentenceTheme = jComboBoxSubTheme.getSelectedItem().toString().trim();
+        String arrTheme[] = sentenceTheme.split(" ");
+        String firstWorSubTheme = arrTheme[0].trim();   
+         int subthemeValue = Integer.valueOf(firstWorSubTheme); 
+            
+//        SubThemeDAO subthemeDAO = new SubThemeDAO();
+//        String subtheme= jComboBoxSubTheme.getSelectedItem().toString().trim();
+//        subthemeDAO.find(subtheme).getSubId();
         asso.setSubId(subthemeValue);
         //création N°1
         assoDao.create(asso);
@@ -1285,10 +1297,17 @@ public class JFBook2 extends javax.swing.JFrame {
  
         //sous theme2
         if(jComboBoxSubTheme2.getSelectedIndex()!=-1){
-        SubThemeDAO subthemeDAO2 = new SubThemeDAO();
-        String subtheme2= jComboBoxSubTheme2.getSelectedItem().toString().trim();
-        int subthemeValue2 = subthemeDAO2.find(subtheme2).getSubId();
-        asso2.setSubId(subthemeValue2);
+            
+        String sentenceTheme = jComboBoxSubTheme2.getSelectedItem().toString().trim();
+        String arrTheme[] = sentenceTheme.split(" ");
+        String firstWorSubTheme = arrTheme[0].trim();   
+        int subthemeValue = Integer.valueOf(firstWorSubTheme);    
+            
+           
+//        SubThemeDAO subthemeDAO2 = new SubThemeDAO();
+//        String subtheme2= jComboBoxSubTheme2.getSelectedItem().toString().trim();
+//        int subthemeValue2 = subthemeDAO2.find(subtheme2).getSubId();
+        asso2.setSubId(subthemeValue);
         //création N°1
         assoDao2.create(asso2);
         }
