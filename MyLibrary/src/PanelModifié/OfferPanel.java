@@ -1,5 +1,5 @@
 
-package PanelAmodif;
+package PanelModifié;
 
 import java.awt.BorderLayout;
 
@@ -58,7 +58,7 @@ public class OfferPanel extends javax.swing.JPanel {
             .addGroup(jInternalFrame1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jbAdd, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
+                    .addComponent(jbAdd, javax.swing.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE)
                     .addComponent(jBUpdate, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -72,10 +72,10 @@ public class OfferPanel extends javax.swing.JPanel {
                 .addContainerGap(377, Short.MAX_VALUE))
         );
 
-        add(jInternalFrame1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+        add(jInternalFrame1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 200, -1));
 
         jpPrinc.setBackground(new java.awt.Color(255, 255, 255));
-        add(jpPrinc, new org.netbeans.lib.awtextra.AbsoluteConstraints(216, 0, 643, 530));
+        add(jpPrinc, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 0, 643, 530));
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbAddMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbAddMouseReleased

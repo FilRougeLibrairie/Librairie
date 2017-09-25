@@ -1,4 +1,3 @@
-
 package PanelModifié;
 
 import ClassObjet.SubTheme;
@@ -20,17 +19,15 @@ import javax.swing.JOptionPane;
  */
 public class SubthemeUpdatePanel extends javax.swing.JPanel {
 
-   SubThemeDAO subthemeDAO = new SubThemeDAO();
-   SubTheme subtheme =new SubTheme();
-   Theme t = new Theme();
-   ThemeDAO themeDAO = new ThemeDAO();
-   
-   
+    SubThemeDAO subthemeDAO = new SubThemeDAO();
+    SubTheme subtheme = new SubTheme();
+    Theme t = new Theme();
+    ThemeDAO themeDAO = new ThemeDAO();
+JOptionPane jop1 = new JOptionPane();
     public SubthemeUpdatePanel() {
         initComponents();
         jComboBox1.setSelectedIndex(-1);
         jComboBox2.setSelectedIndex(-1);
-        jTid.setVisible(false);
         jpEdit.setVisible(false);
     }
 
@@ -55,7 +52,6 @@ public class SubthemeUpdatePanel extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTDescription = new javax.swing.JTextArea();
         jButton2 = new javax.swing.JButton();
-        jTid = new javax.swing.JTextField();
         jComboBox2 = new javax.swing.JComboBox();
         jLabel4 = new javax.swing.JLabel();
 
@@ -103,8 +99,7 @@ public class SubthemeUpdatePanel extends javax.swing.JPanel {
                 jButton2ActionPerformed(evt);
             }
         });
-        jpEdit.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(191, 236, 170, 42));
-        jpEdit.add(jTid, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 35, 32));
+        jpEdit.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 240, 170, 42));
 
         add(jpEdit, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 120, 620, 278));
 
@@ -124,40 +119,34 @@ public class SubthemeUpdatePanel extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_jtNameActionPerformed
 
-    
-    
+    int subthemeValue = 0;
 
     private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
 
         if (jComboBox2.getSelectedItem() != null) {
             t = (Theme) jComboBox2.getSelectedItem();
             jComboBox1.setModel(initSubthemeModel());
-            
+
         } else {
             jComboBox1.setSelectedIndex(-1);
         }
-
-        subtheme=(SubTheme) jComboBox1.getSelectedItem();
 
     }//GEN-LAST:event_jComboBox2ActionPerformed
     SubTheme s = new SubTheme();
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
 
-        JOptionPane jop1 = new JOptionPane();
         
-       
-        
+        s.setSubId(subthemeValue);
         s.setSubName(jtName.getText());
         s.setSubDescription(jTDescription.getText());
         s.setTheId(t);
-        s.setSubId(Integer.valueOf(jTid.getText()));
-        
+        s.setSubStatus(1);
         subthemeDAO.update(s);
         jComboBox1.setModel(initSubthemeModel());
         jComboBox2.setModel(initThemeModel());
-        jtName.setText("");
-        jTDescription.setText("");
-        jTid.setText("");
+        jtName.setText(null);
+        jTDescription.setText(null);
+
         jop1.showMessageDialog(null, "Le sous thème a été modifié avec succès.", "Information", JOptionPane.INFORMATION_MESSAGE);
         jComboBox1.setSelectedIndex(-1);
         jComboBox2.setSelectedIndex(-1);
@@ -165,24 +154,19 @@ public class SubthemeUpdatePanel extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-        
-        
-        
-        jpEdit.setVisible(true);
-        
-        
-        if (jComboBox1.getSelectedItem() != null) {
-            
-        s = (SubTheme) jComboBox1.getSelectedItem();
-        jtName.setText(s.getSubName());
-        jTDescription.setText(s.getSubDescription());
-        jTid.setText(String.valueOf(s.getSubId()));
-        }
-        else{
-    }
-        
-     
 
+        if(jComboBox1.getSelectedItem() != null){
+          
+        String sentenceTheme = jComboBox1.getSelectedItem().toString().trim();
+        String arrTheme[] = sentenceTheme.split(" ");
+        String firstWorSubTheme = arrTheme[0].trim();   
+        subthemeValue = Integer.valueOf(firstWorSubTheme); 
+        jpEdit.setVisible(true);
+        }
+        
+        
+
+        
 
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
@@ -197,12 +181,11 @@ public class SubthemeUpdatePanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea jTDescription;
-    private javax.swing.JTextField jTid;
     private javax.swing.JPanel jpEdit;
     private javax.swing.JTextField jtName;
     // End of variables declaration//GEN-END:variables
 
- // Vector sous theme
+    // Vector sous theme
     private Vector initSubThemeVector() {
         Vector v = new Vector();
         try {

@@ -11,7 +11,7 @@ import PanelModifié.ReviewPanel;
 import PanelModifié.ThemePanel;
 import PanelModifié.VatPanel;
 
-import PanelAmodif.OfferPanel;
+import PanelModifié.OfferPanel;
 import PanelModifié.SubthemePanel;
 import java.awt.BorderLayout;
 import java.awt.Color;

@@ -1287,9 +1287,7 @@ public class JFBook2 extends javax.swing.JFrame {
         String firstWorSubTheme = arrTheme[0].trim();   
          int subthemeValue = Integer.valueOf(firstWorSubTheme); 
             
-//        SubThemeDAO subthemeDAO = new SubThemeDAO();
-//        String subtheme= jComboBoxSubTheme.getSelectedItem().toString().trim();
-//        subthemeDAO.find(subtheme).getSubId();
+
         asso.setSubId(subthemeValue);
         //création N°1
         assoDao.create(asso);
