@@ -23,7 +23,7 @@ public class OfferPanel extends javax.swing.JPanel {
         jpPrinc = new javax.swing.JPanel();
 
         setBackground(new java.awt.Color(255, 255, 255));
-        setPreferredSize(new java.awt.Dimension(900, 800));
+        setPreferredSize(new java.awt.Dimension(1000, 800));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jInternalFrame1.setBackground(new java.awt.Color(255, 255, 255));
@@ -75,7 +75,9 @@ public class OfferPanel extends javax.swing.JPanel {
         add(jInternalFrame1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 200, -1));
 
         jpPrinc.setBackground(new java.awt.Color(255, 255, 255));
-        add(jpPrinc, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 0, 643, 530));
+        jpPrinc.setPreferredSize(new java.awt.Dimension(900, 600));
+        jpPrinc.setLayout(new java.awt.BorderLayout());
+        add(jpPrinc, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 0, 900, 550));
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbAddMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbAddMouseReleased
@@ -85,7 +87,7 @@ public class OfferPanel extends javax.swing.JPanel {
     private void jbAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbAddActionPerformed
         jpPrinc.removeAll();
             jpPrinc.validate();
-            jpPrinc.add(new OfferAddPanel(),BorderLayout.CENTER);
+            jpPrinc.add(new OffAdd(),BorderLayout.CENTER);
             jpPrinc.revalidate();
             jpPrinc.setVisible(true);
     }//GEN-LAST:event_jbAddActionPerformed

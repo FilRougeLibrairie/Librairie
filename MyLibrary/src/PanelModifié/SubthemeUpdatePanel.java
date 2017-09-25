@@ -23,7 +23,7 @@ public class SubthemeUpdatePanel extends javax.swing.JPanel {
     SubTheme subtheme = new SubTheme();
     Theme t = new Theme();
     ThemeDAO themeDAO = new ThemeDAO();
-JOptionPane jop1 = new JOptionPane();
+    JOptionPane jop1 = new JOptionPane();
     public SubthemeUpdatePanel() {
         initComponents();
         jComboBox1.setSelectedIndex(-1);

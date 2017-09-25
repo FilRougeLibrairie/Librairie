@@ -3,27 +3,19 @@ package PanelModifié;
 import ClassObjet.MyLibrary;
 import SQLS.MyLibraryDAO;
 import java.util.Vector;
-import java.util.regex.Pattern;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import utils.InputsControls;
 
-public class LibraryPanel extends javax.swing.JPanel  {
-    
-    
-    
-    
-    
-    
-    
-    
+public class LibraryPanel extends javax.swing.JPanel {
 
     Vector<MyLibrary> myLibraryList;
     private JFileChooser jfc = new JFileChooser();
     private JFileChooser jfc1 = new JFileChooser();
     MyLibraryDAO libDAO = new MyLibraryDAO();
     JOptionPane jop1 = new JOptionPane();
-    
+    JOptionPane jop2 = new JOptionPane();
+
     public LibraryPanel() {
         initComponents();
         jTId.setVisible(false);
@@ -34,7 +26,6 @@ public class LibraryPanel extends javax.swing.JPanel  {
 
         myLibraryList = new Vector<MyLibrary>();
 
-        
         myLibraryList = libDAO.findAll();
         MyLibrary p = new MyLibrary();
         for (MyLibrary lib : myLibraryList) {
@@ -235,53 +226,51 @@ public class LibraryPanel extends javax.swing.JPanel  {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSaveMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSaveMouseClicked
-       
-        
-        
+
         MyLibrary lib = new MyLibrary();
-      
-        
-       
-        
-        lib.setMyLibAddCity(jTCity.getText());
-        lib.setMyLibAddComplement(jTComplement.getText());
-        lib.setMyLibAddNumber(jTNum.getText());
-        lib.setMyLibAddStreetName(jTNameStreet.getText());
-        lib.setMyLibAddZipCode(jTZip.getText());
-        lib.setMyLibCGU(jTLinkCGU.getText());
-        lib.setMyLibEmail(jTEmail.getText());
-        lib.setMyLibId(Integer.valueOf(jTId.getText()));
-        lib.setMyLibLogo(jTLink.getText());
-        lib.setMyLibName(jTName.getText());
-        lib.setMyLibPhone(jTPhone.getText());
-        lib.setMyLibSiret(jTSiret.getText());
-        libDAO.update(lib);
-        jop1.showMessageDialog(null, "Les informations ont été modifiées avec succès", "Information", JOptionPane.INFORMATION_MESSAGE);
-        init();
-        
-        
-        
-        
+
+        if (!InputsControls.isMailOk(jTEmail.getText().trim())) {
+            jop1.showMessageDialog(null, "L'adresse mail n'est pas correcte", "Information", JOptionPane.WARNING_MESSAGE);
+        } else if (!jTPhone.getText().isEmpty() && !InputsControls.isPhoneOk(jTPhone.getText().trim())) {
+            jop2.showMessageDialog(null, "Le numéro de téléphone n'est pas correct n'est pas correcte", "Information", JOptionPane.WARNING_MESSAGE);
+        } else {
+
+            lib.setMyLibAddCity(jTCity.getText());
+            lib.setMyLibAddComplement(jTComplement.getText());
+            lib.setMyLibAddNumber(jTNum.getText());
+            lib.setMyLibAddStreetName(jTNameStreet.getText());
+            lib.setMyLibAddZipCode(jTZip.getText());
+            lib.setMyLibCGU(jTLinkCGU.getText());
+            lib.setMyLibId(Integer.valueOf(jTId.getText()));
+            lib.setMyLibLogo(jTLink.getText());
+            lib.setMyLibName(jTName.getText());
+            lib.setMyLibSiret(jTSiret.getText());
+            libDAO.update(lib);
+            jop1.showMessageDialog(null, "Les informations ont été modifiées avec succès", "Information", JOptionPane.INFORMATION_MESSAGE);
+            init();
+
+        }
+
 
     }//GEN-LAST:event_btnSaveMouseClicked
 
     private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
 
-            int returnval = jfc1.showOpenDialog(jButton2);
-            if(returnval==JFileChooser.APPROVE_OPTION){
+        int returnval = jfc1.showOpenDialog(jButton2);
+        if (returnval == JFileChooser.APPROVE_OPTION) {
             //recuperation du chemin
             jTLink.setText(jfc1.getSelectedFile().getAbsolutePath());
-            }
-        
+        }
+
     }//GEN-LAST:event_jButton2MouseClicked
 
     private void jButton3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseClicked
-        
-            int returnval = jfc.showOpenDialog(jButton2);
-            if(returnval==JFileChooser.APPROVE_OPTION){
+
+        int returnval = jfc.showOpenDialog(jButton2);
+        if (returnval == JFileChooser.APPROVE_OPTION) {
             //recuperation du chemin
             jTLinkCGU.setText(jfc.getSelectedFile().getAbsolutePath());
-            }
+        }
     }//GEN-LAST:event_jButton3MouseClicked
 
 

@@ -12,7 +12,7 @@ public class Pass_Gen {
     public static void main(String[] args) throws NoSuchAlgorithmException, CryptoException {
         
         /// Create New Password
-        String[] pwd = Crypto.createPassword("12");
+        String[] pwd = Crypto.createPassword("1234");
         
         System.out.println();
         System.out.println("HASH PASSWORD [0] : " + pwd[0]);

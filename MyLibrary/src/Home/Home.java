@@ -33,15 +33,15 @@ public class Home extends javax.swing.JFrame {
     Header panel1;
     PannelCentralSelection panel2;
     private JOptionPane jOptionPane;
-    
+
     private final int DESACTIVATED_ACCOUNT = 1;
     private final int PROFILE_NO_ACCESS = 0;
 
 //    JPCustomer jpc;
     public Home() throws IOException {
         initComponents();
-        panel1 = new Header();
-        panel2 = new PannelCentralSelection();
+        panel1 = new Header(this);
+        panel2 = new PannelCentralSelection(this);
 
         // Ajouter le jDeskPrincipal 
         this.setLayout(new GridBagLayout());
@@ -59,19 +59,19 @@ public class Home extends javax.swing.JFrame {
         jDeskPrincipal.add(panel1, BorderLayout.NORTH);
         jDeskPrincipal.add(panel2, BorderLayout.CENTER);
 
-
-         loggedEmp = new Employee();
-        loggedEmp.setEmpFirstName("Camille");
-        loggedEmp.setEmpLastName("Vasseur");
-        loggedEmp.setEmpLogin("1");
-        loggedEmp.setEmpSalt("k71nhc5h933kblk4oaouihdhh6");
-        loggedEmp.setEmpPassword("32D601355049CDBC0E69DA955DACBC271D1A19999043ED1FAAD09F211E433E0917195DF7EC8A09D1B6C223875036CC11A332178B0E97FDEE28AC982938DE96B3");
+//        loggedEmp = new Employee();
+//        loggedEmp.setEmpFirstName("Camille");
+//        loggedEmp.setEmpLastName("Vasseur");
+//        loggedEmp.setEmpLogin("1");
+//        loggedEmp.setEmpSalt("k71nhc5h933kblk4oaouihdhh6");
+//        loggedEmp.setEmpPassword("32D601355049CDBC0E69DA955DACBC271D1A19999043ED1FAAD09F211E433E0917195DF7EC8A09D1B6C223875036CC11A332178B0E97FDEE28AC982938DE96B3");
 
         /////// BYPASS CREDENTIALS
-      ///firstRun();
-      jPanelCredentials.setVisible(false);
-        initWorkSpace();}
+        firstRun();
+        jPanelCredentials.setVisible(true);
+        //initWorkSpace();
         /////// BYPASS CREDENTIALS
+    }
 
     private void test() {
 
@@ -81,7 +81,7 @@ public class Home extends javax.swing.JFrame {
 
     }
 
-    private void firstRun() {
+    public void firstRun() {
 
         jPanelCredentials.setVisible(true);
         panel1.setVisible(false);
@@ -101,7 +101,7 @@ public class Home extends javax.swing.JFrame {
         String empSalt = null;
         String empUsername = null;
         boolean isEmployeeFound = false;
-         jLabelWrongCredentials.setVisible(false);
+        jLabelWrongCredentials.setVisible(false);
 
         Vector<Employee> employeeList = employeeDAO.findByColumn(EmployeeNames.LOGIN, inputUsername);
         for (Employee employee : employeeList) {
@@ -152,7 +152,7 @@ public class Home extends javax.swing.JFrame {
         jtfUsername.setText("");
         jPasswordField.setText("");
     }
-    
+
     private void initJpanelGeneralInfos() {
 
         panel1.getJlLoggedEmpFirstName().setText(loggedEmp.getEmpFirstName());
@@ -167,9 +167,22 @@ public class Home extends javax.swing.JFrame {
         panel2.setVisible(true);
 
     }
-    
-    public void getClearCredentials(){
+
+    public void setClearCredentials() {
         clearCredentials();
+    }
+    
+    public void destroyEmployee() {
+        loggedEmp = null;
+        empAccess = PROFILE_NO_ACCESS;
+        empStatus = DESACTIVATED_ACCOUNT;
+
+    }
+
+    public void disconnect() {
+        destroyEmployee();
+        panel2.resetCentral();
+        firstRun();
     }
 
     @SuppressWarnings("unchecked")
