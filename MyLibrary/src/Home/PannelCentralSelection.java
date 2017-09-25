@@ -7,6 +7,7 @@ import PanelModifié.BookLanguagePanel;
 import PanelModifié.FormatsPanel;
 import PanelModifié.KeyWordsPanel;
 import PanelModifié.LibraryPanel;
+import PanelModifié.OffAdd;
 import PanelModifié.ReviewPanel;
 import PanelModifié.ThemePanel;
 import PanelModifié.VatPanel;

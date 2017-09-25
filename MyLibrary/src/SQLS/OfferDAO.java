@@ -26,9 +26,10 @@ public class OfferDAO extends DAO {
     private final String END = OfferNames.END;
     private final String DISCOUNT = OfferNames.DISCOUNT;
     private final String PICTURE = OfferNames.PICTURE;
+    private final String STATUS = OfferNames.STATUS;
 
     private String COLUMNS_CREATE = NAME + ", " + TEXT
-            + ", " + START + ", " + END + ", " + DISCOUNT + ", " + PICTURE;
+            + ", " + START + ", " + END + ", " + DISCOUNT + ", " + PICTURE+ " , " +STATUS;
 
     public OfferDAO() {
         super();
@@ -39,7 +40,7 @@ public class OfferDAO extends DAO {
         Offer off = (Offer) obj;
         String query = "IF NOT EXISTS (SELECT * FROM " + TABLE + " WHERE " + ID + " = '" + off.getOffId() + "')"
                 + "INSERT INTO " + TABLE + " (" + COLUMNS_CREATE + ")"
-                + "VALUES (?, ?, ?, ?, ?, ?)";
+                + "VALUES (?, ?, ?, ?, ?, ?,?)";
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query);) {
 
@@ -49,6 +50,7 @@ public class OfferDAO extends DAO {
             pstmt.setString(4, off.getOffDateEnd());
             pstmt.setFloat(5, off.getOffDiscount());
             pstmt.setString(6, off.getOffPicture());
+            pstmt.setInt(7, off.getOffStatus());
 
             int result = pstmt.executeUpdate();
 
@@ -126,6 +128,8 @@ public class OfferDAO extends DAO {
                     offer.setOffDateEnd(rs.getString(END));
                     offer.setOffDiscount(rs.getFloat(DISCOUNT));
                     offer.setOffPicture(rs.getString(PICTURE));
+                    offer.setOffStatus(rs.getInt(STATUS));
+                    offerList.add(offer);
                 }
             } else {
                 throw new SQLException("ResultSet was emplty");
@@ -141,7 +145,7 @@ public class OfferDAO extends DAO {
     public Object find(int id) {
         Offer offer = null;
         StringBuffer query = new StringBuffer();
-        query.append("SELECT * FORM " + TABLE + " WHERE ")
+        query.append("SELECT * FROM " + TABLE + " WHERE ")
                 .append(ID)
                 .append(" = ")
                 .append("'" + id + "'");
@@ -160,6 +164,7 @@ public class OfferDAO extends DAO {
                     offer.setOffDateEnd(rs.getString(END));
                     offer.setOffDiscount(rs.getFloat(DISCOUNT));
                     offer.setOffPicture(rs.getString(PICTURE));
+                    
                 }
             } else {
                 throw new SQLException("ResultSet was empty");
