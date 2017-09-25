@@ -1,4 +1,3 @@
-
 package Home;
 
 import SQLS.ReviewDAO;
@@ -15,14 +14,20 @@ import javax.swing.event.EventListenerList;
 public class Header extends javax.swing.JPanel {
 
     Timer timer;
+    Home home;
 
     private final int REVIEWS_PENDING_STATUS = 2;
 
-    public Header() throws IOException {
+    public Header(java.awt.Frame parent) throws IOException {
         initComponents();
+
+        home = (Home) parent;
+
         findPendingReviews();
         timer = createTimer();
         timer.start();
+
+        home.setClearCredentials();
 
     }
 
@@ -32,7 +37,7 @@ public class Header extends javax.swing.JPanel {
                 findPendingReviews();
             }
         };
-        return new Timer(1000*60* 2, action);
+        return new Timer(1000 * 60 * 2, action);
     }
 
     private void findPendingReviews() {
@@ -192,11 +197,9 @@ public class Header extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jlGenInfoDisconnectMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlGenInfoDisconnectMouseReleased
-        try {
-            disconnectFromWorkSpace();
-        } catch (IOException ex) {
-            Logger.getLogger(Header.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
+        disconnectFromWorkSpace();
+
     }//GEN-LAST:event_jlGenInfoDisconnectMouseReleased
 
     public EventListenerList getListenerList() {
@@ -213,12 +216,15 @@ public class Header extends javax.swing.JPanel {
 //        jTabbedPaneGeneral.setSelectedComponent(jpReviews);
     }//GEN-LAST:event_JLPendingReviewsMouseReleased
 
-    private void disconnectFromWorkSpace() throws IOException {
+    private void disconnectFromWorkSpace() {
 
+        clearEmployeeInfos();
+        home.disconnect();
+    }
+
+    private void clearEmployeeInfos() {
         jlLoggedEmpFirstName.setText("");
         jlLoggedEmpLastName.setText("");
-        jPanelGeneralInfos.setVisible(false);
-
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

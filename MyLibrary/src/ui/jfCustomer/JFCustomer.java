@@ -173,6 +173,7 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
         }
         if (jfPurchase instanceof JFPurchase) {
             init();
+            btnPanelViewPurchase.setVisible(false);
         }
     }
 
@@ -591,6 +592,9 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
             cus.setCusGender(comboGender.getSelectedItem().toString());
             cus.setCusStatus(comboStatus.getSelectedIndex());
 
+            if (tfBirthday.getText().equalsIgnoreCase("AAAA-MM-JJ")) {
+                tfBirthday.setText("");
+            }
             if (!tfBirthday.getText().isEmpty()) {
                 cus.setCusDateOfBirth(tfBirthday.getText().trim());
             }
@@ -882,7 +886,7 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
         jPanel8 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tableOrders = new javax.swing.JTable();
-        jPanel11 = new javax.swing.JPanel();
+        btnPanelViewPurchase = new javax.swing.JPanel();
         btnViewPurchase = new javax.swing.JLabel();
         jPanel10 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -977,6 +981,18 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
         jLabel8.setText("Prénom :");
 
         jLabel14.setText("Date de naissance :");
+
+        tfBirthday.setText("AAAA-MM-JJ");
+        tfBirthday.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                tfBirthdayFocusGained(evt);
+            }
+        });
+        tfBirthday.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tfBirthdayActionPerformed(evt);
+            }
+        });
 
         jLabel4.setText("Adresse IP");
 
@@ -1290,9 +1306,9 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
         });
         jScrollPane2.setViewportView(tableOrders);
 
-        jPanel11.setBackground(new java.awt.Color(51, 102, 255));
-        jPanel11.setPreferredSize(new java.awt.Dimension(200, 45));
-        jPanel11.setRequestFocusEnabled(false);
+        btnPanelViewPurchase.setBackground(new java.awt.Color(51, 102, 255));
+        btnPanelViewPurchase.setPreferredSize(new java.awt.Dimension(200, 45));
+        btnPanelViewPurchase.setRequestFocusEnabled(false);
 
         btnViewPurchase.setForeground(new java.awt.Color(255, 255, 255));
         btnViewPurchase.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -1309,14 +1325,14 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
             }
         });
 
-        javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
-        jPanel11.setLayout(jPanel11Layout);
-        jPanel11Layout.setHorizontalGroup(
-            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout btnPanelViewPurchaseLayout = new javax.swing.GroupLayout(btnPanelViewPurchase);
+        btnPanelViewPurchase.setLayout(btnPanelViewPurchaseLayout);
+        btnPanelViewPurchaseLayout.setHorizontalGroup(
+            btnPanelViewPurchaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(btnViewPurchase, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE)
         );
-        jPanel11Layout.setVerticalGroup(
-            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        btnPanelViewPurchaseLayout.setVerticalGroup(
+            btnPanelViewPurchaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(btnViewPurchase, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
         );
 
@@ -1330,7 +1346,7 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnPanelViewPurchase, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(31, 31, 31))
         );
         jPanel8Layout.setVerticalGroup(
@@ -1339,7 +1355,7 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
                 .addGap(20, 20, 20)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnPanelViewPurchase, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -1972,7 +1988,7 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
                 tfSearch.setEnabled(true);
                 tfSearch.setText("");
             }
-        }else{
+        } else {
             tfSearch.setEnabled(true);
             tfSearch.setText("");
         }
@@ -2075,6 +2091,16 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
         jfPur.setVisible(true);
     }//GEN-LAST:event_btnViewPurchaseMouseReleased
 
+    private void tfBirthdayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfBirthdayActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tfBirthdayActionPerformed
+
+    private void tfBirthdayFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tfBirthdayFocusGained
+        if (tfBirthday.getText().equalsIgnoreCase("AAAA-MM-JJ")) {
+            tfBirthday.setText("");
+        }
+    }//GEN-LAST:event_tfBirthdayFocusGained
+
     /**
      * @param args the command line arguments
      */
@@ -2121,6 +2147,7 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
     private javax.swing.JLabel btnDeleteAddress;
     private javax.swing.JLabel btnDeleteCustomer;
     private javax.swing.JLabel btnNewAdress;
+    private javax.swing.JPanel btnPanelViewPurchase;
     private javax.swing.JLabel btnSaveCustomer;
     private javax.swing.JLabel btnSaveDeliver;
     private javax.swing.JLabel btnSaveReview;
@@ -2162,7 +2189,6 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
-    private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel14;
