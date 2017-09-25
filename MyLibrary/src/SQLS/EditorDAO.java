@@ -213,7 +213,7 @@ public class EditorDAO extends DAO {
         Editor editor = null;
 
         StringBuffer query = new StringBuffer();
-        query.append("SELECT * FROM " + TABLE + "WHERE ")
+        query.append("SELECT * FROM " + TABLE + " WHERE ")
                 .append(column)
                 .append(" LIKE ")
                 .append("'" + term + "%'");
@@ -250,7 +250,7 @@ public class EditorDAO extends DAO {
         Editor editor = null;
 
         StringBuffer query = new StringBuffer();
-        query.append("SELECT * FROM " + TABLE + "WHERE ")
+        query.append("SELECT * FROM " + TABLE + " WHERE ")
                 .append(STATUS)
                 .append(" = ")
                 .append(statut);

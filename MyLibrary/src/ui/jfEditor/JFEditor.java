@@ -4,6 +4,7 @@ package ui.jfEditor;
 import ClassObjet.Editor;
 import SQLS.EditorDAO;
 import java.util.Iterator;
+import java.util.Vector;
 import javax.swing.JOptionPane;
 
 
@@ -141,7 +142,7 @@ public class JFEditor extends javax.swing.JFrame {
         panelPrincipal.add(labelNom, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 140, 90, 30));
         panelPrincipal.add(tfNom, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 139, 300, 30));
 
-        comboStatut.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Choix", "Actif", "Inactif" }));
+        comboStatut.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Actif", "Inactif" }));
         panelPrincipal.add(comboStatut, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 160, 90, -1));
 
         labelStatut.setText("Statut :");
@@ -277,7 +278,7 @@ public class JFEditor extends javax.swing.JFrame {
 
     private void labelSauver1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelSauver1MouseClicked
         // TODO add your handling code here:
-        if (comboStatut.getSelectedIndex() == 0) {
+        if (comboStatut.getSelectedIndex() == 3) {
             JOptionPane.showMessageDialog(this,
                     "Vous n'avez pas choisi de statut",
                     "Selectionnez un statut",
@@ -289,10 +290,17 @@ public class JFEditor extends javax.swing.JFrame {
             edi.setEdiName(tfNom.getText());
             edi.setEdiPresentation(taPresentation.getText());
             if (tfStatut.getText().equalsIgnoreCase("Actif")) {
-                edi.setEdiStatusCode(1);
+                edi.setEdiStatusCode(0);
             } else if (tfStatut.getText().equalsIgnoreCase("Inactif")) {
-                edi.setEdiStatusCode(2);
+                edi.setEdiStatusCode(1);
             }
+            a.update(edi);
+            tfRechercher.setText("");
+            tfNom.setText("");
+            taPresentation.setText("");
+            tfRechercher.setText("");
+            comboTypeRecherche.setSelectedIndex(0);
+            taResultatsRecherche.setText("Editeur Mis à jour !");
 
         } else {
             EditorDAO a = new EditorDAO();
@@ -301,6 +309,9 @@ public class JFEditor extends javax.swing.JFrame {
             e.setEdiPresentation(taPresentation.getText());
             e.setEdiStatusCode(comboStatut.getSelectedIndex());
             a.create(e);
+            tfRechercher.setText("");
+            tfNom.setText("");
+            taPresentation.setText("");
 
         }
     }//GEN-LAST:event_labelSauver1MouseClicked
@@ -321,14 +332,33 @@ public class JFEditor extends javax.swing.JFrame {
         // TODO add your handling code here:
         EditorDAO a = new EditorDAO();
         if (comboTypeRecherche.getItemAt(comboTypeRecherche.getSelectedIndex()).equals("Tous")) {
-            for (int i = 0; i <= a.findAll().size(); i++) {
-
-                taResultatsRecherche.setText(((Editor) a.findAll().get(i)).toString());
+            Vector<Editor> editorList = new Vector();
+            editorList = a.findAll();
+            StringBuilder str = new StringBuilder();
+           for(Editor editor : editorList) {
+                
+                str.append(editor.getEdiId()+"\n");
+                str.append(editor.getEdiName()+"\n");
+                str.append(editor.getEdiPresentation()+"\n");
+                str.append(editor.getEdiStatusCode()+"\n");
+                str.append("----------------------------------"+"\n");
+                                               
             }
+           taResultatsRecherche.setText(str.toString());
         } else if (comboTypeRecherche.getItemAt(comboTypeRecherche.getSelectedIndex()).equals("Nom")) {
-            for (int i = 0; i <= a.findByCriteria(a.NAME, tfRechercher.getText()).size(); i++) {
-                taResultatsRecherche.setText(a.findByCriteria(a.NAME, tfRechercher.getText()).get(i).toString());
+            Vector<Editor> editorList = new Vector();
+            editorList = a.findByCriteria(a.NAME, tfRechercher.getText());
+            StringBuilder str = new StringBuilder();
+            for(Editor editor : editorList) {
+                
+                str.append(editor.getEdiId()+"\n");
+                str.append(editor.getEdiName()+"\n");
+                str.append(editor.getEdiPresentation()+"\n");
+                str.append(editor.getEdiStatusCode()+"\n");
+                str.append("----------------------------------"+"\n");
+                                               
             }
+            taResultatsRecherche.setText(str.toString());
         } else if (comboTypeRecherche.getItemAt(comboTypeRecherche.getSelectedIndex()).equals("Id")) {
             tfNom.setEditable(false);
             tfStatut.setEditable(false);
@@ -341,12 +371,12 @@ public class JFEditor extends javax.swing.JFrame {
 
         } else if (comboTypeRecherche.getItemAt(comboTypeRecherche.getSelectedIndex()).equals("Statut")) {
             if (tfRechercher.getText().equalsIgnoreCase("Actif")) {
-                for (int i = 0; i <= a.findByStatut(1).size(); i++) {
+                for (int i = 0; i <= a.findByStatut(0).size(); i++) {
                     taResultatsRecherche.setText(((Editor) a.findByStatut(1).get(i)).toString());
                 }
 
             } else if (tfRechercher.getText().equalsIgnoreCase("Inactif")) {
-                for (int i = 0; i <= a.findByStatut(2).size(); i++) {
+                for (int i = 0; i <= a.findByStatut(1).size(); i++) {
                     taResultatsRecherche.setText(((Editor) a.findByStatut(2).get(i)).toString());
                 }
             }

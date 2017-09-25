@@ -85,9 +85,9 @@ public class Editor implements SQLNames{
     
     public String EdiStatusCode() {
         String Statut=null;
-        if(ediStatusCode == 1){
+        if(ediStatusCode == 0){
             Statut = "Actif";
-        }else if(ediStatusCode == 2){
+        }else if(ediStatusCode == 1){
             Statut = "Inactif";
         }
         return Statut;
