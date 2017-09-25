@@ -35,6 +35,7 @@ public class EmployeeTableItem {
         this.profile = this.employee.getAccProfileCode().getAccProfileName();
         this.startDate = this.employee.getEmpDateStart();
         this.endDate = this.employee.getEmpDateEnd();
+        
     }
 
     public Vector getVector() {

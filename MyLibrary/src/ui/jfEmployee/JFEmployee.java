@@ -7,7 +7,9 @@ package ui.jfEmployee;
 
 import ClassObjet.AccessProfile;
 import ClassObjet.Employee;
+import ClassObjet.StatusDisplay;
 import Names.SQLNames;
+import SQLS.AccessProfileDAO;
 import SQLS.EmployeeDAO;
 import exceptions.CryptoException;
 import exceptions.MissingInformationException;
@@ -36,13 +38,15 @@ import utils.DateLabelFormatter;
 public class JFEmployee extends javax.swing.JFrame implements SQLNames {
 
     Vector<Employee> employeeList;
+    Vector<AccessProfile> employeeListProfile;
+    Vector<StatusDisplay> employeeListStatus;
     Vector employeeTableList;
     Vector<String> comboSearchModel;
     Vector<String> comboStatusModel;
     Vector<String> comboProfilModel;
     Employee currentEmployee;
     JDatePickerImpl datePicker;
-    
+
     private final String DELETED_MENTION = "SUPPRIME";
     private final String DELETED_NAME_MASK = "***";
     private final String DELETED_LOGIN_MASK = "***";
@@ -76,7 +80,7 @@ public class JFEmployee extends javax.swing.JFrame implements SQLNames {
         }
     }
 
-    private enum Profile {
+    private enum ProfileType {
 
         NO_ACCESS("Aucun Accès"),
         ADMINISTRATOR("Administrateur"),
@@ -87,7 +91,7 @@ public class JFEmployee extends javax.swing.JFrame implements SQLNames {
 
         private final String databaseName;
 
-        private Profile(String databaseName) {
+        private ProfileType(String databaseName) {
             this.databaseName = databaseName;
         }
 
@@ -120,7 +124,7 @@ public class JFEmployee extends javax.swing.JFrame implements SQLNames {
         comboSearch.setModel(initComboSearchModel());
         comboSearch.setSelectedIndex(0);
         comboStatus.setModel(initComboStatusModel());
-        comboProfil.setModel(initComboProfilModel());
+        comboProfile.setModel(initComboProfileModel());
         labelErrorMessage.setVisible(false);
         labelPreviousPassword.setVisible(false);
         tfPreviousPassword.setVisible(false);
@@ -145,8 +149,8 @@ public class JFEmployee extends javax.swing.JFrame implements SQLNames {
 //            }
 //        });
     }
-    
-     private void datePickerActionPerformed(java.awt.event.ActionEvent evt) {
+
+    private void datePickerActionPerformed(java.awt.event.ActionEvent evt) {
 
         Date selectedDate = (Date) datePicker.getModel().getValue();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
@@ -176,11 +180,11 @@ public class JFEmployee extends javax.swing.JFrame implements SQLNames {
         return model;
     }
 
-    private DefaultComboBoxModel initComboProfilModel() {
+    private DefaultComboBoxModel initComboProfileModel() {
         DefaultComboBoxModel model;
         comboProfilModel = new Vector<String>();
         model = new DefaultComboBoxModel(comboProfilModel);
-        for (Profile comboItem : Profile.values()) {
+        for (ProfileType comboItem : ProfileType.values()) {
             comboProfilModel.add(comboItem.getDatabaseName());
         }
         return model;
@@ -225,10 +229,12 @@ public class JFEmployee extends javax.swing.JFrame implements SQLNames {
 //               statusIndex = comboProfil.getSelectedIndex();
 //               employeeList = employeeDAO.findByColumn(criteria, statusIndex);
                 
-            } else if (criteria.equalsIgnoreCase((SearchCriteria.PROFIL.getDatabaseName()))) {
+            } else if (criteria.equalsIgnoreCase((SearchCriteria.PROFIL.getDatabaseName()))) {  
+                employeeListProfile = new Vector<AccessProfile>();
+                AccessProfileDAO accessProfileDAO = new AccessProfileDAO();
                 criteria = EmployeeNames.ACCESS_PROFILE;
-                term = comboProfil.getSelectedItem().toString().trim();
-                employeeList = employeeDAO.findByColumn(criteria, term);
+                term = comboProfile.getSelectedItem().toString().trim(); 
+                employeeListProfile = accessProfileDAO.findByColumn(criteria, term);
 
             } else if (term != null && !term.isEmpty()) {
             }
@@ -265,34 +271,34 @@ public class JFEmployee extends javax.swing.JFrame implements SQLNames {
         comboStatus.setSelectedIndex(index);
 
         int access = emp.getAccProfileCode().getAccProfileCode();
-        int indexProfile = Profile.NO_ACCESS.ordinal();
-        Boolean isNoAccess = (access == Profile.NO_ACCESS.ordinal());
-        Boolean isAdministrator = (access == Profile.ADMINISTRATOR.ordinal());
-        Boolean isCustomer = (access == Profile.CUSTOMER.ordinal());
-        Boolean isEditor = (access == Profile.EDITOR.ordinal());
-        Boolean isModerator = (access == Profile.MODERATOR.ordinal());
-        Boolean isAccessDenied = (access == Profile.ACCESS_DENIED.ordinal());
+        int indexProfile = ProfileType.NO_ACCESS.ordinal();
+        Boolean isNoAccess = (access == ProfileType.NO_ACCESS.ordinal());
+        Boolean isAdministrator = (access == ProfileType.ADMINISTRATOR.ordinal());
+        Boolean isCustomer = (access == ProfileType.CUSTOMER.ordinal());
+        Boolean isEditor = (access == ProfileType.EDITOR.ordinal());
+        Boolean isModerator = (access == ProfileType.MODERATOR.ordinal());
+        Boolean isAccessDenied = (access == ProfileType.ACCESS_DENIED.ordinal());
 
         if (isNoAccess) {
-            indexProfile = Profile.NO_ACCESS.ordinal();
+            indexProfile = ProfileType.NO_ACCESS.ordinal();
         }
         if (isAdministrator) {
-            indexProfile = Profile.ADMINISTRATOR.ordinal();
+            indexProfile = ProfileType.ADMINISTRATOR.ordinal();
         }
         if (isCustomer) {
-            indexProfile = Profile.CUSTOMER.ordinal();
+            indexProfile = ProfileType.CUSTOMER.ordinal();
         }
         if (isEditor) {
-            indexProfile = Profile.EDITOR.ordinal();
+            indexProfile = ProfileType.EDITOR.ordinal();
         }
         if (isModerator) {
-            indexProfile = Profile.MODERATOR.ordinal();
+            indexProfile = ProfileType.MODERATOR.ordinal();
         }
         if (isAccessDenied) {
-            indexProfile = Profile.ACCESS_DENIED.ordinal();
+            indexProfile = ProfileType.ACCESS_DENIED.ordinal();
         }
 
-        comboProfil.setSelectedIndex(indexProfile);
+        comboProfile.setSelectedIndex(indexProfile);
 
         tfLastName.setText(emp.getEmpLastName());
         tfFirstName.setText(emp.getEmpFirstName());
@@ -314,17 +320,12 @@ public class JFEmployee extends javax.swing.JFrame implements SQLNames {
         } else {
             tfEndDate.setText("");
         }
-
     }
 
-    private void SaveEmployee() throws MissingInformationException, NoSuchAlgorithmException, CryptoException {
+    private void newEmployee() throws MissingInformationException, NoSuchAlgorithmException, CryptoException {
 
         Employee emp;
-        if (currentEmployee == null) {
-            emp = new Employee();
-        } else {
-            emp = currentEmployee;
-        }
+        emp = new Employee();
 
         emp.setEmpLastName(tfLastName.getText().trim());
         emp.setEmpFirstName(tfFirstName.getText().trim());
@@ -332,27 +333,15 @@ public class JFEmployee extends javax.swing.JFrame implements SQLNames {
         emp.setEmpPassword(tfPassword.getText().trim());
         emp.setEmpComment(tfComment.getText().trim());
         emp.setEmpStatus(comboStatus.getSelectedIndex());
-        System.out.println("result combo accprofile = "+comboProfil.getSelectedIndex());
-        emp.getAccProfileCode().getAccProfileCode(comboProfil.getSelectedIndex());
-//        emp.getAccProfileCode().setAccProfileCode(comboProfil.getSelectedIndex());
+        AccessProfile access = new AccessProfile();
+        access.setAccProfileCode(comboProfile.getSelectedIndex());
+        emp.setAccProfileCode(access);
+        emp.setEmpDateStart(tfStartDate.getText().trim());
+        emp.setEmpDateStart(tfEndDate.getText().trim());
         
-//        AccessProfile acc = (AccessProfile)comboProfil.getSelectedItem();  
-//        AccessProfile ap = new AccessProfile();
-//        ap = emp.getAccProfileCode();
-        //emp.setAccProfileCode(ap);
-
-
-        if (tfStartDate.getText() != null) {
-            emp.setEmpDateStart(tfStartDate.getText().trim());
-        }
-        if (tfEndDate.getText() != null) {
-            emp.setEmpDateStart(tfEndDate.getText().trim());
-        }
-        if (currentEmployee == null && tfPassword.getPassword().length == 0) {
+        if (tfPassword.getPassword().length == 0) {
             throw new MissingInformationException(ErrorMessages.IS_EMPTY);
         } else if (tfPassword.getPassword().length > 0) {
-//            labelPreviousPassword.setVisible(true);
-//            tfPreviousPassword.setVisible(true);
             String str = new String(tfPassword.getPassword());
             String[] password = Crypto.createPassword(new String(tfPassword.getPassword()));
             emp.setEmpPassword(password[0]);
@@ -360,7 +349,6 @@ public class JFEmployee extends javax.swing.JFrame implements SQLNames {
         } else {
             System.out.println("Les informations employé sont enregistrées");
         }
-
         if (tfPassword.getPassword().toString().isEmpty()) {
             manageInputError(true, "tfPassword", "btnSaveEmployee", ErrorMessages.EMPTY_PASSWORD);
         } else {
@@ -368,13 +356,44 @@ public class JFEmployee extends javax.swing.JFrame implements SQLNames {
         }
 
         EmployeeDAO employeeDAO = new EmployeeDAO();
-        if (currentEmployee == null) {
-            employeeDAO.create(emp);
-        } else {
-            employeeDAO.update(emp);
-        }
+        employeeDAO.create(emp);
+        System.out.println("create");
+
         confirmSaveMessage.setVisible(true);
-         employeeDAO.findAll();
+        employeeDAO.findAll();
+    }
+
+    private void updateEmployee() throws MissingInformationException, NoSuchAlgorithmException, CryptoException {
+
+        Employee emp;
+        emp = currentEmployee;
+
+        emp.setEmpLastName(tfLastName.getText().trim());
+        emp.setEmpFirstName(tfFirstName.getText().trim());
+        emp.setEmpLogin(tfLogin.getText().trim());
+        emp.setEmpPassword(tfPassword.getText().trim());
+        emp.setEmpComment(tfComment.getText().trim());
+        emp.setEmpStatus(comboStatus.getSelectedIndex());
+        AccessProfile access = new AccessProfile();
+        access.setAccProfileCode(comboProfile.getSelectedIndex());
+        emp.setAccProfileCode(access);
+
+//        if (tfStartDate.getText() != null) {
+            emp.setEmpDateStart(tfStartDate.getText().trim());
+//        }
+//        if (tfEndDate.getText() != null) {
+            emp.setEmpDateStart(tfEndDate.getText().trim());
+//        }
+       
+//            labelPreviousPassword.setVisible(true);
+//            tfPreviousPassword.setVisible(true);
+
+        EmployeeDAO employeeDAO = new EmployeeDAO();
+        employeeDAO.update(emp);
+        System.out.println("update");
+
+        confirmSaveMessage.setVisible(true);
+        employeeDAO.findAll();
 //        clearFields();
 //        clearTableModel(employeeTableList);
     }
@@ -407,8 +426,8 @@ public class JFEmployee extends javax.swing.JFrame implements SQLNames {
         int index1 = Status.ACTIVE.ordinal();
         comboStatus.setSelectedIndex(index1);
 
-        int index2 = Profile.NO_ACCESS.ordinal();
-        comboProfil.setSelectedIndex(index2);
+        int index2 = ProfileType.NO_ACCESS.ordinal();
+        comboProfile.setSelectedIndex(index2);
 
         tfStartDate.setText("");
         tfEndDate.setText("");
@@ -424,7 +443,6 @@ public class JFEmployee extends javax.swing.JFrame implements SQLNames {
 //            }
 //        }
 //    }
-
     void setColor(JPanel panel) {
         panel.setBackground(new Color(0, 51, 153));
     }
@@ -439,7 +457,7 @@ public class JFEmployee extends javax.swing.JFrame implements SQLNames {
 
         jPanel1 = new javax.swing.JPanel();
         labelStatut = new javax.swing.JLabel();
-        comboProfil = new javax.swing.JComboBox();
+        comboProfile = new javax.swing.JComboBox();
         tfLastName = new javax.swing.JTextField();
         labelLastName = new javax.swing.JLabel();
         labelFirstName = new javax.swing.JLabel();
@@ -474,6 +492,8 @@ public class JFEmployee extends javax.swing.JFrame implements SQLNames {
         labelPreviousPassword = new javax.swing.JLabel();
         tfPreviousPassword = new javax.swing.JPasswordField();
         confirmSaveMessage = new javax.swing.JLabel();
+        jPanel5 = new javax.swing.JPanel();
+        btnSaveEmployee1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -482,7 +502,7 @@ public class JFEmployee extends javax.swing.JFrame implements SQLNames {
 
         labelStatut.setText("Statut :");
 
-        comboProfil.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Aucun Accès", "Administrateur", "Editeur", "Client", "Moderateur", "Accès refusé" }));
+        comboProfile.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Aucun Accès", "Administrateur", "Editeur", "Client", "Moderateur", "Accès refusé" }));
 
         labelLastName.setText("Nom :");
 
@@ -504,7 +524,7 @@ public class JFEmployee extends javax.swing.JFrame implements SQLNames {
         jPanel4.setPreferredSize(new java.awt.Dimension(200, 45));
 
         btnSaveEmployee.setForeground(new java.awt.Color(255, 255, 255));
-        btnSaveEmployee.setText("           Enregistrer");
+        btnSaveEmployee.setText("  Enregister nouvel employé");
         btnSaveEmployee.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseMoved(java.awt.event.MouseEvent evt) {
                 btnSaveEmployeeMouseMoved(evt);
@@ -523,7 +543,9 @@ public class JFEmployee extends javax.swing.JFrame implements SQLNames {
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(btnSaveEmployee, javax.swing.GroupLayout.DEFAULT_SIZE, 125, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addGap(0, 6, Short.MAX_VALUE)
+                .addComponent(btnSaveEmployee, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -691,19 +713,45 @@ public class JFEmployee extends javax.swing.JFrame implements SQLNames {
         confirmSaveMessage.setForeground(new java.awt.Color(51, 102, 255));
         confirmSaveMessage.setText("Informations enregistrées!");
 
+        jPanel5.setBackground(new java.awt.Color(51, 102, 255));
+        jPanel5.setPreferredSize(new java.awt.Dimension(200, 45));
+
+        btnSaveEmployee1.setForeground(new java.awt.Color(255, 255, 255));
+        btnSaveEmployee1.setText("       Enregistrer mise à jour");
+        btnSaveEmployee1.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                btnSaveEmployee1MouseMoved(evt);
+            }
+        });
+        btnSaveEmployee1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnSaveEmployee1MouseClicked(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                btnSaveEmployee1MouseReleased(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(btnSaveEmployee1, javax.swing.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE)
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(btnSaveEmployee1, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(29, 29, 29))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jInternalFrame1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -734,27 +782,32 @@ public class JFEmployee extends javax.swing.JFrame implements SQLNames {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(171, 171, 171)
                                 .addComponent(confirmSaveMessage)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 65, Short.MAX_VALUE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 69, Short.MAX_VALUE)))
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(labelProfil)
                                     .addComponent(labelStatut))
-                                .addGap(75, 75, 75)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(comboStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(comboProfil, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(59, 59, 59)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(comboProfile, 0, 166, Short.MAX_VALUE)
+                                    .addComponent(comboStatus, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(labelStartDate)
                                     .addComponent(labelEndDate)
                                     .addComponent(labelComment))
-                                .addGap(29, 29, 29)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(tfEndDate)
-                                    .addComponent(tfStartDate, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(spComment, javax.swing.GroupLayout.Alignment.TRAILING))))
-                        .addGap(42, 42, 42))))
+                                    .addComponent(spComment)
+                                    .addComponent(tfStartDate)))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(26, 26, 26))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -790,7 +843,7 @@ public class JFEmployee extends javax.swing.JFrame implements SQLNames {
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                             .addComponent(labelProfil)
-                                            .addComponent(comboProfil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                            .addComponent(comboProfile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(tfStartDate)
@@ -809,11 +862,11 @@ public class JFEmployee extends javax.swing.JFrame implements SQLNames {
                                 .addComponent(labelErrorMessage)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(confirmSaveMessage)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(77, 77, 77))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(4, 4, 4)
                                 .addComponent(labelComment)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 79, Short.MAX_VALUE))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -822,11 +875,13 @@ public class JFEmployee extends javax.swing.JFrame implements SQLNames {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addContainerGap()
                                 .addComponent(jInternalFrame1, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(18, 18, Short.MAX_VALUE)))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(7, 7, 7)
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(122, 122, 122))
+                .addGap(68, 68, 68))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -879,6 +934,7 @@ public class JFEmployee extends javax.swing.JFrame implements SQLNames {
         setColor(jPanel3);
         resetColor(jPanel4);
         resetColor(jPanel6);
+        resetColor(jPanel5);
 
     }//GEN-LAST:event_btnCreateNewMouseMoved
 
@@ -886,6 +942,7 @@ public class JFEmployee extends javax.swing.JFrame implements SQLNames {
         setColor(jPanel6);
         resetColor(jPanel3);
         resetColor(jPanel4);
+        resetColor(jPanel5);
 
     }//GEN-LAST:event_btnSearchMouseMoved
 
@@ -893,7 +950,7 @@ public class JFEmployee extends javax.swing.JFrame implements SQLNames {
         setColor(jPanel4);
         resetColor(jPanel3);
         resetColor(jPanel6);
-
+        resetColor(jPanel5);
     }//GEN-LAST:event_btnSaveEmployeeMouseMoved
 
     private void btnCreateNewMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCreateNewMouseClicked
@@ -909,17 +966,43 @@ public class JFEmployee extends javax.swing.JFrame implements SQLNames {
     }//GEN-LAST:event_btnSaveEmployeeMouseClicked
 
     private void btnSaveEmployeeMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSaveEmployeeMouseReleased
+
         try {
-            SaveEmployee();
+            newEmployee();
         } catch (MissingInformationException ex) {
-//            Logger.getLogger(JFEmployee.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(JFEmployee.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NoSuchAlgorithmException ex) {
-//            Logger.getLogger(JFEmployee.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(JFEmployee.class.getName()).log(Level.SEVERE, null, ex);
         } catch (CryptoException ex) {
-//            Logger.getLogger(JFEmployee.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(JFEmployee.class.getName()).log(Level.SEVERE, null, ex);
         }
         searchForEmployee();
+
     }//GEN-LAST:event_btnSaveEmployeeMouseReleased
+
+    private void btnSaveEmployee1MouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSaveEmployee1MouseMoved
+        setColor(jPanel5);
+        resetColor(jPanel4);
+        resetColor(jPanel3);
+        resetColor(jPanel6);
+
+    }//GEN-LAST:event_btnSaveEmployee1MouseMoved
+
+    private void btnSaveEmployee1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSaveEmployee1MouseClicked
+        resetColor(jPanel5);
+    }//GEN-LAST:event_btnSaveEmployee1MouseClicked
+
+    private void btnSaveEmployee1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSaveEmployee1MouseReleased
+        try {
+            updateEmployee();
+        } catch (MissingInformationException ex) {
+            Logger.getLogger(JFEmployee.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(JFEmployee.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (CryptoException ex) {
+            Logger.getLogger(JFEmployee.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnSaveEmployee1MouseReleased
 
     /**
      * @param args the command line arguments
@@ -965,8 +1048,9 @@ public class JFEmployee extends javax.swing.JFrame implements SQLNames {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel btnCreateNew;
     private javax.swing.JLabel btnSaveEmployee;
+    private javax.swing.JLabel btnSaveEmployee1;
     private javax.swing.JLabel btnSearch;
-    private javax.swing.JComboBox comboProfil;
+    private javax.swing.JComboBox comboProfile;
     private javax.swing.JComboBox comboSearch;
     private javax.swing.JComboBox comboStatus;
     private javax.swing.JLabel confirmSaveMessage;
@@ -974,6 +1058,7 @@ public class JFEmployee extends javax.swing.JFrame implements SQLNames {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
