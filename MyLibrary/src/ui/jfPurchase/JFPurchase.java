@@ -779,7 +779,7 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
         }
         if (currentOrderLineList.isEmpty()) {
             jOptionPane = new JOptionPane();
-            jOptionPane.showMessageDialog(null, "Commande déjà payée ou sans achat", "Information", JOptionPane.INFORMATION_MESSAGE);
+            jOptionPane.showMessageDialog(null, "Commande sans achat", "Information", JOptionPane.INFORMATION_MESSAGE);
         } else {
 
             currentPurchase = new Purchase();
