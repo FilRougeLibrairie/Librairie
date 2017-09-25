@@ -105,8 +105,8 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
 
     private enum Status {
 
-        INACTIVE("Inactif"),
         ACTIVE("Actif"),
+        INACTIVE("Inactif"),
         DELETED("Supprimé");
         private final String databaseName;
 
@@ -635,9 +635,6 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
         } else if (tfDeliverCity.getText().isEmpty()) {
             jOptionPane = new JOptionPane();
             jOptionPane.showMessageDialog(null, "La ville doit être renseignée", "Information", JOptionPane.WARNING_MESSAGE);
-        } else if (tfDeliverZipCode.getText().isEmpty() || !InputsControls.isZipCodeOk(tfDeliverZipCode.getText().trim())) {
-            jOptionPane = new JOptionPane();
-            jOptionPane.showMessageDialog(null, "Un petit soucis dans le code postal, non ?", "Information", JOptionPane.WARNING_MESSAGE);
         } else if (tfDeliverLabel.getText().isEmpty()) {
             jOptionPane = new JOptionPane();
             jOptionPane.showMessageDialog(null, "Le Label de l'adresse est vide", "Information", JOptionPane.WARNING_MESSAGE);
@@ -667,7 +664,8 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
                 tableDeliverAdresses.setModel(initTableAddressModel());
                 jOptionPane.showMessageDialog(null, "La fiche a correctement été enregistrée", "Information", JOptionPane.INFORMATION_MESSAGE);
             } catch (Exception ex) {
-                jOptionPane.showMessageDialog(null, "Un problème a eu lieu lors de l'enregistrement", "Information", JOptionPane.WARNING_MESSAGE);
+                jOptionPane.showMessageDialog(null, "Un problème a eu lieu lors de l'enregistrement de l'Adresse\n"
+                        + "Vérifiez les infos", "Information", JOptionPane.WARNING_MESSAGE);
             }
         }
     }
@@ -982,9 +980,9 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
 
         jLabel4.setText("Adresse IP");
 
-        jLabel10.setText("Email :");
+        jLabel10.setText("Email * :");
 
-        jLabel7.setText("Nom :");
+        jLabel7.setText("Nom * :");
 
         jTabbedPane1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -1000,11 +998,11 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
 
         jLabel24.setText("Complément adresse :");
 
-        jLabel28.setText("Ville :");
+        jLabel28.setText("Ville * :");
 
         jLabel26.setText("Nom :");
 
-        jLabel27.setText("Code postal :");
+        jLabel27.setText("Code postal * :");
 
         jLabel31.setText("N° voie :");
 
@@ -1102,7 +1100,7 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
             .addComponent(btnSaveDeliver, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
         );
 
-        jLabel45.setText("Label adresse :");
+        jLabel45.setText("Label adresse * :");
 
         panBtnDeleteAddress.setBackground(new java.awt.Color(51, 102, 255));
         panBtnDeleteAddress.setPreferredSize(new java.awt.Dimension(200, 45));
@@ -1139,7 +1137,7 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
                     .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addComponent(tfDeliverLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 158, Short.MAX_VALUE)
                     .addComponent(jPanel13, javax.swing.GroupLayout.DEFAULT_SIZE, 158, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel29)
                     .addComponent(jLabel30)
@@ -1163,18 +1161,15 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
                     .addComponent(jLabel28)
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addGroup(jPanel5Layout.createSequentialGroup()
-                                    .addComponent(jLabel27)
-                                    .addGap(60, 60, 60))
-                                .addGroup(jPanel5Layout.createSequentialGroup()
-                                    .addComponent(jLabel24)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                             .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addGap(8, 8, 8)
+                                .addComponent(jLabel24))
+                            .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jLabel27, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel22)
-                                    .addComponent(jLabel33))
-                                .addGap(50, 50, 50)))
+                                    .addComponent(jLabel33))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(tfDeliverSecurityCode, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(tfDeliverCity, javax.swing.GroupLayout.Alignment.LEADING)
@@ -1943,7 +1938,44 @@ public class JFCustomer extends javax.swing.JFrame implements SQLNames {
     }//GEN-LAST:event_btnSaveCustomerMouseReleased
 
     private void comboSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboSearchActionPerformed
+        if (comboSearch.getSelectedItem() != null) {
+            String criteria = comboSearch.getSelectedItem().toString();
 
+            if (criteria.equalsIgnoreCase(SearchCriteria.TOUS_LES_CLIENTS.getDatabaseName())) {
+                tfSearch.setEnabled(false);
+                tfSearch.setText("");
+            } else if (criteria.equalsIgnoreCase(SearchCriteria.STATUS.getDatabaseName())) {
+                tfSearch.setEnabled(false);
+                tfSearch.setText("Utilisez la liste Statut");
+            } else if (criteria.equalsIgnoreCase(SearchCriteria.GENDER.getDatabaseName())) {
+                tfSearch.setEnabled(false);
+                tfSearch.setText("Utilisez la liste Genre");
+            } else if (criteria.equalsIgnoreCase(SearchCriteria.NOM.getDatabaseName())) {
+                tfSearch.setEnabled(true);
+                tfSearch.setText("");
+            } else if (criteria.equalsIgnoreCase(SearchCriteria.PRENOM.getDatabaseName())) {
+                tfSearch.setEnabled(true);
+                tfSearch.setText("");
+            } else if (criteria.equalsIgnoreCase(SearchCriteria.SOCIETE.getDatabaseName())) {
+                tfSearch.setEnabled(true);
+                tfSearch.setText("");
+            } else if (criteria.equalsIgnoreCase(SearchCriteria.EMAIL.getDatabaseName())) {
+                tfSearch.setEnabled(true);
+                tfSearch.setText("");
+            } else if (criteria.equalsIgnoreCase(SearchCriteria.TELEPHONE.getDatabaseName())) {
+                tfSearch.setEnabled(true);
+                tfSearch.setText("");
+            } else if (criteria.equalsIgnoreCase(SearchCriteria.IP.getDatabaseName())) {
+                tfSearch.setEnabled(true);
+                tfSearch.setText("");
+            } else {
+                tfSearch.setEnabled(true);
+                tfSearch.setText("");
+            }
+        }else{
+            tfSearch.setEnabled(true);
+            tfSearch.setText("");
+        }
     }//GEN-LAST:event_comboSearchActionPerformed
 
     private void btnNewAdressMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnNewAdressMouseReleased

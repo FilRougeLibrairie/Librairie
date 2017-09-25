@@ -46,7 +46,7 @@ import utils.InputsControls;
 import utils.PriceCalculation;
 
 /**
- * 
+ *
  * @author ggarvanese
  */
 public class JFPurchase extends javax.swing.JFrame implements SQLNames {
@@ -369,9 +369,8 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
                 if (criteria.equalsIgnoreCase(SearchCriteria.ALL.getDatabaseName())) {
                     purchaseList = purchaseDAO.findAll();
                 } else if (criteria.equalsIgnoreCase(SearchCriteria.ORDER_STATUS.getDatabaseName())) {
-                    int indexOrderStatus = Integer.valueOf(termToFind);
-                    OrderStatusDAO orderStatusDAO = new OrderStatusDAO();
-                    Vector<OrderStatus> oderStatusList = orderStatusDAO.findCurrentOrderStatusByPurchaseId(currentPurchase.getPurId());
+                    int indexOrderStatus = comboPurchaseStatus.getSelectedIndex();
+                   purchaseList = purchaseDAO.findByOrderStatus(indexOrderStatus);   
                 } else if (criteria.equalsIgnoreCase(SearchCriteria.REFERENCE.getDatabaseName())) {
                     purchaseList = new Vector<Purchase>();
                     Purchase purchase = purchaseDAO.find(Integer.valueOf(termToFind));
@@ -1121,6 +1120,11 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
         jInternalFrame1.setVisible(true);
 
         comboSearch.setModel(initComboSearchModel());
+        comboSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboSearchActionPerformed(evt);
+            }
+        });
 
         jLabel5.setText("Recherche commande par :");
 
@@ -2346,7 +2350,7 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 654, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 655, Short.MAX_VALUE)
         );
 
         setSize(new java.awt.Dimension(916, 693));
@@ -2561,6 +2565,35 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
             searchForBook();
         }
     }//GEN-LAST:event_tfSearchBookKeyReleased
+
+    private void comboSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboSearchActionPerformed
+
+        if (comboSearch.getSelectedItem() != null) {
+            String criteria = comboSearch.getSelectedItem().toString().trim();
+            if (criteria.equalsIgnoreCase(SearchCriteria.ALL.getDatabaseName())) {
+                tfSearch.setEnabled(false);
+                tfSearch.setText("");
+            } else if (criteria.equalsIgnoreCase(SearchCriteria.ORDER_STATUS.getDatabaseName())) {
+                tfSearch.setEnabled(false);
+                tfSearch.setText("Utilisez la liste statut");
+            } else if (criteria.equalsIgnoreCase(SearchCriteria.REFERENCE.getDatabaseName())) {
+                tfSearch.setEnabled(true);
+                tfSearch.setText("");
+            } else if (criteria.equalsIgnoreCase(SearchCriteria.DATE.getDatabaseName())) {
+                tfSearch.setEnabled(true);
+                tfSearch.setText("");
+            } else if (criteria.equalsIgnoreCase(SearchCriteria.CUSTOMER_ID.getDatabaseName())) {
+                tfSearch.setEnabled(true);
+                tfSearch.setText("");
+            } else {
+                tfSearch.setEnabled(false);
+                tfSearch.setText("");
+            }
+        } else {
+            tfSearch.setEnabled(true);
+            tfSearch.setText("");
+        }
+    }//GEN-LAST:event_comboSearchActionPerformed
 
     /**
      * @param args the command line arguments
