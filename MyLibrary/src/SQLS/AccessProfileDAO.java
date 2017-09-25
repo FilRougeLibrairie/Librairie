@@ -102,6 +102,7 @@ public class AccessProfileDAO extends DAO<AccessProfile> {
                     acc = new AccessProfile();
                     acc.setAccProfileCode(rs.getInt(PROFILE_CODE));
                     acc.setAccProfileName(rs.getString(PROFILE_NAME));
+                    accessProfileList.add(acc);
                 }
             } else {
                 throw new SQLException("ResultSet was empty");

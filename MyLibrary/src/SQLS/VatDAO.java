@@ -36,12 +36,13 @@ public class VatDAO extends DAO<Vat> {
         Vat vat = (Vat) obj;
         String query = "IF NOT EXISTS(SELECT * FROM vat WHERE vatRate= "+vat.getVatRate()+")"
                 + "INSERT INTO VAT (" + COLUMNS_CREATE+ ")"
-                + "VALUES (?, ?)";
+                + "VALUES (?, ?,?)";
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query);) {
 
             pstmt.setFloat(1, vat.getVatRate());
             pstmt.setString(2, vat.getVatName());
+            pstmt.setInt(3, vat.getVatStatus());
 
             int result = pstmt.executeUpdate();
 
@@ -56,7 +57,8 @@ public class VatDAO extends DAO<Vat> {
         Vat vat = (Vat) obj;
         StringBuilder query = new StringBuilder("UPDATE " + TABLE + " SET ");
         query.append(RATE).append(" = ?, ");
-        query.append(NAME).append(" = ? ");
+        query.append(NAME).append(" = ?, ");
+        query.append(STATUS).append(" = ? ");
 
         query.append("WHERE " + CODE + " = '")
                 .append(vat.getVatCode())
@@ -66,6 +68,7 @@ public class VatDAO extends DAO<Vat> {
 
             pstmt.setFloat(1, vat.getVatRate());
             pstmt.setString(2, vat.getVatName());
+            pstmt.setInt(3, vat.getVatStatus());
 
             int result = pstmt.executeUpdate();
 

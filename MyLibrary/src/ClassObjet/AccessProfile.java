@@ -40,7 +40,7 @@ public class AccessProfile {
 
     @Override
     public String toString() {
-        return "Access Profile Code : " + accProfileCode + " / Access Profile Name : " + accProfileName;
+        return  accProfileName;
     }
 
     public Object getAccProfileName(String profil) {

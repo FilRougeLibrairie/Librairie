@@ -1,5 +1,5 @@
 
-package PanelOk;
+package PanelAmodif;
 
 import ClassObjet.Offer;
 import SQLS.OfferDAO;

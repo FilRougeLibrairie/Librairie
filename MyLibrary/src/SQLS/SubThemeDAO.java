@@ -29,14 +29,15 @@ public class SubThemeDAO extends DAO<SubTheme> {
     public void create(SubTheme obj) {
         SubTheme subThe = (SubTheme) obj;
         String query = "IF NOT EXISTS(SELECT * FROM subTheme WHERE subName= '" + subThe.getSubName() + "')"
-                + "INSERT INTO SUBTHEME(theId,subName,subDescription)"
-                + "VALUES (?,?,?)";
+                + "INSERT INTO SUBTHEME(theId,subName,subDescription,subStatus)"
+                + "VALUES (?,?,?,?)";
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query);) {
 
             pstmt.setInt(1, subThe.getTheId().getTheId());
             pstmt.setString(2, subThe.getSubName());
             pstmt.setString(3, subThe.getSubDescription());
+            pstmt.setInt(4, subThe.getSubStatus());
 
             int result = pstmt.executeUpdate();
 
@@ -86,6 +87,7 @@ public class SubThemeDAO extends DAO<SubTheme> {
             pstmt.setInt(1, subThe.getTheId().getTheId());
             pstmt.setString(2, subThe.getSubName());
             pstmt.setString(3, subThe.getSubDescription());
+            pstmt.setInt(4, subThe.getSubStatus());
 
             int result = pstmt.executeUpdate();
 
@@ -163,7 +165,7 @@ public class SubThemeDAO extends DAO<SubTheme> {
         Vector<SubTheme> subThemeList = new Vector<SubTheme>();
         SubTheme subThe = null;
         Theme the = null;
-        String query = "SELECT * FROM " + TABLE;
+        String query = "SELECT * FROM " + TABLE+ " ORDER BY " +THEME_ID;
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query)) {
 
@@ -172,11 +174,13 @@ public class SubThemeDAO extends DAO<SubTheme> {
 
                 while (rs.next()) {
                     subThe = new SubTheme();
+                    subThe.setSubId(rs.getInt(ID));
                     the = new Theme();
                     the.setTheId(rs.getInt(THEME_ID));
                     subThe.setTheId(the);
                     subThe.setSubName(rs.getString(NAME));
                     subThe.setSubDescription(rs.getString(DESCRIPTION));
+                    subThe.setSubStatus(rs.getInt(STATUS));
                     subThemeList.add(subThe);
                 }
             } else {
@@ -199,6 +203,48 @@ public class SubThemeDAO extends DAO<SubTheme> {
         query.append("SELECT * FROM " + TABLE + " WHERE ")
                 .append(column)
                 .append(" = ")
+                .append("'" + term + "' ORDER BY " + NAME );
+
+        try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.isBeforeFirst()) {
+
+                while (rs.next()) {
+                    subThe = new SubTheme();
+                    the = new Theme();
+                    the.setTheId(rs.getInt(THEME_ID));
+                    subThe.setTheId(the);
+                    subThe.setSubName(rs.getString(NAME));
+                    subThe.setSubDescription(rs.getString(DESCRIPTION));
+                    subThe.setSubStatus(rs.getInt(STATUS));
+                    subThemeList.add(subThe);
+                    
+                }
+            } else {
+                throw new SQLException("ResultSet was empty");
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
+
+        }
+        return subThemeList;
+    }
+    
+    
+    
+    
+    
+    public Vector<SubTheme> findByColumn(String column, int term) {
+        Vector<SubTheme> subThemeList = new Vector<SubTheme>();
+        SubTheme subThe = null;
+        Theme the = null;
+        StringBuffer query = new StringBuffer();
+        query.append("SELECT * FROM " + TABLE + " WHERE ")
+                .append(column)
+                .append(" = ")
                 .append("'" + term + "'");
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
@@ -214,6 +260,7 @@ public class SubThemeDAO extends DAO<SubTheme> {
                     subThe.setTheId(the);
                     subThe.setSubName(rs.getString(NAME));
                     subThe.setSubDescription(rs.getString(DESCRIPTION));
+                    subThe.setSubStatus(rs.getInt(STATUS));
                     subThemeList.add(subThe);
                     
                 }
@@ -227,6 +274,14 @@ public class SubThemeDAO extends DAO<SubTheme> {
         }
         return subThemeList;
     }
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     
@@ -319,6 +374,7 @@ public class SubThemeDAO extends DAO<SubTheme> {
                     subThe.setTheId(the);
                     subThe.setSubName(rs.getString(NAME));
                     subThe.setSubDescription(rs.getString(DESCRIPTION));
+                    subThe.setSubStatus(rs.getInt(STATUS));
                 }
             } else {
                 throw new SQLException("ResultSet was empty");

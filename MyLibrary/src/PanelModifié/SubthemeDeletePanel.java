@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package PanelOk;
+package PanelModifié;
 
 import ClassObjet.ClassAssoc.Association;
 import ClassObjet.SubTheme;
@@ -179,14 +179,7 @@ public class SubthemeDeletePanel extends javax.swing.JPanel {
         jComboBox1.setSelectedIndex(-1);
         
         
-        
-//        
-//        subthemeDAO.delete(sub);
-//        jComboBox1.removeAllItems();
-//        jComboBox1.setModel(initSubthemeModel());
-//        jop1.showMessageDialog(null, "Le sous thème a été supprimé avec succès.", "Information", JOptionPane.INFORMATION_MESSAGE);
-//        jComboBox1.setSelectedIndex(-1);
-
+      
     }//GEN-LAST:event_jButton1ActionPerformed
 
 

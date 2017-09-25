@@ -22,6 +22,18 @@ public class Theme {
     public Theme() {
     }
 
+    public Theme(String theName) {
+        this.theName = theName;
+    }
+
+    
+
+    public Theme(int theId) {
+        this.theId = theId;
+    }
+    
+    
+
     public Theme(int theId, String theName, String theDescription) {
         this.theId = theId;
         this.theName = theName;
@@ -99,7 +111,12 @@ public class Theme {
         return v;
     }
     
-    
+    public Vector getName(){
+        
+        Vector v= new Vector();
+        v.add(this.getTheName());
+        return v;
+    }
     
     
     

@@ -1,5 +1,5 @@
 
-package PanelOk;
+package PanelModifié;
 
 import ClassObjet.SubTheme;
 import ClassObjet.Theme;

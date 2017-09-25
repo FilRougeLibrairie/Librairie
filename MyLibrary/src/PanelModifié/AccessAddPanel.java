@@ -1,5 +1,5 @@
 
-package PanelOk;
+package PanelModifié;
 
 import ClassObjet.AccessProfile;
 import SQLS.AccessProfileDAO;

@@ -35,8 +35,7 @@ public class ThemeDAO extends DAO {
     @Override
     public void create(Object obj) {
         Theme the = (Theme) obj;
-        String query = "IF NOT EXISTS(SELECT * FROM theme WHERE theName= '"+the.getTheName()+"')"
-                +"INSERT INTO " + TABLE + " (" + COLUMNS_CREATE + ")"
+        String query = "INSERT INTO " + TABLE + " (" + COLUMNS_CREATE + ")"
                 + "VALUES (?, ?)";
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query);) {
@@ -201,7 +200,7 @@ public class ThemeDAO extends DAO {
                 while (rs.next()) {
                     
                     
-                    themeList.add(new Theme(rs.getInt(ID), rs.getString(NAME), rs.getString(DESCRIPTION)));
+                    themeList.add(new Theme(rs.getInt(ID), rs.getString(NAME), rs.getString(DESCRIPTION), rs.getInt(STATUS)));
   
                 }
             } else {
@@ -213,6 +212,44 @@ public class ThemeDAO extends DAO {
         }
         return themeList;
     }
+    
+    
+    
+    
+    
+    public Vector findAllOrdId() {
+        Vector<Theme> themeList = new Vector<Theme>();
+        Theme theme = null;
+
+        String query = "SELECT * FROM " + TABLE + " ORDER BY "+ ID+"";
+
+        try (PreparedStatement pstmt = this.connect.prepareStatement(query)) {
+
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.isBeforeFirst()) {
+
+                while (rs.next()) {
+                    
+                    
+                    themeList.add(new Theme(rs.getInt(ID), rs.getString(NAME), rs.getString(DESCRIPTION), rs.getInt(STATUS)));
+  
+                }
+            } else {
+                throw new SQLException("ResultSet was empty");
+            }
+        } catch (SQLException ex) {
+            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
+            
+        }
+        return themeList;
+    }
+    
+    
+    
+    
+    
+    
+    
     
     
     

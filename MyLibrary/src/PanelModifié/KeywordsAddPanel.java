@@ -1,4 +1,4 @@
-package PanelOk;
+package PanelModifié;
 
 import ClassObjet.Keywords;
 import SQLS.KeywordsDAO;

@@ -116,6 +116,25 @@ public class Offer {
         booksList.remove(book);
     }
 
+     //Vector
+     public Vector getVector() {
+        Vector v= new Vector();
+       
+        v.add(this.getOffId());
+        v.add(this.getOffDateEnd());
+        v.add(this.getOffDateStart());
+        v.add(this.getOffDiscount());
+        v.add(this.getOffName());
+        v.add(this.getOffPicture());
+        v.add(this.getOffText());
+        
+      
+        return v;
+    }
+    
+    
+    
+    
     @Override
     public String toString() {
         return "\n"

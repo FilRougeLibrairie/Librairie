@@ -1,18 +1,18 @@
 
 package Home;
 
+import PanelModifié.AccessPanel;
 import PanelModifié.AuthorPanel;
 import PanelModifié.BookLanguagePanel;
 import PanelModifié.FormatsPanel;
+import PanelModifié.KeyWordsPanel;
 import PanelModifié.LibraryPanel;
 import PanelModifié.ReviewPanel;
-import PanelOk.AccessPanel;
+import PanelModifié.ThemePanel;
+import PanelModifié.VatPanel;
 
-import PanelOk.OfferPanel;
-import PanelOk.SubthemePanel;
-import PanelOk.ThemePanel;
-import PanelOk.KeywordsPanel;
-import PanelOk.VatPanel;
+import PanelAmodif.OfferPanel;
+import PanelModifié.SubthemePanel;
 import java.awt.BorderLayout;
 import java.awt.Color;
 
@@ -1204,7 +1204,7 @@ JFCustomer cus = new JFCustomer();
 
         jpPrincipal.removeAll();
         jpPrincipal.validate();
-        KeywordsPanel addKW = new KeywordsPanel();
+        KeyWordsPanel addKW = new KeyWordsPanel();
         jpPrincipal.setLayout(new BorderLayout());
         jpPrincipal.add(addKW, BorderLayout.NORTH);
         jpPrincipal.setVisible(true);
@@ -1463,7 +1463,7 @@ JFCustomer cus = new JFCustomer();
 
         jpPrincipal.removeAll();
         jpPrincipal.validate();
-        KeywordsPanel addKW = new KeywordsPanel();
+        KeyWordsPanel addKW = new KeyWordsPanel();
         jpPrincipal.setLayout(new BorderLayout());
         jpPrincipal.add(addKW, BorderLayout.NORTH);
         jpPrincipal.setVisible(true);
@@ -1769,7 +1769,7 @@ JFCustomer cus = new JFCustomer();
         
          jpPrincipal.removeAll();
         jpPrincipal.validate();
-        BookLanguagePanel lib = new BookLanguagePanel();
+        AccessPanel lib = new AccessPanel();
         jpPrincipal.setLayout(new BorderLayout());
         jpPrincipal.add(lib, BorderLayout.NORTH);
         jpPrincipal.setVisible(true);

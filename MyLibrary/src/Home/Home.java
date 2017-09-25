@@ -60,15 +60,18 @@ public class Home extends javax.swing.JFrame {
         jDeskPrincipal.add(panel2, BorderLayout.CENTER);
 
 
-        /////// BYPASS CREDENTIALS
-        firstRun();
-        jPanelCredentials.setVisible(true);
-        // initWorkSpace();
-        /////// BYPASS CREDENTIALS
+         loggedEmp = new Employee();
+        loggedEmp.setEmpFirstName("Camille");
+        loggedEmp.setEmpLastName("Vasseur");
+        loggedEmp.setEmpLogin("1");
+        loggedEmp.setEmpSalt("k71nhc5h933kblk4oaouihdhh6");
+        loggedEmp.setEmpPassword("32D601355049CDBC0E69DA955DACBC271D1A19999043ED1FAAD09F211E433E0917195DF7EC8A09D1B6C223875036CC11A332178B0E97FDEE28AC982938DE96B3");
 
-        test();
-
-    }
+        /////// BYPASS CREDENTIALS
+      ///firstRun();
+      jPanelCredentials.setVisible(false);
+        initWorkSpace();}
+        /////// BYPASS CREDENTIALS
 
     private void test() {
 

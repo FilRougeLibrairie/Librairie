@@ -25,6 +25,17 @@ public class SubTheme {
         this.subDescription = subDescription;
     }
 
+    public SubTheme(int subId, Theme theId, String subName, String subDescription, int subStatus) {
+        this.subId = subId;
+        this.theId = theId;
+        this.subName = subName;
+        this.subDescription = subDescription;
+        this.bookList = bookList;
+        this.subStatus = subStatus;
+    }
+    
+    
+
     public SubTheme(int subId, Theme theId, String subName, String subDescription, Vector<Book> bookList, int subStatus) {
         this.subId = subId;
         this.theId = theId;
@@ -32,6 +43,14 @@ public class SubTheme {
         this.subDescription = subDescription;
         this.bookList = bookList;
         this.subStatus = subStatus;
+    }
+
+    public SubTheme(String subName) {
+        this.subName = subName;
+    }
+
+    public SubTheme(int subId) {
+        this.subId = subId;
     }
     
     
@@ -110,12 +129,29 @@ public class SubTheme {
         return v;
     }
     
+    public Vector getName() {
+        Vector v= new Vector();
+       
+        v.add(this.getSubName());
+        return v;
+    }
+    
+    public Vector getVectorId(){
+        Vector v= new Vector();
+        v.add(this.getSubId());
+      
+        return v;
+        
+    }
+    
     //to string
 
     @Override
     public String toString() {
         return "\n"
-                +  subName ;
+                +  subName +
+                "\n"
+                + subId  ;
     }
     
     

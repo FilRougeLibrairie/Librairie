@@ -3,17 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package PanelOk;
+package PanelAmodif;
 
 import ClassObjet.Offer;
 import SQLS.OfferDAO;
 import java.awt.Color;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Properties;
@@ -39,8 +33,10 @@ public class OfferUpdatePanel extends javax.swing.JPanel {
     JOptionPane jop1, jop2 = new JOptionPane();
     OfferDAO offerDAO = new OfferDAO();
     Offer offer = new Offer();
-    
-    
+    Vector<Offer> offerList;
+    OfferDAO vatDAO = new OfferDAO();
+    Vector v = new Vector();
+    Offer p = new Offer();
     
    
     
@@ -133,60 +129,23 @@ public class OfferUpdatePanel extends javax.swing.JPanel {
         return new DefaultComboBoxModel(initOfferVector());
     }
     
-    // Vector sous theme
-    private Vector initOfferVector() {
+    // Vector offre
+     
+     
+      private Vector initOfferVector() {
         Vector v = new Vector();
-        try {
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-        } catch (ClassNotFoundException ex) {
-            System.err.println("Oops:Driver:" + ex.getMessage());
-            return v;
+        offerList = new Vector<Offer>();
+        offerList = vatDAO.findAll();
+        for (Offer offer : offerList) {
+
+            p = new Offer(offer.getOffId(),offer.getOffName(),offer.getOffText(), offer.getOffDateStart(),offer.getOffDateEnd(),offer.getOffDiscount(),offer.getOffPicture());
+            v.add(p.getVector());
         }
-        Connection connexion = null;
-        try {
-            connexion = DriverManager.getConnection(
-                    "jdbc:sqlserver://localhost:1433;"
-                    + "databaseName=myLibrary;user=sa;password=sa");
-        } catch (SQLException ex) {
-            System.err.println("Oops:Connection:" + ex.getErrorCode() + ":" + ex.getMessage());
-            return v;
-        }
-
-        String query = "SELECT * FROM offer ORDER BY offDateStart;";
-        try {
-            Statement stmt = connexion.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
-
-            while (rs.next()) {
-
-                v.add(new Offer(rs.getInt("offId"), rs.getString("offName"),rs.getString("offText"),rs.getString("offDateStart"), rs.getString("offDateEnd"),rs.getFloat("offDiscount"), rs.getString("offPicture")));
-
-            }
-
-            rs.close();
-            stmt.close();
-
-        } catch (SQLException ex) {
-            System.err.println("Oops:SQL:" + ex.getErrorCode() + ":" + ex.getMessage());
-            return v;
-        }
-
-        try {
-            connexion.close();
-        } catch (SQLException ex) {
-            System.err.println("Oops:Close:" + ex.getErrorCode() + ":" + ex.getMessage());
-            return v;
-        }
-
-        System.out.println("Done!");
-
         return v;
     }
-    
-    
-    
-    
-    
+     
+  
+     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

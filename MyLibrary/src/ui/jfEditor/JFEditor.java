@@ -73,7 +73,7 @@ public class JFEditor extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
-        getContentPane().setLayout(null);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         panelPrincipal.setBackground(new java.awt.Color(255, 255, 255));
         panelPrincipal.setForeground(new java.awt.Color(255, 255, 255));
@@ -254,10 +254,9 @@ public class JFEditor extends javax.swing.JFrame {
 
         panelPrincipal.add(panelModif, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 250, -1, -1));
 
-        getContentPane().add(panelPrincipal);
-        panelPrincipal.setBounds(0, 0, 900, 630);
+        getContentPane().add(panelPrincipal, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 930, 630));
 
-        setSize(new java.awt.Dimension(916, 669));
+        setSize(new java.awt.Dimension(912, 669));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
