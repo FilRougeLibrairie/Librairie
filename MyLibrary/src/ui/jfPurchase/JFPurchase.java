@@ -46,7 +46,7 @@ import utils.InputsControls;
 import utils.PriceCalculation;
 
 /**
- * 
+ *
  * @author ggarvanese
  */
 public class JFPurchase extends javax.swing.JFrame implements SQLNames {
@@ -162,6 +162,7 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
         if (jfCustomer instanceof JFCustomer) {
             init();
             searchForOrderFromJFCustomer(jfCustomer.getCustomerId());
+            btnPanelAddNewCustomer.setVisible(false);
         }
     }
 
@@ -369,9 +370,8 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
                 if (criteria.equalsIgnoreCase(SearchCriteria.ALL.getDatabaseName())) {
                     purchaseList = purchaseDAO.findAll();
                 } else if (criteria.equalsIgnoreCase(SearchCriteria.ORDER_STATUS.getDatabaseName())) {
-                    int indexOrderStatus = Integer.valueOf(termToFind);
-                    OrderStatusDAO orderStatusDAO = new OrderStatusDAO();
-                    Vector<OrderStatus> oderStatusList = orderStatusDAO.findCurrentOrderStatusByPurchaseId(currentPurchase.getPurId());
+                    int indexOrderStatus = comboPurchaseStatus.getSelectedIndex();
+                    purchaseList = purchaseDAO.findByOrderStatus(indexOrderStatus);
                 } else if (criteria.equalsIgnoreCase(SearchCriteria.REFERENCE.getDatabaseName())) {
                     purchaseList = new Vector<Purchase>();
                     Purchase purchase = purchaseDAO.find(Integer.valueOf(termToFind));
@@ -776,13 +776,10 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
             currentPurchaseStatusCode = ORDER_STATUS_NEW_ORDER;
         } else {
             currentPurchaseStatusCode = currentPurchaseStatus.getStaCode();
-            System.out.println("et là ? " + currentPurchaseStatusCode);
         }
-
-        if (currentPurchaseStatusCode != ORDER_STATUS_NEW_ORDER || currentOrderLineList.isEmpty()) {
-            System.out.println("currentPurchaseStatusCode " + currentPurchaseStatusCode);
+        if (currentOrderLineList.isEmpty()) {
             jOptionPane = new JOptionPane();
-            jOptionPane.showMessageDialog(null, "Commande déjà payée ou sans achat", "Information", JOptionPane.INFORMATION_MESSAGE);
+            jOptionPane.showMessageDialog(null, "Commande sans achat", "Information", JOptionPane.INFORMATION_MESSAGE);
         } else {
 
             currentPurchase = new Purchase();
@@ -812,8 +809,7 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
                 if (bankValidation == JOptionPane.NO_OPTION || bankValidation == JOptionPane.CANCEL_OPTION || bankValidation == JOptionPane.CLOSED_OPTION) {
                     jOptionPane.showMessageDialog(null, "La transaction n'a pas été acceptée\nLa commande n'est pas transmise", "Information", JOptionPane.WARNING_MESSAGE);
                 } else if (bankValidation == JOptionPane.YES_OPTION) {
-
-                    System.out.println(currentPurchase.getUuid());
+                    currentPurchaseStatusCode = ORDER_STATUS_PAYED;
                     java.util.Date date = new Date();
                     Object purchaseDate = new java.sql.Timestamp(date.getTime());
                     currentPurchase.setShippingDate(purchaseDate.toString());
@@ -827,6 +823,10 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
                     if (!tfPayOwner.getText().isEmpty()) {
                         payment.setPayOwnerName(tfPayOwner.getText());
                     }
+                    
+                    // Save OrderStatus
+                    OrderStatusDAO orderStatusDAO = new OrderStatusDAO();
+                    orderStatusDAO.createNewPurchaseStatus(currentPurchase, currentPurchaseStatusCode, currentPurchase.getShippingDate());
 
                     // Save Order to DB and retrieve it to get its ID
                     PurchaseDAO purchaseDAO = new PurchaseDAO();
@@ -1107,7 +1107,7 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
         tfOrderDate = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
         comboPurchaseStatus = new javax.swing.JComboBox();
-        jPanel15 = new javax.swing.JPanel();
+        btnPanelAddNewCustomer = new javax.swing.JPanel();
         btnAddNewCustomer = new javax.swing.JLabel();
         jPanel21 = new javax.swing.JPanel();
         btnModifiyStatus = new javax.swing.JLabel();
@@ -1121,6 +1121,11 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
         jInternalFrame1.setVisible(true);
 
         comboSearch.setModel(initComboSearchModel());
+        comboSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboSearchActionPerformed(evt);
+            }
+        });
 
         jLabel5.setText("Recherche commande par :");
 
@@ -2165,7 +2170,7 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
 
         jLabel13.setText("Statut :");
 
-        jPanel15.setBackground(new java.awt.Color(51, 102, 255));
+        btnPanelAddNewCustomer.setBackground(new java.awt.Color(51, 102, 255));
 
         btnAddNewCustomer.setForeground(new java.awt.Color(255, 255, 255));
         btnAddNewCustomer.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -2177,16 +2182,14 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
             }
         });
 
-        javax.swing.GroupLayout jPanel15Layout = new javax.swing.GroupLayout(jPanel15);
-        jPanel15.setLayout(jPanel15Layout);
-        jPanel15Layout.setHorizontalGroup(
-            jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel15Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(btnAddNewCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
+        javax.swing.GroupLayout btnPanelAddNewCustomerLayout = new javax.swing.GroupLayout(btnPanelAddNewCustomer);
+        btnPanelAddNewCustomer.setLayout(btnPanelAddNewCustomerLayout);
+        btnPanelAddNewCustomerLayout.setHorizontalGroup(
+            btnPanelAddNewCustomerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(btnAddNewCustomer, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
         );
-        jPanel15Layout.setVerticalGroup(
-            jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        btnPanelAddNewCustomerLayout.setVerticalGroup(
+            btnPanelAddNewCustomerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(btnAddNewCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
         );
 
@@ -2225,7 +2228,7 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jPanel15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(btnPanelAddNewCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
@@ -2316,7 +2319,7 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
                                 .addGap(24, 24, 24)
                                 .addComponent(jLabel40)))
                         .addGap(18, 18, 18)
-                        .addComponent(jPanel15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnPanelAddNewCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(32, 32, 32)
                 .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -2346,7 +2349,7 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 654, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 655, Short.MAX_VALUE)
         );
 
         setSize(new java.awt.Dimension(916, 693));
@@ -2562,6 +2565,35 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
         }
     }//GEN-LAST:event_tfSearchBookKeyReleased
 
+    private void comboSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboSearchActionPerformed
+
+        if (comboSearch.getSelectedItem() != null) {
+            String criteria = comboSearch.getSelectedItem().toString().trim();
+            if (criteria.equalsIgnoreCase(SearchCriteria.ALL.getDatabaseName())) {
+                tfSearch.setEnabled(false);
+                tfSearch.setText("");
+            } else if (criteria.equalsIgnoreCase(SearchCriteria.ORDER_STATUS.getDatabaseName())) {
+                tfSearch.setEnabled(false);
+                tfSearch.setText("Utilisez la liste statut");
+            } else if (criteria.equalsIgnoreCase(SearchCriteria.REFERENCE.getDatabaseName())) {
+                tfSearch.setEnabled(true);
+                tfSearch.setText("");
+            } else if (criteria.equalsIgnoreCase(SearchCriteria.DATE.getDatabaseName())) {
+                tfSearch.setEnabled(true);
+                tfSearch.setText("");
+            } else if (criteria.equalsIgnoreCase(SearchCriteria.CUSTOMER_ID.getDatabaseName())) {
+                tfSearch.setEnabled(true);
+                tfSearch.setText("");
+            } else {
+                tfSearch.setEnabled(false);
+                tfSearch.setText("");
+            }
+        } else {
+            tfSearch.setEnabled(true);
+            tfSearch.setText("");
+        }
+    }//GEN-LAST:event_comboSearchActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -2609,6 +2641,7 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
     private javax.swing.JLabel btnModifiyStatus;
     private javax.swing.JLabel btnNewAdress2;
     private javax.swing.JLabel btnNewOrder;
+    private javax.swing.JPanel btnPanelAddNewCustomer;
     private javax.swing.JLabel btnRefresh;
     private javax.swing.JLabel btnSearchBook;
     private javax.swing.JLabel btnSearchOrder;
@@ -2673,7 +2706,6 @@ public class JFPurchase extends javax.swing.JFrame implements SQLNames {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
-    private javax.swing.JPanel jPanel15;
     private javax.swing.JPanel jPanel16;
     private javax.swing.JPanel jPanel17;
     private javax.swing.JPanel jPanel18;

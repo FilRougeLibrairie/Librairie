@@ -417,9 +417,8 @@ public class AuthorPanel extends javax.swing.JPanel {
             term = jTableSearch.getValueAt(jTableSearch.getSelectedRow(), 0).toString();
 
             authorList = new Vector<Author>();
-            authorList = authorDAO.findByColumn("autLastName", term);
-
-            jTFirstName.setText(authorList.get(0).getAutFirstName());
+            authorList = authorDAO.findByColumn("autLastName", term);    
+            jTFirstName.setText(authorList.get(0).getAutFirstName()); 
             jTLastName.setText(jTableSearch.getValueAt(jTableSearch.getSelectedRow(), 0).toString());
             jTAuto.setText(authorList.get(0).getAutBiography());
             jTId.setText(String.valueOf(authorList.get(0).getAutId()));
@@ -439,7 +438,7 @@ public class AuthorPanel extends javax.swing.JPanel {
             authorList = authorDAO.findByColumn("autId", term);
             jTId.setText(String.valueOf(authorList.get(0).getAutId()));
             jTFirstName.setText(authorList.get(0).getAutFirstName());
-            jTLastName.setText(jTableSearch.getValueAt(jTableSearch.getSelectedRow(), 0).toString());
+            jTLastName.setText(authorList.get(0).getAutLastName());
             jTAuto.setText(authorList.get(0).getAutBiography());
             if (authorList.get(0).getAutStatusCode() == 0) {
 

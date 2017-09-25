@@ -126,7 +126,7 @@ public class VatDAO extends DAO<Vat> {
     public Vector<Vat> findAll() {
         Vector<Vat> vatList = new Vector<Vat>();
         Vat vat = null;
-        String query = "SELECT * FROM Vat";
+        String query = "SELECT * FROM VAT";
 
         try (PreparedStatement pstmt = this.connect.prepareStatement(query)) {
 

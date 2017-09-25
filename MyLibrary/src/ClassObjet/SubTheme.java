@@ -150,6 +150,7 @@ public class SubTheme {
     public String toString() {
         return "\n"+subId + " "
                 +  subName 
+//      return  subName
                  ;
     }
     

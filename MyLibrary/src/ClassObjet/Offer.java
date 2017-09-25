@@ -21,12 +21,15 @@ public class Offer {
     private Float offDiscount;
     private String offPicture;
     private Vector<Book> booksList;
+    private int offStatus;
 
     //Constructor
     public Offer() {
     }
 
-    public Offer(int offId, String offName, String offText, String offDateStart, String offDateEnd, Float offDiscount, String offPicture) {
+    
+
+    public Offer(int offId, String offName, String offText, String offDateStart, String offDateEnd, Float offDiscount, String offPicture, int offStatus) {
         this.offId = offId;
         this.offName = offName;
         this.offText = offText;
@@ -34,6 +37,25 @@ public class Offer {
         this.offDateEnd = offDateEnd;
         this.offDiscount = offDiscount;
         this.offPicture = offPicture;
+        this.offStatus = offStatus;
+    }
+
+    
+    
+    public Vector<Book> getBooksList() {
+        return booksList;
+    }
+
+    public void setBooksList(Vector<Book> booksList) {
+        this.booksList = booksList;
+    }
+
+    public int getOffStatus() {
+        return offStatus;
+    }
+
+    public void setOffStatus(int offStatus) {
+        this.offStatus = offStatus;
     }
 
    
@@ -127,6 +149,17 @@ public class Offer {
         v.add(this.getOffName());
         v.add(this.getOffPicture());
         v.add(this.getOffText());
+        v.add(this.getOffStatus());
+        
+      
+        return v;
+    }
+    
+     public Vector getName() {
+        Vector v= new Vector();
+       
+        v.add(this.getOffId());
+        v.add(this.getOffName());
         
       
         return v;
@@ -134,11 +167,10 @@ public class Offer {
     
     
     
-    
     @Override
     public String toString() {
-        return "\n"
-                +  offName 
+        return 
+                 offName 
                 
                 ;
     }

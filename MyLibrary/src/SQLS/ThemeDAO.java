@@ -170,7 +170,6 @@ public class ThemeDAO extends DAO {
                     theme.setTheName(rs.getString(ThemeNames.NAME));
                     theme.setTheDescription(rs.getString(ThemeNames.DESCRIPTION));
                     //vecThemeList.add(theme);
-                    System.out.println(theme);
                 }
             } else {
                 throw new SQLException("ERROR SQL Theme Object");
