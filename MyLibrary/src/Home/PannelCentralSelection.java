@@ -6,7 +6,6 @@ import PanelModifié.BookLanguagePanel;
 import PanelModifié.FormatsPanel;
 import PanelModifié.KeyWordsPanel;
 import PanelModifié.LibraryPanel;
-import PanelModifié.OffAdd;
 import PanelModifié.ReviewPanel;
 import PanelModifié.ThemePanel;
 import PanelModifié.VatPanel;
@@ -20,7 +19,6 @@ import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 import ui.JFBook2;
 import ui.jfEditor.JFEditor;
-import ui.jfCustomer.JFCustomer;
 
 import ui.jfCustomer.JFCustomer;
 import ui.jfEmployee.JFEmployee;
