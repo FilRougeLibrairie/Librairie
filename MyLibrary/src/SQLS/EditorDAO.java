@@ -246,7 +246,7 @@ public class EditorDAO extends DAO {
     public Editor find(int id) {
        Editor editor = null;
         StringBuffer query = new StringBuffer();
-        query.append("SELECT * FORM " + TABLE + " WHERE ")
+        query.append("SELECT * FROM " + TABLE + " WHERE ")
                 .append(ID)
                 .append(" = ")
                 .append(id);
@@ -281,6 +281,41 @@ public class EditorDAO extends DAO {
 
     @Override
     public Vector findByColumn(String column, String term) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+      
+              Vector<Editor> editorList = new Vector<Editor>();
+        Editor editor = null;
+
+        StringBuffer query = new StringBuffer();
+        query.append("SELECT * FROM " + TABLE + " WHERE ")
+                .append(column)
+                .append(" = ")
+                .append("'" + term + "' ORDER BY autId");
+
+        System.out.println();
+
+        try (PreparedStatement pstmt = this.connect.prepareStatement(query.toString())) {
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.isBeforeFirst()) {
+
+                while (rs.next()) {
+                    editor = new Editor();
+                    editor.setEdiId(rs.getInt(ID));
+                    editor.setEdiName(rs.getString(NAME));
+                    editor.setEdiPresentation(rs.getString(PRESENTATION));
+                    editor.setEdiStatusCode(rs.getInt(STATUS));
+                }
+            } else {
+                throw new SQLException("ResultSet was empty");
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("ERROR Retrieving Object : " + ex.getMessage());
+
+        }
+        return editorList;
+        
+        
     }
 }
