@@ -120,7 +120,7 @@ public class SubThemeDAO extends DAO<SubTheme> {
         SubTheme sub = null;
         Theme the = null;
         StringBuffer query = new StringBuffer();
-        query.append("SELECT sub.subId,  subName, sub.theId ")
+        query.append("SELECT sub.subId,  sub.subName")
                 .append("FROM Book boo ")
                 .append("JOIN Association ass ")
                 .append("ON boo.booIsbn13 = ass.booIsbn13 ")
@@ -154,7 +154,7 @@ public class SubThemeDAO extends DAO<SubTheme> {
             }
 
         } catch (SQLException ex) {
-            System.out.println("ERROR sub Retrieving Object : " + ex.getMessage());
+            System.out.println("ERROR findsubthemebybook Retrieving Object : " + ex.getMessage());
 
         }
         return vecSubThemeList;
