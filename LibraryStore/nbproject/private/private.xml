@@ -3,8 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Chrys/Documents/NetBeansProjects/LibraryStore/web/css/style.css</file>
-            <file>file:/C:/Users/Chrys/Documents/NetBeansProjects/LibraryStore/web/index.html</file>
+            <file>file:/D:/datas/Documents/NetBeansProjects/Librairie/LibraryStore/src/java/dbAccess/AccessProfileDAO.java</file>
+            <file>file:/D:/datas/Documents/NetBeansProjects/Librairie/LibraryStore/src/java/dbAccess/CustomerDAO.java</file>
+            <file>file:/D:/datas/Documents/NetBeansProjects/Librairie/LibraryStore/src/java/dbAccess/ConnexionBasePool.java</file>
+            <file>file:/D:/datas/Documents/NetBeansProjects/Librairie/LibraryStore/src/java/dbAccess/ConnexionBase.java</file>
+            <file>file:/D:/datas/Documents/NetBeansProjects/Librairie/LibraryStore/src/java/treatments/test.java</file>
+            <file>file:/D:/datas/Documents/NetBeansProjects/Librairie/LibraryStore/src/java/dbAccess/DAO.java</file>
         </group>
     </open-files>
 </project-private>
