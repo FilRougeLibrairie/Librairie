@@ -25,14 +25,7 @@ hs_err_pid*
 build/
 dist/
 nbproject/private
-#project.properties
-
-/MyLibrary/nbproject/private
-/MyLibrary/nbproject/build/
-/MyLibrary/nbproject/dist/
-/MyLibrary/nbproject/project.properties
+nbproject/build/
+nbproject/dist/
+nbproject/project.properties
 ~\$ckOffice*
-/www01/nbproject/private/
-/LibrairieHTML/nbproject/private/
-/exercice2/nbproject/private/
-/Exercice3/nbproject/private/
