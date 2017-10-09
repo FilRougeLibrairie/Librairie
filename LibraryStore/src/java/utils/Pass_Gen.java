@@ -1,6 +1,6 @@
 package utils;
 
-import exceptions.CryptoException;
+import exception.CryptoException;
 import java.security.NoSuchAlgorithmException;
 import utils.Crypto;
 

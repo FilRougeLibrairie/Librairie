@@ -1,6 +1,6 @@
 package utils;
 
-import exceptions.CryptoException;
+import exception.CryptoException;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;

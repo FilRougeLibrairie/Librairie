@@ -1,6 +1,11 @@
 package controllers;
 
+import entity.Book;
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
+import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
@@ -8,6 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import process.GestionLivre;
 
 @WebServlet(name = "ControllerMain", urlPatterns = {"/ControllerMain"})
 public class ControllerMain extends HttpServlet {
@@ -41,13 +47,35 @@ public class ControllerMain extends HttpServlet {
          *
          *
          */
-        if ("menu-main".equals(section)) {
+        
+        
+        if(getServletContext().getAttribute("gestionLivre") == null){
+            try {
+                getServletContext().setAttribute("gestionLivre", new GestionLivre());
+            } catch (NamingException ex) {
+                System.out.println("erreur gestionLivre");
+                ex.printStackTrace();
+            }
+        }
+        
+        GestionLivre gl = (GestionLivre) getServletContext().getAttribute("gestionLivre");
+        
+        
+        if("menu-main".equals(section)){            
             page = "/WEB-INF/includes/menu-main.jsp";
         }
-
-        if ("catalog".equals(section)) {
-            page = "/WEB-INF/catalog.jsp";
-
+        
+        if("all-book".equals(section)){
+            
+            try {              
+                HashMap<String, List<Book>> listeBook = gl.findBook();
+                List<String> clefs = gl.getClefs();
+                request.setAttribute("clefs", clefs);
+                request.setAttribute("listeBook", listeBook);
+                page = "/WEB-INF/book.jsp";
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
         }
 
         /////// DO NOT MODIFY BELOW THIS LINE ///////
