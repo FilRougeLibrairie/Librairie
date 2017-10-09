@@ -24,8 +24,6 @@ hs_err_pid*
 # Netbeans specifics :
 build/
 dist/
-nbproject/private
-nbproject/build/
-nbproject/dist/
-nbproject/project.properties
+private/
+project.properties
 ~\$ckOffice*
