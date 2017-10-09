@@ -1,9 +1,6 @@
 package names;
 
-/**
- *
- * @author ggarvanese
- */
+
 public interface SQLNames {
 
     public static class AccessProfileNames {
