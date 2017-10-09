@@ -1,11 +1,11 @@
 
 
 package entity;
-import names.SQLNames;
+
 import java.util.Vector;
 
 
-public class Editor implements SQLNames{
+public class Editor {
 
     private int ediId;
     private String ediName;
