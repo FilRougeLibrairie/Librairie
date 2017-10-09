@@ -2,7 +2,7 @@
 package accessBD;
 
 
-import accessBD.SQLNames.ReviewNames;
+import names.SQLNames.ReviewNames;
 import entity.Customer;
 import entity.OrderLine;
 import entity.Review;

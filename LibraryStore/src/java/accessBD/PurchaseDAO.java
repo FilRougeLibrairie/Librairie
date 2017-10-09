@@ -1,7 +1,7 @@
 package accessBD;
 
 
-import accessBD.SQLNames.PurchaseNames;
+import names.SQLNames.PurchaseNames;
 import entity.Address;
 import entity.Customer;
 import entity.Purchase;

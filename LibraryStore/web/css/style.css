@@ -18,16 +18,20 @@
 }
 
 .logo{
-    position:relative;
-    background:  url("../image/logo.png") no-repeat ;
-    height:120px;
     
+ position:relative; 
+ height:120px;
+   
 }
+
+
 
 .search{
     
     position:relative;
     margin-top:50px;
+    
+    
     
 }
 
@@ -101,3 +105,24 @@
     
 }
 
+
+
+@media(max-width:767px){
+    .logo img{
+        
+        max-width:100%;
+        min-width:50%;
+    }
+}
+@media(min-width:768px){
+    
+    .logo img{
+        
+        max-width:100%;
+        min-width:50%;
+        
+        
+    }
+}
+@media(min-width:992px){}
+@media(min-width:1200px){}

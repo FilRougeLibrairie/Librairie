@@ -1,7 +1,7 @@
 
 package accessBD;
 
-import accessBD.SQLNames.OfferNames;
+import names.SQLNames.OfferNames;
 import entity.Offer;
 import java.io.Serializable;
 import java.sql.Connection;

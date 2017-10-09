@@ -1,7 +1,7 @@
 package accessBD;
 
 
-import accessBD.SQLNames.EmployeeNames;
+import names.SQLNames.EmployeeNames;
 import entity.AccessProfile;
 import entity.Employee;
 import java.io.Serializable;

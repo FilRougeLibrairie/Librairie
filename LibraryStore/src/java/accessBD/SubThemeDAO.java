@@ -1,8 +1,8 @@
 package accessBD;
 
 
-import accessBD.SQLNames.SubThemeNames;
-import static accessBD.SQLNames.VATNames.CODE;
+import names.SQLNames.SubThemeNames;
+import static names.SQLNames.VATNames.CODE;
 import entity.Book;
 import entity.SubTheme;
 import entity.Theme;

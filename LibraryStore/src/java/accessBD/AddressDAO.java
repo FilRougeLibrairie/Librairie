@@ -2,7 +2,7 @@
 package accessBD;
 
 
-import accessBD.SQLNames.AddressNames;
+import names.SQLNames.AddressNames;
 import entity.Address;
 import entity.Customer;
 import java.io.Serializable;

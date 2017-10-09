@@ -2,7 +2,7 @@
 package accessBD;
 
 
-import accessBD.SQLNames.StatusDisplayNames;
+import names.SQLNames.StatusDisplayNames;
 import entity.StatusDisplay;
 import java.io.Serializable;
 import java.sql.Connection;

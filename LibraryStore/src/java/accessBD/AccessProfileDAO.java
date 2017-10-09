@@ -2,7 +2,7 @@
 package accessBD;
 
 
-import accessBD.SQLNames.AccessProfileNames;
+import names.SQLNames.AccessProfileNames;
 import entity.AccessProfile;
 import java.io.Serializable;
 import java.sql.Connection;

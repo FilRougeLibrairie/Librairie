@@ -1,7 +1,7 @@
 package accessBD;
 
 
-import accessBD.SQLNames.OrderLineNames;
+import names.SQLNames.OrderLineNames;
 import entity.Book;
 import entity.OrderLine;
 import entity.Purchase;

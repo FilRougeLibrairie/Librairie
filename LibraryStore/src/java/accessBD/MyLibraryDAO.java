@@ -2,7 +2,7 @@
 package accessBD;
 
 
-import accessBD.SQLNames.MyLibraryNames;
+import names.SQLNames.MyLibraryNames;
 import entity.MyLibrary;
 import java.io.Serializable;
 import java.sql.Connection;

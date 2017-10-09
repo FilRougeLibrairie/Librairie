@@ -1,9 +1,9 @@
 package accessBD;
 
-import accessBD.SQLNames.DeterminateNames;
-import accessBD.SQLNames.OrderStatusNames;
-import accessBD.SQLNames.PurchaseNames;
-import accessBD.SQLNames.StatusDisplayNames;
+import names.SQLNames.DeterminateNames;
+import names.SQLNames.OrderStatusNames;
+import names.SQLNames.PurchaseNames;
+import names.SQLNames.StatusDisplayNames;
 import entity.OrderStatus;
 import entity.Purchase;
 import java.io.Serializable;

@@ -1,7 +1,7 @@
 package accessBD;
 
 
-import accessBD.SQLNames.KeywordsNames;
+import names.SQLNames.KeywordsNames;
 import entity.Keywords;
 import java.io.Serializable;
 import java.sql.Connection;

@@ -2,7 +2,7 @@
 package accessBD;
 
 
-import accessBD.SQLNames.PaymentNames;
+import names.SQLNames.PaymentNames;
 import entity.Payment;
 import entity.Purchase;
 import java.io.Serializable;

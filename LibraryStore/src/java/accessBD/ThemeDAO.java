@@ -2,7 +2,7 @@
 package accessBD;
 
 
-import accessBD.SQLNames.ThemeNames;
+import names.SQLNames.ThemeNames;
 import entity.Theme;
 import java.io.Serializable;
 import java.sql.Connection;

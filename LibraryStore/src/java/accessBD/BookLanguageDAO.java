@@ -1,7 +1,7 @@
 
 package accessBD;
 
-import accessBD.SQLNames.BookLanguageNames;
+import names.SQLNames.BookLanguageNames;
 import entity.BookLanguage;
 import java.io.Serializable;
 import java.sql.Connection;

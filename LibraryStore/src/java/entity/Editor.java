@@ -1,7 +1,7 @@
 
 
 package entity;
-import accessBD.SQLNames;
+import names.SQLNames;
 import java.util.Vector;
 
 

@@ -1,7 +1,7 @@
 
 package accessBD;
 
-import accessBD.SQLNames.CustomerNames;
+import names.SQLNames.CustomerNames;
 import entity.Customer;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

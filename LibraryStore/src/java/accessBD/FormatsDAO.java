@@ -2,7 +2,7 @@
 package accessBD;
 
 
-import accessBD.SQLNames.FormatsNames;
+import names.SQLNames.FormatsNames;
 import entity.Forma;
 import java.io.Serializable;
 import java.sql.Connection;

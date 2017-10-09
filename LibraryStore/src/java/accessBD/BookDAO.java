@@ -1,8 +1,8 @@
 package accessBD;
 
 
-import accessBD.SQLNames.AuthorNames;
-import accessBD.SQLNames.BookNames;
+import names.SQLNames.AuthorNames;
+import names.SQLNames.BookNames;
 import entity.Author;
 import entity.Book;
 import entity.BookLanguage;

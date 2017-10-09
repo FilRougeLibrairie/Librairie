@@ -2,7 +2,7 @@
 package accessBD;
 
 
-import accessBD.SQLNames.VATNames;
+import names.SQLNames.VATNames;
 import entity.Vat;
 import java.io.Serializable;
 import java.sql.Connection;

@@ -2,7 +2,7 @@
 package accessBD;
 
 
-import accessBD.SQLNames.ShippingCostNames;
+import names.SQLNames.ShippingCostNames;
 import entity.ShippingCost;
 import java.io.Serializable;
 import java.sql.Connection;

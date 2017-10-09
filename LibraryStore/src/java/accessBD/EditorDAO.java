@@ -2,7 +2,7 @@
 package accessBD;
 
 
-import accessBD.SQLNames.EditorNames;
+import names.SQLNames.EditorNames;
 import entity.Editor;
 import java.io.Serializable;
 import java.sql.Connection;
