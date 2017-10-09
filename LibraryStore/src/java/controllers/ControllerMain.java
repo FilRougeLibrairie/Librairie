@@ -47,6 +47,9 @@ public class ControllerMain extends HttpServlet {
          *
          *
          */
+        if ("book".equals(section)) {
+            page = "/WEB-INF/includes/book.jsp";
+        }
         
         
         if(getServletContext().getAttribute("gestionLivre") == null){
