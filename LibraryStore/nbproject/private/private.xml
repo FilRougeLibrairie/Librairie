@@ -3,8 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/cdi303/Documents/NetBeansProjects/Librairie/LibraryStore/src/java/accessBD/AccessProfileDAO.java</file>
-            <file>file:/C:/Users/cdi303/Documents/NetBeansProjects/Librairie/LibraryStore/src/java/entity/Editor.java</file>
+            <file>file:/C:/Users/cdi312/Desktop/GitHub/Librairie/LibraryStore/src/java/process/GestionLivre.java</file>
+            <file>file:/C:/Users/cdi312/Desktop/GitHub/Librairie/LibraryStore/src/java/controllers/ControllerMain.java</file>
+            <file>file:/C:/Users/cdi312/Desktop/GitHub/Librairie/LibraryStore/src/java/entity/Book.java</file>
         </group>
     </open-files>
 </project-private>
