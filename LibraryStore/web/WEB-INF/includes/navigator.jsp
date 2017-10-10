@@ -31,7 +31,7 @@
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="#">Home</a></li>
+                <li class="active"><a href="${url100}">Home</a></li>
                 <li><a href="#">Catalogue</a></li>
                 <li><a href="#">Livre</a></li>
 

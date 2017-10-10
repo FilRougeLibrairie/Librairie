@@ -57,8 +57,20 @@ public class ControllerMain extends HttpServlet {
         //                                 Bouton Home                                          //
         
         if("home".equals(section)){            
-            page = "home.jsp";
+            page = "/WEB-INF/home.jsp";
         }
+        
+        
+        //                                 Bouton Catalogue                                          //
+        
+        if("catalog".equals(section)){            
+            page = "/WEB-INF/catalog.jsp";
+        }
+        
+        
+        
+        
+        
         
         
         
