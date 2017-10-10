@@ -94,10 +94,6 @@ public class ControllerMain extends HttpServlet {
         GestionLivre gl = (GestionLivre) getServletContext().getAttribute("gestionLivre");
         
         
-        if("menu-main".equals(section)){            
-            page = "/WEB-INF/includes/menu-main.jsp";
-        }
-        
         if("all-book".equals(section)){
             
             try {              
