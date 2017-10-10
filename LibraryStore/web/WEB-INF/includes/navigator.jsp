@@ -2,6 +2,22 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 
+<!--  -->
+
+<c:url value="ControllerMain?section=home" var="url100" />
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">

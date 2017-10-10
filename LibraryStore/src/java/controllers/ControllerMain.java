@@ -37,14 +37,7 @@ public class ControllerMain extends HttpServlet {
         
         /////// DO NOT MODIFY ABOVE THIS LINE ///////
 
-        /**
-         *
-         *
-         * HERE CODE FOR EACH SECTION
-         *
-         *
-         *
-         */
+       
         
         //--------------------------------------------------------------------------------------//
         //                                      HOME                                            //
