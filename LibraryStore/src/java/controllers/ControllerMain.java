@@ -1,11 +1,6 @@
 package controllers;
 
-import entity.Book;
 import java.io.IOException;
-import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.List;
-import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
@@ -13,7 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import process.GestionLivre;
+
 
 @WebServlet(name = "ControllerMain", urlPatterns = {"/ControllerMain"})
 public class ControllerMain extends HttpServlet {
@@ -29,6 +24,7 @@ public class ControllerMain extends HttpServlet {
         return null;
     }
 
+    // ok renvoit bien la home
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -37,19 +33,53 @@ public class ControllerMain extends HttpServlet {
         HttpSession session = request.getSession();
         String section = request.getParameter("section");
         String page = "/WEB-INF/home.jsp";
+        
+        
         /////// DO NOT MODIFY ABOVE THIS LINE ///////
 
-        /**
-         *
-         *
-         * HERE CODE FOR EACH SECTION
-         *
-         *
-         *
-         */
-//        if ("book".equals(section)) {
-//            page = "/WEB-INF/includes/book.jsp";
-//        }
+       
+        
+        //--------------------------------------------------------------------------------------//
+        //                                      HOME                                            //
+        //--------------------------------------------------------------------------------------//
+        
+        if("carousel-event".equals(section)){            
+            page = "/WEB-INF/includes/carouselEvent.jsp";
+        }
+        
+        
+        
+        //--------------------------------------------------------------------------------------//
+        //                               CONTROLEUR NAVIGATOR                                   //
+        //--------------------------------------------------------------------------------------//
+        
+        
+        //                                 Bouton Home                                          //
+        
+        if("home".equals(section)){            
+            page = "/WEB-INF/home.jsp";
+        }
+        
+        
+        //                                 Bouton Catalogue                                          //
+        
+        if("catalog".equals(section)){            
+            page = "/WEB-INF/catalog.jsp";
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+       
+        
+        /*if ("book".equals(section)) {
+            page = "/WEB-INF/includes/book.jsp";
+        }
         
         
         if(getServletContext().getAttribute("gestionLivre") == null){
@@ -80,6 +110,16 @@ public class ControllerMain extends HttpServlet {
                 ex.printStackTrace();
             }
         }
+        */
+        
+        
+        ///////////////////////////////////////////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////////////////////////////////////////
+        
+        
+        
+        
+        
 
         /////// DO NOT MODIFY BELOW THIS LINE ///////
         System.out.println("--------->>> page : " + page); // DEBUG : recursive calling if displayed twice
