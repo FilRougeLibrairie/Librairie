@@ -17,6 +17,8 @@ public class GestionLivre implements Serializable{
     
     private List<String> clefs;
     
+    private Book book;
+    
     
     
     public GestionLivre() throws NamingException {
@@ -34,7 +36,16 @@ public class GestionLivre implements Serializable{
     }
     
     
-    
+//    public bookPage() throws NamingException {
+//        
+//        bookDAO = new BookDAO();
+//        book = new Book();
+//        
+//        book.setBooTitle(null);
+//        
+//        
+//        return book;
+//    }
     
     
     

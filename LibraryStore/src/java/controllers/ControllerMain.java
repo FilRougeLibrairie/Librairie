@@ -47,9 +47,9 @@ public class ControllerMain extends HttpServlet {
          *
          *
          */
-        if ("book".equals(section)) {
-            page = "/WEB-INF/includes/book.jsp";
-        }
+//        if ("book".equals(section)) {
+//            page = "/WEB-INF/includes/book.jsp";
+//        }
         
         
         if(getServletContext().getAttribute("gestionLivre") == null){
@@ -75,7 +75,7 @@ public class ControllerMain extends HttpServlet {
                 List<String> clefs = gl.getClefs();
                 request.setAttribute("clefs", clefs);
                 request.setAttribute("listeBook", listeBook);
-                page = "/WEB-INF/book.jsp";
+                page = "/WEB-INF/catalog.jsp";
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
