@@ -21,9 +21,9 @@
                         <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12 "> 
 
                             <div class="row">
-                                <div class="logo col-lg-5 col-md-5 col-sm-5 col-xs-5"><img src="image/logo.png"/> </div>
+                                <div class="logo col-lg-5 col-md-5 col-sm-6 col-xs-6"><img src="image/logo.png"/> </div>
 
-                                <div class="search col-lg-4 col-md-4 col-sm-4 col-xs-4"> 
+                                <div class="search col-lg-4 col-md-4 col-sm-6 col-xs-6"> 
                                     <form class="navbar-form" role="search">
                                         <div class="input-group">
                                             <input type="text" class="form-control" placeholder="Search" name="q">
@@ -33,7 +33,7 @@
                                         </div>
                                     </form>
                                 </div>
-                                <div class="socialIcon col-lg-3 col-md-3 col-sm-3 col-xs-5">
+                                <div class="socialIcon col-lg-3 col-md-3 hidden-sm hidden-xs">
                                     <a href="#" class=" zocial icon facebook">Sign in with Facebook</a>
                                     <a href="#" class=" zocial icon twitter">Sign in with Twitter</a>
                                     <a href="#" class=" zocial icon gmail">Sign in with Gmail</a>
